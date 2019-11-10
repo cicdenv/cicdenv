@@ -1,0 +1,12 @@
+#!/bin/bash 
+
+set -euo pipefail
+
+# Set working directory to project root
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+pushd "$DIR/.." >/dev/null
+
+# Simple pass-thru to embedded script
+mfa-virtual-devices/bin/display-qrcode.sh
+
+popd >/dev/null

@@ -1,0 +1,80 @@
+## Purpose
+S3 backed debian/ubuntu apt repo lambda indexer.
+
+## Workspaces
+N/A.
+
+## Usage
+```
+cicdenv$ cicdctl <init|plan|apply|destroy> shared/apt-repo-lambda:main
+...
+```
+
+## Testing
+Local:
+```
+# Copy a .deb file into a cicdenv container
+#  NOTE: if you're running multiple cicdenv sessions:
+#        `cat /proc/self/cgroup` to get the right container-id
+docker cp ~/personal/dev/libnss-iam/libnss-iam-0.1.deb \
+          <cicdenv container-id>:/home/fvogt/cicdenv/terraform/shared/apt-repo-indexer/s3apt
+
+# From cicdenv shell
+📺 ${USER}:~/cicdenv/terraform/shared/apt-repo-indexer/s3apt$ make test
+source .venv/bin/activate; python s3apt.py *.deb
+Package: libnss-iam 
+Version: 0.1 
+Architecture: amd64 
+Maintainer: George Fleury <gfleury@gmail.com> 
+Homepage: https://github.com/gfleury/libnss-iam 
+Description: Lib NSS module to integrate IAM users/groups
+Size: 8598338
+MD5sum: 677e6ce7bafc2ab9e74552fa6ebde81e
+SHA1: 60718fd8c158c945e5b59ce7f133bf0860770e67
+SHA256: 2af37af1a8fd243f2cfb28e57ed9f6f5d549a7c5c8bef5a46567c6bc2f091e4d
+```
+
+Uploading .deb(s):
+```
+# Uploads any debs in the s3apt/ folder
+${USER}:~/cicdenv/terraform/shared/apt-repo-indexer/s3apt$ make upload
+```
+
+Lambda updates:
+```
+# Upload new code to S3
+cicdenv/terraform/shared/apt-repo-indexer/s3apt$ make publish
+
+# Re-apply terraform state to use the new version
+cicdenv$ cicdctl apply shared/apt-repo-indexer:main -auto-approve
+
+# Test in Lambda UI using a the faux event in test/put-event.json
+```
+
+Host:
+```
+# Verify the s3 method is working and deps are met
+$ cat <<'EOF' | /usr/lib/apt/methods/s3
+600 URI Acquire
+URI:s3://apt-repo-cicdenv-com/repo/dists/Packages
+Filename:Packages.downloaded
+Fail-Ignore:true
+Index-File:true
+
+EOF
+
+# Verify host has s3 access
+$ aws --region=us-west-2 s3 ls s3://apt-repo-cicdenv-com/repo/dists/
+
+# Install a package
+$ sudo apt update && sudo apt install libnss-iam
+```
+
+## Links
+* https://webscale.plumbing/managing-apt-repos-in-s3-using-lambda
+  * https://github.com/szinck/s3apt
+* https://docs.aws.amazon.com/lambda/latest/dg/lambda-python-how-to-create-deployment-package.html
+* https://docs.aws.amazon.com/AmazonS3/latest/dev/NotificationHowTo.html#notification-how-to-event-types-and-destinations
+* https://github.com/MayaraCloud/apt-transport-s3
+* https://github.com/google/apt-golang-s3
+* http://www.fifi.org/doc/libapt-pkg-doc/method.html/ch2.html

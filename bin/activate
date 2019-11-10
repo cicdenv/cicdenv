@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# project root folder
+pushd "$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)/.." >/dev/null
+
+function deactivate_cicdenv {
+	unset -f _deactivate
+
+    # Restore the original search path if we can
+    if [[ -n "$_OLD_TUBI_PATH" ]]; then
+        export PATH="$_OLD_TUBI_PATH"
+        unset _OLD_TUBI_PATH
+    fi
+}
+
+# Save un-altered search path if needed
+if [[ -z "$_OLD_TUBI_PATH" ]]; then
+    export _OLD_TUBI_PATH="$PATH"
+fi
+
+# Put cicdenv launcher(s) on the search path if needed
+if ! echo "$PATH" | grep "${PWD}/bin" > /dev/null; then
+    export PATH="$PATH:${PWD}/bin"
+fi
+
+popd >/dev/null

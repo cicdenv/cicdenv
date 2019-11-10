@@ -1,0 +1,202 @@
+from sys import exit, stdout, stderr
+from os import path, getcwd, environ
+import subprocess
+from subprocess import DEVNULL
+  
+from pathlib import Path
+from configparser import ConfigParser
+import getpass
+from hashlib import sha256
+import logging
+import json
+
+import time
+from dateutil.parser import parse
+from datetime import datetime, timedelta
+from pytz import timezone
+from tzlocal import get_localzone
+
+from cicdctl.logs import log_cmd_line
+
+
+def _is_mfa_admin_creds(section):
+    """
+    Filter for ~/.aws/credentials profile section names.
+    """
+    
+    if not section.startswith('admin-'):
+        return False
+    if section.endswith('-long-term') or section.endswith('-root'):
+        return False
+    return True
+
+
+class MfaCodeGenerator(object):
+    """
+    Obtains the next Virtual MFA device code.
+
+    This uses keybase decrypt to access the MFA device setup from mfa-virtual-devices/$IAM_USER-secret.txt.gpg.
+
+    TOTP => [T]ime base [O]ne [T]ime [P]asscode - synonym: mfa-code
+    """
+
+    totp_secrets_file = path.join(getcwd(), f'mfa-virtual-devices/{getpass.getuser()}-secret.txt.gpg')
+    last_totp_file = path.join(path.expanduser("~"), f'.aws/.last-totp.txt')
+
+    # decrypt from mfa-virtual-devices/
+    def __init__(self, totp_secrets_file=None, last_totp_file=None):
+        Path(self.last_totp_file).touch(mode=0o600, exist_ok=True)
+
+    def _decrypt_totp_config(self):
+        # Keybase login required prior
+        secret = subprocess.check_output(['keybase', 'decrypt', '--infile', self.totp_secrets_file], stderr=DEVNULL)
+        secret = secret.decode('utf-8').rstrip().encode('utf-8')  # Remove newline
+        return secret
+
+    def _run_oathtool(self):
+        secret = self._decrypt_totp_config()
+
+        totp = subprocess.check_output(['oathtool', '--base32', '--totp', secret])
+        hashed_totp = sha256(totp).hexdigest()
+        
+        return totp, hashed_totp
+
+    def _load_last_used(self):
+        last_used = set()
+        with open(self.last_totp_file, 'r') as f:
+            for line in f:
+                last_used.add(line.strip())
+        return last_used
+
+    def _update_last_used(self, hashed_totp):
+        with open(self.last_totp_file, 'w') as f:
+            f.write(f'{hashed_totp}\n')
+
+    def next(self):
+        """
+        Gets the next un-used MFA code.
+        """
+        
+        try:
+            totp, hashed_totp = self._run_oathtool()
+
+            last_used = self._load_last_used()
+            if hashed_totp in last_used:
+                logging.getLogger("cicdctl").info("Waiting for next mfa-code ...")
+            while hashed_totp in last_used:
+                time.sleep(1)
+                totp, hashed_totp = self._run_oathtool()
+                last_used = self._load_last_used()  # Reload last_used each sleep cycle
+            self._update_last_used(hashed_totp)
+
+            return totp
+        except subprocess.CalledProcessError as cpe:
+            exit(cpe.returncode)
+
+
+class StsAssumeRoleCredentials(object):
+    """
+    AWS sts + assume-role credentials manager.
+
+    Updates ~/.aws/credentials (removes, re-adds) [admin-$WORKSPACE] profiles.
+    Expects corresponding [admin-$WORKSPACE-long-term] aws-mfa prototype profile
+    sections to already be present.
+    """
+
+    credentials_file = path.join(path.expanduser("~"),'.aws/credentials')
+    cutoff = datetime.now(timezone('UTC')) + timedelta(minutes=15)
+    totp_generator = MfaCodeGenerator()
+    org_state_dir = path.join(getcwd(), 'terraform', 'iam', 'organizations')
+
+    def __init__(self, credentials_file=None, cutoff=None):
+        if credentials_file is not None:
+            self.credentials_file = credentials_file
+        if cutoff is not None:
+            self.cutoff = cutoff
+
+    def refresh_profile(self, profile):
+        """
+        Ensures the given profile exists in ~/.aws/credentials and
+        has at least 15 minutes left before it expires.
+        """
+
+        self._remove_stale_profiles()
+        self._ensure_profile_prototype(profile)
+        if not self._has_profile(profile):
+            try:  
+                self._renew_profile(profile)
+            except subprocess.CalledProcessError as cpe:
+                print(f'Failed to login, profile={profile}', file=stderr)
+                exit(cpe.returncode)
+
+    def _load_credentials(self):
+        credentials = ConfigParser()
+        credentials.read(self.credentials_file)
+        return credentials
+
+    def _remove_stale_profiles(self):
+        credentials = self._load_credentials()
+
+        profiles = [s for s in credentials.sections() if _is_mfa_admin_creds(s)]
+        if len(profiles) == 0:  # No active creds sections
+            return
+
+        for profile in profiles:
+            expiration = credentials.get(profile, 'expiration')
+            expires = timezone('UTC').localize(parse(expiration))
+            if expires < self.cutoff:
+                credentials.remove_section(profile)
+
+        with open(self.credentials_file, 'w') as f:
+            credentials.write(f)
+
+    def _get_assume_role(self, workspace):
+        try:
+            environment = environ.copy()  # Inherit cicdctl's environment
+
+            # Set aws credentials profile with env variables
+            environment['AWS_PROFILE'] = f'admin-main'
+            json_stdout = subprocess.check_output(['terraform', 'output', '-json'], env=environment, cwd=self.org_state_dir).decode('utf-8')
+            outputs = json.loads(json_stdout)
+
+            return [role for role in outputs['org_account_admin_roles']['value'] if role.endswith(f'/{workspace}-admin')][0]
+        except subprocess.CalledProcessError as cpe:
+            exit(cpe.returncode)
+
+    def _ensure_profile_prototype(self, profile):
+        workspace = profile.replace('admin-', '')
+        if workspace == 'main':  # Special case - we must have this or can't source sub-account ids
+            return
+
+        credentials = self._load_credentials()
+        if not f'{profile}-long-term' in credentials.sections():
+            # Use 'default-long-term' to determine: key id, secret, mfa arn
+            if not 'default-long-term' in credentials.sections():
+                print(f"[default-long-term] profile section not found in '~/.aws/credentials'", file=stderr)
+                exit(1)
+
+            defaults = credentials['default-long-term']
+            prototype = {
+                'aws_secret_access_key': defaults['aws_secret_access_key'],
+                'aws_access_key_id': defaults['aws_access_key_id'],
+                'aws_mfa_device': defaults['aws_mfa_device'],
+                'assume_role': self._get_assume_role(workspace),
+            }
+            credentials[f'{profile}-long-term'] = prototype
+
+            with open(self.credentials_file, 'w') as f:
+                credentials.write(f)
+
+    def _has_profile(self, profile):
+        credentials = self._load_credentials()
+
+        return profile in credentials.sections()
+
+    def _renew_profile(self, profile):
+        # Get mfa-code
+        totp = self.totp_generator.next()  # NOTE: totp has a newline
+
+        # Use the mfa-code to login
+        mfa_cmd = ['aws-mfa', '--profile', profile, '--duration', '3600', '--log-level', 'ERROR']
+        log_cmd_line(mfa_cmd)
+        subprocess.run(mfa_cmd, input=totp, check=True, stdout=DEVNULL, stderr=stderr)

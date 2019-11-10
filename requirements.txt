@@ -1,0 +1,6 @@
+awscli
+aws-mfa
+pyhcl
+pytz
+PyYAML
+tzlocal

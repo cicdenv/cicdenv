@@ -1,0 +1,159 @@
+apiVersion: audit.k8s.io/v1
+kind: Policy
+omitStages:
+  - "RequestReceived"
+rules:
+- level: None
+  users: ["system:kube-proxy"]
+  verbs: ["watch"]
+  resources:
+    - group: ""
+      resources: ["endpoints", "services", "services/status"]
+- level: None
+  userGroups: ["system:nodes"]
+  verbs: ["get"]
+  resources:
+    - group: ""
+      resources: ["nodes", "nodes/status"]
+- level: None
+  users:
+    - system:kube-controller-manager
+    - system:kube-scheduler
+    - system:serviceaccount:kube-system:endpoint-controller
+  verbs: ["get", "update"]
+  namespaces: ["kube-system"]
+  resources:
+    - group: ""
+      resources: ["endpoints"]
+- level: None
+  users: ["system:apiserver"]
+  verbs: ["get"]
+  resources:
+    - group: ""
+      resources: ["namespaces", "namespaces/status", "namespaces/finalize"]
+- level: None
+  users: ["cluster-autoscaler"]
+  verbs: ["get", "update"]
+  namespaces: ["kube-system"]
+  resources:
+    - group: ""
+      resources: ["configmaps", "endpoints"]
+- level: None
+  users:
+    - system:kube-controller-manager
+  verbs: ["get", "list"]
+  resources:
+    - group: "metrics.k8s.io"
+- level: None
+  nonResourceURLs:
+    - /healthz*
+    - /version
+    - /swagger*
+- level: None
+  resources:
+    - group: ""
+      resources: ["events"]
+- level: None
+  resources:
+  - group: ""
+    resources: ["configmaps"]
+    resourceNames: ["controller-leader"]
+- level: None
+  userGroups: ["system:authenticated"]
+  nonResourceURLs:
+  - "/api*"
+  - "/version"
+- level: RequestResponse
+  resources:
+  - group: ""
+    resources: ["pods"]
+- level: Request
+  users:
+  - "kubelet"
+  - "system:node-problem-detector"
+  - "system:serviceaccount:kube-system:node-problem-detector"
+  verbs: ["update","patch"]
+  resources:
+    - group: ""
+      resources: ["nodes/status", "pods/status"]
+  omitStages:
+    - "RequestReceived"
+- level: Request
+  userGroups: ["system:nodes"]
+  verbs: ["update","patch"]
+  resources:
+    - group: ""
+      resources: ["nodes/status", "pods/status"]
+  omitStages:
+    - "RequestReceived"
+- level: Request
+  users: ["system:serviceaccount:kube-system:namespace-controller"]
+  verbs: ["deletecollection"]
+  omitStages:
+    - "RequestReceived"
+- level: Request
+  verbs: ["get", "list", "watch"]
+  resources:
+    - group: ""
+    - group: "admissionregistration.k8s.io"
+    - group: "apiextensions.k8s.io"
+    - group: "apiregistration.k8s.io"
+    - group: "apps"
+    - group: "authentication.k8s.io"
+    - group: "authorization.k8s.io"
+    - group: "autoscaling"
+    - group: "batch"
+    - group: "certificates.k8s.io"
+    - group: "extensions"
+    - group: "metrics.k8s.io"
+    - group: "networking.k8s.io"
+    - group: "node.k8s.io"
+    - group: "policy"
+    - group: "rbac.authorization.k8s.io"
+    - group: "scheduling.k8s.io"
+    - group: "settings.k8s.io"
+    - group: "storage.k8s.io"
+  omitStages:
+    - "RequestReceived"
+- level: RequestResponse
+  resources:
+    - group: ""
+    - group: "admissionregistration.k8s.io"
+    - group: "apiextensions.k8s.io"
+    - group: "apiregistration.k8s.io"
+    - group: "apps"
+    - group: "authentication.k8s.io"
+    - group: "authorization.k8s.io"
+    - group: "autoscaling"
+    - group: "batch"
+    - group: "certificates.k8s.io"
+    - group: "extensions"
+    - group: "metrics.k8s.io"
+    - group: "networking.k8s.io"
+    - group: "node.k8s.io"
+    - group: "policy"
+    - group: "rbac.authorization.k8s.io"
+    - group: "scheduling.k8s.io"
+    - group: "settings.k8s.io"
+    - group: "storage.k8s.io"
+  omitStages:
+    - "RequestReceived"
+- level: Request
+  resources:
+  - group: ""
+  - group: "extensions"
+- level: Metadata
+  resources:
+  - group: ""
+    resources: ["secrets", "configmaps"]
+- level: Metadata
+  resources:
+    - group: ""
+      resources: ["secrets", "configmaps"]
+    - group: authentication.k8s.io
+      resources: ["tokenreviews"]
+  omitStages:
+    - "RequestReceived"
+- level: Metadata
+  omitStages:
+    - "RequestReceived"

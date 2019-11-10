@@ -1,0 +1,141 @@
+#!/bin/bash 
+
+set -euo pipefail
+
+# Set working directory to project root
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+pushd "$DIR/.." >/dev/null
+
+image_name=cicdenv
+source image-tag.inc
+
+user_name=$(whoami)
+user_id=$(id -u)
+
+if [[ -f /etc/timezone ]]; then
+    timezone=$(cat /etc/timezone)
+else
+    timezone='America/Los_Angeles'
+fi
+
+repo=$(git config --get remote.origin.url | sed -E 's!.*/([^.]+).git$!\1!')
+
+# Check ~.aws, ~./ssh
+
+# Extra environment variables to pass thru to python (cicdctl)
+extra_vars=""
+
+# Terraform plugin cache
+# https://www.terraform.io/docs/configuration/providers.html#provider-plugin-cache
+#   https://www.tailored.cloud/devops/cache-terraform-providers/
+mkdir -p .terraform.d/plugin-cache
+
+# https://www.terraform.io/docs/internals/debugging.html
+if [[ "${TF_LOG-unset}" != 'unset' ]]; then
+    extra_vars="$extra_vars --env TF_LOG=${TF_LOG}"
+fi
+# NOTE: must be a valid path INSIDE the cicdenv container
+if [[ "${TF_LOG_PATH-unset}" != 'unset' ]]; then
+    extra_vars="$extra_vars --env TF_LOG_PATH=${TF_LOG_PATH}"
+fi
+
+# https://www.terraform.io/docs/commands/environment-variables.html
+#TF_INPUT
+#TF_CLI_ARGS
+#TF_CLI_ARGS_<name>
+
+# https://www.terraform.io/docs/commands/cli-config.html
+#export TF_CLI_CONFIG_FILE="$HOME/.terraformrc"
+
+# Run cicdctl directly if we're already in the cicdenv container
+if [[ -f '/etc/os-release' ]] && grep 'ID=alpine' /etc/os-release >/dev/null \
+    &&  [[ "$(head -n1 /proc/self/cgroup | awk -F/ '{print $NF}' | wc -c)" == "65" ]]; then
+   $(echo "$extra_vars" | sed 's/--env //g') python -u -bb -I -q bin/cicdctl.py "$@"
+else  # Run cicdenv in our tools environment, then quit
+    # Build the cicdenv docker image if we don't have the lastest
+    if ! docker images --format '{{.Repository}}:{{.Tag}}' | grep "${image_name}:${image_tag}" >/dev/null; then
+        make docker-build 
+    fi
+
+    _PATH="/home/${user_name}/${repo}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+    # Mac's don't get agent forwarding
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        ssh_agent_forwarding=
+    else
+        if [[ "${SSH_AUTH_SOCK-unset}" != 'unset' ]]; then
+            agent_socket=$(dirname $SSH_AUTH_SOCK)
+
+            ssh_agent_forwarding="--volume ${agent_socket}:${agent_socket} --env SSH_AUTH_SOCK=${SSH_AUTH_SOCK}"
+        fi
+    fi
+
+    # Initialize the console hist file if needed
+    if [[ ! -f "$(pwd)/.bash_history" ]]; then
+        touch "$(pwd)/.bash_history"
+    fi
+
+    # Mac - keybase compat.
+    if [[ ! -d ~/.local ]]; then mkdir -p ~/.local; fi
+
+    # Mac - proxy keybase server unix domain socket
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        _KBPROXY_FIFO=`mktemp -u`
+        mkfifo $_KBPROXY_FIFO
+        
+        KBPROXY_PORT=$(python -c 'import socket; s = socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()')
+        extra_vars="$extra_vars --env KBPROXY_PORT=${KBPROXY_PORT}"
+
+        _KB_SOCKET="/Users/$USER/Library/Group Containers/keybase/Library/Caches/Keybase/keybased.sock"
+        nc -lk 127.0.0.1 "$KBPROXY_PORT" <"$_KBPROXY_FIFO" | nc -U "$_KB_SOCKET" >"$_KBPROXY_FIFO" &
+        rm "$_KBPROXY_FIFO"
+
+        trap "exit" INT TERM ERR
+        trap "kill 0" EXIT
+    fi
+
+    # The docker CMD[] differs slightly by OS
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        launchers="bin/launch-keybase-proxy.sh;"
+    else
+        launchers=":;"
+    fi
+
+    # Jenkins items
+    for secret_file in .jenkins.conf .jenkins-local.auth; do
+        if [[ ! -f ~/${secret_file} ]]; then
+            touch ~/${secret_file}
+        fi
+    done
+
+    docker run -it --rm                                                             \
+        --volume "/var/run/docker.sock:/var/run/docker.sock"                        \
+        --volume "${HOME}/.aws:/home/terraform/.aws"                                \
+        --volume "${HOME}/.ssh:/home/terraform/.ssh"                                \
+        --volume "${HOME}/.cache:/home/terraform/.cache"                            \
+        --volume "${HOME}/.config:/home/terraform/.config"                          \
+        --volume "${HOME}/.gnupg:/home/terraform/.gnupg"                            \
+        --volume "${HOME}/.local:/home/terraform/.local"                            \
+        $(if [[ $(uname -s) == "Linux" ]]; then                                     \
+          echo '--volume' "/run/user/${user_id}:/run/user/${user_id}";              \
+        fi)                                                                         \
+        --volume "$(pwd):/home/terraform/${repo}"                                   \
+        --volume "$(pwd)/.bash_history:/home/terraform/.bash_history"               \
+        --volume "${HOME}/.gitconfig:/home/terraform/.gitconfig"                    \
+        --volume "${HOME}/.jenkins.conf:/home/terraform/.jenkins.conf"              \
+        --volume "${HOME}/.jenkins-local.auth:/home/terraform/.jenkins-local.auth"  \
+        --user "$user_name"                                                         \
+        --workdir "/home/terraform/${repo}"                                         \
+        $(if [[ $(uname -s) == "Linux" ]]; then                                     \
+          echo '--env' "XDG_RUNTIME_DIR=/run/user/${user_id}";                      \
+        fi)                                                                         \
+        --env "TZ=${timezone}"                                                      \
+        $extra_vars $ssh_agent_forwarding                                           \
+        --env "PATH=$_PATH"                                                         \
+        --env "HOST_PATH=$(pwd)"                                                    \
+        --env "HOST_HOME=${HOME}"                                                   \
+        "${image_name}:${image_tag}"                                                \
+        bash -c "$(echo $launchers python -u -bb -I -q bin/cicdctl.py "$@")"
+fi
+
+popd >/dev/null

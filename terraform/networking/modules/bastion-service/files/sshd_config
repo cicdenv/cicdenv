@@ -1,0 +1,14 @@
+AuthorizedKeysCommand /opt/authorized-keys-command.sh
+AuthorizedKeysCommandUser root
+
+ChallengeResponseAuthentication yes
+
+UsePAM no
+AuthenticationMethods publickey
+
+X11Forwarding yes
+PrintMotd no
+
+AcceptEnv LANG LC_*
+
+Subsystem	sftp	/usr/lib/openssh/sftp-server

@@ -1,0 +1,47 @@
+#!make
+#-*-Makefile-*- vim:syntax=make
+
+# https://wiki.alpinelinux.org/wiki/Alpine_Linux:Releases
+# https://hub.docker.com/_/alpine?tab=tags
+ALPINE_TAG = edge
+
+# Keybase is very rigid about versioning and server compat
+# We'll checkout/build the same version you have installed on the host
+_KEYBASE_FULL_VERSION = $(shell keybase version -S)
+KEYBASE_TAG   = v$(shell echo "$(_KEYBASE_FULL_VERSION)" | awk -F- '{print $$1}')
+KEYBASE_BUILD =  $(shell echo "$(_KEYBASE_FULL_VERSION)" | awk -F- '{print $$2}')
+
+# Hashicorp config language command line parser/query tool
+# https://github.com/mattolenik/hclq/releases
+HCLQ_TAG = 0.5.3
+
+# https://www.terraform.io/downloads.html
+TERRAFORM_VERSION   = 0.12.2
+TERRAFORM_SHA256SUM = d9a96b646420d7f0a80aa5d51bb7b2a125acead537ab13c635f76668de9b8e32
+TERRAFORM_RELEASES  = https://releases.hashicorp.com/terraform
+
+# https://github.com/kubernetes/kops/releases
+KOPS_VERSION   = 1.12.2
+KOPS_SHA1      = 9f2ec112d8100b5e9a791d92ae7421ed64c7707f
+KOPS_DOWNLOADS = https://github.com/kubernetes/kops/releases/download
+
+# https://www.packer.io/downloads.html
+PACKER_VERSION   = 1.4.1
+PACKER_SHA256SUM = b713ea79a6fb131e27d65ec3f2227f36932540e71820288c3c5ad770b565ecd7
+PACKER_RELEASES  = https://releases.hashicorp.com/packer
+
+# https://github.com/kubernetes/kubernetes/releases
+KUBE_VERSION   = 1.11.10
+KUBE_SHA512    = 661fee4e2e811d84038ace861e444d762d23ceaed382f46160bf5cce806086324becff9ef8b7ec259311b53dce43af02fce0adc738a838f2aa706e0bc3e48b2e
+KUBE_DOWNLOADS = https://dl.k8s.io
+
+# https://github.com/kubernetes-sigs/aws-iam-authenticator/releases
+AUTHENTICATOR_VERSION   = 0.4.0
+AUTHENTICATOR_SHA256SUM = 9744923781cca33dba3f48e1b8443af4d7f158748bd105134aaa68252da3b907
+AUTHENTICATOR_PROJECT   = https://github.com/kubernetes-sigs/aws-iam-authenticator
+
+# https://pkg.cfssl.org/
+CFSSL_VERSION       = R1.2
+CFSSL_SHA256SUM     = eb34ab2179e0b67c29fd55f52422a94fe751527b06a403a79325fed7cf0145bd
+CFSSLJSON_SHA256SUM = 1c9e628c3b86c3f2f8af56415d474c9ed4c8f9246630bd21c3418dbe5bf6401e
+CFSSL_DOWNLOADS     = https://pkg.cfssl.org

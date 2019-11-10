@@ -1,0 +1,7 @@
+${env_vars} \
+kops update cluster \
+--name=${cluster_name} \
+--state=${state_store} \
+--out=. \
+--target=terraform \
+${lifecycle_overrides}

@@ -1,0 +1,5 @@
+${env_vars} \
+KUBECONFIG=${admin_kubeconfig} \
+kops export kubecfg \
+--name=${cluster_name} \
+--state=${state_store}

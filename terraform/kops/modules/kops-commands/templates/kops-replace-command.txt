@@ -1,0 +1,4 @@
+${env_vars} \
+kops replace \
+-f ${kops_manifest} \
+--state=${state_store}

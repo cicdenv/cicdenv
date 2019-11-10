@@ -1,0 +1,17 @@
+kind: Addons
+metadata:
+  name: custom
+spec:
+  addons:
+  - id: "k8s-110"
+    name: custom.authentication.aws
+    manifest: custom.authentication.aws/k8s-110.yaml
+    kubernetesVersion: '>=1.10.0'
+    selector:
+      role.kubernetes.io/authentication: "1"
+    version: 1.0.0
+  - id: "k8s-112"
+    name: custom.kube2iam.aws
+    manifest: custom.kube2iam.aws/k8s-112.yaml
+    kubernetesVersion: '>=1.12.0'
+    version: 1.0.0
