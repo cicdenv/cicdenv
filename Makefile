@@ -29,9 +29,10 @@ _PATH=/home/$(user_name)/$(repo)/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/u
 _PS1='📦 \[\033[1;36m\]\u:\[\033[1;34m\]\w\[\033[0;35m\]\[\033[1;36m\]$$ \[\033[0m\]'
 
 shell:
-	@if [[ ! -d ~/.local ]]; then mkdir -p ~/.local; fi
-	@if [[ ! -f ~/.jenkins.conf ]]; then touch ~/.jenkins.conf; fi
-	@if [[ ! -f ~/.jenkins-local.auth ]]; then touch ~/.jenkins-local.auth; fi
+	@if [[ ! -d ~/.local                  ]]; then mkdir -p ~/.local;               fi
+	@if [[ ! -f ~/.jenkins.conf           ]]; then touch ~/.jenkins.conf;           fi
+	@if [[ ! -f ~/.jenkins-local.auth     ]]; then touch ~/.jenkins-local.auth;     fi
+	@if [[ ! -f "$(CURDIR)/.bash_history" ]]; then touch "$(CURDIR)/.bash_history"; fi
 	@docker run -it --rm                                                            \
 	    --cap-add SYS_PTRACE                                                        \
         --volume "/var/run/docker.sock:/var/run/docker.sock"                        \
