@@ -16,8 +16,8 @@ _init_command = ['init', '-upgrade', f'-backend-config={backend_config}']  # nee
 def _state_prep(state_dir, workspace, environment, workspaced, terraform):
     # Odd, but you init, then workspace (first time only)
     # otherwise you workspace then init
-    terrform_dir = path.join(state_dir, '.terraform')
-    first_time = not path.exists(terrform_dir)
+    terrform_state = path.join(state_dir, '.terraform', 'terraform.tfstate')
+    first_time = not path.exists(terrform_state)
 
     # Never init'd states must be init'd first before setting the workspace
     if first_time:

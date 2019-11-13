@@ -50,23 +50,31 @@ cicdenv$ . bin/activate
 ## Usage
 ### Terraform
 ```
-# Create kubernetes shared resources for [dev, test] accounts
-cicdenv$ cicdctl apply kops/shared:{dev,test}
-
-# Build base AMI
+# Build base AMI (main account)
+cicdenv$ cicdctl apply kops/shared:main
 cicdenv$ cicdctl packer build
+cicdenv$ cicdctl destroy kops/shared:main
+
+# PKI - decrpt CA private key
+cicdenv$ make
+📦 fvogt:~/cicdenv$ terraform/kops/backend/bin/decrypt-ca-key.sh
+📦 fvogt:~/cicdenv$ exit
+
+# Create kubernetes shared resources for [dev, test] accounts
+cicdenv$ cicdctl apply kops/shared:{dev,test} -auto-approve
 
 # Create kubernetes 1.12 clusters for [dev, test] accounts
-cicdenv$ cicdctl apply-cluster 1.12:{dev,test}
-cicdenv$ cicdctl validate-cluster 1.12:{dev,test}
+cicdenv$ cicdctl apply-cluster 1-12:{dev,test} -auto-approve
+cicdenv$ cicdctl validate-cluster 1-12:{dev,test}
 
 # Inspect with bastion service
-cicdenv$ cicdctl apply kops/bastion:{dev,test}
+cicdenv$ cicdctl apply kops/bastion:{dev,test} -auto-approve
 cicdenv$ cicdctl bastion ssh dev
 
 # Cleanup [dev, test] accounts
-cicdenv$ cicdctl destroy-cluster 1.12:{dev,test}
-cicdenv$ cicdctl destroy kops/shared:{dev,test}
+cicdenv$ cicdctl destroy-cluster 1-12:{dev,test} -force
+cicdenv$ cicdctl destroy kops/bastion:{dev,test} -force
+cicdenv$ cicdctl destroy kops/shared:{dev,test} -force
 ```
 
 ### Interactive
