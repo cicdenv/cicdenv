@@ -69,7 +69,7 @@ cicdenv$ cicdctl validate-cluster 1-12:dev
 
 # Inspect with bastion service
 cicdenv$ cicdctl apply kops/bastion:dev -auto-approve
-cicdenv$ cicdctl bastion ssh dev
+cicdenv$ cicdctl bastion ssh dev --user $USER
 
 # Cleanup dev accounts
 cicdenv$ cicdctl destroy-cluster 1-12:dev -force
