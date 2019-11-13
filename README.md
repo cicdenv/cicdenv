@@ -60,21 +60,21 @@ cicdenv$ make
 📦 fvogt:~/cicdenv$ terraform/kops/backend/bin/decrypt-ca-key.sh
 📦 fvogt:~/cicdenv$ exit
 
-# Create kubernetes shared resources for [dev, test] accounts
-cicdenv$ cicdctl apply kops/shared:{dev,test} -auto-approve
+# Create kubernetes shared resources for dev accounts
+cicdenv$ cicdctl apply kops/shared:dev -auto-approve
 
-# Create kubernetes 1.12 clusters for [dev, test] accounts
-cicdenv$ cicdctl apply-cluster 1-12:{dev,test} -auto-approve
-cicdenv$ cicdctl validate-cluster 1-12:{dev,test}
+# Create kubernetes 1.12 clusters for dev accounts
+cicdenv$ cicdctl apply-cluster 1-12:dev -auto-approve
+cicdenv$ cicdctl validate-cluster 1-12:dev
 
 # Inspect with bastion service
-cicdenv$ cicdctl apply kops/bastion:{dev,test} -auto-approve
+cicdenv$ cicdctl apply kops/bastion:dev -auto-approve
 cicdenv$ cicdctl bastion ssh dev
 
-# Cleanup [dev, test] accounts
-cicdenv$ cicdctl destroy-cluster 1-12:{dev,test} -force
-cicdenv$ cicdctl destroy kops/bastion:{dev,test} -force
-cicdenv$ cicdctl destroy kops/shared:{dev,test} -force
+# Cleanup dev accounts
+cicdenv$ cicdctl destroy-cluster 1-12:dev -force
+cicdenv$ cicdctl destroy kops/bastion:dev -force
+cicdenv$ cicdctl destroy kops/shared:dev -force
 ```
 
 ### Interactive
