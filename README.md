@@ -69,7 +69,12 @@ cicdenv$ cicdctl validate-cluster 1-12:dev
 
 # Inspect with bastion service
 cicdenv$ cicdctl apply kops/bastion:dev -auto-approve
+# Linux
 cicdenv$ cicdctl bastion ssh dev --user $USER
+# Mac
+cicdenv$ make
+📦 fvogt:~/cicdenv$ eval "$(ssh-agent)"; ssh-add ~/.ssh/kops_rsa
+📦 fvogt:~/cicdenv$ cicdctl bastion ssh dev --user $USER
 
 # Cleanup dev accounts
 cicdenv$ cicdctl destroy-cluster 1-12:dev -force
