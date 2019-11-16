@@ -3,7 +3,7 @@
 
 # https://wiki.alpinelinux.org/wiki/Alpine_Linux:Releases
 # https://hub.docker.com/_/alpine?tab=tags
-ALPINE_TAG = edge
+ALPINE_TAG = 3.10
 
 # Keybase is very rigid about versioning and server compat
 # We'll checkout/build the same version you have installed on the host

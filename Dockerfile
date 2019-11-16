@@ -60,6 +60,7 @@ RUN apk --no-cache --update add docker
 # Utils
 RUN apk --no-cache --update add  \
     bash                         \
+    bind-tools                   \
     cloc                         \
     curl                         \
     less                         \
@@ -84,7 +85,7 @@ RUN echo "${nonroot_user} ALL=(ALL) NOPASSWD:ALL" > "/etc/sudoers.d/${nonroot_us
 # Time based one time passwords
 RUN apk --no-cache add --update \
     oath-toolkit-oathtool
-RUN apk --no-cache add --update -X http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+RUN apk --no-cache add --update -X http://dl-cdn.alpinelinux.org/alpine/edge/community \
     zbar
 
 # Custom built keybase (exact version match to with host)
