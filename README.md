@@ -1,9 +1,6 @@
 # cicdenv
 Terraformed, multi-acct AWS, kubernetes, ci/cd, infrastructure sample w/tooling.
-
-```
-Generation: 3
-```
+(3rd Generation)
 
 ## Install
 This demonstrator uses docker to ensure portable:
@@ -11,23 +8,23 @@ This demonstrator uses docker to ensure portable:
 * absolute file paths in terraform statefile(s)
 
 Prereqs:
-```
+```bash
 make, jq, keybase, docker
 ```
 
 Setup:
-```
+```bash
 cicdenv$ make docker-build
 ```
 
 Test:
-```
+```bash
 cicdenv$ make
 📦 fvogt:~/cicdenv$ cicdctl
 ```
 
 Confirm tool versions:
-```
+```bash
 cicdenv$ make versions
 [Tool]                     [Version]
 -----------------------------------------
@@ -47,9 +44,8 @@ Add to search path:
 cicdenv$ . bin/activate
 ```
 
-## Usage
-### Terraform
-```
+## Setup
+```bash
 # Build base AMI (main account)
 cicdenv$ cicdctl apply kops/shared:main
 cicdenv$ cicdctl packer build
@@ -59,14 +55,26 @@ cicdenv$ cicdctl destroy kops/shared:main
 cicdenv$ make
 📦 fvogt:~/cicdenv$ terraform/kops/backend/bin/decrypt-ca-key.sh
 📦 fvogt:~/cicdenv$ exit
+```
 
-# Create kubernetes shared resources for dev accounts
+## Usage
+Example: `dev` account
+```bash
+# Create kubernetes shared resource
 cicdenv$ cicdctl apply kops/shared:dev -auto-approve
 
-# Create kubernetes 1.12 clusters for dev accounts
+# Create kubernetes cluster
 cicdenv$ cicdctl apply-cluster 1-12:dev -auto-approve
 cicdenv$ cicdctl validate-cluster 1-12:dev
 
+# Cleanup
+cicdenv$ cicdctl destroy-cluster 1-12:dev -force
+cicdenv$ cicdctl destroy kops/bastion:dev -force
+cicdenv$ cicdctl destroy kops/shared:dev -force
+```
+
+## Host Access
+```bash
 # Inspect with bastion service
 cicdenv$ cicdctl apply kops/bastion:dev -auto-approve
 # Linux
@@ -75,15 +83,10 @@ cicdenv$ cicdctl bastion ssh dev --user $USER
 cicdenv$ make
 📦 fvogt:~/cicdenv$ eval "$(ssh-agent)"; ssh-add ~/.ssh/kops_rsa
 📦 fvogt:~/cicdenv$ cicdctl bastion ssh dev --user $USER
-
-# Cleanup dev accounts
-cicdenv$ cicdctl destroy-cluster 1-12:dev -force
-cicdenv$ cicdctl destroy kops/bastion:dev -force
-cicdenv$ cicdctl destroy kops/shared:dev -force
 ```
 
 ### Interactive
-```
+```bash
 cicdenv$ make
 📦 fvogt:~/cicdenv$
 ```
