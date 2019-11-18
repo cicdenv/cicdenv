@@ -32,11 +32,11 @@ keybase.service                       ... running   Keybase core service
 
 ### Debugging
 ```
-📺 $USER:~/cicdenv$ keybase version
-📺 $USER:~/cicdenv$ keybase -d
-📺 $USER:~/cicdenv$ keybase help advanced
+📦 $USER:~/cicdenv$ keybase version
+📦 $USER:~/cicdenv$ keybase -d
+📦 $USER:~/cicdenv$ keybase help advanced
 
-📺 $USER:~/cicdenv$ keybase --debug --no-auto-fork --socket-file "/run/user/$(id -u)/keybase/keybased.sock" id
+📦 $USER:~/cicdenv$ keybase --debug --no-auto-fork --socket-file "/run/user/$(id -u)/keybase/keybased.sock" id
 ```
 
 ## Links

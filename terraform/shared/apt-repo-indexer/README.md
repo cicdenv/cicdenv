@@ -20,7 +20,7 @@ docker cp ~/personal/dev/libnss-iam/libnss-iam-0.1.deb \
           <cicdenv container-id>:/home/fvogt/cicdenv/terraform/shared/apt-repo-indexer/s3apt
 
 # From cicdenv shell
-📺 ${USER}:~/cicdenv/terraform/shared/apt-repo-indexer/s3apt$ make test
+📦 ${USER}:~/cicdenv/terraform/shared/apt-repo-indexer/s3apt$ make test
 source .venv/bin/activate; python s3apt.py *.deb
 Package: libnss-iam 
 Version: 0.1 
