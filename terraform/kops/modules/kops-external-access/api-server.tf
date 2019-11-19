@@ -13,6 +13,6 @@ module "api_server" {
   zone_id = local.zone_id
 
   providers = {
-    aws.main = "aws.main"
+    aws.main = aws.main
   }
 }

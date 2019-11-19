@@ -18,6 +18,6 @@ module "bastion" {
   whitelisted_host_cidr_blocks    = var.whitelisted_cidr_blocks
 
   providers = {
-    aws.main = "aws.main"
+    aws.main = aws.main
   }
 }

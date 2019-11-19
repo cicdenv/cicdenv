@@ -8,12 +8,12 @@ variable "vpc_id" {
 
 variable "public_subnet_ids" {
   description = "KOPS VPC public subnets from the 'static' state."
-  type = "list"
+  type = list
 }
 
 variable "master_asg_names" {
   description = "Master Auto Scaling Group names list (1 per AZ)."
-  type = "list"
+  type = list
 }
 
 variable "apiserver_security_group_id" {

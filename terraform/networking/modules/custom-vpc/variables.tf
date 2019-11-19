@@ -22,19 +22,19 @@ variable "private_cidr_prefix_extension" {
 }
 
 variable "public_subnet_tags" {
-  type = "map"
+  type = map
   description = "Additional public subnet tags.  Some use cases require this (kops)"
   default = {}
 }
 
 variable "private_subnet_tags" {
-  type = "map"
+  type = map
   description = "Additional private subnet tags.  Some use cases require this (kops)"
   default = {}
 }
 
 variable "availability_zones" {
-  type = "list"
+  type = list
   description = "Restrict AZs to just those listed."
   default = []
 }

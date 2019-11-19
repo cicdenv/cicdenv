@@ -27,7 +27,7 @@ module "kops_external_access" {
   cluster_short_name = var.cluster_short_name
 
   providers = {
-    aws.main = "aws.main"
+    aws.main = aws.main
   }
 }
 EOF
@@ -62,7 +62,7 @@ variable "region" {} # backend-config.tfvars
 variable "bucket" {} # backend-config.tfvars
 
 variable "whitelisted_cidr_blocks" {  # whitelisted-networks.tfvars
-  type = "list"
+  type = list
 }
 
 variable "target_region" {

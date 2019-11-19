@@ -10,10 +10,10 @@ EOF
     command = <<EOF
 rm "${var.kops_ca_cert}"
 EOF
-    when = "destroy"
+    when = destroy
   }
 
-  depends_on = ["null_resource.kops_update"]
+  depends_on = [null_resource.kops_update]
 }
 
 data "null_data_source" "wait_for_kops_ca_cert_fetch" {

@@ -29,6 +29,6 @@ variable "master_volume_size" {
 }
 
 variable "cloud_labels" {
-  type = "map"
+  type = map
   default = {}
 }

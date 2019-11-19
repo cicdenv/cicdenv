@@ -19,6 +19,6 @@ EOF
   # Remove this cluster to the list of tags sourced by the shared state
   provisioner "local-exec" {
     command = "sed -i'' -e '/^${local.cluster_name}$/d' ../../../shared/data/${terraform.workspace}/clusters.txt"
-    when = "destroy"
+    when = destroy
   }
 }
