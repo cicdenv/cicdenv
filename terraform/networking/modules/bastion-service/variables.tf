@@ -3,11 +3,11 @@ variable "vpc_id" {}
 variable "zone_id" {}
 
 variable "public_subnets" {
-  type = "list"
+  type = list
 }
 
 variable "private_subnets" {
-  type = "list"
+  type = list
 }
 
 variable "instance_type" {
@@ -30,11 +30,11 @@ variable "security_groups" {
 }
 
 variable "whitelisted_service_cidr_blocks" {
-  type = "list"
+  type = list
 }
 
 variable "whitelisted_host_cidr_blocks" {
-  type = "list"
+  type = list
 }
 
 variable "service_ssh_port" {

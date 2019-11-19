@@ -9,5 +9,5 @@ resource "aws_route53_record" "dns" {
     evaluate_target_health = false
   }
 
-  provider = "aws.main"
+  provider = aws.main
 }

@@ -18,7 +18,7 @@ resource "null_resource" "endpoint" {
   # Remove this this workspaces VPC S3 endpoint to the main acct kops state bucket access policy
   provisioner "local-exec" {
     command = "sed -i'' -e '/^${aws_vpc_endpoint.s3.id}/d' '${path.module}/../../../data/vpc-endpoints.txt'"
-    when = "destroy"
+    when = destroy
   }
 }
 

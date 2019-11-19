@@ -7,6 +7,6 @@ resource "null_resource" "kops_create" {
     command = <<EOF
 aws --region ${data.aws_region.current.name} s3 rm "s3://${var.state_store}/${var.cluster_name}" --recursive
 EOF
-    when = "destroy"
+    when = destroy
   }
 }

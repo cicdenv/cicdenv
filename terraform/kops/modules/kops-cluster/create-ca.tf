@@ -3,5 +3,5 @@ resource "null_resource" "kops_ca" {
     command = module.kops_commands.create_ca
   }
 
-  depends_on = ["null_resource.kops_create"]
+  depends_on = [null_resource.kops_create]
 }

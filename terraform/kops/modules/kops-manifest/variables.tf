@@ -10,15 +10,15 @@ variable "network_cidr" {}
 variable "private_dns_zone" {}
 
 variable "private_subnets" {
-  type = "list"
+  type = list
 }
 
 variable "public_subnets" {
-  type = "list"
+  type = list
 }
 
 variable "availability_zones" {
-  type = "list"
+  type = list
 }
 
 # IGs
@@ -40,7 +40,7 @@ variable "kops_manifest" {
 }
 
 variable "cloud_labels" {
-  type        = "map"
+  type        = map
   description = "ASG propagated labels for master/worker nodes"
   default     = {}
 }

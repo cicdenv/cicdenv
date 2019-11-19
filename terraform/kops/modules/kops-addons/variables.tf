@@ -11,12 +11,12 @@ variable "state_key_arn" {
 }
 
 variable "admin_users" {
-  type = "map"
+  type = map
   description = "AWS IAM user arns by username"
 }
 
 variable "admin_roles" {
-  type = "list"
+  type = list
   description = "Same account IAM roles"
 }
 
