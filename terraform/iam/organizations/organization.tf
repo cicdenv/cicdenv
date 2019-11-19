@@ -6,5 +6,5 @@ resource "aws_organizations_organization" "organization" {
 
   feature_set = "ALL"
 
-  provider = "aws.us-east-1"
+  provider = aws.us-east-1
 }

@@ -8,5 +8,5 @@ resource "aws_organizations_account" "accounts" {
 
   role_name = "${lookup(var.accounts[count.index], "name")}-admin"
   
-  provider = "aws.us-east-1"
+  provider = aws.us-east-1
 }
