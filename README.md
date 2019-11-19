@@ -64,11 +64,11 @@ Example: `dev` account
 cicdenv$ cicdctl apply kops/shared:dev -auto-approve
 
 # Create kubernetes cluster
-cicdenv$ cicdctl apply-cluster 1-12:dev -auto-approve
-cicdenv$ cicdctl validate-cluster 1-12:dev
+cicdenv$ cicdctl apply-cluster 1-16:dev -auto-approve
+cicdenv$ cicdctl validate-cluster 1-16:dev
 
 # Cleanup
-cicdenv$ cicdctl destroy-cluster 1-12:dev -force
+cicdenv$ cicdctl destroy-cluster 1-16:dev -force
 cicdenv$ cicdctl destroy kops/bastion:dev -force
 cicdenv$ cicdctl destroy kops/shared:dev -force
 ```
