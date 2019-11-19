@@ -10,7 +10,7 @@ crash.log
 .venv
 
 ca-key.pem
-
+kops-admin.kubeconfig
 
 target
 
