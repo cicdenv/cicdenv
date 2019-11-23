@@ -73,32 +73,32 @@ versions:
 	    bin/versions.sh
 
 docker-build:
-	docker build -t "$(image_name):$(image_tag)"                        \
-	    --build-arg                     tag=$(ALPINE_TAG)               \
-	    --build-arg         keybase_version=$(KEYBASE_TAG)              \
-	    --build-arg           keybase_build=$(KEYBASE_BUILD)            \
-	    --build-arg                hcql_tag=$(HCLQ_TAG)                 \
-	    --build-arg            nonroot_user=$(user_name)                \
-	    --build-arg             nonroot_uid=$(user_id)                  \
-	    --build-arg              docker_gid=$(docker_gid)               \
-	    --build-arg       terraform_version=$(TERRAFORM_VERSION)        \
-	    --build-arg     terraform_sha256sum=$(TERRAFORM_SHA256SUM)      \
-	    --build-arg      terraform_releases=$(TERRAFORM_RELEASES)       \
-	    --build-arg            kops_version=$(KOPS_VERSION)             \
-	    --build-arg               kops_sha1=$(KOPS_SHA1)                \
-	    --build-arg           kops_releases=$(KOPS_DOWNLOADS)           \
-	    --build-arg          packer_version=$(PACKER_VERSION)           \
-	    --build-arg        packer_sha256sum=$(PACKER_SHA256SUM)         \
-	    --build-arg         packer_releases=$(PACKER_RELEASES)          \
-	    --build-arg            kube_version=$(KUBE_VERSION)             \
-	    --build-arg             kube_sha512=$(KUBE_SHA512)              \
-	    --build-arg          kube_downloads=$(KUBE_DOWNLOADS)           \
-	    --build-arg   authenticator_version=$(AUTHENTICATOR_VERSION)    \
-	    --build-arg authenticator_sha256sum=$(AUTHENTICATOR_SHA256SUM)  \
-	    --build-arg   authenticator_project=$(AUTHENTICATOR_PROJECT)    \
-	    --build-arg           cfssl_version=$(CFSSL_VERSION)            \
-	    --build-arg         cfssl_sha256sum=$(CFSSL_SHA256SUM)          \
-	    --build-arg     cfssljson_sha256sum=$(CFSSLJSON_SHA256SUM)      \
-	    --build-arg         cfssl_downloads=$(CFSSL_DOWNLOADS)          \
+	docker build -t "$(image_name):$(image_tag)"                      \
+	    --build-arg                     tag=$(ALPINE_TAG)             \
+	    --build-arg         keybase_version=$(KEYBASE_TAG)            \
+	    --build-arg           keybase_build=$(KEYBASE_BUILD)          \
+	    --build-arg                hcql_tag=$(HCLQ_TAG)               \
+	    --build-arg            nonroot_user=$(user_name)              \
+	    --build-arg             nonroot_uid=$(user_id)                \
+	    --build-arg              docker_gid=$(docker_gid)             \
+	    --build-arg       terraform_version=$(TERRAFORM_VERSION)      \
+	    --build-arg     terraform_sha256=$(TERRAFORM_SHA256)          \
+	    --build-arg      terraform_releases=$(TERRAFORM_RELEASES)     \
+	    --build-arg            kops_version=$(KOPS_VERSION)           \
+	    --build-arg               kops_sha256=$(KOPS_SHA256)          \
+	    --build-arg           kops_releases=$(KOPS_DOWNLOADS)         \
+	    --build-arg          packer_version=$(PACKER_VERSION)         \
+	    --build-arg        packer_sha256=$(PACKER_SHA256)             \
+	    --build-arg         packer_releases=$(PACKER_RELEASES)        \
+	    --build-arg            kube_version=$(KUBE_VERSION)           \
+	    --build-arg             kube_sha512=$(KUBE_SHA512)            \
+	    --build-arg          kube_downloads=$(KUBE_DOWNLOADS)         \
+	    --build-arg   authenticator_version=$(AUTHENTICATOR_VERSION)  \
+	    --build-arg authenticator_sha256=$(AUTHENTICATOR_SHA256)      \
+	    --build-arg   authenticator_project=$(AUTHENTICATOR_PROJECT)  \
+	    --build-arg           cfssl_version=$(CFSSL_VERSION)          \
+	    --build-arg         cfssl_sha256=$(CFSSL_SHA256)              \
+	    --build-arg     cfssljson_sha256=$(CFSSLJSON_SHA256)          \
+	    --build-arg         cfssl_downloads=$(CFSSL_DOWNLOADS)        \
 	    .
 	docker tag "$(image_name):$(image_tag)" "$(image_name):latest"

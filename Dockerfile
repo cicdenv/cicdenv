@@ -112,85 +112,85 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 RUN curl -sl https://keybase.io/hashicorp/pgp_keys.asc | gpg --import
 
 # KOPS terraform output isn't ready for v0.12
-RUN curl -o terraform_0.11.14_linux_amd64.zip                                                    \
-         -sL https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_linux_amd64.zip  \
-&&  echo "9b9a4492738c69077b079e595f5b2a9ef1bc4e8fb5596610f69a6f322a8af8dd  terraform_0.11.14_linux_amd64.zip" | sha256sum -c - \
-&&  unzip terraform_0.11.14_linux_amd64.zip -d /bin  \
-&&  mv /bin/terraform /bin/terraform-0.11.14         \
+RUN curl -o terraform_0.11.14_linux_amd64.zip                                                                                    \
+         -sL https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_linux_amd64.zip                                  \
+&&  echo "9b9a4492738c69077b079e595f5b2a9ef1bc4e8fb5596610f69a6f322a8af8dd  terraform_0.11.14_linux_amd64.zip" | sha256sum -c -  \
+&&  unzip terraform_0.11.14_linux_amd64.zip -d /bin                                                                              \
+&&  mv /bin/terraform /bin/terraform-0.11.14                                                                                     \
 &&  rm -f terraform_0.11.14_linux_amd64.zip
 
 # Terraform cli
 ARG terraform_version
-ARG terraform_sha256sum
+ARG terraform_sha256
 ARG terraform_releases
-RUN for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                        \
-        file="terraform_${terraform_version}_${item}";                               \
-        curl -o "${file}" -sL "${terraform_releases}/${terraform_version}/${file}";  \
-    done                                                                             \
-&&  echo "${terraform_sha256sum}  terraform_${terraform_version}_linux_amd64.zip" | sha256sum -c -        \
+RUN for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                                             \
+        file="terraform_${terraform_version}_${item}";                                                    \
+        curl -o "${file}" -sL "${terraform_releases}/${terraform_version}/${file}";                       \
+    done                                                                                                  \
+&&  echo "${terraform_sha256}  terraform_${terraform_version}_linux_amd64.zip" | sha256sum -c -           \
 &&  gpg --verify terraform_${terraform_version}_SHA256SUMS.sig terraform_${terraform_version}_SHA256SUMS  \
-&&  unzip terraform_${terraform_version}_linux_amd64.zip -d /bin  \
-&&  for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do     \
-        file="terraform_${terraform_version}_${item}";            \
+&&  unzip terraform_${terraform_version}_linux_amd64.zip -d /bin                                          \
+&&  for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                                             \
+        file="terraform_${terraform_version}_${item}";                                                    \
         rm -f "${file}";  \
     done
 
 # Hashicorp packer cli
 ARG packer_version
-ARG packer_sha256sum
+ARG packer_sha256
 ARG packer_releases
-RUN for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                  \
-        file="packer_${packer_version}_${item}";                               \
-        curl -o "${file}" -sL "${packer_releases}/${packer_version}/${file}";  \
-    done                                                                       \
-&&  echo "${packer_sha256sum}  packer_${packer_version}_linux_amd64.zip" | sha256sum -c -     \
+RUN for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                                 \
+        file="packer_${packer_version}_${item}";                                              \
+        curl -o "${file}" -sL "${packer_releases}/${packer_version}/${file}";                 \
+    done                                                                                      \
+&&  echo "${packer_sha256}  packer_${packer_version}_linux_amd64.zip" | sha256sum -c -        \
 &&  gpg --verify packer_${packer_version}_SHA256SUMS.sig packer_${packer_version}_SHA256SUMS  \
-&&  unzip packer_${packer_version}_linux_amd64.zip -d /bin     \
-&&  for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do  \
-        file="packer_${packer_version}_${item}";               \
-        rm -f "${file}";  \
+&&  unzip packer_${packer_version}_linux_amd64.zip -d /bin                                    \
+&&  for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                                 \
+        file="packer_${packer_version}_${item}";                                              \
+        rm -f "${file}";                                                                      \
     done
 
 # Kops cli
 ARG kops_version
-ARG kops_sha1
+ARG kops_sha256
 ARG kops_releases
-RUN curl -o /bin/kops -sL ${kops_releases}/${kops_version}/kops-linux-amd64 \
- && echo "${kops_sha1}  /bin/kops" | sha1sum -c - \
+RUN curl -o /bin/kops -sL ${kops_releases}/${kops_version}/kops-linux-amd64  \
+ && echo "${kops_sha256}  /bin/kops" | sha256sum -c -                        \
  && chmod +x /bin/kops
 
 # Kubectl
 ARG kube_version
 ARG kube_sha512
 ARG kube_downloads
-RUN curl -o kubernetes-client-linux-amd64.tar.gz \
-         -sL ${kube_downloads}/v${kube_version}/kubernetes-client-linux-amd64.tar.gz \
- && echo "${kube_sha512}  kubernetes-client-linux-amd64.tar.gz" | sha512sum -c - \
- && tar -xzf kubernetes-client-linux-amd64.tar.gz kubernetes/client/bin/kubectl -C /bin --strip-components=3 \
- && chmod +x /bin/kubectl \
+RUN curl -o kubernetes-client-linux-amd64.tar.gz                                                              \
+         -sL ${kube_downloads}/v${kube_version}/kubernetes-client-linux-amd64.tar.gz                          \
+ && echo "${kube_sha512}  kubernetes-client-linux-amd64.tar.gz" | sha512sum -c -                              \
+ && tar -xzf kubernetes-client-linux-amd64.tar.gz kubernetes/client/bin/kubectl -C /bin --strip-components=3  \
+ && chmod +x /bin/kubectl                                                                                     \
  && rm kubernetes-client-linux-amd64.tar.gz
 
 # Kubernetes kubectl aws-iam-authenticator plugin
 ARG authenticator_version
-ARG authenticator_sha256sum
+ARG authenticator_sha256
 ARG authenticator_project
-RUN curl -o /bin/aws-iam-authenticator \
-         -sL ${authenticator_project}/releases/download/v${authenticator_version}/aws-iam-authenticator_${authenticator_version}_linux_amd64 \
- && echo "${authenticator_sha256sum}  /bin/aws-iam-authenticator" | sha256sum -c - \
+RUN curl -o /bin/aws-iam-authenticator                                                                                                        \
+         -sL ${authenticator_project}/releases/download/v${authenticator_version}/aws-iam-authenticator_${authenticator_version}_linux_amd64  \
+ && echo "${authenticator_sha256}  /bin/aws-iam-authenticator" | sha256sum -c -                                                               \
  && chmod +x /bin/aws-iam-authenticator
 
 # CloudFlare SSL tooling
 ARG cfssl_version
-ARG cfssl_sha256sum
-ARG cfssljson_sha256sum
+ARG cfssl_sha256
+ARG cfssljson_sha256
 ARG cfssl_downloads
-RUN curl -o /bin/cfssl \
+RUN curl -o /bin/cfssl                                             \
          -sL ${cfssl_downloads}/${cfssl_version}/cfssl_linux-amd64 \
- && echo "${cfssl_sha256sum}  /bin/cfssl" | sha256sum -c - \
+ && echo "${cfssl_sha256}  /bin/cfssl" | sha256sum -c -            \
  && chmod +x /bin/cfssl
-RUN curl -o /bin/cfssljson \
+RUN curl -o /bin/cfssljson                                             \
          -sL ${cfssl_downloads}/${cfssl_version}/cfssljson_linux-amd64 \
- && echo "${cfssljson_sha256sum}  /bin/cfssljson" | sha256sum -c - \
+ && echo "${cfssljson_sha256}  /bin/cfssljson" | sha256sum -c -        \
  && chmod +x /bin/cfssljson
 
 ENTRYPOINT []
