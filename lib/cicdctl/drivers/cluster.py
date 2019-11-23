@@ -21,15 +21,22 @@ def cluster_states(cluster, workspace):
 def run_cluster(args):
     for _target in args.target:
         cluster, workspace = _target.split(':')
-        if args.command == 'apply-cluster':
+        if args.command == 'init-cluster' or args.command == 'apply-cluster':
             if not path.isdir(path.join(getcwd(), f'terraform/kops/clusters/{cluster}')):
                 environment = environ.copy()  # Inherit cicdctl's environment
                 gen_cmd = ['terraform/kops/bin/generate-cluster-states.sh', cluster]
                 log_cmd_line(gen_cmd)
                 subprocess.run(gen_cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)
+            # Always apply the cluster-config state
             _args = SimpleNamespace()
             _args.command = 'apply'
-            _args.target = cluster_states(cluster, workspace)
+            _args.target = [cluster_states(cluster, workspace)[0]]
+            _args.overrides = args.overrides
+            run_terraform(_args)
+            # cluster / external-access states init/apply
+            _args = SimpleNamespace()
+            _args.command = 'init' if args.command == 'init-cluster' else 'apply'
+            _args.target = cluster_states(cluster, workspace)[1:]
             _args.overrides = args.overrides
             run_terraform(_args)
         elif args.command == 'destroy-cluster':

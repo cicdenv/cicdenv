@@ -68,6 +68,7 @@ def __add_cluster(subparsers):
 
     _cluster = [_target, _passthru]
     _cluster_cmds = [
+        "init-cluster",
         "apply-cluster",
         "destroy-cluster",
         "validate-cluster",
