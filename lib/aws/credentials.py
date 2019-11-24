@@ -196,7 +196,10 @@ class StsAssumeRoleCredentials(object):
         # Get mfa-code
         totp = self.totp_generator.next()  # NOTE: totp has a newline
 
+        _1hour = 60 * 60 # 1 hour in seconds
+        duration = str(12 * _1hour)  # 12 hours in seconds
+        
         # Use the mfa-code to login
-        mfa_cmd = ['aws-mfa', '--profile', profile, '--duration', '3600', '--log-level', 'ERROR']
+        mfa_cmd = ['aws-mfa', '--profile', profile, '--duration', duration, '--log-level', 'ERROR']
         log_cmd_line(mfa_cmd)
         subprocess.run(mfa_cmd, input=totp, check=True, stdout=DEVNULL, stderr=stderr)
