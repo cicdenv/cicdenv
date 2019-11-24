@@ -7,7 +7,7 @@ from types import SimpleNamespace
 from cicdctl.logs import log_cmd_line
 from aws.credentials import StsAssumeRoleCredentials
 from terraform.files import parse_tfvars, domain_config
-from cicdctl.drivers.terraform import run_terraform
+from cicdctl.commands.terraform import run_terraform
 
 
 def cluster_states(cluster, workspace):

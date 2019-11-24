@@ -1,18 +1,18 @@
 from sys import argv
 import argparse
 
-from cicdctl.drivers.terraform     import run_terraform
-from cicdctl.drivers.packer        import run_packer
-from cicdctl.drivers.cluster       import run_cluster
-from cicdctl.drivers.bastion       import run_bastion
-from cicdctl.drivers.credentials   import run_creds
-from cicdctl.drivers.kubectl       import run_kubectl
-from cicdctl.drivers.authenticator import run_authenticator
-from cicdctl.drivers.kops          import run_kops
-from cicdctl.drivers.console       import run_console
-from cicdctl.drivers.whitelist     import run_whitelist
-from cicdctl.drivers.test          import run_test
-from cicdctl.drivers.new           import run_new
+from cicdctl.commands.terraform     import run_terraform
+from cicdctl.commands.packer        import run_packer
+from cicdctl.commands.cluster       import run_cluster
+from cicdctl.commands.bastion       import run_bastion
+from cicdctl.commands.credentials   import run_creds
+from cicdctl.commands.kubectl       import run_kubectl
+from cicdctl.commands.authenticator import run_authenticator
+from cicdctl.commands.kops          import run_kops
+from cicdctl.commands.console       import run_console
+from cicdctl.commands.whitelist     import run_whitelist
+from cicdctl.commands.test          import run_test
+from cicdctl.commands.new           import run_new
 
 
 def __add_terraform(subparsers):
