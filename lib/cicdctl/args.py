@@ -72,6 +72,8 @@ def __add_cluster(subparsers):
         "apply-cluster",
         "destroy-cluster",
         "validate-cluster",
+        "start-cluster",
+        "stop-cluster",
     ]
     for _cluster_cmd in _cluster_cmds:
         subparsers.add_parser(_cluster_cmd, parents=_cluster, help=f"kubernetes {_cluster_cmd}.") \

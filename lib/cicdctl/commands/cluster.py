@@ -46,7 +46,7 @@ def run_cluster(args):
             _args.overrides = args.overrides
             run_terraform(_args)
         elif args.command == 'validate-cluster':
-            # Refresh main account AWS mfa credentials if needed
+            # Refresh AWS mfa credentials if needed
             StsAssumeRoleCredentials().refresh_profile(f'admin-{workspace}')
      
             environment = environ.copy()  # Inherit cicdctl's environment
@@ -70,3 +70,15 @@ def run_cluster(args):
                 subprocess.run(cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)
             except subprocess.CalledProcessError as cpe:
                 exit(cpe.returncode)
+        elif args.command == 'start-cluster':
+            # Apply the cluster state to restore the ASG counts
+            _args = SimpleNamespace()
+            _args.command = 'apply'
+            _args.target = [cluster_states(cluster, workspace)[1]]
+            _args.overrides = args.overrides
+            run_terraform(_args)
+        elif args.command == 'stop-cluster':
+            environment = environ.copy()  # Inherit cicdctl's environment
+            gen_cmd = ['terraform/kops/clusters/bin/stop-cluster.sh', _target]
+            log_cmd_line(gen_cmd)
+            subprocess.run(gen_cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)
