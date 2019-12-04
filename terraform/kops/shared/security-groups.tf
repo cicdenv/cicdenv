@@ -102,7 +102,7 @@ resource "aws_security_group" "kops_external_apiserver" {
 }
 
 resource "aws_security_group_rule" "kops_external_apiserver_https" {
-  count = "${length(var.whitelisted_cidr_blocks) > 0 ? 1 : 0}"
+  count = length(var.whitelisted_cidr_blocks) > 0 ? 1 : 0
 
   type                     = "ingress"
   security_group_id        = aws_security_group.kops_external_apiserver.id
