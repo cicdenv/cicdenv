@@ -56,15 +56,25 @@ data "aws_iam_policy_document" "s3apt" {
       aws_cloudwatch_log_group.s3apt.arn,
     ]
   }
+
+  statement {
+    actions = [
+      "secretsmanager:GetSecretValue",
+    ]
+
+    resources = [
+      aws_secretsmanager_secret.apt_repo_indexer.arn,
+    ]
+  }
 }
 
 resource "aws_iam_policy" "s3apt" {
   name   = "s3apt"
   path   = "/"
-  policy = "${data.aws_iam_policy_document.s3apt.json}"
+  policy = data.aws_iam_policy_document.s3apt.json
 }
 
 resource "aws_iam_role_policy_attachment" "s3apt" {
-  role       = "${aws_iam_role.s3apt.name}"
-  policy_arn = "${aws_iam_policy.s3apt.arn}"
+  role       = aws_iam_role.s3apt.name
+  policy_arn = aws_iam_policy.s3apt.arn
 }

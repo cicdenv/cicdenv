@@ -1,19 +1,20 @@
 ## Purpose
-Common resources for all KOPS clusters in an account.
+Resources for testing AMIs.
 
 ## Workspaces
 This state is per-account.
 
 ## Usage
 ```
-terraform-aws-administration$ <init|plan|apply|destroy> networking/test-vpc:${WORKSPACE}
+cicdenv$ cicdctl <init|plan|apply|destroy> test-vpc:${WORKSPACE}
 ...
 ```
 
 ## Scripts
 ```
 # Launch an ec2 instance in the target account
-terraform-aws-administration$ shell networking/test-vpc/scripts/launch-instances.sh ${WORKSPACE} <instance-type>
+cicdenv$ cicdctl console
+📦 $USER:~/cicdenv$ terraform/test-vpc/bin/launch-instances.sh ${WORKSPACE} <instance-type>
 ```
 
 ## NOTES

@@ -48,59 +48,14 @@
           "iops": 2500,
           "delete_on_termination": true
         }
-      ]
+      ],
+      "iam_instance_profile": "packer-build"
     }
   ],
   "provisioners": [
     {
-      "type": "shell",
-      "inline":[
-        "mkdir /tmp/scripts"
-      ]
-    },
-    {
-      "type": "file",
-      "source": "files/ebsnvme-id.py",
-      "destination": "/tmp/scripts/"
-    },
-    {
-      "type": "file",
-      "source": "files/list-ephemeral-devices.sh",
-      "destination": "/tmp/scripts/"
-    },
-    {
-      "type": "file",
-      "source": "files/mount-all-ephemeral-devices.sh",
-      "destination": "/tmp/scripts/"
-    },
-    {
-      "type": "shell",
-      "inline":[
-        "sudo chmod +x /tmp/scripts/*",
-        "sudo cp /tmp/scripts/* /usr/local/bin"
-      ]
-    },
-    {
-      "type": "file",
-      "source": "files/packages.txt",
-      "destination": "/tmp/"
-    },
-    {
-      "type": "shell",
-      "script": "scripts/setup.sh"
-    },
-    {
-      "type": "file",
-      "source": "files/apt-transport-s3.py",
-      "destination": "/tmp/scripts/s3"
-    },
-    {
-      "type": "shell",
-      "inline":[
-        "sudo cp /tmp/scripts/s3 /usr/lib/apt/methods/s3",
-        "sudo chmod +x /usr/lib/apt/methods/s3",
-        "sudo su -c \"echo 'deb [trusted=yes] s3://apt-repo-cicdenv-com/ repo/dists/' > /etc/apt/sources.list.d/s3-repos.list\""
-      ]
+      "type": "ansible",
+      "playbook_file": "./ansible/playbook.yml"
     }
   ]
 }

@@ -17,7 +17,7 @@ Local:
 #  NOTE: if you're running multiple cicdenv sessions:
 #        `cat /proc/self/cgroup` to get the right container-id
 docker cp ~/personal/dev/libnss-iam/libnss-iam-0.1.deb \
-          <cicdenv container-id>:/home/fvogt/cicdenv/terraform/shared/apt-repo-indexer/s3apt
+          <cicdenv container-id>:/home/$USER/cicdenv/terraform/shared/apt-repo-indexer/s3apt
 
 # From cicdenv shell
 📦 ${USER}:~/cicdenv/terraform/shared/apt-repo-indexer/s3apt$ make test
@@ -71,10 +71,22 @@ $ sudo apt update && sudo apt install libnss-iam
 ```
 
 ## Links
+* https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+  * https://stackoverflow.com/questions/58754027/gpg-aws-serverless
+  * https://forums.aws.amazon.com/thread.jspa?threadID=307497
+  * https://help.github.com/en/github/authenticating-to-github/generating-a-new-gpg-key
+  * http://www.webupd8.org/2010/01/how-to-create-your-own-gpg-key.html
 * https://webscale.plumbing/managing-apt-repos-in-s3-using-lambda
+  * https://news.ycombinator.com/item?id=12241998
   * https://github.com/szinck/s3apt
 * https://docs.aws.amazon.com/lambda/latest/dg/lambda-python-how-to-create-deployment-package.html
 * https://docs.aws.amazon.com/AmazonS3/latest/dev/NotificationHowTo.html#notification-how-to-event-types-and-destinations
 * https://github.com/MayaraCloud/apt-transport-s3
 * https://github.com/google/apt-golang-s3
 * http://www.fifi.org/doc/libapt-pkg-doc/method.html/ch2.html
+* https://wiki.debian.org/RepositoryFormat
+* http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/bionic/
+* http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/bionic/InRelease
+* http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/bionic/main/binary-amd64/Packages
+* http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/bionic/main/binary-amd64/
+* https://www.gnupg.org/documentation/manuals/gnupg/GPG-Configuration-Options.html

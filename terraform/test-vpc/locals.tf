@@ -10,5 +10,5 @@ locals {
     data.terraform_remote_state.iam_assumed_roles.outputs.ses_sender_role_arn,
   ]
   
-  apt_repo_bucket_arn = data.terraform_remote_state.apt_repo.outputs.apt_repo_bucket_arn
+  apt_repo_policy_arn = data.terraform_remote_state.apt_repo.outputs.apt_repo_policy_arn
 }

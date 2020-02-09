@@ -1,0 +1,31 @@
+- name: install apt packages
+  apt:
+    pkg:
+      - atop
+      - bridge-utils
+      - build-essential
+      - dstat
+      - fio
+      - glances
+      - iftop
+      - ioping
+      - iotop
+      - inxi
+      - ipcalc
+      - iptraf
+      - mtr
+      - multitail
+      - netcat
+      - nethogs
+      - nicstat
+      - sysstat
+
+- name: install aws-cli
+  snap:
+    name: aws-cli
+    classic: yes
+
+- name: remove amazon-ssm-agent
+  snap:
+    name: amazon-ssm-agent
+    state: absent

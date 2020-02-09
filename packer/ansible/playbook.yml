@@ -1,0 +1,9 @@
+---
+- hosts: default
+  become: yes
+  roles:
+    - apt-updates
+    - custom-apt-repo
+    - ephemeral-disks
+    - ebs-disks
+    - packages

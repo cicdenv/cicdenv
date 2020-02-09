@@ -16,3 +16,5 @@ target
 
 jenkins/server-image/jenkins-ci.docker
 jenkins/server-image/plugins/scriptler-plugin
+
+packer/ec2_amazon-ebs.pem

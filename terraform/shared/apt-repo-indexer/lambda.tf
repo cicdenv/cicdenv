@@ -10,7 +10,7 @@ resource "aws_lambda_function" "s3apt" {
   publish       = true
   timeout       = 900
 
-  source_code_hash = "${filebase64sha256("s3apt/s3apt.zip")}"
+  source_code_hash = filebase64sha256("s3apt/s3apt.zip")
 
   environment {
     variables = {

@@ -11,9 +11,24 @@ import hashlib
 import re
 import sys
 import os
+import subprocess
+import gnupg
+import base64
 
 
-def checksums(fname):
+def content_checksums(content):
+    md5 = hashlib.md5()
+    sha1 = hashlib.sha1()
+    sha256 = hashlib.sha256()
+
+    md5.update(content)
+    sha1.update(content)
+    sha256.update(content)
+
+    return md5.hexdigest(), sha1.hexdigest(), sha256.hexdigest()
+
+
+def file_checksums(fname):
     fh = open(fname, "rb")
 
     md5 = hashlib.md5()
@@ -70,7 +85,7 @@ def format_package_record(ctrl, fname):
     stat = os.stat(fname)
     pkgrec.append("Size: %d" % (stat.st_size))
 
-    md5, sha1, sha256 = checksums(fname)
+    md5, sha1, sha256 = file_checksums(fname)
     pkgrec.append("MD5sum: %s" % (md5))
     pkgrec.append("SHA1: %s" % (sha1))
     pkgrec.append("SHA256: %s" % (sha256))
@@ -199,9 +214,69 @@ def rebuild_package_index(prefix):
 
     package_index_obj = s3.Object(bucket_name=os.environ['bucket'], key=prefix + "/Packages")
     print("Writing package index: %s" % (str(package_index_obj)))
-    package_index_obj.put(Body="\n".join(sorted(pkginfos)), Metadata={'packages-hash': calcd_pkghash})
-
+    package_index = "\n".join(sorted(pkginfos))
+    package_index_obj.put(Body=package_index, Metadata={'packages-hash': calcd_pkghash})
     print("DONE REBUILDING PACKAGE INDEX")
+
+    print("REBUILDING RELEASE FILE: %s/Release" % (prefix))
+    release_file_obj = s3.Object(bucket_name=os.environ['bucket'], key=prefix + "/Release")
+
+    print("Writing release file: %s" % (str(release_file_obj)))
+    package_index_bytes = package_index.encode('utf-8')
+    md5, sha1, sha256 = content_checksums(package_index_bytes)
+    size = len(package_index_bytes)
+    tstamp = subprocess.check_output(['date', '-R', '-u']).decode().rstrip()  # Sat, 08 Feb 2020 22:07:37 UTC
+    # TODO release file contents
+    release = f"""\
+Origin: Ubuntu
+Label: Ubuntu
+Version: 18.04
+Codename: repo/dists/
+Date: {tstamp}
+Description: Ubuntu Bionic 18.04 cicdenv
+MD5Sum:
+ {md5} {size} Packages
+SHA1:
+ {sha1} {size} Packages
+SHA256:
+ {sha256} {size} Packages
+"""
+    release_file_obj.put(Body=release)
+
+    print("DONE REBUILDING RELEASE FILE")
+
+    print("REBUILDING IN-RELEASE FILE: %s/InRelease" % (prefix))
+    in_release_file_obj = s3.Object(bucket_name=os.environ['bucket'], key=prefix + "/InRelease")
+    
+    secretmanager = boto3.client('secretsmanager')
+    secret = json.loads(secretmanager.get_secret_value(SecretId='apt-repo-indexer')['SecretString'])
+    key_id = secret['key-id']
+    passphrase = secret['key-passphrase']
+    public_key = base64.b64decode(secret['public-key']).decode()
+    private_key = base64.b64decode(secret['private-key']).decode()
+
+    key_data = f'{public_key}\n{private_key}'
+
+    gpg_home = '/tmp/.gnupg'
+    os.makedirs(gpg_home, mode=0o700)
+
+    # Allow for pipe passphrase delivery
+    with open(f'{gpg_home}/gpg-agent.conf', 'w') as agent_config:
+        agent_config.write('allow-loopback-pinentry\n')
+
+    gpg = gnupg.GPG(gnupghome=gpg_home, verbose=False)
+    gpg.encoding = 'utf-8'
+    print('SUCCESS - GPG INIT')
+
+    # print(key_data)
+    imported = gpg.import_keys(key_data)
+    print(imported.fingerprints)
+
+    in_release = gpg.sign(release, keyid=key_id, passphrase=passphrase)
+    # print(in_release)
+    in_release_file_obj.put(Body=str(in_release))
+
+    print("DONE REBUILDING IN-RELEASE FILE")
 
 
 ## Lambda Entry Points
@@ -219,7 +294,6 @@ def lambda_handler(event, context):
     # Get the object from the event and show its content type
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'])
-
 
     # If the Packages index changed or was deleted, try again to rebuild it to
     # make sure it is up to date.

@@ -20,7 +20,7 @@ cicdenv$ make docker-build
 Test:
 ```bash
 cicdenv$ make
-📦 fvogt:~/cicdenv$ cicdctl
+📦 $USER:~/cicdenv$ cicdctl
 ```
 
 Confirm tool versions:
@@ -53,8 +53,8 @@ cicdenv$ cicdctl destroy kops/shared:main
 
 # PKI - decrpt CA private key
 cicdenv$ make
-📦 fvogt:~/cicdenv$ terraform/kops/backend/bin/decrypt-ca-key.sh
-📦 fvogt:~/cicdenv$ exit
+📦 $USER:~/cicdenv$ terraform/kops/backend/bin/decrypt-ca-key.sh
+📦 $USER:~/cicdenv$ exit
 ```
 
 ## Usage
@@ -81,14 +81,14 @@ cicdenv$ cicdctl apply kops/bastion:dev -auto-approve
 cicdenv$ cicdctl bastion ssh dev --user $USER
 # Mac
 cicdenv$ make
-📦 fvogt:~/cicdenv$ eval "$(ssh-agent)"; ssh-add ~/.ssh/kops_rsa
-📦 fvogt:~/cicdenv$ cicdctl bastion ssh dev --user $USER
+📦 $USER:~/cicdenv$ eval "$(ssh-agent)"; ssh-add ~/.ssh/kops_rsa
+📦 $USER:~/cicdenv$ cicdctl bastion ssh dev --user $USER
 ```
 
 ### Interactive
 ```bash
 cicdenv$ make
-📦 fvogt:~/cicdenv$
+📦 $USER:~/cicdenv$
 ```
 
 ## Conventions

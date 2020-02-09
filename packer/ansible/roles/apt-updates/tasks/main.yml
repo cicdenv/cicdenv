@@ -1,0 +1,34 @@
+---
+- name: apt-get update
+  apt:
+    update-cache: yes
+  changed_when: 0
+
+- name: get list of pending upgrades
+  command: apt-get --simulate dist-upgrade
+  args:
+    warn: false # don't warn us about apt having its own plugin
+  register: apt_simulate
+  changed_when: 0
+
+- name: parse apt-get output to get list of changed packages
+  set_fact:
+    updates: '{{ apt_simulate.stdout_lines | select("match", "^Inst ") | list | splitpart(1, " ") | list | sort }}'
+  changed_when: 0
+
+- name: show pending updates
+  debug:
+    var: updates
+  when: updates.0 is defined
+
+# if a new kernel is incoming, remove old ones to avoid full /boot
+- name: apt-get autoremove
+  command: apt-get -y autoremove
+  args:
+    warn: false
+  when: '"Inst linux-image-" in apt_simulate.stdout'
+  changed_when: 0
+
+- name: apt-get upgrade
+  apt:
+    upgrade: 'yes' # upgrade all packages to latest version

@@ -8,3 +8,4 @@ python-debian==0.1.35
 s3transfer==0.2.1
 six==1.12.0
 urllib3==1.25.3
+python-gnupg==0.4.5

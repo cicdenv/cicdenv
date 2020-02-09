@@ -23,6 +23,19 @@ data "aws_ami" "custom" {
 # => data.aws_ami.custom.id
 ```
 
+### Testing
+```
+# Launch an instance using the latest base AMI
+cicdenv$ cicdctl console
+📦 $USER:~/cicdenv$ cicdctl apply test-vpc:main
+📦 $USER:~/cicdenv$ terraform/test-vpc/bin/launch-instances.sh main m5dn.large
+📦 $USER:~/cicdenv$ ssh -i /home/terraform/.ssh/manual-testing.pem ubuntu@<public-ip>
+
+# Teardown
+📦 $USER:~/cicdenv$ terraform/test-vpc/bin/terminate-instances.sh main
+📦 $USER:~/cicdenv$ cicdctl destroy test-vpc:main
+```
+
 ## Cleanup
 ```
 # Interactive shell
@@ -82,6 +95,17 @@ root@ip-10-16-60-230:~# echo $?
 1
 ```
 
-Links:
+## Debugging
+* https://packer.io/docs/provisioners/ansible.html#debugging
+
+## Links
+* https://www.packer.io/docs/builders/amazon-ebs.html
 * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/nvme-ebs-volumes.html
 * https://russell.ballestrini.net/aws-nvme-to-block-mapping/
+
+## Ansible packer provisioner
+* https://www.packer.io/docs/provisioners/ansible.html
+* https://www.packer.io/docs/provisioners/ansible-local.html
+* https://pypi.org/project/ansible/
+* https://docs.ansible.com/ansible/latest/index.html
+* https://www.packer.io/docs/other/debugging.html

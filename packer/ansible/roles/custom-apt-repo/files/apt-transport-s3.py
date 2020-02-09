@@ -1,0 +1,600 @@
+#!/usr/bin/python3 -u
+# Copyright (C) 2018- Mayara Cloud Ltd.
+# Copyright (C) 2016-2018 Claranet Ltd.
+# Copyright (C) 2014-2016 Bashton Ltd.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# https://github.com/MayaraCloud/apt-transport-s3
+
+import urllib.request
+import urllib.error
+import urllib.parse
+import time
+import hashlib
+import hmac
+import json
+import sys
+import os
+import datetime
+import xml.etree.ElementTree as ET
+import socket
+import ssl
+from configobj import ConfigObj
+
+RETRIES = 5
+
+SPECIAL_REGION_ENDPOINTS = {
+    'cn-north-1': 's3.cn-north-1.amazonaws.com.cn',
+    'cn-northwest-1': 's3.cn-northwest-1.amazonaws.com.cn'
+}
+
+
+def wait_time(c):
+    return pow(2, c) - 1
+
+
+class AWSCredentials(object):
+    """
+    Class for dealing with IAM role credentials from meta-data server and later
+    on to deal with boto/aws config provided keys
+    """
+
+    def __init__(self, config_file=None):
+        self.conf_file = config_file
+        host = 'http://169.254.169.254'
+        path_sec_cred = '/latest/meta-data/iam/security-credentials/'
+        path_instance_metadata = '/latest/dynamic/instance-identity/document'
+        self.credentials_metadata = urllib.parse.urljoin(host, path_sec_cred)
+        self.instance_metadata = urllib.parse.urljoin(
+            host, path_instance_metadata)
+
+    def __get_role(self):
+        # Read IAM role from AWS metadata store
+        request = urllib.request.Request(self.credentials_metadata)
+
+        response = None
+
+        for i in range(0, RETRIES):
+            try:
+                response = urllib.request.urlopen(request, None, 10)
+                self.iamrole = response.read()
+                break
+            except ssl.SSLError as e:
+                if 'timed out' in e.message:
+                    time.sleep(wait_time(i + 1))
+                else:
+                    raise e
+            except socket.timeout:
+                time.sleep(wait_time(i + 1))
+            except urllib.error.URLError as e:
+                if hasattr(e, 'reason'):
+                    raise Exception("URL error reason: %s, probable cause is \
+ that you don't have IAM role on this machine" % e.reason)
+                elif hasattr(e, 'code'):
+                    raise Exception("Server error code: %s" % e.code)
+            finally:
+                if response:
+                    response.close()
+        else:
+            raise Exception("GetRole request timed out")
+
+    def __load_config(self):
+        """
+        Loading config file from predefined location.
+        Example config file content:
+            AccessKeyId = mykey
+            SecretAccessKey = mysecretkey
+            Region = eu-west-2 # this is obligatory if instance is in different
+                                 region then apt repo
+        """
+
+        # Checking if 'file' exists, if it does read it
+        if os.path.isfile(os.path.expanduser(self.conf_file)):
+            config = ConfigObj(os.path.expanduser(self.conf_file))
+            return config
+        else:
+            raise Exception("Config file: %s doesn't exist" % self.conf_file)
+
+    def __request_json(self, url):
+        request = urllib.request.Request(url)
+        response = None
+
+        for i in range(0, RETRIES):
+            try:
+                response = urllib.request.urlopen(request, None, 30)
+                return json.loads(response.read())
+            except ssl.SSLError as e:
+                if 'timed out' in e.message:
+                    time.sleep(wait_time(i + 1))
+                else:
+                    raise e
+            except socket.timeout:
+                time.sleep(wait_time(i + 1))
+            except urllib.error.URLError as e:
+                if hasattr(e, 'reason'):
+                    raise Exception("URL error reason: %s" % e.reason)
+                elif hasattr(e, 'code'):
+                    raise Exception("Server error code: %s" % e.code)
+            finally:
+                if response:
+                    response.close()
+
+        raise Exception("request for {} timed out".format(url))
+
+    def __get_region(self, config):
+        # try to load region from config file
+        region = config.get('Region')
+        # if region is not defied load it from instance metadata
+        if region is None or region == '':
+            region = self.__request_json(self.instance_metadata)['region']
+
+        return region
+
+    def __get_endpoint(self, config):
+        """ We assume that if endpoint attribute exists in the config this
+        takes priority over Region and bucket URL construction. If it doesn't
+        exist checking Region and comparing it to the dict containing special
+        regions (slightly different fqdn's). If it's there use it, if not
+        construct host for bucket url using Region from the config or from the
+        instance metadata (if bucket and host are in the same region it will
+        work, if not error will be thrown)
+        """
+        if config.get('Endpoint') is not None:
+            host = config['Endpoint']
+        else:
+            if self.region in list(SPECIAL_REGION_ENDPOINTS.keys()):
+                host = SPECIAL_REGION_ENDPOINTS[self.region]
+            else:
+                host = 's3.{}.amazonaws.com'.format(self.region)
+
+        return host
+
+    def get_credentials(self):
+        """
+        Read IAM credentials from AWS metadata store.
+        Note: This method should be explicitly called after constructing new
+              object, as in 'explicit is better than implicit'.
+        """
+        data = {}
+
+        try:
+            data = self.__load_config()
+        except:
+            pass
+
+        self.region = self.__get_region(data)
+        self.host = self.__get_endpoint(data)
+
+        # Setting up AWS creds based on environment variables if env vars
+        # doesn't exist setting var value to None
+        if data.get("AccessKeyId") is None:
+            data['AccessKeyId'] = os.environ.get("AWS_ACCESS_KEY_ID", None)
+            data['SecretAccessKey'] = os.environ.get(
+                "AWS_SECRET_ACCESS_KEY", None)
+            data['Token'] = os.environ.get("AWS_SESSION_TOKEN", None)
+
+        if data.get("AccessKeyId") is None:
+            self.__get_role()
+            data = self.__request_json(urllib.parse.urljoin(self.credentials_metadata,
+                                                            self.iamrole.decode()))
+
+        self.access_key = data['AccessKeyId']
+        if self.access_key is None or self.access_key == '':
+            raise Exception("AccessKeyId required")
+
+        self.secret_key = data['SecretAccessKey']
+        if self.secret_key is None or self.secret_key == '':
+            raise Exception("SecretAccessKey required")
+
+        self.token = data.get('Token')
+
+    def v4Sign(self, key, msg):
+        return hmac.new(key, msg.encode('utf-8'), hashlib.sha256).digest()
+
+    def getSignatureKey(self, dateStamp, serviceName):
+        kDate = self.v4Sign(
+            ('AWS4' + self.secret_key).encode('utf-8'), dateStamp)
+        kRegion = self.v4Sign(kDate, self.region)
+        kService = self.v4Sign(kRegion, serviceName)
+        kSigning = self.v4Sign(kService, 'aws4_request')
+        return kSigning
+
+    def uriopen(self, uri):
+        """uriopen(uri) open the remote file and return a file object."""
+        try:
+            return urllib.request.urlopen(self._request(uri), None, 30)
+        except urllib.error.HTTPError as e:
+            # HTTPError is a "file like object" similar to what
+            # urllib.request.urlopen returns, so return it and let caller
+            # deal with the error code
+            if e.code == 400:
+                # token errors are buried in 400 messages so expose
+                xmlResponse = ET.fromstring(e.read())
+                if xmlResponse is not None:
+                    e.msg = "{} - {}".format(e,
+                                             xmlResponse.find("Message").text)
+            if e.code == 301:
+                e.msg = "{} - Set s3auth.conf region to match bucket 'Region':\
+ bucket may not be in {}".format(e, self.region)
+
+            return e
+        # For other errors, throw an exception directly
+        except urllib.error.URLError as e:
+            if hasattr(e, 'reason'):
+                raise Exception("URL error reason: %s" % e.reason)
+            elif hasattr(e, 'code'):
+                raise Exception("Server error code: %s" % e.code)
+        except socket.timeout:
+            raise Exception("Socket timeout")
+
+    def _request(self, uri):
+        uri_parsed = urllib.parse.urlparse(uri)
+        # Below if statement is to accommodate AWS guidance in regards buckets
+        # naming convention presented in
+        # https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html
+        # S3 bucket names for apt repo can NOT contain '.' in the name
+        # otherwise TLS certs are broken
+        if '.' in uri_parsed.netloc:
+            raise Exception("uri should not include fully qualified domain \
+ name for bucket")
+
+        scheme = 'https'
+        bucket = uri_parsed.netloc
+        host = '{}.{}'.format(bucket, self.host)
+        path = '{}'.format(urllib.parse.quote(uri_parsed.path, safe='-._~/'))
+
+        s3url = urllib.parse.urlunparse(
+            (
+                scheme,
+                host,
+                path,
+                '',
+                '',
+                ''
+            )
+        )
+
+        request = urllib.request.Request(s3url)
+
+        request.add_header('x-amz-content-sha256', self._payload_hash(request))
+
+        # Create a date for headers and the credential string
+        amzdate = datetime.datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')
+
+        request.add_header('x-amz-date', amzdate)
+
+        if self.token is not None and self.token != '':
+            request.add_header('x-amz-security-token', self.token)
+
+        canonical_request = self._canonical_request(request, host, amzdate)
+
+        authorization_header = self._authorization_header(
+            canonical_request, amzdate)
+
+        request.add_header('Authorization', authorization_header)
+
+        return request
+
+    def _authorization_header(self, canonical_request, amzdate):
+        """
+        AWS documentation for signing requests with v4Sign:
+            https://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html
+        """
+        datestamp = amzdate.split('T')[0]
+
+        algorithm = 'AWS4-HMAC-SHA256'
+        credential_scope = datestamp + '/' + self.region + '/s3/aws4_request'
+
+        string_to_sign = algorithm + '\n' \
+            + amzdate + '\n' \
+            + credential_scope + '\n' \
+            + canonical_request
+
+        signing_key = self.getSignatureKey(datestamp, 's3')
+        signature = hmac.new(signing_key, string_to_sign.encode(
+            'utf-8'), hashlib.sha256).hexdigest()
+
+        authorization_header = "{} Credential={}/{}, SignedHeaders={}, Signature={}".format(
+            algorithm,
+            self.access_key,
+            credential_scope,
+            self._signed_headers(),
+            signature
+        )
+
+        return authorization_header
+
+    def _canonical_request(self, request, host, amzdate):
+
+        canonical_uri = request.selector
+        canonical_querystring = ''
+
+        canonical_headers = 'host:' + host + '\n' \
+                            + 'x-amz-content-sha256:' \
+                            + self._payload_hash(request) + '\n' \
+                            + 'x-amz-date:' + amzdate + '\n'
+
+        if self.token is not None and self.token != '':
+            canonical_headers += 'x-amz-security-token:' + self.token + '\n'
+
+        canonical_request = request.get_method() + '\n' \
+            + canonical_uri + '\n' \
+            + canonical_querystring + '\n' \
+            + canonical_headers + '\n' \
+            + self._signed_headers() + '\n' \
+            + self._payload_hash(request)
+
+        return hashlib.sha256(canonical_request.encode('utf-8')).hexdigest()
+
+    def _signed_headers(self):
+        signed_headers = 'host;x-amz-content-sha256;x-amz-date'
+        if self.token is not None and self.token != '':
+            signed_headers += ';x-amz-security-token'
+        return signed_headers
+
+    def _payload_hash(self, request):
+        payload = request.data
+        if payload is None:
+            payload = ''.encode('utf-8')
+
+        return hashlib.sha256(payload).hexdigest()
+
+
+class APTMessage(object):
+    MESSAGE_CODES = {
+        100: 'Capabilities',
+        102: 'Status',
+        200: 'URI Start',
+        201: 'URI Done',
+        400: 'URI Failure',
+        600: 'URI Acquire',
+        601: 'Configuration',
+    }
+
+    def __init__(self, code, headers):
+        self.code = code
+        self.headers = headers
+
+    def encode(self):
+        result = '{0} {1}\n'.format(self.code, self.MESSAGE_CODES[self.code])
+        for item in list(self.headers.keys()):
+            if self.headers[item] is not None:
+                result += '{0}: {1}\n'.format(item, self.headers[item])
+        return result + '\n'
+
+
+class S3_method(object):
+    __eof = False
+
+    def __init__(self, config_file='/etc/apt/s3auth.conf'):
+        self.iam = AWSCredentials(config_file)
+        self.iam.get_credentials()
+        self.send_capabilities()
+
+    def fail(self, message='Failed'):
+        self.send_uri_failure({'URI': self.uri, 'Message': message})
+
+    def _read_message(self):
+        """
+        Apt uses for communication with its methods the text protocol similar
+        to http. This function parses the protocol messages from stdin.
+        """
+        if self.__eof:
+            return None
+        result = {}
+        line = sys.stdin.readline()
+        while line == '\n':
+            line = sys.stdin.readline()
+        if not line:
+            self.__eof = True
+            return None
+        s = line.split(" ", 1)
+        result['_number'] = int(s[0])
+        result['_text'] = s[1].strip()
+
+        while not self.__eof:
+            line = sys.stdin.readline()
+            if not line:
+                self.__eof = True
+                return result
+            if line == '\n':
+                return result
+            (item, value) = line.split(":", 1)
+            if not result.get(item):
+                result[item] = []
+            result[item].append(value.strip())
+        return result
+
+    def send(self, code, headers):
+        message = APTMessage(code, headers)
+        sys.stdout.write(message.encode())
+
+    def send_capabilities(self):
+        self.send(100, {
+            'Version': '1.1',
+            'Single-Instance': 'true',
+            'Send-Config': 'true'})
+
+    def send_status(self, headers):
+        self.send(102, headers)
+
+    def send_uri_start(self, headers):
+        self.send(200, headers)
+
+    def send_uri_done(self, headers):
+        self.send(201, headers)
+
+    def send_uri_failure(self, headers):
+        self.send(400, headers)
+
+    def run(self):
+        """Loop through requests on stdin"""
+        while True:
+            message = self._read_message()
+            if message is None:
+                return 0
+            if message['_number'] == 601:
+                try:
+                    self.configure(message)
+                except Exception as e:
+                    self.fail(e.__class__.__name__ + ": " + str(e))
+            elif message['_number'] == 600:
+                try:
+                    self.fetch(message)
+                except Exception as e:
+                    self.fail(e.__class__.__name__ + ": " + str(e))
+            else:
+                return 100
+
+    def configure(self, message):
+        """
+        Reads APT configuration (dict) and checks for proxy settings by reading
+        all available options with in 'Config-Item' and lookinup
+        'Acquire::http::Proxy'
+        """
+        for item in message['Config-Item']:
+            if item.startswith('Acquire::http::Proxy'):
+                (key, value) = item.split('=', 1)
+                if key == 'Acquire::http::Proxy':
+                    os.environ['http_proxy'] = value
+                    os.environ['https_proxy'] = value
+
+    def format_error_response(self, response):
+        """Extracts Info from AWS Error Repsonse and returns a formatted string
+
+        When the S3 API returns an error the body of the response also contains
+        information about the error. This function reads the Response object
+        for the body and returns a string of the form "[{Code}] {Message}"
+
+        will return an empty string when the response can not be parsed
+
+        https://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html#RESTErrorResponses
+        """
+        try:
+            error = ET.fromstring(response.read())
+        except xml.etree.ElementTree.ParseError:
+            return ''
+
+        code = error.find('Code')
+        message = error.find('Message')
+        if code is not None and message is not None:
+            return '[{}] {}'.format(code.text, message.text)
+
+        # fallback to returning an empty string
+        return ''
+
+    def fetch(self, msg):
+        self.uri = msg['URI'][0]
+
+        self.filename = msg['Filename'][0]
+
+        self.send_status({'URI': self.uri, 'Message': 'Waiting for headers'})
+        for i in range(0, RETRIES):
+            try:
+                response = self.iam.uriopen(self.uri)
+            except ssl.SSLError as e:
+                if 'timed out' in e.message:
+                    time.sleep(wait_time(i + 1))
+                    continue
+                else:
+                    raise e
+            except socket.timeout:
+                time.sleep(wait_time(i + 1))
+                continue
+
+            self.send_status({
+                'URI': self.uri,
+                'Message': 'Waiting for headers'})
+
+            if response.code != 200:
+                error_detail = self.format_error_response(response)
+                self.send_uri_failure({
+                    'URI': self.uri,
+                    'Message': '{}  {}  {}'.format(response.code,
+                                                   response.msg,
+                                                   error_detail),
+                    'FailReason': 'HttpError' + str(response.code)})
+                try:
+                    while True:
+                        data = response.read(4096)
+                        if not len(data):
+                            break
+                except ssl.SSLError as e:
+                    if 'timed out' in e.message:
+                        pass
+                    else:
+                        raise e
+                except socket.timeout:
+                    pass
+                finally:
+                    response.close()
+
+                return
+
+            self.send_uri_start({
+                'URI': self.uri,
+                'Size': response.headers.get('content-length'),
+                'Last-Modified': response.headers.get('last-modified')})
+
+            f = open(self.filename, "wb")
+            hash_sha256 = hashlib.sha256()
+            hash_sha512 = hashlib.sha512()
+            hash_md5 = hashlib.md5()
+            try:
+                while True:
+                    data = response.read(4096)
+                    if not len(data):
+                        break
+                    hash_sha256.update(data)
+                    hash_sha512.update(data)
+                    hash_md5.update(data)
+                    f.write(data)
+                break
+            except ssl.SSLError as e:
+                if 'timed out' in e.message:
+                    time.sleep(wait_time(i + 1))
+                else:
+                    raise e
+            except socket.timeout:
+                time.sleep(wait_time(i + 1))
+
+            finally:
+                response.close()
+                f.close()
+
+        else:
+            raise Exception("Fetch request timed out")
+
+        self.send_uri_done({
+            'URI': self.uri,
+            'Filename': self.filename,
+            'Size': response.headers.get('content-length'),
+            'Last-Modified': response.headers.get('last-modified'),
+            'MD5-Hash': hash_md5.hexdigest(),
+            'MD5Sum-Hash': hash_md5.hexdigest(),
+            'SHA256-Hash': hash_sha256.hexdigest(),
+            'SHA512-Hash': hash_sha512.hexdigest()})
+
+
+if __name__ == '__main__':
+    try:
+        config = '/etc/apt/s3auth.conf'
+        if len(sys.argv) == 2 and os.path.isfile(sys.argv[1]):
+            config = sys.argv[1]
+        method = S3_method(config)
+        ret = method.run()
+        sys.exit(ret)
+    except KeyboardInterrupt:
+        pass

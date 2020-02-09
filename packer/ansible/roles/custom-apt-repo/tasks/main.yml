@@ -1,0 +1,16 @@
+---
+- name: install required packages
+  apt:
+    name: python-configobj
+
+- name: copy s3 apt-transport script
+  copy: src=apt-transport-s3.py dest=/usr/lib/apt/methods/s3 mode=0755 owner=root group=root
+
+- name: install custom s3-repo key-id
+  apt_key:
+    data: "{{ lookup('file', 's3-repo.asc') }}"
+
+- name: custom s3 apt-repository
+  apt_repository:
+    repo: deb s3://apt-repo-cicdenv-com/ repo/dists/
+    filename: s3-repos

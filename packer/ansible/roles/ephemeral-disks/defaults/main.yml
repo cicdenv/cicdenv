@@ -1,0 +1,9 @@
+ephemeral_disks_mount_point: /mnt/ephemeral
+ephemeral_disks_bind_mounts:
+  - /var/lib/containerd
+  - /var/lib/docker
+ephemeral_disks_wanted_by:
+  - multi-user.target
+ephemeral_disks_before:
+  - containerd.service
+  - docker.service

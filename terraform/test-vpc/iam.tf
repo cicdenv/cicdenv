@@ -30,26 +30,6 @@ data "aws_iam_policy_document" "test" {
 
     resources = local.assume_role_arns
   }
-
-  statement {
-    actions = [
-      "s3:ListBucket",
-      "s3:GetBucketLocation",
-    ]
-    resources = [
-      local.apt_repo_bucket_arn
-    ]
-  }
-
-  statement {
-    actions = [
-      "s3:Get*",
-    ]
-    resources = [
-      "${local.apt_repo_bucket_arn}",
-      "${local.apt_repo_bucket_arn}/repo/dists/*",
-    ]
-  }
 }
 
 resource "aws_iam_policy" "test" {
@@ -60,6 +40,11 @@ resource "aws_iam_policy" "test" {
 resource "aws_iam_role_policy_attachment" "test" {
   role       = aws_iam_role.test.name
   policy_arn = aws_iam_policy.test.arn
+}
+
+resource "aws_iam_role_policy_attachment" "apt_repo" {
+  role       = aws_iam_role.test.name
+  policy_arn = local.apt_repo_policy_arn
 }
 
 resource "aws_iam_instance_profile" "test" {

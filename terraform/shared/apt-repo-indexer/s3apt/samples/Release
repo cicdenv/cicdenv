@@ -1,0 +1,12 @@
+Origin: Ubuntu
+Label: Ubuntu
+Version: 18.04
+Codename: repo/dists/
+Date: Sun, 09 Feb 2020 16:36:21 +0000
+Description: Ubuntu Bionic 18.04 cicdenv
+MD5Sum:
+ a8b01d9bbf0034dc1f27e5d3b2c0c0fd 426 Packages
+SHA1:
+ dc9b5df240f3a1d60322ac5640208ab98883f338 426 Packages
+SHA256:
+ 9860060e3862682c37fa2c9e446e1caa19925f59b99c4331beff3afa2c9c5f82 426 Packages

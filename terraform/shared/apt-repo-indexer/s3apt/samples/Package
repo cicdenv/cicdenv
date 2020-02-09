@@ -1,0 +1,10 @@
+Package: libnss-iam 
+Version: 0.1 
+Architecture: amd64 
+Maintainer: George Fleury <gfleury@gmail.com> 
+Homepage: https://github.com/gfleury/libnss-iam 
+Description: Lib NSS module to integrate IAM users/groups
+Size: 17527704
+MD5sum: fe62376de53c2869813a2488df231ab4
+SHA1: df31dcd511ba3924ffba7adf03e9b3d69f112b4d
+SHA256: a93b16f90bd4f2e7f5aeabd87add26b97d2c54646356b20f9c9c32a3ededce3c

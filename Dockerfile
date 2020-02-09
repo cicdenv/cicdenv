@@ -61,6 +61,7 @@ RUN apk --no-cache --update add docker
 RUN apk --no-cache --update add  \
     bash                         \
     bind-tools                   \
+    build-base                   \
     cloc                         \
     curl                         \
     less                         \
@@ -97,6 +98,9 @@ COPY --from=hclq-builder /go/bin/hclq /usr/local/bin
 # Install latest Python 3.7+
 RUN apk --no-cache --update add                                                      \
     python3                                                                          \
+    python3-dev                                                                      \
+    libffi-dev                                                                       \
+    openssl-dev                                                                      \
  && python3 -m ensurepip                                                             \
  && pip3 install --upgrade pip setuptools                                            \
  && if [[ ! -e /usr/bin/pip    ]]; then ln -s pip3 /usr/bin/pip ; fi                 \
