@@ -27,13 +27,13 @@ data "aws_ami" "custom" {
 ```
 # Launch an instance using the latest base AMI
 cicdenv$ cicdctl console
-📦 $USER:~/cicdenv$ cicdctl apply test-vpc:main
-📦 $USER:~/cicdenv$ terraform/test-vpc/bin/launch-instances.sh main m5dn.large
+📦 $USER:~/cicdenv$ cicdctl apply test-vpc:${WORKSPACE}
+📦 $USER:~/cicdenv$ terraform/test-vpc/bin/launch-instances.sh ${WORKSPACE} m5dn.large
 📦 $USER:~/cicdenv$ ssh -i /home/terraform/.ssh/manual-testing.pem ubuntu@<public-ip>
 
 # Teardown
-📦 $USER:~/cicdenv$ terraform/test-vpc/bin/terminate-instances.sh main
-📦 $USER:~/cicdenv$ cicdctl destroy test-vpc:main
+📦 $USER:~/cicdenv$ terraform/test-vpc/bin/terminate-instances.sh ${WORKSPACE}
+📦 $USER:~/cicdenv$ cicdctl destroy test-vpc:${WORKSPACE}
 ```
 
 ## Cleanup

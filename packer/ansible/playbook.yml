@@ -7,3 +7,4 @@
     - ephemeral-disks
     - ebs-disks
     - packages
+    - docker-ce
