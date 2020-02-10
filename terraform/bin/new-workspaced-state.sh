@@ -65,7 +65,7 @@ if [[ ! -f "${state_dir}/README.md" ]]; then
 ...
 
 ## Workspaces
-N/A.
+This state is per-account.
 
 ## Usage
 \`\`\`

@@ -5,7 +5,7 @@ data "aws_iam_policy_document" "apt_repo" {
       "s3:GetBucketLocation",
     ]
     resources = [
-      aws_s3_bucket.apt_repo.arn
+      local.apt_repo_bucket_arn
     ]
   }
 
@@ -14,8 +14,8 @@ data "aws_iam_policy_document" "apt_repo" {
       "s3:Get*",
     ]
     resources = [
-      "${aws_s3_bucket.apt_repo.arn}",
-      "${aws_s3_bucket.apt_repo.arn}/repo/dists/*",
+      "${local.apt_repo_bucket_arn}",
+      "${local.apt_repo_bucket_arn}/repo/dists/*",
     ]
   }
 }

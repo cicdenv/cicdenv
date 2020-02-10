@@ -7,11 +7,11 @@ data "terraform_remote_state" "iam_assumed_roles" {
   }
 }
 
-data "terraform_remote_state" "apt_repo" {
+data "terraform_remote_state" "iam_common_policies" {
   backend = "s3"
   config = {
     bucket = var.bucket
-    key    = "state/main/shared-apt-repo/terraform.tfstate"
+    key    = "state/${terraform.workspace}/iam-common-policies/terraform.tfstate"
     region = var.region
   }
 }
