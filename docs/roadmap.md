@@ -44,8 +44,6 @@
   - [ ] kops/shared
 
 ## Infrastructure
-- [ ] bastion service ECR / Docker 
-- [ ] s3 apt-repo lambda - add gpg signing
 - [ ] cloudtrail
 - [ ] s3/LB logging
 - [ ] multi-region

@@ -1,6 +1,9 @@
 module "bastion" {
   source = "../../networking/modules/bastion-service"
 
+  region = var.region
+  bucket = var.bucket
+
   zone_id         = local.zone_id
   vpc_id          = local.vpc_id
   public_subnets  = local.public_subnets

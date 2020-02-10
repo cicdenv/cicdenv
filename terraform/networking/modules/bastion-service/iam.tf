@@ -34,6 +34,32 @@ data "aws_iam_policy_document" "bastion" {
       var.assume_role_arn,
     ]
   }
+
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "ecr:GetAuthorizationToken",
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "ecr:BatchCheckLayerAvailability"
+    ]
+
+    resources = [
+      local.ecr_bastion_sshd_worker_arn,
+    ]
+  }
 }
 
 resource "aws_iam_policy" "bastion" {
@@ -44,6 +70,11 @@ resource "aws_iam_policy" "bastion" {
 resource "aws_iam_role_policy_attachment" "bastion" {
   role       = aws_iam_role.bastion.name
   policy_arn = aws_iam_policy.bastion.arn
+}
+
+resource "aws_iam_role_policy_attachment" "apt_repo" {
+  role       = aws_iam_role.bastion.name
+  policy_arn = local.apt_repo_policy_arn
 }
 
 resource "aws_iam_instance_profile" "bastion" {

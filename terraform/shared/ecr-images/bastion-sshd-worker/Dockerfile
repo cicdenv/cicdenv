@@ -25,15 +25,16 @@ RUN apt-get install -y  \
       python-configobj  \
       ca-certificates
 
-COPY ./s3 /usr/lib/apt/methods/s3
-
-RUN echo 'deb [trusted=yes] s3://apt-repo-cicdenv-com/ repo/dists/'  \
-    > /etc/apt/sources.list.d/s3-repos.list                          \
- && apt-get update                                                   \
- && apt-get install -y libnss-iam
+COPY ./files/libnss-iam.deb /tmp/
+RUN dpkg -i /tmp/libnss-iam.deb
 
 RUN mkdir /var/run/sshd
 
+COPY ./files/sshd_config                 /etc/ssh/sshd_config
+COPY ./files/nsswitch.conf               /etc/nsswitch.conf
+COPY ./files/sshd-entrypoint.sh          /opt/bin/sshd-entrypoint.sh
+COPY ./files/authorized-keys-command.sh  /opt/bin/authorized-keys-command.sh
+
 EXPOSE 22
 
-CMD ["/opt/sshd-entrypoint.sh"]
+CMD ["/opt/bin/sshd-entrypoint.sh"]

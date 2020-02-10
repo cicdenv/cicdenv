@@ -21,3 +21,5 @@ packer/ec2_amazon-ebs.pem
 
 terraform/shared/apt-packages/amazon-ecr-credential-helper/amazon-ecr-credential-helper-*
 terraform/shared/apt-packages/amazon-ecr-credential-helper/docker-credential-ecr-login
+
+shared/ecr-images/bastion-sshd-worker/files/libnss-iam-*.deb

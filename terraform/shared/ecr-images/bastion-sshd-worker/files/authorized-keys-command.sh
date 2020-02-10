@@ -1,13 +1,4 @@
 #!/bin/bash
-
-set -eu -o pipefail
-
-mkdir -p /opt/sshd-service
-
-authorized_keys_cmd=/opt/sshd-service/authorized-keys-command.sh
-
-cat << 'EOF' > "$authorized_keys_cmd"
-#!/bin/bash
 set -eu -o pipefail
 
 username=${1?Usage: $0 <username>}
@@ -65,6 +56,3 @@ chmod 0600 "/home/${username}/.ssh/authorized_keys"
 ) > >(tee -a /var/log/sshd-service-out.log) 2> >(tee -a /var/log/sshd-service-err.log >&2)
 
 cat "/home/${username}/.ssh/authorized_keys"
-EOF
-
-chmod u+x "$authorized_keys_cmd"

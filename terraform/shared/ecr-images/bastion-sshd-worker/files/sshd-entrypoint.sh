@@ -2,16 +2,7 @@
 
 set -eu -o pipefail
 
-mkdir -p /opt/sshd-service
-
-ssh_entrypoint=/opt/sshd-service/sshd-entrypoint.sh
-
-cat << 'EOF' > "$ssh_entrypoint"
-#!/bin/bash
-
-set -eu -o pipefail
-
-sts_creds=$(aws sts assume-role --role-arn "{{assume_role_arn}}" --role-session-name=$RANDOM)
+sts_creds=$(aws sts assume-role --role-arn "${IAM_ROLE}" --role-session-name=$RANDOM)
 
 mkdir -p "/root/.aws"
 cat <<EOFF > "/root/.aws/credentials"
@@ -23,6 +14,3 @@ expiration            = $(echo "$sts_creds" | jq -r '.Credentials.Expiration')
 EOFF
 
 /usr/sbin/sshd -i
-EOF
-
-chmod 0700 "$ssh_entrypoint"
