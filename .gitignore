@@ -18,3 +18,6 @@ jenkins/server-image/jenkins-ci.docker
 jenkins/server-image/plugins/scriptler-plugin
 
 packer/ec2_amazon-ebs.pem
+
+terraform/shared/apt-packages/amazon-ecr-credential-helper/amazon-ecr-credential-helper-*
+terraform/shared/apt-packages/amazon-ecr-credential-helper/docker-credential-ecr-login

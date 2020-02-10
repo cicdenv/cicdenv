@@ -1,0 +1,4 @@
+8b04dcb3926b982aa24e62645054864c  usr/bin/docker-credential-ecr-login
+325792d9c14a50f33b3e2e25447f8a36  usr/share/doc/amazon-ecr-credential-helper/changelog.Debian.gz
+49c0d611fd599f9340933674417bed15  usr/share/doc/amazon-ecr-credential-helper/copyright
+8cbe4bf272c571136b8dfb292d5e8993  usr/share/man/man1/docker-credential-ecr-login.1.gz

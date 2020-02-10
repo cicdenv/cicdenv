@@ -1,0 +1,28 @@
+Package: amazon-ecr-credential-helper
+Version: 0.2.0-1
+Architecture: amd64
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Samuel Karp <skarp@amazon.com>
+Installed-Size: 6438
+Depends: libc6 (>= 2.4), ca-certificates
+Recommends: docker.io | docker-ce
+Enhances: docker-ce, docker.io
+Built-Using: golang-1.10 (= 1.10.4-2ubuntu1), golang-github-aws-aws-sdk-go (= 1.16.18+dfsg-1), golang-github-docker-docker-credential-helpers (= 0.6.1-1), golang-github-golang-mock (= 1.0.0-1), golang-github-jmespath-go-jmespath (= 0.2.2-2), golang-github-mitchellh-go-homedir (= 0.0~git20161203.0.b8bc1bf-2), golang-github-pkg-errors (= 0.8.1-1), golang-go.crypto (= 1:0.0~git20181203.505ab14-1), golang-golang-x-sys (= 0.0~git20181228.9a3f9b0-1), golang-logrus (= 1.0.6-1)
+Section: misc
+Priority: optional
+Homepage: https://github.com/awslabs/amazon-ecr-credential-helper
+Description: Amazon ECR Credential Helper for Docker
+ A Docker credential helper to automatically manage credentials for Amazon ECR.
+ .
+ Once configured, the Amazon ECR Credential Helper lets you "docker pull" and
+ "docker push" container images from Amazon ECR without running "docker login".
+ .
+ Amazon ECR is a container registry and requires authentication for pushing and
+ pulling images.  You can use the AWS CLI or the AWS SDK to obtain a
+ time-limited authentication token.  This credential helper automatically
+ manages obtaining and refreshing authentication tokens when using the Docker
+ CLI.
+ .
+ For more information about Amazon ECR and how to use it, see the documentation
+ at https://docs.aws.amazon.com/AmazonECR/latest/userguide/.
+ 
