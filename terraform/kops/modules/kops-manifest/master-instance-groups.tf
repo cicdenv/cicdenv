@@ -32,10 +32,6 @@ data "template_file" "kops_master_instance_group" {
     cloud_labels = join("\n", data.template_file.kops_cloud_labels.*.rendered)
 
     addition_user_data = <<EOF
-  - name: a-instance-stores
-    type: text/x-shellscript
-    content: |
-      ${indent(6, file("${path.module}/files/mount-instance-stores.sh"))}
   - name: a-setup-dns
     type: text/x-shellscript
     content: |
