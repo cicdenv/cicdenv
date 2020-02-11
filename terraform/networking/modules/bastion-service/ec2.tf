@@ -40,4 +40,8 @@ resource "aws_autoscaling_group" "bastion" {
       propagate_at_launch = true
     },
   ]
+  
+  lifecycle {
+    create_before_destroy = true
+  }
 }
