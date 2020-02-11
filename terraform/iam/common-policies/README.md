@@ -1,8 +1,10 @@
 ## Purpose
-...
+Policies cannot be shared between accounts.
+
+This is used to define the custom IAM policies that all accounts should have.
 
 ## Workspaces
-N/A.
+This state is per-account.
 
 ## Usage
 ```
