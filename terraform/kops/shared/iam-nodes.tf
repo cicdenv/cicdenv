@@ -46,6 +46,11 @@ resource "aws_iam_role_policy_attachment" "kops_node" {
   policy_arn = aws_iam_policy.kops_node.arn
 }
 
+resource "aws_iam_role_policy_attachment" "kops_node_apt_repo" {
+  role       = aws_iam_role.kops_node.name
+  policy_arn = local.apt_repo_policy_arn
+}
+
 resource "aws_iam_instance_profile" "kops_node" {
   name = "kops-node"
   role = aws_iam_role.kops_node.name

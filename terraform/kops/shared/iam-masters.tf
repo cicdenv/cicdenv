@@ -163,6 +163,11 @@ resource "aws_iam_role_policy_attachment" "kops_master" {
   policy_arn = aws_iam_policy.kops_master.arn
 }
 
+resource "aws_iam_role_policy_attachment" "kops_master_apt_repo" {
+  role       = aws_iam_role.kops_master.name
+  policy_arn = local.apt_repo_policy_arn
+}
+
 resource "aws_iam_instance_profile" "kops_master" {
   name = "kops-master"
   role = aws_iam_role.kops_master.name
