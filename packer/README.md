@@ -98,6 +98,10 @@ root@ip-10-16-60-230:~# echo $?
 ## Debugging
 * https://packer.io/docs/provisioners/ansible.html#debugging
 
+```
+ssh -i packer/ec2_amazon-ebs.pem ubuntu@<public-ip>
+```
+
 ## Links
 * https://www.packer.io/docs/builders/amazon-ebs.html
 * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/nvme-ebs-volumes.html
