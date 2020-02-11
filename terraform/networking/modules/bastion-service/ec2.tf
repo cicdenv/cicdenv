@@ -1,10 +1,6 @@
-data "local_file" "ssh_key" {
-  filename = pathexpand(var.ssh_key)
-}
-
 resource "aws_key_pair" "bastion" {
   key_name   = "bastion"
-  public_key = data.local_file.ssh_key.content
+  public_key = file(pathexpand(var.ssh_key))
 }
 
 resource "aws_launch_configuration" "bastion" {

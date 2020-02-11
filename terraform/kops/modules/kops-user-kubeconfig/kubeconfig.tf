@@ -1,13 +1,9 @@
-data "local_file" "kops_ca_cert" {
-  filename = var.kops_ca_cert
-}
-
 data "template_file" "user_kubeconfig" {
   template = file("${path.module}/templates/kube-config.tpl")
 
   vars = {
     cluster_name = var.cluster_name
-    ca_data      = base64encode(data.local_file.kops_ca_cert.content)
+    ca_data      = base64encode(file(var.kops_ca_cert))
     command      = var.authenticator_command
   }
 }

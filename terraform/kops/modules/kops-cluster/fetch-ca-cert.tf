@@ -26,7 +26,3 @@ data "null_data_source" "wait_for_kops_ca_cert_fetch" {
     kops_ca_cert = var.kops_ca_cert
   }
 }
-
-data "local_file" "kops_ca_cert" {
-  filename = data.null_data_source.wait_for_kops_ca_cert_fetch.outputs["kops_ca_cert"]
-}

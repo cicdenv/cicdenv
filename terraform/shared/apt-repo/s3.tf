@@ -7,10 +7,6 @@ resource "aws_s3_bucket" "apt_repo" {
   }
 }
 
-data "local_file" "endpoint_list" {
-  filename = "${path.module}/../../data/vpc-endpoints.txt"
-}
-
 resource "aws_s3_bucket_policy" "apt_repo" {
   bucket = aws_s3_bucket.apt_repo.id
 
@@ -45,7 +41,7 @@ resource "aws_s3_bucket_policy" "apt_repo" {
       ],
       "Condition": {
         "StringEquals": {
-          "aws:sourceVpce": ${jsonencode(compact(split("\n", data.local_file.endpoint_list.content)))}
+          "aws:sourceVpce": ${jsonencode(compact(split("\n", file("${path.module}/../../data/vpc-endpoints.txt"))))}
         }
       }
     }
