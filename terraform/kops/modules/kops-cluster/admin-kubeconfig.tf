@@ -1,4 +1,8 @@
 resource "null_resource" "admin_kubeconfig" {
+  triggers = {
+    admin_kubeconfig = var.admin_kubeconfig
+  }
+
   provisioner "local-exec" {
     command = module.kops_commands.export_kubecfg
   }
@@ -7,7 +11,7 @@ resource "null_resource" "admin_kubeconfig" {
 
   provisioner "local-exec" {
     command = <<EOF
-rm "${var.admin_kubeconfig}"
+rm "${self.triggers.admin_kubeconfig}"
 EOF
     when = destroy
   }

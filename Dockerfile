@@ -159,7 +159,7 @@ RUN for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                   
 ARG kops_version
 ARG kops_sha256
 ARG kops_releases
-RUN curl -o /bin/kops -sL ${kops_releases}/${kops_version}/kops-linux-amd64  \
+RUN curl -o /bin/kops -sL ${kops_releases}/v${kops_version}/kops-linux-amd64  \
  && echo "${kops_sha256}  /bin/kops" | sha256sum -c -                        \
  && chmod +x /bin/kops
 

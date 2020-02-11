@@ -9,7 +9,7 @@ pushd "$DIR/.." >/dev/null
 # Should be named after the kops version
 #   example: 1-12-0-ga
 cluster_name=${1?Usage $0 <cluster-short-name> [kube-version]}
-kubernetes_version=${2-1.16.3}  # https://github.com/kubernetes/kubernetes/releases
+kubernetes_version=${2-1.16.6}  # https://github.com/kubernetes/kubernetes/releases
 
 #
 # New state defaults

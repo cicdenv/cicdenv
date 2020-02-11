@@ -1,4 +1,8 @@
 resource "null_resource" "kops_ca_cert_fetch" {
+  triggers = {
+    kops_ca_cert = var.kops_ca_cert
+  }
+
   provisioner "local-exec" {
     command = <<EOF
 id=$(kops get secret ca --name=${var.cluster_name} --state=s3://${var.state_store} | tail -n+2 | awk '{print $NF}');
@@ -8,7 +12,7 @@ EOF
 
   provisioner "local-exec" {
     command = <<EOF
-rm "${var.kops_ca_cert}"
+rm "${self.triggers.kops_ca_cert}"
 EOF
     when = destroy
   }
