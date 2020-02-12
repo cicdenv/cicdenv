@@ -11,7 +11,7 @@ resource "null_resource" "admin_kubeconfig" {
 
   provisioner "local-exec" {
     command = <<EOF
-rm "${self.triggers.admin_kubeconfig}"
+rm -f "${self.triggers.admin_kubeconfig}"
 EOF
     when = destroy
   }
