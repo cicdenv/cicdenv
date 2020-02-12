@@ -1,8 +1,0 @@
-terraform {
-  required_version = ">= 0.12.20"
-  backend "s3" {
-    key = "kops-clusters-1-16-a-external-access/terraform.tfstate"
-
-    workspace_key_prefix = "state"
-  }
-}
