@@ -1,5 +1,6 @@
-## VPN
+## External Access
 - [ ] IAM user removed lambda - close active bastion ssh session
+- [ ] sshd-worker image build w/secrets
 - [ ] wiregaurd or OpenVPN to replace whitelisted external networks
 
 ## CI
