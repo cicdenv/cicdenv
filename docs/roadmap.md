@@ -1,4 +1,5 @@
 ## VPN
+- [ ] IAM user removed lambda - close active bastion ssh session
 - [ ] wiregaurd or OpenVPN to replace whitelisted external networks
 
 ## CI
