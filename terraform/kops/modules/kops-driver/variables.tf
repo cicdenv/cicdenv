@@ -15,14 +15,14 @@ variable "node_count" {
   default = -1 # Will default to 1 per AZ
 }
 variable "node_instance_type" {
-  default = "r5d.xlarge"	
+  default = "r5dn.xlarge"	
 }
 variable "node_volume_size" {
   default = 100
 }
 
 variable "master_instance_type" {
-  default = "c5.large"
+  default = "c5d.large"
 }
 variable "master_volume_size" {
   default = "100"
