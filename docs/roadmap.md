@@ -8,6 +8,9 @@
 - [ ] golang 3rd party libs s3/host/workspace caching service
 - [ ] run cicdctl from ec2 w/IAM role
 
+## Workloads
+- [ ] jupyter notebook server
+
 ## Multiple Contributors
 - [ ] "un-listify" hotspots
 - [ ] external data store for items
@@ -15,6 +18,8 @@
    https://github.com/kilna/kopsenv
 - [ ] per component terraform version
   https://github.com/tfutils/tfenv
+- [ ] kube2iam alternatives
+  https://aws.amazon.com/about-aws/whats-new/2019/09/amazon-eks-adds-support-to-assign-iam-permissions-to-kubernetes-service-accounts/
 
 ## KOPS
 - [ ] custom docker runtime version
