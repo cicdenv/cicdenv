@@ -1,13 +1,37 @@
-## Assumptions
-- [ ] separate unix user from IAM_USER
+## VPN
+- [ ] wiregaurd or OpenVPN to replace whitelisted external networks
+
+## CI
+- [ ] dedicated ec2 instances containerized Jenkins
+- [ ] golang 3rd party libs s3/host/workspace caching service
+- [ ] run cicdctl from ec2 w/IAM role
+
+## Multiple Contributors
+- [ ] "un-listify" hotspots
+- [ ] external data store for items
+- [ ] per cluster kops version
+   https://github.com/kilna/kopsenv
+- [ ] per component terraform version
+  https://github.com/tfutils/tfenv
+
+## KOPS
+- [ ] custom docker runtime version
+  https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#docker
+
+## Apt Repo
+- [ ] py3.8 lambda layer with gnupg
 
 ## cicdctl CLI
-- [ ] {shutdown|startup|list}-cluster commands
-  `terraform/kops/shared/data/*/clusters.txt`
-- [ ] common (verbose, silent, dry-run)
+- [ ] consistent output {default, verbose, silent, dry-run (print commands)}
   `-v --verbose, -s --silent, -dr --dry-run`
-  - [ ] Print custom env vars
-- [ ] cloc sub-command
+- [ ] Print custom env vars along with commands being run
+- [ ] shell completion
+  - [ ] enable in `bin/activate`
+- [ ] refactor ArgParse to click
+- [ ] terraform fmt
+- [ ] automatic background AWS credential refreshing (on/off)
+
+### Sanity checks
 - [ ] check for the existance of AWS environment variables in cicdctl launcher
   `AWS_PROFILE, ... - these break aws-mfa`
 - [ ] check basic requirements
@@ -15,9 +39,10 @@
   - [ ] `~/.ssh`
 - [ ] check totp secret is present
 - [ ] assert file paths (states match expected conventions)
-- [ ] shell completion
-  - [ ] enable in `bin/activate`
 - [ ] detect stale console session (image rebuild needed)
+- [ ] `Makefile` warn on trying to build the docker image from a console session
+- [ ] list-cluster command
+  `terraform/kops/shared/data/*/clusters.txt`
 
 ## Accounts
 - [ ] root account(s) creds/MFA support
@@ -26,14 +51,7 @@
   ```
 
 ## Modeling
-- [ ] Cost Model - google sheet
-
-## Makefile
-- [ ] warn on trying to build the docker image from a console session
-
-## cicdctl Features
-- [ ] terraform fmt
-- [ ] automatic AWS credential refreshing (on/off)
+- [ ] Cost Model - google sheet(s)
 
 ## Terraform 0.12.x
 - [ ] Use structured variables to implement user data model
@@ -47,8 +65,6 @@
 - [ ] cloudtrail
 - [ ] s3/LB logging
 - [ ] multi-region
-- [ ] ECR images - main account, w/cross acount access
-- [ ] packer - support more than one AMI
 - [ ] sshd logs on bastion - aws cloudwatch logs `=>` docker logdriver
 - [ ] SES config: basic setup w/validations
 
@@ -60,3 +76,6 @@
   "kms:*"  => "kms:Encrypt",
               "kms:Decrypt"
   ```
+
+## Wiki
+- [ ] pull over articles from previous repos
