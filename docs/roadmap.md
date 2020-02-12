@@ -17,6 +17,7 @@
 ## KOPS
 - [ ] custom docker runtime version
   https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#docker
+- [ ] {kops, kubernetes, instance-type} setable from cicdctl
 
 ## Apt Repo
 - [ ] py3.8 lambda layer with gnupg
