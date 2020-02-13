@@ -14,14 +14,6 @@ output "s3_vpc_endpoint_id" {
 # Public Subnet outputs
 #
 
-output "nat_gateway_ids" {
-  value = aws_nat_gateway.nat_gw.*.id
-}
-
-output "nat_gateway_ips" {
-  value = aws_nat_gateway.nat_gw.*.public_ip
-}
-
 output "public_subnet_ids" {
   value = aws_subnet.public_subnets.*.id
 }

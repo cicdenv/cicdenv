@@ -8,16 +8,6 @@ resource "aws_route_table" "private_routes" {
   }
 }
 
-resource "aws_route" "to_nat_gw" {
-  count = length(local.availability_zones)
-
-  destination_cidr_block = "0.0.0.0/0"
-
-  route_table_id = aws_route_table.private_routes.*.id[count.index]
-
-  nat_gateway_id = aws_nat_gateway.nat_gw.*.id[count.index]
-}
-
 resource "aws_route_table_association" "private_route_net" {
   count = length(local.availability_zones)
 
