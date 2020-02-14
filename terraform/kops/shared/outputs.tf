@@ -34,6 +34,10 @@ output "private_dns_zone" {
   value = aws_route53_zone.private.zone_id
 }
 
+output "bastion_service_security_group_id" {
+  value = aws_security_group.bastion.id
+}
+
 output "nodes_security_group_id" {
   value = aws_security_group.kops_nodes.id
 }

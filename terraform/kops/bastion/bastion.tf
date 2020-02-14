@@ -15,10 +15,7 @@ module "bastion" {
 
   assume_role_arn = local.assume_role_arn
 
-  security_groups = local.security_groups
-
-  whitelisted_service_cidr_blocks = var.whitelisted_cidr_blocks
-  whitelisted_host_cidr_blocks    = var.whitelisted_cidr_blocks
+  security_group = local.security_group
 
   providers = {
     aws.main = aws.main

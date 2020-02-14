@@ -6,20 +6,25 @@ resource "aws_security_group" "test" {
 }
 
 resource "aws_security_group_rule" "test_egress" {
-  security_group_id = aws_security_group.test.id
+  description = "allow all outgoing traffic"
+
   type              = "egress"
+  protocol          = "all"
   from_port         = 0
   to_port           = 0
-  protocol          = "-1"
+  
+  security_group_id = aws_security_group.test.id
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
 resource "aws_security_group_rule" "ssh_in" {
+  description = "ssh access from whitelisted cidr blocks"
+
+  protocol  = "tcp"
+  type      = "ingress"
+  from_port = 22
+  to_port   = 22
+
   security_group_id = aws_security_group.test.id
   cidr_blocks       = local.cidr_blocks
-  from_port         = 22
-  to_port           = 22
-  protocol          = "tcp"
-  type              = "ingress"
-  description       = "ssh access from whitelisted cidr blocks"
 }

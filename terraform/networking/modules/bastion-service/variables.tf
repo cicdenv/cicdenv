@@ -27,17 +27,9 @@ variable "assume_role_arn" {
   description = "Identity resolver role in the master account."
 }
 
-variable "security_groups" {
-  description = "Security groups to add bastion ingress rules to."
+variable "security_group" {
+  description = "Security group for bastion nlb/instances."
   default = []
-}
-
-variable "whitelisted_service_cidr_blocks" {
-  type = list
-}
-
-variable "whitelisted_host_cidr_blocks" {
-  type = list
 }
 
 variable "service_ssh_port" {

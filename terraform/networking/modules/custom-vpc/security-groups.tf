@@ -10,21 +10,25 @@ resource "aws_security_group" "ecr_endpoint" {
 }
 
 resource "aws_security_group_rule" "ecr_endpoint_out" {
+  description = "allow all outgoing traffic"
+
+  type      = "egress"
+  protocol  = "all"
+  from_port = 0
+  to_port   = 0
+
   security_group_id = aws_security_group.ecr_endpoint.id
-  type              = "egress"
   cidr_blocks       = ["0.0.0.0/0"]
-  protocol          = -1
-  from_port         = 0
-  to_port           = 0
-  description       = "ecr-endpoint egress"
 }
 
 resource "aws_security_group_rule" "ecr_endpoint_https" {
+  description = "docker registry access from hosts"
+
+  type      = "ingress"
+  protocol  = "tcp"
+  from_port = 443
+  to_port   = 443
+
   security_group_id = aws_security_group.ecr_endpoint.id
-  type              = "ingress"
   cidr_blocks       = ["0.0.0.0/0"]
-  protocol          = "tcp"
-  from_port         = 443
-  to_port           = 443
-  description       = "docker registry access from hosts"
 }
