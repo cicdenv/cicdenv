@@ -57,5 +57,5 @@ for instance_type in $instance_types; do
         --query 'Reservations[*].Instances[*].PublicIpAddress'  \
         --output text
     )
-    echo ssh -i ~/.ssh/manual-testing.pem "ubuntu@${ip}"
+    echo ssh -i ~/.ssh/manual-testing.pem -o IdentitiesOnly=yes "ubuntu@${ip}"
 done

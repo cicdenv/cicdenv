@@ -1,0 +1,11 @@
+[Unit]
+Description=Ensure jenkins server folders are accessing the PCIe SSD/NVMe, EBS, and EFS disk
+Before=jenkins-server.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/jenkins-server-disks.sh
+
+[Install]
+WantedBy=multi-user.target
+RequiredBy=jenkins-server.service

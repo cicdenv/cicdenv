@@ -1,0 +1,18 @@
+[Unit]
+Description=Jenkins bridge network installer
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c "\
+if ! docker network inspect jenkins &>/dev/null; then                             \
+    /usr/bin/docker network create --subnet 172.19.0.0/16                         \
+                                   --gateway 172.19.0.1                           \
+                                   -o com.docker.network.bridge.name=br-jenkins   \
+                                   jenkins;                                       \
+fi \
+"
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=Ensure jenkins agent folders are accessing the PCIe SSD/NVMe disks
+Before=jenkins-agent.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/jenkins-agent-disks.sh
+
+[Install]
+WantedBy=multi-user.target
+RequiredBy=jenkins-agent.service

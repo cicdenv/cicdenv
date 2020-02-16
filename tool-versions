@@ -26,8 +26,8 @@ KOPS_SHA256    = 1d50a6fcd1bbd38cfcebea0826426985149f7a080ac67ffb863ad7baa05d3aa
 KOPS_DOWNLOADS = https://github.com/kubernetes/kops/releases/download
 
 # https://www.packer.io/downloads.html
-PACKER_VERSION  = 1.5.1
-PACKER_SHA256   = 3305ede8886bc3fd83ec0640fb87418cc2a702b2cb1567b48c8cb9315e80047d
+PACKER_VERSION  = 1.5.4
+PACKER_SHA256   = c7277f64d217c7d9ccfd936373fe352ea935454837363293f8668f9e42d8d99d
 PACKER_RELEASES = https://releases.hashicorp.com/packer
 
 # https://github.com/kubernetes/kubernetes/releases

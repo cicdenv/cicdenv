@@ -1,0 +1,22 @@
+
+- [ ] cross account
+- [ ] agent secrets
+- [ ] setup SES to forward email
+  admin+jenkins@cicdenv.com
+  ci+jenkins@cicdenv.com
+- [ ] secrets manager init scripts
+---
+- [ ] server-image
+- [x] agent-image
+- [x] plugin-versions
+- [x] Updates.md
+- [x] .python-version, requirements.txt
+- [x] build.make
+- [x] clean.make
+- [?] creds.make
+- [x] debug.make
+- [x] maint.make
+- [x] Makefile
+- [x] README.md
+- [x] setup.make
+- [x] vars.make

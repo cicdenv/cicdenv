@@ -1,18 +1,32 @@
+## Docs
+- [ ] writeup cloud-init debugging instructions
+
 ## External Access
 - [ ] IAM user removed lambda - close active bastion ssh session
 - [ ] sshd-worker image build w/secrets
 - [ ] wiregaurd or OpenVPN to replace whitelisted external networks
 
 ## CI
-- [ ] dedicated ec2 instances containerized Jenkins
+- [ ] dedicated ec2 instances w/containerized Jenkins
+  - [ ] ansible playbook for pushing updated jenkins processes
+- [ ] SecretsManager credentials plugin
 - [ ] golang 3rd party libs s3/host/workspace caching service
 - [ ] run cicdctl from ec2 w/IAM role
+
+## Terraform 0.12+
+- [ ] Refactor count(list) to for_each set/map
+- [ ] Refactor to structured outputs
+
+## Packer
+- [ ] 1.5.0+ config json to hcl
+
+## AWS
+- [ ] enable instance metadata service v2
 
 ## Workloads
 - [ ] jupyter notebook server
 
 ## Multiple Contributors
-- [ ] "un-listify" hotspots
 - [ ] external data store for items
 - [ ] per cluster kops version
    https://github.com/kilna/kopsenv
@@ -38,6 +52,9 @@
 - [ ] refactor ArgParse to click
 - [ ] terraform fmt
 - [ ] automatic background AWS credential refreshing (on/off)
+- [ ] normalize `-auto-approve|-force`
+- [ ] support generating plans ?
+- [ ] update deps for new shared main account components
 
 ### Sanity checks
 - [ ] check for the existance of AWS environment variables in cicdctl launcher
@@ -61,14 +78,6 @@
 ## Modeling
 - [ ] Cost Model - google sheet(s)
 
-## Terraform 0.12.x
-- [ ] Use structured variables to implement user data model
-  - [ ] iam/admins
-- [ ] Use of structured outputs
-  - [ ] iam/admins
-  - [ ] iam/organizations
-  - [ ] kops/shared
-
 ## Infrastructure
 - [ ] cloudtrail
 - [ ] s3/LB logging
@@ -84,6 +93,9 @@
   "kms:*"  => "kms:Encrypt",
               "kms:Decrypt"
   ```
+
+## Tools
+- [ ] terraform state analyzer, dependency info
 
 ## Wiki
 - [ ] pull over articles from previous repos

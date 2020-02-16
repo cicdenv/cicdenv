@@ -1,0 +1,1 @@
+../../server/templates/jenkins-server-disks.sh.tpl

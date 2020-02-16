@@ -13,19 +13,33 @@
       - inxi
       - ipcalc
       - iptraf
+      - jq
       - mtr
       - multitail
       - netcat
       - nethogs
       - nicstat
       - sysstat
-
-- name: install aws-cli
-  snap:
-    name: aws-cli
-    classic: yes
+      - unzip
 
 - name: remove amazon-ssm-agent
   snap:
     name: amazon-ssm-agent
     state: absent
+
+- name: install ec2-metadata tool
+  get_url:
+    url: http://s3.amazonaws.com/ec2metadata/ec2-metadata
+    dest: /usr/local/bin/ec2-metadata
+    mode: 0755
+
+- name: install latest aws cli bundle
+  shell: |
+    set -e
+
+    curl -sL "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+    unzip awscli-bundle.zip
+    ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+    rm awscli-bundle.zip
+  args:
+    creates: /usr/local/bin/aws

@@ -1,5 +1,9 @@
 ## Purpose
-Jenkins resources that live in the main account.
+Jenkins main acct items.
+
+* SecretsManager secrets
+
+NOTE: ECR images are managed by `shared/ecr-images/jenkins`.
 
 ## Workspaces
 N/A.

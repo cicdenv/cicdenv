@@ -36,3 +36,14 @@ NOTE: If more than one variable is defined in a `.tfvar` file states using it mu
       empty variables for all vars defined in the file.
       Where possible define only global var per global .tfvar file.
 ```
+
+## Importing
+Example: a secrets-manager secret from `jenkins/backend`
+```
+cicdenv$ cicdctl console
+
+📦 $USER:~/cicdenv/terraform/jenkins/backend$ \
+AWS_PROFILE=admin-main \
+terraform import -var-file=../../backend-config.tfvars \
+aws_secretsmanager_secret.jenkins_env arn:aws:secretsmanager:us-west-2:014719181291:secret:jenkins-env-l28fUe
+```

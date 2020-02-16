@@ -1,19 +1,7 @@
-data "aws_iam_policy_document" "jenkins_kms" {
-  statement {
-    principals {
-      type = "AWS"
-      identifiers = local.all_account_roots
-    }
-
-    actions = ["kms:*"]
-
-    resources = ["*"]
-  }
-}
-
 resource "aws_kms_key" "jenkins" {
-  description = "Used for encrypting jenkins secrets"
-  policy = data.aws_iam_policy_document.jenkins_kms.json
+  description = "Used for jenkins resources shared with sub-accounts."
+  
+  policy = data.aws_iam_policy_document.jenkins_key.json
 }
 
 resource "aws_kms_alias" "jenkins" {

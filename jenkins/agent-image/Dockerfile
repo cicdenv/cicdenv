@@ -1,0 +1,103 @@
+#
+# Multi-stage: Jenkins CLI (jenkins-cli.jar) from upstream
+#
+ARG jenkinsVersion=latest
+FROM jenkins/jenkins:${jenkinsVersion} as jenkins_server
+WORKDIR /tmp
+RUN unzip /usr/share/jenkins/jenkins.war WEB-INF/jenkins-cli.jar
+
+#
+# Multi-stage: docker client
+#
+FROM openjdk:11-jdk as docker_install
+RUN apt update                  \
+  && apt install -y             \
+     apt-transport-https        \
+     ca-certificates            \
+     curl                       \
+     software-properties-common \
+  && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
+  && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(cat /etc/os-release | grep VERSION= | sed 's/["()]//g' | cut -d' ' -f2) stable" \
+  && apt update \
+  && apt install -y docker-ce \
+  && apt install -y pbzip2
+
+#
+# Final Jenkins Agent
+#
+FROM openjdk:11-jdk
+
+# Install OpenSSH client
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils curl git libltdl7 openssh-client \
+ && rm -rf /var/lib/apt/lists/*
+
+# Docker client from multi-stage
+COPY --from=docker_install /usr/bin/docker /usr/bin/docker
+
+# Jenkins CLI (jenkins-cli.jar) from multi-stage 
+RUN mkdir -p /usr/share/jenkins
+COPY --from=jenkins_server /tmp/WEB-INF/jenkins-cli.jar /usr/share/jenkins
+
+# Install remoting jar
+ARG REMOTING_VERSION=3.35
+ARG RELEASES_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting
+RUN curl --create-dirs -sSLo /usr/share/jenkins/slave.jar ${RELEASES_URL}/${REMOTING_VERSION}/remoting-${REMOTING_VERSION}.jar \
+ && chmod 755 /usr/share/jenkins \
+ && chmod 644 /usr/share/jenkins/slave.jar
+
+# Jenkins service user
+ARG user=jenkins
+ARG group=jenkins
+ARG uid=8008
+ARG gid=8008
+ARG HOME=/var/lib/jenkins
+ENV HOME ${HOME}
+RUN groupadd -g ${gid} ${group} \
+ && useradd -d "$HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user} \
+ && mkdir -p "${HOME}/.ssh" \
+ && { \
+    echo 'Host *';                            \
+    echo '    StrictHostKeyChecking no';      \
+    echo '    UserKnownHostsFile=/dev/null';  \
+    echo '    ServerAliveInterval 30';        \
+ } > "${HOME}/.ssh/config" \
+ && chown -R jenkins:jenkins "${HOME}/.ssh" \
+ && chmod 700 "${HOME}/.ssh" \
+ && chmod 600 "${HOME}/.ssh/config"
+
+# Put jenkins user in the docker group
+ARG docker_gid=8088
+RUN groupadd -g ${docker_gid} docker
+RUN usermod -aG docker jenkins
+
+# Agent jar cache folder
+ARG JAR_CACHE_DIR=${HOME}/jar-cache
+ENV JAR_CACHE_DIR ${JAR_CACHE_DIR}
+RUN mkdir -p ${JAR_CACHE_DIR} \
+ && chown -R jenkins:jenkins "${JAR_CACHE_DIR}"
+
+# Agent workspace path
+RUN mkdir -p "${HOME}/workspace" \
+ && chown jenkins:jenkins "${HOME}/workspace"
+VOLUME "${HOME}/workspace"
+
+# Agent cache path
+RUN mkdir -p "${HOME}/cache" \
+ && chown jenkins:jenkins "${HOME}/cache"
+VOLUME "${HOME}/cache"
+
+# Install AWS ECR credential helper
+ARG ECR_CREDS_VERSION=0.2.0-1
+RUN curl --create-dirs -sSLo /var/cache/amazon-ecr-credential-helper_${ECR_CREDS_VERSION}_amd64.deb \
+         http://launchpadlibrarian.net/406814547/amazon-ecr-credential-helper_${ECR_CREDS_VERSION}_amd64.deb \
+ && dpkg -i /var/cache/amazon-ecr-credential-helper_${ECR_CREDS_VERSION}_amd64.deb \
+ && rm /var/cache/amazon-ecr-credential-helper_${ECR_CREDS_VERSION}_amd64.deb
+
+# Container entry-point agent launcher
+COPY jenkins-agent.sh /usr/local/bin/jenkins-agent.sh
+
+USER jenkins
+
+WORKDIR ${HOME}
+
+ENTRYPOINT ["/usr/local/bin/jenkins-agent.sh"]

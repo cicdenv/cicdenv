@@ -23,3 +23,11 @@ terraform/shared/apt-packages/amazon-ecr-credential-helper/amazon-ecr-credential
 terraform/shared/apt-packages/amazon-ecr-credential-helper/docker-credential-ecr-login
 
 shared/ecr-images/bastion-sshd-worker/files/libnss-iam-*.deb
+
+target
+
+jenkins/server-image/jenkins-ci.docker
+jenkins/server-image/plugins/scriptler-plugin
+
+.m2
+.venv

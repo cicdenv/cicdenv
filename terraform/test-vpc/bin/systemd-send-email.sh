@@ -22,14 +22,12 @@ EOF
 
 region=$(curl -s http://instance-data/latest/dynamic/instance-identity/document | jq .region -r)
 
-aws="/snap/bin/aws"
-
 sts_creds=$("$aws" sts assume-role --role-arn "arn:aws:iam::014719181291:role/ses-sender" --role-session-name=$$)
 export AWS_ACCESS_KEY_ID=$(    echo "$sts_creds" | jq -r '.Credentials.AccessKeyId')
 export AWS_SECRET_ACCESS_KEY=$(echo "$sts_creds" | jq -r '.Credentials.SecretAccessKey')
 export AWS_SESSION_TOKEN=$(    echo "$sts_creds" | jq -r '.Credentials.SessionToken')
 
-"$aws" --region=${region} \
+aws --region=${region} \
   ses send-email \
   --from "$from" \
   --to "$to" \

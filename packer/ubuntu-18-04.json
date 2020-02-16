@@ -28,7 +28,7 @@
       "ssh_interface": "public_ip",
       "ssh_timeout": "2m",
       "ami_name": "base/hvm-ssd/ubuntu-bionic-18.04-amd64-server-{{ isotime | clean_resource_name }}",
-      "ami_description": "https://github.com/vogtech/cicdenv/terraform/packer/ubuntu.json",
+      "ami_description": "https://github.com/vogtech/cicdenv/terraform/packer/ubuntu-18.04.json",
       "snapshot_users": "{{user `accounts`}}",
       "ami_users": "{{user `accounts`}}",
       "ami_block_device_mappings": [
@@ -55,7 +55,10 @@
   "provisioners": [
     {
       "type": "ansible",
-      "playbook_file": "./ansible/playbook.yml"
+      "playbook_file": "./ansible/playbook.yml",
+      "ansible_env_vars": [
+        "ANSIBLE_SSH_ARGS='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o AddKeysToAgent=no -o IdentitiesOnly=yes'"
+      ]
     }
   ]
 }

@@ -5,18 +5,22 @@
     state: present
     update_cache: yes
 
-- name: copy init-ephemeral-disks.sh
-  copy: src=init-ephemeral-disks.sh dest=/usr/local/bin/init-ephemeral-disks.sh mode=0755 owner=root group=root
-  register: init_ephemeral_disks_script
+- name: install init-ephemeral-disks.sh
+  copy: 
+    src: "{{ role_path }}/files/usr/local/bin/init-ephemeral-disks.sh"
+    dest: /usr/local/bin/init-ephemeral-disks.sh 
+    mode: 0755 
+    owner: root 
+    group: root
 
-- name: check init-ephemeral-disks service unit file
-  stat: path=/etc/systemd/system/init-ephemeral-disks.service
-  register: init_ephemeral_disks_unit_file
-
-- name: init-ephemeral-disks service unit file
-  template: src=init-ephemeral-disks.service.j2 dest=/etc/systemd/system/init-ephemeral-disks.service mode=0644 owner=root group=root
-  register: init_ephemeral_disks_systemd_unit
-
+- name: init-ephemeral-disks service unit
+  copy:
+    src: "{{ role_path }}/files//etc/systemd/system/init-ephemeral-disks.service"
+    dest: /etc/systemd/system/init-ephemeral-disks.service
+    mode: 0644
+    owner: root
+    group: root
+  
 - name: systemd daemon-reload
   systemd:
     name: init-ephemeral-disks
