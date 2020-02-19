@@ -197,5 +197,8 @@ RUN curl -o /bin/cfssljson                                             \
  && echo "${cfssljson_sha256}  /bin/cfssljson" | sha256sum -c -        \
  && chmod +x /bin/cfssljson
 
+# Install OpenJDK 11 (keytool)
+RUN apk --no-cache --update add openjdk11
+
 ENTRYPOINT []
 CMD []

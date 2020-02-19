@@ -25,6 +25,11 @@ repo=$(git config --get remote.origin.url | sed -E 's!.*/([^.]+).git$!\1!')
 # Extra environment variables to pass thru to python (cicdctl)
 extra_vars=""
 
+#
+# Jenkins local dev ssh/aws folders
+#
+mkdir -p ~/.jenkins
+
 # Terraform plugin cache
 # https://www.terraform.io/docs/configuration/providers.html#provider-plugin-cache
 #   https://www.tailored.cloud/devops/cache-terraform-providers/
@@ -108,33 +113,32 @@ else  # Run cicdenv in our tools environment, then quit
         fi
     done
 
-    docker run -it --rm                                                             \
-        --volume "/var/run/docker.sock:/var/run/docker.sock"                        \
-        --volume "${HOME}/.aws:/home/terraform/.aws"                                \
-        --volume "${HOME}/.ssh:/home/terraform/.ssh"                                \
-        --volume "${HOME}/.cache:/home/terraform/.cache"                            \
-        --volume "${HOME}/.config:/home/terraform/.config"                          \
-        --volume "${HOME}/.gnupg:/home/terraform/.gnupg"                            \
-        --volume "${HOME}/.local:/home/terraform/.local"                            \
-        $(if [[ $(uname -s) == "Linux" ]]; then                                     \
-          echo '--volume' "/run/user/${user_id}:/run/user/${user_id}";              \
-        fi)                                                                         \
-        --volume "$(pwd):/home/terraform/${repo}"                                   \
-        --volume "$(pwd)/.bash_history:/home/terraform/.bash_history"               \
-        --volume "${HOME}/.gitconfig:/home/terraform/.gitconfig"                    \
-        --volume "${HOME}/.jenkins.conf:/home/terraform/.jenkins.conf"              \
-        --volume "${HOME}/.jenkins-local.auth:/home/terraform/.jenkins-local.auth"  \
-        --user "$user_name"                                                         \
-        --workdir "/home/terraform/${repo}"                                         \
-        $(if [[ $(uname -s) == "Linux" ]]; then                                     \
-          echo '--env' "XDG_RUNTIME_DIR=/run/user/${user_id}";                      \
-        fi)                                                                         \
-        --env "TZ=${timezone}"                                                      \
-        $extra_vars $ssh_agent_forwarding                                           \
-        --env "PATH=$_PATH"                                                         \
-        --env "HOST_PATH=$(pwd)"                                                    \
-        --env "HOST_HOME=${HOME}"                                                   \
-        "${image_name}:${image_tag}"                                                \
+    docker run -it --rm                                                 \
+        --volume "/var/run/docker.sock:/var/run/docker.sock"            \
+        --volume "${HOME}/.aws:/home/terraform/.aws"                    \
+        --volume "${HOME}/.ssh:/home/terraform/.ssh"                    \
+        --volume "${HOME}/.cache:/home/terraform/.cache"                \
+        --volume "${HOME}/.config:/home/terraform/.config"              \
+        --volume "${HOME}/.gnupg:/home/terraform/.gnupg"                \
+        --volume "${HOME}/.local:/home/terraform/.local"                \
+        $(if [[ $(uname -s) == "Linux" ]]; then                         \
+          echo '--volume' "/run/user/${user_id}:/run/user/${user_id}";  \
+        fi)                                                             \
+        --volume "$(pwd):/home/terraform/${repo}"                       \
+        --volume "$(pwd)/.bash_history:/home/terraform/.bash_history"   \
+        --volume "${HOME}/.gitconfig:/home/terraform/.gitconfig"        \
+        --volume "${HOME}/.jenkins:/home/terraform/.jenkins"            \
+        --user "$user_name"                                             \
+        --workdir "/home/terraform/${repo}"                             \
+        $(if [[ $(uname -s) == "Linux" ]]; then                         \
+          echo '--env' "XDG_RUNTIME_DIR=/run/user/${user_id}";          \
+        fi)                                                             \
+        --env "TZ=${timezone}"                                          \
+        $extra_vars $ssh_agent_forwarding                               \
+        --env "PATH=$_PATH"                                             \
+        --env "HOST_PATH=$(pwd)"                                        \
+        --env "HOST_HOME=${HOME}"                                       \
+        "${image_name}:${image_tag}"                                    \
         bash -c "$(echo $launchers python -u -bb -I -q bin/cicdctl.py "$@")"
 fi
 

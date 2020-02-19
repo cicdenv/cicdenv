@@ -20,6 +20,19 @@ data "aws_iam_policy_document" "jenkins_agent" {
     ]
   }
 
+  # secrets manager
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "secretsmanager:GetSecretValue",
+    ]
+
+    resources = [
+      local.jenkins_agent_secrets.arn,
+    ]
+  }
+
   # s3 cache bucket
   statement {
     effect = "Allow"

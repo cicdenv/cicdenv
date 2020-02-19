@@ -15,22 +15,6 @@ RUN apt-get update          \
 
 USER jenkins
 
-# Download HTTP/2 jdk-9+ ALPN support
-ARG MVN_URL=https://repo.maven.apache.org/maven2/org/eclipse/jetty/
-ARG jettyVersion=9.4.19.v20190610
-RUN curl --create-dirs -sSLo \
-      /usr/share/jenkins/ref/extraLibs/jetty-alpn-java-server-${jettyVersion}.jar \
-      ${MVN_URL}/org/eclipse/jetty/jetty-alpn-java-server/${jettyVersion}/jetty-alpn-java-server-${jettyVersion}.jar \
- && chmod o+rx /usr/share/jenkins/ref/extraLibs
-RUN curl --create-dirs -sSLo \
-      /usr/share/jenkins/ref/commonLibs/jetty-alpn-java-client-${jettyVersion}.jar \
-      ${MVN_URL}/org/eclipse/jetty/jetty-alpn-java-client/${jettyVersion}/jetty-alpn-java-client-${jettyVersion}.jar \
- && chmod o+rx /usr/share/jenkins/ref/commonLibs
-
-# Custom plugin builds
-RUN mkdir -p /usr/share/jenkins/ref/plugins
-COPY plugins/scriptler-plugin/target/scriptler.hpi /usr/share/jenkins/ref/plugins
-
 # Install plugins
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
@@ -42,6 +26,28 @@ RUN for plugin in       \
         ; do \
     touch /usr/share/jenkins/ref/plugins/${plugin}.jpi.disabled; \
 done
+
+# Download HTTP/2 jdk-9+ ALPN support
+ARG MVN_URL=https://repo.maven.apache.org/maven2/org/eclipse/jetty
+ARG jettyVersion=9.4.25.v20191220
+RUN curl --create-dirs -sSLo \
+      /usr/share/jenkins/ref/extraLibs/jetty-alpn-java-server-${jettyVersion}.jar \
+      ${MVN_URL}/jetty-alpn-java-server/${jettyVersion}/jetty-alpn-java-server-${jettyVersion}.jar \
+ && curl --create-dirs -sSLo \
+      /usr/share/jenkins/ref/extraLibs/jetty-alpn-conscrypt-server-${jettyVersion}.jar \
+      ${MVN_URL}/jetty-alpn-conscrypt-server/${jettyVersion}/jetty-alpn-conscrypt-server-${jettyVersion}.jar \
+ && chmod o+rx /usr/share/jenkins/ref/extraLibs
+RUN curl --create-dirs -sSLo \
+      /usr/share/jenkins/ref/commonLibs/jetty-alpn-java-client-${jettyVersion}.jar \
+      ${MVN_URL}/jetty-alpn-java-client/${jettyVersion}/jetty-alpn-java-client-${jettyVersion}.jar \
+ && curl --create-dirs -sSLo \
+      /usr/share/jenkins/ref/commonLibs/jetty-alpn-conscrypt-client-${jettyVersion}.jar \
+      ${MVN_URL}/jetty-alpn-conscrypt-client/${jettyVersion}/jetty-alpn-conscrypt-client-${jettyVersion}.jar \
+ && chmod o+rx /usr/share/jenkins/ref/commonLibs
+
+# Custom plugin builds
+RUN mkdir -p /usr/share/jenkins/ref/plugins
+COPY plugins/scriptler-plugin/target/scriptler.hpi /usr/share/jenkins/ref/plugins
 
 # Config Files
 COPY files/logging.properties /usr/share/jenkins/ref/logging.properties

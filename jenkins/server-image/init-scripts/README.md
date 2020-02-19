@@ -30,7 +30,6 @@ agent protocols
 scriptler settings
 simple theme CSS
 slack
-sshd
 system settings
 disable
   slack outbound webhooks
@@ -39,25 +38,12 @@ disable
 
 ## ENV vars
 ```
-GITHUB_CLIENT_ID
-GITHUB_CLIENT_SECRET
-
-GITHUB_ORGANIZATION
-
-GITHUB_ACCESS_USER
-GITHUB_ACCESS_TOKEN
-GITHUB_WEBHOOKS_TOKEN
-
-SLACK_JENKINS_APP_TOKEN
-
-GITHUB_AGENT_USER
-
 SERVER_URL
 JENKINS_INSTANCE
 
-JENKINS_SERVER_EXECUTORS
-
-slack domain/team
+GITHUB_ORGANIZATION
+GITHUB_AGENT_USER
+GITHUB_SECRET_ARN
 ```
 
 Script cleanup:

@@ -29,6 +29,8 @@ data "aws_iam_policy_document" "jenkins_server" {
 
     resources = [
       local.jenkins_server_secrets.arn,
+      local.jenkins_github_secrets.arn,
+      local.jenkins_github_localhost_secrets.arn,
     ]
   }
 

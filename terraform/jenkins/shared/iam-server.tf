@@ -4,6 +4,8 @@ resource "aws_iam_role" "jenkins_server" {
   assume_role_policy = data.aws_iam_policy_document.jenkins_trust.json
 
   force_detach_policies = true
+  
+  max_session_duration = 60 * 60 * 12 # 12 hours in seconds
 }
 
 resource "aws_iam_role_policy_attachment" "jenkins_server_common" {

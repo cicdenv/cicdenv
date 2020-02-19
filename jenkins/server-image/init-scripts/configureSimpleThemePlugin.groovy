@@ -13,7 +13,7 @@ desc.elements.add(cssUrl)
 
 def cssText = new CssTextThemeElement('''\
 #header {
-    background-color: #170f47;
+    background-color: #0087f6;
 }
 
 #breadcrumbBar, #footer-container, .top-sticker-inner {
@@ -21,7 +21,7 @@ def cssText = new CssTextThemeElement('''\
 }
 
 .pane-frame .pane-header {
-    border-bottom: 2px solid #ff501a;
+    border-bottom: 2px solid #3477b4;
 }
 
 #header #search-box {

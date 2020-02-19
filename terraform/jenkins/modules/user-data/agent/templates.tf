@@ -11,6 +11,7 @@ data "template_file" "jenkins_agent_service" {
     tag       = "latest"
 
     server_url    = "jenkins-${var.jenkins_instance}.${local.account_hosted_zone.domain}"
-    tunneling_url = "jenkins-${var.jenkins_instance}-tcp.${local.account_hosted_zone.domain}"
+
+    agent_secrets_arn = local.jenkisn_agent_secrets.arn
   }
 }

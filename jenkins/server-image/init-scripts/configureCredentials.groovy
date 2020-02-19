@@ -8,6 +8,14 @@ import com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl
 import com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey
 import org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl
 
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder
+import com.amazonaws.services.secretsmanager.AWSSecretsManager
+import com.amazonaws.services.secretsmanager.model.GetSecretValueRequest
+import com.amazonaws.services.secretsmanager.model.GetSecretValueResult
+
+import groovy.json.JsonSlurper
+
 /*
   A shared method used by other "setCredential" methods to safely create a
   credential in the global domain.
@@ -122,19 +130,34 @@ def setUsernamePasswordCredentialsImpl(Map settings) {
     )
 }
 
+/**
+ Assumes management console UI JSON wrapped secrets manager secret
+ */
+def getSecret(String secretName) {
+    AWSSecretsManager client = AWSSecretsManagerClientBuilder.defaultClient()
+
+    GetSecretValueRequest request = new GetSecretValueRequest().withSecretId(secretName)
+    GetSecretValueResult response = client.getSecretValue(request)
+
+    String raw = response.secretString
+    return new JsonSlurper().parseText(raw) // JSON string => Map
+}
+
+def secretValue = getSecret(System.env.GITHUB_SECRET_ARN)
+
 credentials = [
-    [
-        'credentialType': 'StringCredentialsImpl',
-        'credentialsId': 'github-manage-webhooks-token',
-        'description': 'cicdenv - Github webhooks token',
-        'secret': System.env.GITHUB_WEBHOOKS_TOKEN,
-    ],
     [
         'credentialType': 'UsernamePasswordCredentialsImpl',
         'credentialsId': 'github-jenkins-token',
         'description': 'cicdenv - Github user/token',
-        'user': System.env.GITHUB_ACCESS_USER,
-        'password': System.env.GITHUB_ACCESS_TOKEN,
+        'user': secretValue['access-user'],
+        'password': secretValue['access-token'],
+    ],
+    [
+        'credentialType': 'StringCredentialsImpl',
+        'credentialsId': 'github-manage-webhooks-token',
+        'description': 'cicdenv - Github webhooks token',
+        'secret': secretValue['webhooks-token'],
     ],
 ]
 

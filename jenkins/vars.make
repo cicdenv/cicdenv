@@ -2,26 +2,22 @@ SHELL=/bin/bash
 
 JENKINS_INSTANCE=local
 AWS_REGION=us-west-2
-AWS_PROFILE=main-infra-admin
 
 SERVER_IMAGE_NAME=jenkins-server
 AGENT_IMAGE_NAME=jenkins-agent
 
-HTTP_PORT=8080
-AGENT_PORT=5000
-SSH_PORT=16022
+HTTPS_PORT=8443
 
 DEFAULT_BROWSER=$(shell if uname -s | grep Darwin > /dev/null; then echo open; else echo x-www-browser; fi)
 
 EDIT_IN_PLACE=$(shell if uname -s | grep Darwin > /dev/null; then echo '-i' \'\'; else echo '-i'; fi)
 
 AGENT_NAME=127.0.0.1
-AGENT_AUTH=$(GITHUB_AGENT_USER):$(GITHUB_AGENT_TOKEN)
 
-SERVER_URL=http://localhost:$(HTTP_PORT)
-TUNNELING_URL=jenkins-server:$(AGENT_PORT)
+EXTERNAL_URL=https://localhost:$(HTTPS_PORT)
+INTERNAL_URL=https://localhost:$(HTTPS_PORT)
+RESOURCE_URL=https://127.0.0.1:$(HTTPS_PORT)
 FOOTER_URL=$(shell git config --get remote.origin.url | sed -e 's/git@/https:\/\//' -e 's/github.com:/github.com\//' -e 's/\.git$$/\//')
-INTERNAL_URL=http://jenkins-server:$(HTTP_PORT)
 
 #
 # Jenkins Server .war file / base image docker build settings
@@ -32,8 +28,8 @@ JENKINS_UID=8008
 JENKINS_GID=8008
 JENKINS_VERSION=2.220
 RELEASE_DATE=2020.02.09
-JENKINS_SHA=e5095ae6f8ccf7ef4934d7745f2e086a2e9e2a42a0e6777f009d3e54c8404b96
-REMOTING_VERSION=4.0
+JENKINS_SHA=3f580fff6ad9721eb891361fd14b5d7cc061e0f31c3c3f0a84b9758779a803ad
+REMOTING_VERSION=4.2
 
 SERVER_VERSION=$(JENKINS_VERSION)-$(RELEASE_DATE)-01
 AGENT_VERSION=$(JENKINS_VERSION)-$(RELEASE_DATE)-01
@@ -62,10 +58,31 @@ else \
 fi)
 
 JENKINS_CLI_JAR=$(CURDIR)/target/jenkins-cli.jar
-JENKINS_CLI_AUTH=~/.jenkins-cli.auth
+JENKINS_CLI_AUTH=$(HOME)/.jenkins/auth
 
 PLUGIN_BUILD_IMAGE=maven:3.5.3-jdk-8-alpine
 
 _PS1='📦 \[\033[1;36m\]\u@\h:\[\033[1;34m\]\w\[\033[0;35m\]\[\033[1;36m\]$$ \[\033[0m\]'
 
-DOCKER_NETWORK=jenkins
+DOCKER_NETWORK=host
+
+AWS_PROFILE=admin-main
+
+SERVER_IAM_ROLE_ARN=arn:aws:iam::014719181291:role/jenkins-server
+AGENT_IAM_ROLE_ARN=arn:aws:iam::014719181291:role/jenkins-agent
+
+GITHUB_SECRET_ARN=arn:aws:secretsmanager:us-west-2:014719181291:secret:jenkins-github-localhost-pMe1ut
+AGENT_SECRET_ARN=arn:aws:secretsmanager:us-west-2:014719181291:secret:jenkins-agent-PYFC56
+ENV_SECRET_ARN=arn:aws:secretsmanager:us-west-2:014719181291:secret:jenkins-env-l28fUe
+
+GITHUB_ORGANIZATION=cicdenv
+GITHUB_AGENT_USER=jenkins-$(GITHUB_ORGANIZATION)
+GITHUB_SSHKEY=$(HOME)/.jenkins/jenkins_rsa
+
+AWS_CONFIG_OPTIONS=$(HOME)/.jenkins/aws
+TLS_CONFIG=$(HOME)/.jenkins/tls
+TRUST_STORE=/var/lib/jenkins/truststore.jks
+
+EXTRA_JENKINS_OPTS=\
+ --httpsPrivateKey="/var/jenkins_home/tls/server-rsa.pem" \
+--httpsCertificate="/var/jenkins_home/tls/server-cert.pem"

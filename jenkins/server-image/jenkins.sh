@@ -44,11 +44,13 @@ JAVA_OPTS="\
 -Dhudson.InitReactorRunner.concurrency=$(($(nproc) * 8))"
 
 JENKINS_OPTS="${JENKINS_OPTS-\
+--httpPort=-1 \
+--http2Port=8443 \
 --accessLoggerClassName=winstone.accesslog.SimpleAccessLogger  \
 --simpleAccessLogger.format=combined                           \
 --simpleAccessLogger.file=/var/jenkins_home/logs/access.log    \
---commonLibFolder=/var/jenkins_home/commonLibFolder            \
---extraLibFolder=/var/jenkins_home/extraLibFolder} ${EXTRA_JENKINS_OPTS}"
+--commonLibFolder=/var/jenkins_home/commonLibs                 \
+--extraLibFolder=/var/jenkins_home/extraLibs} ${EXTRA_JENKINS_OPTS}"
 
 echo "JENKINS_HOME               = ${JENKINS_HOME}"            
 echo "JENKINS_WORKSPACE_LOCATION = ${JENKINS_WORKSPACE_LOCATION}"
@@ -57,24 +59,6 @@ echo "JAVA_OPTS                  = ${JAVA_OPTS}"
 echo "JENKINS_OPTS               = ${JENKINS_OPTS}"
 echo "SERVER_URL                 = ${SERVER_URL}"
 echo "FOOTER_URL                 = ${FOOTER_URL}"
-
-# Import default SSH key (optional - for local testing)
-if [[ ! -d "${HOME}/.ssh" ]]; then
-    mkdir -p "${HOME}/.ssh"
-fi
-if [[ ! -f "${HOME}/.ssh/id_rsa" ]]; then
-    if [[ -f /tmp/.ssh/id_rsa ]]; then
-        cp /tmp/.ssh/id_rsa "${HOME}/.ssh/id_rsa"
-        chmod 600 "${HOME}/.ssh/id_rsa"
-    fi 
-fi
-if [[ ! -f "${HOME}/.ssh/config" ]]; then
-    cat <<EOF > "${HOME}/.ssh/config"
-Host *
-    StrictHostKeyChecking no
-    ServerAliveInterval 30
-EOF
-fi
 
 # Upstream: https://github.com/jenkinsci/docker/commit/0832831fa201e6c66e7f1a7f2da7aa73403a2671
 
@@ -95,11 +79,6 @@ if [[ $# -lt 1 ]] || [[ "$1" == "--"* ]]; then
     java_opts_array+=( "$item" )
   done < <([[ $JAVA_OPTS ]] && xargs printf '%s\0' <<<"$JAVA_OPTS")
 
-  readonly agent_port_property='jenkins.model.Jenkins.slaveAgentPort'
-  if [ -n "${JENKINS_SLAVE_AGENT_PORT:-}" ] && [[ "${JAVA_OPTS:-}" != *"${agent_port_property}"* ]]; then
-    java_opts_array+=( "-D${agent_port_property}=${JENKINS_SLAVE_AGENT_PORT}" )
-  fi
-
   if [[ "$DEBUG" ]] ; then
     java_opts_array+=( \
       '-Xdebug' \
@@ -112,6 +91,7 @@ if [[ $# -lt 1 ]] || [[ "$1" == "--"* ]]; then
     jenkins_opts_array+=( "$item" )
   done < <([[ $JENKINS_OPTS ]] && xargs printf '%s\0' <<<"$JENKINS_OPTS")
 
+  set -x
   exec java -Duser.home="$JENKINS_HOME" "${java_opts_array[@]}" -jar ${JENKINS_WAR} "${jenkins_opts_array[@]}" "$@"
 fi
 

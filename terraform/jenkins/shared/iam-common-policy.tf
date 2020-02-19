@@ -11,6 +11,14 @@ data "aws_iam_policy_document" "jenkins_trust" {
         "ec2.amazonaws.com",
       ]
     }
+
+    principals {
+      type = "AWS"
+
+      identifiers = [
+        local.main_account_root,
+      ]
+    }
   }
 }
 

@@ -2,7 +2,7 @@ run-server-bash:
 	docker run --rm -it --entrypoint=/bin/bash "$(SERVER_IMAGE_NAME)"
 
 run-agent-bash:
-	docker run --rm -it --entrypoint=/bin/bash "$(AGENT_IMAGE_NAME)-local"
+	docker run --rm -it --network=host --entrypoint=/bin/bash "$(AGENT_IMAGE_NAME)-local"
 
 debug-agent:
 	docker exec -it --user $(JENKINS_UID) -w '/var/lib/jenkins' "$(AGENT_IMAGE_NAME)-local" /bin/bash
@@ -11,7 +11,8 @@ debug-server:
 	docker exec -it --user $(JENKINS_UID) -w '/var/jenkins_home' "$(SERVER_IMAGE_NAME)" /bin/bash
 
 cli-install:
-	@curl -s $(SERVER_URL)/jnlpJars/jenkins-cli.jar -o "$(JENKINS_CLI_JAR)"
+	mkdir -p $(shell dirname $(JENKINS_CLI_JAR))
+	curl -sk $(EXTERNAL_URL)/jnlpJars/jenkins-cli.jar -o "$(JENKINS_CLI_JAR)"
 
 cli-help: cli-install
 	@docker run -it --rm                           \
@@ -30,7 +31,7 @@ ssh-cli: cli-install
 	    --net host                                      \
 	    openjdk:jre-alpine                              \
 	    java -jar /jenkins-cli.jar                      \
-	    -s $(SERVER_URL)                                \
+	    -s $(EXTERNAL_URL)                              \
 	    -i /root/.ssh/id_rsa -ssh                       \
 	    -user $(shell git config --global 'user.name')  \
 	    who-am-i

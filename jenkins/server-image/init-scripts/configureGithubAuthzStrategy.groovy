@@ -1,7 +1,7 @@
 import jenkins.model.Jenkins
 import hudson.security.GlobalMatrixAuthorizationStrategy
 
-def agentUser = System.env.GITHUB_AGENT_USER
+def agentUser = System.env.GITHUB_AGENT_USER ?: 'jenkins-cicdenv'
 
 def organization = System.env.GITHUB_ORGANIZATION ?: 'cicdenv'
 
@@ -24,7 +24,7 @@ def locks       = "org.jenkins.plugins.lockableresources.LockableResourcesManage
 def scriptler   = "org.jenkinsci.plugins.scriptler.ScriptlerManagement"
 
 def permissionsByPrincipals = [
-    "${organization}*coders": [
+    "${organization}*coders|authenticated|fred-vogt": [
         (overall)     : 'Administer',
         (credentials) : 'Delete|ManageDomains',
         (scriptler)   : 'Configure|RunScripts',

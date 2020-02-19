@@ -47,7 +47,7 @@ push:
 	fi
 	$(eval AWS_ACCOUNT=$(shell \
 	    source "$(CURDIR)/.venv/bin/activate"; \
-	    aws --profile=$(AWS_PROFILE) sts get-caller-identity --query 'Account' --output text \
+	    aws --profile=$(AWS_PROFILE) --region=$(AWS_REGION) sts get-caller-identity --query 'Account' --output text \
 	))
 	$(eval ECR_URL=$(AWS_ACCOUNT).dkr.ecr.$(AWS_REGION).amazonaws.com)
 
@@ -58,7 +58,7 @@ push:
 	# Push to ECR
 	eval $$(\
 	    source "$(CURDIR)/.venv/bin/activate"; \
-	    aws --profile=$(AWS_PROFILE) ecr get-login --no-include-email \
+	    aws --profile=$(AWS_PROFILE) --region=$(AWS_REGION) ecr get-login --no-include-email \
 	)
 	docker push "$(ECR_URL)/$(SERVER_IMAGE_NAME):$(SERVER_VERSION)"
 	docker push "$(ECR_URL)/$(AGENT_IMAGE_NAME):$(AGENT_VERSION)"

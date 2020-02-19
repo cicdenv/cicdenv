@@ -18,6 +18,7 @@ ExecStart=/usr/bin/docker run --rm                                              
     -p 16022:16022                                                                              \
     --env "SERVER_URL=${server_url}"                                                            \
     --env "JENKINS_INSTANCE=${jenkins_instance}"                                                \
+    --env "GITHUB_SECRET_ARN=${github_secret_arn}"                                              \
     -v "/var/jenkins_workspace:/var/jenkins_home/workspace"                                     \
     -v "/var/jenkins_builds:/var/jenkins_home/builds"                                           \
     -v "/var/jenkins_home/logs:/var/jenkins_home/logs                                           \

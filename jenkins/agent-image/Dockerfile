@@ -1,15 +1,17 @@
 #
 # Multi-stage: Jenkins CLI (jenkins-cli.jar) from upstream
 #
-ARG jenkinsVersion=latest
+ARG jenkinsVersion
 FROM jenkins/jenkins:${jenkinsVersion} as jenkins_server
+ARG jenkinsVersion
 WORKDIR /tmp
-RUN unzip /usr/share/jenkins/jenkins.war WEB-INF/jenkins-cli.jar
+RUN unzip /usr/share/jenkins/jenkins.war "WEB-INF/lib/cli-${jenkinsVersion}.jar"
 
 #
 # Multi-stage: docker client
 #
 FROM openjdk:11-jdk as docker_install
+ARG jenkinsVersion
 RUN apt update                  \
   && apt install -y             \
      apt-transport-https        \
@@ -26,6 +28,7 @@ RUN apt update                  \
 # Final Jenkins Agent
 #
 FROM openjdk:11-jdk
+ARG jenkinsVersion
 
 # Install OpenSSH client
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils curl git libltdl7 openssh-client \
@@ -36,14 +39,14 @@ COPY --from=docker_install /usr/bin/docker /usr/bin/docker
 
 # Jenkins CLI (jenkins-cli.jar) from multi-stage 
 RUN mkdir -p /usr/share/jenkins
-COPY --from=jenkins_server /tmp/WEB-INF/jenkins-cli.jar /usr/share/jenkins
+COPY --from=jenkins_server "/tmp/WEB-INF/lib/cli-${jenkinsVersion}.jar" /usr/share/jenkins/jenkins-cli.jar
 
 # Install remoting jar
-ARG REMOTING_VERSION=3.35
+ARG REMOTING_VERSION=4.0
 ARG RELEASES_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting
-RUN curl --create-dirs -sSLo /usr/share/jenkins/slave.jar ${RELEASES_URL}/${REMOTING_VERSION}/remoting-${REMOTING_VERSION}.jar \
+RUN curl --create-dirs -sSLo /usr/share/jenkins/agent.jar ${RELEASES_URL}/${REMOTING_VERSION}/remoting-${REMOTING_VERSION}.jar \
  && chmod 755 /usr/share/jenkins \
- && chmod 644 /usr/share/jenkins/slave.jar
+ && chmod 644 /usr/share/jenkins/agent.jar
 
 # Jenkins service user
 ARG user=jenkins
@@ -92,6 +95,22 @@ RUN curl --create-dirs -sSLo /var/cache/amazon-ecr-credential-helper_${ECR_CREDS
          http://launchpadlibrarian.net/406814547/amazon-ecr-credential-helper_${ECR_CREDS_VERSION}_amd64.deb \
  && dpkg -i /var/cache/amazon-ecr-credential-helper_${ECR_CREDS_VERSION}_amd64.deb \
  && rm /var/cache/amazon-ecr-credential-helper_${ECR_CREDS_VERSION}_amd64.deb
+
+#
+# Install AWS CLI
+#
+RUN apt-get update                     \
+ && apt-get install -y                 \
+  python3                              \
+  python3-setuptools                   \
+  python3-dev                          \
+  python3-pip                          \
+  jq                                   \
+ && pip3 --no-cache-dir install awscli \
+ && rm -rf /var/lib/apt/lists/*
+
+# Custom java.util.logging config
+COPY logging.properties /var/lib/jenkins/logging.properties
 
 # Container entry-point agent launcher
 COPY jenkins-agent.sh /usr/local/bin/jenkins-agent.sh

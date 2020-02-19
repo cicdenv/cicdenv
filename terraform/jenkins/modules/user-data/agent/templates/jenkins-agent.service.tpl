@@ -17,8 +17,8 @@ ExecStart=/usr/bin/docker run --rm                                  \
     --env "AGENT_NAME=$${NODE_ID}"                                  \
     --env "EXECUTORS=${executors}"                                  \
     --env "SERVER_URL=${server_url}"                                \
-    --env "TUNNELING_URL=${tunneling_url}"                          \
     --env "JENKINS_INSTANCE=${jenkins_instance}"                    \
+    --env "AGENT_SECRET_ARN=${agent_secrets_arn}"                   \
     -v "/var/lib/jenkins/workspace:/var/lib/jenkins/workspace"      \
     -v "/var/lib/jenkins/jar-cache:/var/lib/jenkins/jar-cache"      \
     -v "/var/lib/jenkins/cache:/var/lib/jenkins/cache"              \

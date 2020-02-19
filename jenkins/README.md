@@ -7,10 +7,14 @@ Routine actions are defined as Makefile targets:
 
 ## Usage
 ```
-# terminal #1
-cicdenv/jenkins$ make build-server run-server
+# terminal #1 Set AWS credentials (last 1 hour)
+cicdenv$ cicdctl console
+📦 $USER:~/cicdenv$ cicdctl creds aws-mfa main && (cd jenkins; make aws-creds)
 
 # terminal #2
+cicdenv/jenkins$ make build-server run-server
+
+# terminal #3
 cicdenv/jenkins$ make build-agent run-agent
 ```
 
@@ -64,7 +68,7 @@ jenkins-cli — read:org
 NOTE:
 ```
 Mac   - Populate disk I/O intensive volumes on the Docker Desktop Host VM
-Linux - We similar volumes on the host
+Linux - We create similar volumes on the host
 ```
 
 Create the necessary volumes:

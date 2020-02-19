@@ -10,26 +10,27 @@
 #
 # We connect to the jenkins server in two ways:
 # - REST API $SERVER_URL
-# - Agent JNLP $TUNNELING_URL 
+# - Agent WebSocket $SERVER_URL 
 #
 
 AGENT_NAME=${AGENT_NAME:-$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)}
 EXECUTORS=${EXECUTORS:-1}
 CLI_JAR=${CLI_JAR:-/usr/share/jenkins/jenkins-cli.jar}
 
-
-export AWS_DEFAULT_REGION=$(curl -m5 -sS http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/.$//')
 AGENT_AUTH=$(aws secretsmanager get-secret-value                   \
                  --secret-id "${AGENT_SECRET_ARN:-jenkins-agent}"  \
              | jq -r '.SecretString'                               \
              | jq -r '.["agent-auth"]')
 
+_CLI_JAVA_OPTS= # "-Djava.util.logging.config.file=/var/lib/jenkins/logging.properties"
+_CLI_JAVA_OPTS="${_CLI_JAVA_OPTS} -Djavax.net.ssl.trustStore=/var/lib/jenkins/truststore.jks"
+_CLI_JAVA_OPTS="${_CLI_JAVA_OPTS} -Djavax.net.ssl.trustStorePassword=jenkins"
 jenkins_cli() {
-    java '-Djava.util.logging.SimpleFormatter.format=%1$tF %1$tT %4$-7s %5$s%6$s%n'  \
-        -jar "$CLI_JAR" \
-        -s "$SERVER_URL" \
-        -logger FINE \
-        -auth "$AGENT_AUTH" \
+    java $_CLI_JAVA_OPTS     \
+        -jar "$CLI_JAR"      \
+        -s "$SERVER_URL"     \
+        -logger FINE         \
+        -auth "$AGENT_AUTH"  \
         "$@"
 }
 
@@ -41,15 +42,17 @@ set +e
 jenkins_cli get-node "$AGENT_NAME" || {
     read -r -d '' CONFIG <<-EOF
 <slave>
+    <name>${AGENT_NAME}</name>
+    <description>Self registering agent</description>
     <remoteFS>$HOME</remoteFS>
     <numExecutors>$EXECUTORS</numExecutors>
     <launcher class="hudson.slaves.JNLPLauncher">
-        <tunnel>${TUNNELING_URL}</tunnel>
         <workDirSettings>
             <disabled>false</disabled>
             <internalDir>remoting</internalDir>
             <failIfWorkDirIsMissing>false</failIfWorkDirIsMissing>
         </workDirSettings>
+        <webSocket>true</webSocket>
     </launcher>
 </slave>
 EOF
@@ -74,30 +77,31 @@ JAVA_OPTS="\
 -Xms${JVM_OPT_XMS-1024m}  \
 -Xmx${JVM_OPT_XMX-1024m}  \
 \
--Djava.io.tmpdir=/tmp  \
+-Djava.io.tmpdir=/tmp \
 \
 -Dhttp.proxyHost=${PROXY_HOST-}           \
 -Dhttp.proxyPort=${PROXY_PORT-}           \
 -Dhttps.proxyHost=${PROXY_HOST-}          \
 -Dhttps.proxyPort=${PROXY_PORT-}          \
--Dhttp.nonProxyHosts=${NON_PROXY_HOSTS-}"
+-Dhttp.nonProxyHosts=${NON_PROXY_HOSTS-}  \
+\
+-Djavax.net.ssl.trustStore=/var/lib/jenkins/truststore.jks \
+-Djavax.net.ssl.trustStorePassword=jenkins"
 
-SERVER_JNLP_URL=${SERVER_URL}/computer/${AGENT_NAME}/slave-agent.jnlp
-
-REMOTING_JAR=/usr/share/jenkins/slave.jar
-
-# Import default SSH key (optional - for local testing)
-if [[ ! -f "${HOME}/.ssh/id_rsa" ]]; then
-    cp /tmp/.ssh/id_rsa "${HOME}/.ssh/id_rsa"
-    chmod 600 "${HOME}/.ssh/id_rsa"
-fi
+# remoting.jar
+AGENT_JAR=/usr/share/jenkins/agent.jar
+MAIN_CLASS=hudson.remoting.jnlp.Main
 
 java ${JAVA_OPTS}                      \
-    -jar "${REMOTING_JAR}"             \
+    -cp "${AGENT_JAR}" "$MAIN_CLASS"   \
     -workDir "${HOME}"                 \
     -jar-cache "${JAR_CACHE_DIR}"      \
-    -jnlpCredentials "${AGENT_AUTH}"   \
-    -jnlpUrl "${SERVER_JNLP_URL}"      \
+    -url "${SERVER_URL}"               \
+    -webSocket                         \
+    -noreconnect                       \
+    -headless                          \
+    "$AGENT_AUTH"                      \
+    "$AGENT_NAME"                      \
     &
 wait $!
 exit $?

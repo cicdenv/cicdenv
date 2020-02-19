@@ -16,7 +16,11 @@ locals {
 
   jenkins_key            = data.terraform_remote_state.jenkins_backend.outputs.jenkins_key
   jenkins_env_secrets    = data.terraform_remote_state.jenkins_backend.outputs.jenkins_env_secrets
+  jenkins_agent_secrets  = data.terraform_remote_state.jenkins_backend.outputs.jenkins_agent_secrets
   jenkins_server_secrets = data.terraform_remote_state.jenkins_backend.outputs.jenkins_server_secrets
+
+  jenkins_github_secrets           = data.terraform_remote_state.jenkins_backend.outputs.jenkins_github_secrets
+  jenkins_github_localhost_secrets = data.terraform_remote_state.jenkins_backend.outputs.jenkins_github_localhost_secrets
 
   vpc_id = data.terraform_remote_state.shared.outputs.vpc_id
 
@@ -24,4 +28,6 @@ locals {
 
   bastion_service_security_group_id = data.terraform_remote_state.shared.outputs.bastion_service_security_group_id
   kops_node_security_group_id       = data.terraform_remote_state.shared.outputs.nodes_security_group_id
+
+  main_account_root = data.terraform_remote_state.iam_organizations.outputs.main_account_root
 }

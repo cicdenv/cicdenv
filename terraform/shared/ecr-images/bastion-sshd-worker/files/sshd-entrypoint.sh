@@ -2,7 +2,7 @@
 
 set -eu -o pipefail
 
-sts_creds=$(aws sts assume-role --role-arn "${IAM_ROLE}" --role-session-name=$RANDOM)
+sts_creds=$(aws sts assume-role --role-arn "${IAM_ROLE}" --role-session-name=bastion-service-$(hostname))
 
 mkdir -p "/root/.aws"
 cat <<EOFF > "/root/.aws/credentials"
