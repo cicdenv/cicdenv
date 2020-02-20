@@ -16,9 +16,12 @@ data "template_file" "jenkins_server_service" {
     host_name = local.host_name
     ecr_url   = local.jenkins_server_image.repository_url
     image     = local.jenkins_server_image.name
-    tag       = "latest"
+    tag       = local.jenkins_server_image.latest
 
-    server_url = "jenkins-${var.jenkins_instance}.${local.account_hosted_zone.domain}"
+    server_url  = local.server_url
+    content_url = local.content_url
+    
+    github_secrets_arn = local.jenkins_github_secrets.arn
   }
 }
 
@@ -32,9 +35,10 @@ data "template_file" "jenkins_agent_service" {
     host_name = local.host_name
     ecr_url   = local.jenkins_agent_image.repository_url
     image     = local.jenkins_agent_image.name
-    tag       = "latest"
+    tag       = local.jenkins_agent_image.latest
 
-    server_url    = "jenkins-${var.jenkins_instance}.${local.account_hosted_zone.domain}"
-    tunneling_url = "jenkins-${var.jenkins_instance}-tcp.${local.account_hosted_zone.domain}"
+    server_url = local.server_url
+    
+    agent_secrets_arn = local.jenkins_agent_secrets.arn
   }
 }

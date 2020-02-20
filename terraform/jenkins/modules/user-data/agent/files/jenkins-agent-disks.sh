@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu -o pipefail
+set -eux -o pipefail
 
 mount_dir="/mnt/ephemeral"
 
@@ -14,17 +14,16 @@ mount_dir="/mnt/ephemeral"
 #   results:
 #     /var/lib/docker => /mnt/ephemral/docker
 #
-for bind_spec in              \
+for bind_dir in               \
 "/var/lib/jenkins/jar-cache"  \
 "/var/lib/jenkins/workspace"  \
 "/var/lib/jenkins/cache"      \
 "/var/lib/jenkins/logs"       \
 ; do
     # Create a subfolder to mount under $mount_dir using the last path element
-    bind_dir="$bind_spec"
     real_dir="$mount_dir/$(basename $bind_dir)"
 
-    if [[ ! -d "$real_dir" ]]; then
+    if ! findmnt -rno TARGET "$bind_dir"; then
         mkdir -p "$real_dir"
         mkdir -p "$bind_dir"
 

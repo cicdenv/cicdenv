@@ -4,6 +4,14 @@ resource "aws_lb" "jenkins_external" {
   load_balancer_type = "application"
   security_groups    = [local.external_alb_security_group.id]
   subnets            = local.public_subnets
+
+  idle_timeout = 4000
+  enable_http2 = false
+
+  access_logs {
+    bucket  = local.jenkins_builds_s3_bucket.id
+    enabled = true
+  }
 }
 
 resource "aws_lb_listener" "jenkins_external_http" {

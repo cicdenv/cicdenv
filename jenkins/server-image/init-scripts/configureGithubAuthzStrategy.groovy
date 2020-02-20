@@ -24,7 +24,7 @@ def locks       = "org.jenkins.plugins.lockableresources.LockableResourcesManage
 def scriptler   = "org.jenkinsci.plugins.scriptler.ScriptlerManagement"
 
 def permissionsByPrincipals = [
-    "${organization}*coders|authenticated|fred-vogt": [
+    "fred-vogt": [
         (overall)     : 'Administer',
         (credentials) : 'Delete|ManageDomains',
         (scriptler)   : 'Configure|RunScripts',
@@ -32,7 +32,7 @@ def permissionsByPrincipals = [
     "${agentUser}": [
         (agents)      : 'Build|Configure|Connect|Create|Delete|Disconnect',
     ],
-    "${organization}*coders|authenticated": [
+    "authenticated": [
         (overall)     : 'Read',
         (credentials) : 'Create|Update|View',
         (agents)      : 'Build|Configure|Connect|Create|Delete|Disconnect',

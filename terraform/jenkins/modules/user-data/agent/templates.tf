@@ -8,10 +8,10 @@ data "template_file" "jenkins_agent_service" {
     host_name = local.host_name
     ecr_url   = local.jenkins_agent_image.repository_url
     image     = local.jenkins_agent_image.name
-    tag       = "latest"
+    tag       = local.jenkins_agent_image.latest
 
-    server_url    = "jenkins-${var.jenkins_instance}.${local.account_hosted_zone.domain}"
+    server_url = local.server_url
 
-    agent_secrets_arn = local.jenkisn_agent_secrets.arn
+    agent_secrets_arn = local.jenkins_agent_secrets.arn
   }
 }

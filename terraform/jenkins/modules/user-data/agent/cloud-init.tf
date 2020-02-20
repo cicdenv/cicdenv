@@ -94,6 +94,21 @@ chmod 0600 "/var/lib/jenkins/.docker/config.json"
 
 chown -R jenkins:jenkins "/var/lib/jenkins/.docker"
 
+#
+# /var/lib/jenkins/.aws/config to set default region
+#
+mkdir -p "/var/lib/jenkins/.aws"
+chmod 0700 "/var/lib/jenkins/.aws"
+
+echo <<EOFF > "/var/lib/jenkins/.aws/config"
+[default]
+region = $${AWS_DEFAULT_REGION}
+output = json
+EOFF
+chmod 0600 "/var/lib/jenkins/.aws/config"
+
+chown -R jenkins:jenkins "/var/lib/jenkins/.aws"
+
 # Set 'host' hostname to match dns
 hostnamectl set-hostname ${local.host_name}
 

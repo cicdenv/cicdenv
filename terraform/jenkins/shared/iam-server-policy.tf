@@ -45,7 +45,7 @@ data "aws_iam_policy_document" "jenkins_server" {
     ]
 
     resources = [
-      aws_s3_bucket.jenkins_build_records.arn,
+      aws_s3_bucket.jenkins_builds.arn,
     ]
   }
 
@@ -58,7 +58,8 @@ data "aws_iam_policy_document" "jenkins_server" {
     ]
 
     resources = [
-      "${aws_s3_bucket.jenkins_build_records.arn}/*",
+      "${aws_s3_bucket.jenkins_builds.arn}/instances/*",
+      "${aws_s3_bucket.jenkins_builds.arn}/shared/*",
     ]
   }
 }

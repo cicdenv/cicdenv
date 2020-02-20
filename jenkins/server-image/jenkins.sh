@@ -44,21 +44,27 @@ JAVA_OPTS="\
 -Dhudson.InitReactorRunner.concurrency=$(($(nproc) * 8))"
 
 JENKINS_OPTS="${JENKINS_OPTS-\
---httpPort=-1 \
---http2Port=8443 \
+--httpPort=${HTTP_PORT-8080} \
+--httpsPort=${HTTPS_PORT-8443} \
+--http2Port=${HTTP2_PORT-9443} \
 --accessLoggerClassName=winstone.accesslog.SimpleAccessLogger  \
 --simpleAccessLogger.format=combined                           \
 --simpleAccessLogger.file=/var/jenkins_home/logs/access.log    \
---commonLibFolder=/var/jenkins_home/commonLibs                 \
---extraLibFolder=/var/jenkins_home/extraLibs} ${EXTRA_JENKINS_OPTS}"
+--extraLibFolder=/var/jenkins_home/extraLibs                   \
+--httpsPrivateKey=/var/jenkins_home/tls/server-rsa.pem         \
+--httpsCertificate=/var/jenkins_home/tls/server-cert.pem} ${EXTRA_JENKINS_OPTS}"
 
 echo "JENKINS_HOME               = ${JENKINS_HOME}"            
 echo "JENKINS_WORKSPACE_LOCATION = ${JENKINS_WORKSPACE_LOCATION}"
 echo "JENKINS_BUILDS_LOCATION    = ${JENKINS_BUILDS_LOCATION}"
 echo "JAVA_OPTS                  = ${JAVA_OPTS}"
 echo "JENKINS_OPTS               = ${JENKINS_OPTS}"
+echo "EXTRA_JENKINS_OPTS         = ${EXTRA_JENKINS_OPTS}"     
 echo "SERVER_URL                 = ${SERVER_URL}"
 echo "FOOTER_URL                 = ${FOOTER_URL}"
+echo "HTTP_PORT   http/1.1       = ${HTTP_PORT-8080}"
+echo "HTTPS_PORT  https/1.1      = ${HTTPS_PORT-8443}"
+echo "HTTP2_PORT  http/2         = ${HTTP2_PORT-9443}"
 
 # Upstream: https://github.com/jenkinsci/docker/commit/0832831fa201e6c66e7f1a7f2da7aa73403a2671
 
@@ -92,7 +98,13 @@ if [[ $# -lt 1 ]] || [[ "$1" == "--"* ]]; then
   done < <([[ $JENKINS_OPTS ]] && xargs printf '%s\0' <<<"$JENKINS_OPTS")
 
   set -x
-  exec java -Duser.home="$JENKINS_HOME" "${java_opts_array[@]}" -jar ${JENKINS_WAR} "${jenkins_opts_array[@]}" "$@"
+  exec java                            \
+          -Duser.home="$JENKINS_HOME"  \
+          "${java_opts_array[@]}"      \
+          -cp "${JENKINS_WAR}"         \
+          Main                         \
+          "${jenkins_opts_array[@]}"   \
+          "$@"
 fi
 
 # As argument is not jenkins, assume user want to run his own process, for example a `bash` shell to explore this image

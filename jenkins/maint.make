@@ -12,11 +12,8 @@ plugin-versions: cli-install
 	    java                                                        \
 	        "-Djavax.net.ssl.trustStore=/tls/agent-truststore.jks"  \
 	        "-Djavax.net.ssl.trustStorePassword=jenkins"            \
-	        -Djava.util.logging.config.file=/dl.properties          \
-	        -Djavax.net.debug=all                                   \
 	        -jar /jenkins-cli.jar                                   \
-	        -s $(EXTERNAL_URL)                                      \
-	        -websockets                                             \
+	        -s $(SERVER_URL)                                        \
 	        -auth $(shell cat $(JENKINS_CLI_AUTH))                  \
 	        groovy = < plugin-versions/listPlugins.groovy           \
 	| tee plugin-versions/$(SERVER_VERSION).txt

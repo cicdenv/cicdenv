@@ -23,8 +23,6 @@ resource "aws_autoscaling_group" "jenkins_server" {
   vpc_zone_identifier = local.private_subnets
 
   target_group_arns = [
-    aws_lb_target_group.internal_ssh.arn,
-    aws_lb_target_group.internal_agents.arn,
     aws_lb_target_group.internal_https.arn,
     aws_lb_target_group.external_https.arn,
   ]

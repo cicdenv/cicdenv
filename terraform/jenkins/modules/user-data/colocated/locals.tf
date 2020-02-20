@@ -10,4 +10,9 @@ locals {
   
   jenkins_env_secrets    = data.terraform_remote_state.jenkins_backend.outputs.jenkins_env_secrets
   jenkins_server_secrets = data.terraform_remote_state.jenkins_backend.outputs.jenkins_server_secrets
+  jenkins_agent_secrets = data.terraform_remote_state.jenkins_backend.outputs.jenkins_agent_secrets
+  jenkins_github_secrets = data.terraform_remote_state.jenkins_backend.outputs.jenkins_github_secrets
+
+  server_url  = "https://jenkins-${var.jenkins_instance}.${local.account_hosted_zone.domain}"
+  content_url = "https://builds-${var.jenkins_instance}.${local.account_hosted_zone.domain}"
 }

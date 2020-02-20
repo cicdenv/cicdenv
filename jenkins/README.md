@@ -32,16 +32,24 @@ cicdenv/jenkins$ make checksum builds
 # Test
 cicdenv/jenkins$ make run-server
 cicdenv/jenkins$ make run-agent
+
+# Releases
+terraform/shared/ecr-images/jenkins/outputs.tf
+cicdctl apply shared/ecr-images/jenkins:main
 ```
 
 ## Setup
 One time setup includes:
+- [ ] secrets
+  cicdenv ssh key
+  cli/agent auth
+- [ ] tls
+  server cert
+  client truststore
+- [ ] Docker volumes
 - [ ] custom plugins
-- [ ] cicdenv ssh key
-- [ ] secrets config
-- [ ] cli auth
-- [ ] Docker Desktop volumes
-- [ ] jenkins secrets files
+
+NOTE: refreshing the assumed server/agent aws sts sessions is required hourly
 
 ### Custom Plugins
 Build forked / non-standard Jenkins plugins:

@@ -8,7 +8,7 @@ TimeoutStartSec=0
 Restart=always
 ExecStartPre=/usr/bin/docker pull ${ecr_url}:${tag}
 ExecStartPre=/usr/bin/docker tag ${ecr_url}:${tag} ${image}:${tag}
-ExecStartPre=/usr/bin/bash -c "/usr/bin/systemctl set-environment NODE_ID=`ec2metadata --instance-id`-`ec2metadata --local-ipv4`"
+ExecStartPre=/bin/bash -c "/bin/systemctl set-environment NODE_ID=`ec2metadata --instance-id`-`ec2metadata --local-ipv4`"
 ExecStart=/usr/bin/docker run --rm                                  \
     --name jenkins-agent                                            \
     --network jenkins                                               \
@@ -26,6 +26,7 @@ ExecStart=/usr/bin/docker run --rm                                  \
     -v "/var/run/docker.sock:/var/run/docker.sock"                  \
     -v "/var/lib/jenkins/.ssh:/var/lib/jenkins/.ssh"                \
     -v "/var/lib/jenkins/.docker:/var/lib/jenkins/.docker"          \
+    -v "/var/lib/jenkins/.aws:/var/lib/jenkins/.aws"                \
     -v "/dev/urandom:/dev/random"                                   \
     '${image}:${tag}'
 

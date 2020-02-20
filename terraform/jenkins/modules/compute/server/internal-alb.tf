@@ -10,24 +10,28 @@ resource "aws_lb_listener_rule" "internal_https" {
     host_header {
       values = [
         "jenkins-${var.jenkins_instance}.${local.account_hosted_zone.domain}",
+        "builds-${var.jenkins_instance}.${local.account_hosted_zone.domain}",
       ]
     }
   }
 }
 
 resource "aws_lb_target_group" "internal_https" {
-  name     = "jenkins-server-internal-https"
+  name = "jenkins-servers-internal-HTTPS"
+
   vpc_id   = local.vpc_id
 
-  protocol = "HTTP"
-  port     = 8080
-
+  protocol = "HTTPS"
+  port     = 443
+  
   health_check {
+    path = "/metrics/currentUser/ping"
+    
     healthy_threshold   = 2
     unhealthy_threshold = 2
     interval            = 10
 
-    protocol = "HTTP"
-    port     = 8080
+    protocol = "HTTPS"
+    port     = 443
   }
 }

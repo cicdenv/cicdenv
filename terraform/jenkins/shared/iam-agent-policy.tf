@@ -44,7 +44,8 @@ data "aws_iam_policy_document" "jenkins_agent" {
     ]
 
     resources = [
-      aws_s3_bucket.jenkins_cache.arn,
+      "${aws_s3_bucket.jenkins_builds.arn}/instances/*",
+      "${aws_s3_bucket.jenkins_builds.arn}/shared/*",
     ]
   }
 
@@ -57,7 +58,7 @@ data "aws_iam_policy_document" "jenkins_agent" {
     ]
 
     resources = [
-      "${aws_s3_bucket.jenkins_cache.arn}/*",
+      "${aws_s3_bucket.jenkins_builds.arn}/*",
     ]
   }
 }

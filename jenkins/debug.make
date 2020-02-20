@@ -12,7 +12,7 @@ debug-server:
 
 cli-install:
 	mkdir -p $(shell dirname $(JENKINS_CLI_JAR))
-	curl -sk $(EXTERNAL_URL)/jnlpJars/jenkins-cli.jar -o "$(JENKINS_CLI_JAR)"
+	curl -sk $(SERVER_URL)/jnlpJars/jenkins-cli.jar -o "$(JENKINS_CLI_JAR)"
 
 cli-help: cli-install
 	@docker run -it --rm                           \
@@ -31,7 +31,7 @@ ssh-cli: cli-install
 	    --net host                                      \
 	    openjdk:jre-alpine                              \
 	    java -jar /jenkins-cli.jar                      \
-	    -s $(EXTERNAL_URL)                              \
+	    -s $(SERVER_URL)                              \
 	    -i /root/.ssh/id_rsa -ssh                       \
 	    -user $(shell git config --global 'user.name')  \
 	    who-am-i

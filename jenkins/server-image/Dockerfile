@@ -37,13 +37,6 @@ RUN curl --create-dirs -sSLo \
       /usr/share/jenkins/ref/extraLibs/jetty-alpn-conscrypt-server-${jettyVersion}.jar \
       ${MVN_URL}/jetty-alpn-conscrypt-server/${jettyVersion}/jetty-alpn-conscrypt-server-${jettyVersion}.jar \
  && chmod o+rx /usr/share/jenkins/ref/extraLibs
-RUN curl --create-dirs -sSLo \
-      /usr/share/jenkins/ref/commonLibs/jetty-alpn-java-client-${jettyVersion}.jar \
-      ${MVN_URL}/jetty-alpn-java-client/${jettyVersion}/jetty-alpn-java-client-${jettyVersion}.jar \
- && curl --create-dirs -sSLo \
-      /usr/share/jenkins/ref/commonLibs/jetty-alpn-conscrypt-client-${jettyVersion}.jar \
-      ${MVN_URL}/jetty-alpn-conscrypt-client/${jettyVersion}/jetty-alpn-conscrypt-client-${jettyVersion}.jar \
- && chmod o+rx /usr/share/jenkins/ref/commonLibs
 
 # Custom plugin builds
 RUN mkdir -p /usr/share/jenkins/ref/plugins

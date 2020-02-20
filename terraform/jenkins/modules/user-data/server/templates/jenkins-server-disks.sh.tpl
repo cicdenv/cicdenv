@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu -o pipefail
+set -eux -o pipefail
 
 ephemeral_dir="/mnt/ephemeral"
 persistent_dir="/mnt/persistent"
@@ -15,17 +15,16 @@ persistent_dir="/mnt/persistent"
 #   results:
 #     /var/jenkins_workspace => /mnt/ephemral/jenkins_workspace
 #
-for bind_spec in                \
+for bind_dir in                 \
 "/var/jenkins_workspace"        \
 "/var/jenkins_builds"           \
 "/var/jenkins_home/userContent" \
 "/var/jenkins_home/logs"        \
 ; do
     # Create a subfolder to mount under $ephemeral_dir using the last path element
-    bind_dir="$bind_spec"
     real_dir="$${ephemeral_dir}/$(basename $bind_dir)"
 
-    if [[ ! -d "$real_dir" ]]; then
+    if ! findmnt -rno TARGET "$bind_dir"; then
         mkdir -p "$real_dir"
         mkdir -p "$bind_dir"
 
@@ -56,14 +55,13 @@ fi
 #   results:
 #     /var/jenkins_home/users => /mnt/persistent/users
 #
-for bind_spec in           \
+for bind_dir in            \
 "/var/jenkins_home/users"  \
 ; do
     # Create a subfolder to mount under $persistent_dir using the last path element
-    bind_dir="$bind_spec"
     real_dir="$${persistent_dir}/$(basename $bind_dir)"
 
-    if [[ ! -d "$real_dir" ]]; then
+    if ! findmnt -rno TARGET "$bind_dir"; then
         mkdir -p "$real_dir"
         mkdir -p "$bind_dir"
 
@@ -83,15 +81,14 @@ done
 #   results:
 #     /var/jenkins_home/jobs => /mnt/persistent/${jenkins_instance}/jobs
 #
-for bind_spec in           \
+for bind_dir in            \
 "/var/jenkins_home/jobs"   \
 "/var/jenkins_home/nodes"  \
 ; do
     # Create a subfolder to mount under $persistent_dir using the last path element
-    bind_dir="$bind_spec"
     real_dir="$${persistent_dir}/${jenkins_instance}/$(basename $bind_dir)"
 
-    if [[ ! -d "$real_dir" ]]; then
+    if ! findmnt -rno TARGET "$bind_dir"; then
         mkdir -p "$real_dir"
         mkdir -p "$bind_dir"
 

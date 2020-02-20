@@ -11,9 +11,11 @@ run-agent: local-build-agent network
 	    --network '$(DOCKER_NETWORK)'                          \
 	    --env "AGENT_NAME=$(AGENT_NAME)"                       \
 	    --env "EXECUTORS=4"                                    \
-	    --env "SERVER_URL=$(INTERNAL_URL)"                     \
+	    --env "SERVER_URL=$(SERVER_URL)"                       \
 	    --env "JENKINS_INSTANCE=$(JENKINS_INSTANCE)"           \
 	    --env "AGENT_SECRET_ARN=$(AGENT_SECRET_ARN)"           \
+	    --env "EXTRA_CLIENT_OPTS=$(EXTRA_CLIENT_OPTS)"         \
+	    --env "EXTRA_AGENT_OPTS=$(EXTRA_AGENT_OPTS)"           \
 	    -v jenkins-agent-workspace:/var/lib/jenkins/workspace  \
 	    -v jenkins-agent-cache:/var/lib/jenkins/cache          \
 	    -v $(GITHUB_SSHKEY):/tmp/.ssh/id_rsa:ro                \
@@ -26,13 +28,12 @@ run-agent: local-build-agent network
 run-server: network
 	docker run --rm --name 'jenkins-server'                                     \
 	    --network '$(DOCKER_NETWORK)'                                           \
-	    --env "SERVER_URL=$(EXTERNAL_URL)"                                      \
+	    --env "SERVER_URL=$(SERVER_URL)"                                        \
 	    --env "RESOURCE_URL=$(RESOURCE_URL)"                                    \
 	    --env "JENKINS_INSTANCE=$(JENKINS_INSTANCE)"                            \
 	    --env "GITHUB_SECRET_ARN=$(GITHUB_SECRET_ARN)"                          \
 	    --env "GITHUB_ORGANIZATION=$(GITHUB_ORGANIZATION)"                      \
 	    --env "GITHUB_AGENT_USER=$(GITHUB_AGENT_USER)"                          \
-	    --env "EXTRA_JENKINS_OPTS=$(EXTRA_JENKINS_OPTS)"                        \
 	    -v jenkins-server-home:/var/jenkins_home                                \
 	    -v $(CURDIR)/server-image/init-scripts:/var/jenkins_home/init.groovy.d  \
 	    -v $(GITHUB_SSHKEY):/var/lib/jenkins/.ssh/id_rsa:ro                     \
@@ -41,11 +42,18 @@ run-server: network
 	    -h 'jenkins-server'                                                     \
 	    "$(SERVER_IMAGE_NAME)"
 
-ui:
-	$(DEFAULT_BROWSER) $(EXTERNAL_URL)
+network:
+	if ! docker network inspect '$(DOCKER_NETWORK)' &>/dev/null; then \
+	    docker network create '$(DOCKER_NETWORK)'; \
+	fi
 
-include $(CURDIR)/setup.make
+ui:
+	$(DEFAULT_BROWSER) $(SERVER_URL)
+
 include $(CURDIR)/creds.make
+include $(CURDIR)/certs.make
+include $(CURDIR)/disks.make
+include $(CURDIR)/plugs.make
 include $(CURDIR)/build.make
 include $(CURDIR)/debug.make
 include $(CURDIR)/maint.make

@@ -22,15 +22,12 @@ AGENT_AUTH=$(aws secretsmanager get-secret-value                   \
              | jq -r '.SecretString'                               \
              | jq -r '.["agent-auth"]')
 
-_CLI_JAVA_OPTS= # "-Djava.util.logging.config.file=/var/lib/jenkins/logging.properties"
-_CLI_JAVA_OPTS="${_CLI_JAVA_OPTS} -Djavax.net.ssl.trustStore=/var/lib/jenkins/truststore.jks"
-_CLI_JAVA_OPTS="${_CLI_JAVA_OPTS} -Djavax.net.ssl.trustStorePassword=jenkins"
 jenkins_cli() {
-    java $_CLI_JAVA_OPTS     \
-        -jar "$CLI_JAR"      \
-        -s "$SERVER_URL"     \
-        -logger FINE         \
-        -auth "$AGENT_AUTH"  \
+    java ${EXTRA_CLIENT_OPTS-}  \
+        -jar "$CLI_JAR"         \
+        -s "${SERVER_URL}"      \
+        -logger FINE            \
+        -auth "$AGENT_AUTH"     \
         "$@"
 }
 
@@ -61,6 +58,18 @@ EOF
 
     jenkins_cli create-node "$AGENT_NAME" <<< "$CONFIG" || sleep 5
 }
+set -e
+
+# Need agent secret-key to connect w/websockets
+SERVER_JNLP_URL=${SERVER_URL}/computer/${AGENT_NAME}/slave-agent.jnlp
+CSRF_CRUMB=$(curl -sk -u "${AGENT_AUTH}" "${SERVER_URL}"'/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
+curl -skL                 \
+    -u "${AGENT_AUTH}"    \
+    -H "${CSRF_CRUMB}"    \
+    "${SERVER_JNLP_URL}"  \
+> "/tmp/slave-agent.jnlp"
+cat "/tmp/slave-agent.jnlp"
+SECRET_KEY=$(sed -E 's!.*<argument>([a-z0-9]{64})</argument>.*!\1!' < "/tmp/slave-agent.jnlp")
 
 JAVA_OPTS="\
 -XX:+AlwaysPreTouch               \
@@ -85,23 +94,22 @@ JAVA_OPTS="\
 -Dhttps.proxyPort=${PROXY_PORT-}          \
 -Dhttp.nonProxyHosts=${NON_PROXY_HOSTS-}  \
 \
--Djavax.net.ssl.trustStore=/var/lib/jenkins/truststore.jks \
--Djavax.net.ssl.trustStorePassword=jenkins"
+${EXTRA_AGENT_OPTS-}"
 
 # remoting.jar
 AGENT_JAR=/usr/share/jenkins/agent.jar
 MAIN_CLASS=hudson.remoting.jnlp.Main
 
-java ${JAVA_OPTS}                      \
-    -cp "${AGENT_JAR}" "$MAIN_CLASS"   \
-    -workDir "${HOME}"                 \
-    -jar-cache "${JAR_CACHE_DIR}"      \
-    -url "${SERVER_URL}"               \
-    -webSocket                         \
-    -noreconnect                       \
-    -headless                          \
-    "$AGENT_AUTH"                      \
-    "$AGENT_NAME"                      \
+java ${JAVA_OPTS}                     \
+    -cp "${AGENT_JAR}" "$MAIN_CLASS"  \
+    -workDir "${HOME}"                \
+    -jar-cache "${JAR_CACHE_DIR}"     \
+    -url "${SERVER_URL}/"             \
+    -webSocket                        \
+    -noreconnect                      \
+    -headless                         \
+    "$SECRET_KEY"                     \
+    "$AGENT_NAME"                     \
     &
 wait $!
 exit $?

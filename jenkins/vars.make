@@ -6,7 +6,9 @@ AWS_REGION=us-west-2
 SERVER_IMAGE_NAME=jenkins-server
 AGENT_IMAGE_NAME=jenkins-agent
 
+HTTP_PORT=8080
 HTTPS_PORT=8443
+HTTP2_PORT=9443
 
 DEFAULT_BROWSER=$(shell if uname -s | grep Darwin > /dev/null; then echo open; else echo x-www-browser; fi)
 
@@ -14,8 +16,8 @@ EDIT_IN_PLACE=$(shell if uname -s | grep Darwin > /dev/null; then echo '-i' \'\'
 
 AGENT_NAME=127.0.0.1
 
-EXTERNAL_URL=https://localhost:$(HTTPS_PORT)
-INTERNAL_URL=https://localhost:$(HTTPS_PORT)
+UNSECURE_URL=http://localhost:$(HTTP_PORT)
+SERVER_URL=https://localhost:$(HTTPS_PORT)
 RESOURCE_URL=https://127.0.0.1:$(HTTPS_PORT)
 FOOTER_URL=$(shell git config --get remote.origin.url | sed -e 's/git@/https:\/\//' -e 's/github.com:/github.com\//' -e 's/\.git$$/\//')
 
@@ -83,6 +85,17 @@ AWS_CONFIG_OPTIONS=$(HOME)/.jenkins/aws
 TLS_CONFIG=$(HOME)/.jenkins/tls
 TRUST_STORE=/var/lib/jenkins/truststore.jks
 
-EXTRA_JENKINS_OPTS=\
- --httpsPrivateKey="/var/jenkins_home/tls/server-rsa.pem" \
---httpsCertificate="/var/jenkins_home/tls/server-cert.pem"
+EXTRA_CLIENT_OPTS=\
+-Djavax.net.ssl.trustStore=/var/lib/jenkins/truststore.jks \
+-Djavax.net.ssl.trustStorePassword=jenkins
+
+EXTRA_AGENT_OPTS=\
+-Djavax.net.ssl.trustStore=/var/lib/jenkins/truststore.jks \
+-Djavax.net.ssl.trustStorePassword=jenkins \
+-Djava.util.logging.config.file=/var/lib/jenkins/debug-logging.properties
+#EXTRA_AGENT_OPTS=\
+#'-Xdebug' \
+#'-Xrunjdwp:server=y,transport=dt_socket,address=9088,suspend=y' \
+#-Djavax.net.ssl.trustStore=/var/lib/jenkins/truststore.jks \
+#-Djavax.net.ssl.trustStorePassword=jenkins -p 9088:9088
+#-Djava.util.logging.config.file=/var/lib/jenkins/debug-logging.properties

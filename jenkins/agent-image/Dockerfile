@@ -109,8 +109,8 @@ RUN apt-get update                     \
  && pip3 --no-cache-dir install awscli \
  && rm -rf /var/lib/apt/lists/*
 
-# Custom java.util.logging config
-COPY logging.properties /var/lib/jenkins/logging.properties
+# Custom java.util.logging configs
+COPY *.properties /var/lib/jenkins/
 
 # Container entry-point agent launcher
 COPY jenkins-agent.sh /usr/local/bin/jenkins-agent.sh

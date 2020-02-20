@@ -1,9 +1,8 @@
-output "jenkins_build_records_s3_bucket" {
-  value = aws_s3_bucket.jenkins_build_records.bucket
-}
-
-output "jenkins_cache_s3_bucket" {
-  value = aws_s3_bucket.jenkins_cache.bucket
+output "jenkins_builds_s3_bucket" {
+  value = {
+    id  = aws_s3_bucket.jenkins_builds.id
+    arn = aws_s3_bucket.jenkins_builds.arn
+  }
 }
 
 output "jenkins_key_pair" {

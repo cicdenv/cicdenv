@@ -1,1 +1,2 @@
+# pyenv/virtualenv for pushing images to AWS ECR docker repos
 awscli

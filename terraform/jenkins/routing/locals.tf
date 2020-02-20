@@ -13,4 +13,6 @@ locals {
   external_alb_security_group = data.terraform_remote_state.jenkins_shared.outputs.external_alb_security_group
 
   acm_certificate = data.terraform_remote_state.jenkins_shared.outputs.acm_certificate
+
+  jenkins_builds_s3_bucket = data.terraform_remote_state.jenkins_shared.outputs.jenkins_builds_s3_bucket
 }

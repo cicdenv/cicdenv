@@ -156,6 +156,26 @@ for secret in                                                                \
 done
 
 #
+# server tls self-signed cert
+#
+# view with `openssl x509 -in "/var/lib/jenkins/tls/server-cert.pem" -text -noout`
+mkdir -p /var/lib/jenkins/tls
+chmod 0700 "/var/lib/jenkins/tls"
+openssl req \
+    -newkey rsa:2048 \
+    -nodes \
+    -keyout "/var/lib/jenkins/tls/server-key.pem" \
+    -x509 \
+    -days 36500 \
+    -out "/var/lib/jenkins/tls/server-cert.pem" \
+    -subj "/C=US/ST=CA/L=San Francisco/O=cicdenv/OU=local/CN=${local.server_url}/emailAddress=jenkins@cicdenv.com" \
+    -passin "pass:jenkins"
+openssl rsa \
+    -in "/var/lib/jenkins/tls/server-key.pem" \
+    -out "/var/lib/jenkins/tls/server-rsa.pem"
+chown -R jenkins:jenkins "/var/lib/jenkins/tls"
+
+#
 # Required packages
 #
 apt-get install nfs-common -y
