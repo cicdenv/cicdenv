@@ -64,7 +64,7 @@ cicdenv/jenkins$ make ssh-key
 ```
 
 ### CLI Authentication
-Populate local agent auth file `~/.jenkins-cli.auth`
+Populate local agent auth file `~/.jenkins/.auth`
 ```
 Github: (User) -> Settings -> Developer settings -> Personal access tokens:
 jenkins-cli — read:org

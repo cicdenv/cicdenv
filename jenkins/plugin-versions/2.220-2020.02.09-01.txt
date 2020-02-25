@@ -41,10 +41,12 @@ cloudbees-bitbucket-branch-source: 2.7.0
 cloudbees-folder: 6.11.1
 command-launcher: 1.2
 config-file-provider: 3.6.3
+configuration-as-code: 1.35
+configuration-as-code-groovy: 1.1
 console-column-plugin: 1.5
 copyartifact: 1.43
 credentials: 2.3.1
-credentials-binding: 1.20
+credentials-binding: 1.21
 disable-github-multibranch-status: 1.1
 display-url-api: 2.3.2
 docker-commons: 1.16
@@ -80,7 +82,7 @@ job-dsl: 1.76
 jquery-detached: 1.2.1
 jsch: 0.1.55.2
 junit: 1.28
-kubernetes: 1.23.4
+kubernetes: 1.24.1
 kubernetes-client-api: 4.6.4-2
 kubernetes-credentials: 0.6.2
 ldap: 1.11
@@ -131,10 +133,11 @@ sse-gateway: 1.21
 ssh: 2.6.1
 ssh-credentials: 1.18.1
 startup-trigger-plugin: 2.9.3
+strict-crumb-issuer: 2.1.0
 structs: 1.20
-throttle-concurrents: 2.0.1
-timestamper: 1.10
-token-macro: 2.10
+throttle-concurrents: 2.0.2
+timestamper: 1.11
+token-macro: 2.11
 trilead-api: 1.0.5
 update-sites-manager: 2.0.0
 variant: 1.3

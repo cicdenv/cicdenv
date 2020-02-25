@@ -15,7 +15,7 @@ ssh-key:
 	    > "$(GITHUB_SSHKEY)";                \
 	fi
 
-cli-auth:
+agent-auth:
 	$(eval AGENT_AUTH := $(shell               \
 		aws --profile=$(AWS_PROFILE)           \
 	        --region=$(AWS_REGION)             \
@@ -23,8 +23,8 @@ cli-auth:
 	        --secret-id "$(AGENT_SECRET_ARN)"  \
 	    | jq -r '.SecretString'                \
 	    | jq -r '.["agent-auth"]'))
-	echo "$(AGENT_AUTH)" > "$(JENKINS_CLI_AUTH)"
-	echo "$(JENKINS_CLI_AUTH)"
+	echo "$(AGENT_AUTH)" > "$(JENKINS_CLI_AUTH).agent"
+	echo "$(JENKINS_CLI_AUTH).agent"
 
 aws-creds:
 	@mkdir -p "$(AWS_CONFIG_OPTIONS)/"{server,agent}

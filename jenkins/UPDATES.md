@@ -1,7 +1,10 @@
 # Jenkins Updates
 
 Check for core / remoting releases:
+* https://github.com/jenkinsci/jenkins/releases
+  * [winstone/jetty-version =%gt; pom.xml/properties/jetty.version](https://github.com/jenkinsci/winstone/blob/master/pom.xml#L22)
 * https://jenkins.io/changelog/
+* https://jenkins.io/security/advisories/
 
 Take note of version and release date.
 
@@ -11,6 +14,7 @@ Take note of version and release date.
 cicdenv/jenkins$ vim vars.make
 JENKINS_VERSION=2.220
 RELEASE_DATE=2020.02.09
+JETTY_VERSION=9.4.26.v20200117
 REMOTING_VERSION=4.0
 
 # Update checksum

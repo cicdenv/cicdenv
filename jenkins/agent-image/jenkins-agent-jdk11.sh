@@ -26,6 +26,7 @@ jenkins_cli() {
     java ${EXTRA_CLIENT_OPTS-}  \
         -jar "$CLI_JAR"         \
         -s "${SERVER_URL}"      \
+        -webSocket              \
         -logger FINE            \
         -auth "$AGENT_AUTH"     \
         "$@"
@@ -69,7 +70,8 @@ curl -skL                 \
     "${SERVER_JNLP_URL}"  \
 > "/tmp/slave-agent.jnlp"
 cat "/tmp/slave-agent.jnlp"
-SECRET_KEY=$(sed -E 's!.*<argument>([a-z0-9]{64})</argument>.*!\1!' < "/tmp/slave-agent.jnlp")
+SECRET_KEY=$(sed -E 's!.*<argument>\s*([a-z0-9]{64})\s*</argument>.*!\1!' < "/tmp/slave-agent.jnlp")
+echo "$SECRET_KEY" > connect-secret
 
 JAVA_OPTS="\
 -XX:+AlwaysPreTouch               \
@@ -88,6 +90,7 @@ JAVA_OPTS="\
 \
 -Djava.io.tmpdir=/tmp \
 \
+-Djava.net.preferIPv4Stack=true           \
 -Dhttp.proxyHost=${PROXY_HOST-}           \
 -Dhttp.proxyPort=${PROXY_PORT-}           \
 -Dhttps.proxyHost=${PROXY_HOST-}          \
@@ -96,20 +99,15 @@ JAVA_OPTS="\
 \
 ${EXTRA_AGENT_OPTS-}"
 
-# remoting.jar
 AGENT_JAR=/usr/share/jenkins/agent.jar
-MAIN_CLASS=hudson.remoting.jnlp.Main
 
-java ${JAVA_OPTS}                     \
-    -cp "${AGENT_JAR}" "$MAIN_CLASS"  \
-    -workDir "${HOME}"                \
-    -jar-cache "${JAR_CACHE_DIR}"     \
-    -url "${SERVER_URL}/"             \
-    -webSocket                        \
-    -noreconnect                      \
-    -headless                         \
-    "$SECRET_KEY"                     \
-    "$AGENT_NAME"                     \
+java ${JAVA_OPTS}                  \
+    -jar "${AGENT_JAR}"            \
+    -workDir "${HOME}"             \
+    -jar-cache "${JAR_CACHE_DIR}"  \
+    -jnlpUrl "${SERVER_JNLP_URL}"  \
+    -secret @connect-secret        \
     &
+
 wait $!
 exit $?

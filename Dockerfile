@@ -200,5 +200,9 @@ RUN curl -o /bin/cfssljson                                             \
 # Install OpenJDK 11 (keytool)
 RUN apk --no-cache --update add openjdk11
 
+# websocat for testing websocket services
+RUN apk --no-cache add --update -X http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+    websocat
+
 ENTRYPOINT []
 CMD []

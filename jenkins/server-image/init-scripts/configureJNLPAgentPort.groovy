@@ -1,9 +1,7 @@
 import jenkins.model.Jenkins
 
-def agentPort = System.env.JENKINS_SLAVE_AGENT_PORT as int
+if (Jenkins.instance.slaveAgentPort != -1) {
+    println 'Configured JNLP agent port: -1'
 
-if (Jenkins.instance.slaveAgentPort != agentPort) {
-    println 'Configured JNLP agent port: ${agentPort}'
-
-    Jenkins.instance.slaveAgentPort = agentPort
+    Jenkins.instance.slaveAgentPort = -1
 }

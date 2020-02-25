@@ -1,0 +1,360 @@
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - usernamePassword:
+          description: "cicdenv - Github user/token"
+          id: "github-jenkins-token"
+          password: "{...}"
+          scope: GLOBAL
+          username: "jenkins-cicdenv"
+      - string:
+          description: "cicdenv - Github webhooks token"
+          id: "github-manage-webhooks-token"
+          scope: GLOBAL
+          secret: "{...}"
+jenkins:
+  agentProtocols:
+  - "JNLP4-connect"
+  - "Ping"
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+      - "Agent/Build:authenticated"
+      - "Agent/Build:jenkins-cicdenv"
+      - "Agent/Configure:authenticated"
+      - "Agent/Configure:jenkins-cicdenv"
+      - "Agent/Connect:authenticated"
+      - "Agent/Connect:jenkins-cicdenv"
+      - "Agent/Create:authenticated"
+      - "Agent/Create:jenkins-cicdenv"
+      - "Agent/Delete:authenticated"
+      - "Agent/Delete:jenkins-cicdenv"
+      - "Agent/Disconnect:authenticated"
+      - "Agent/Disconnect:jenkins-cicdenv"
+      - "Credentials/Create:authenticated"
+      - "Credentials/Delete:fred-vogt"
+      - "Credentials/ManageDomains:fred-vogt"
+      - "Credentials/Update:authenticated"
+      - "Credentials/View:authenticated"
+      - "Job/Build:authenticated"
+      - "Job/Cancel:authenticated"
+      - "Job/Configure:authenticated"
+      - "Job/Create:authenticated"
+      - "Job/Delete:authenticated"
+      - "Job/Discover:authenticated"
+      - "Job/Move:authenticated"
+      - "Job/Read:authenticated"
+      - "Job/ViewStatus:authenticated"
+      - "Job/Workspace:authenticated"
+      - "Lockable Resources/Reserve:authenticated"
+      - "Lockable Resources/Unlock:authenticated"
+      - "Metrics/HealthCheck:anonymous"
+      - "Metrics/HealthCheck:authenticated"
+      - "Metrics/ThreadDump:anonymous"
+      - "Metrics/ThreadDump:authenticated"
+      - "Metrics/View:anonymous"
+      - "Metrics/View:authenticated"
+      - "Overall/Administer:fred-vogt"
+      - "Overall/Read:authenticated"
+      - "Run/Delete:authenticated"
+      - "Run/Replay:authenticated"
+      - "Run/Update:authenticated"
+      - "SCM/Tag:authenticated"
+      - "Scriptler/Configure:fred-vogt"
+      - "Scriptler/RunScripts:fred-vogt"
+      - "View/Configure:authenticated"
+      - "View/Create:authenticated"
+      - "View/Delete:authenticated"
+      - "View/Read:authenticated"
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: true
+  disableRememberMe: false
+  globalNodeProperties:
+  - envVars:
+      env:
+      - key: "JENKINS_INSTANCE"
+        value: "local"
+  markupFormatter:
+    rawHtml:
+      disableSyntaxHighlighting: true
+  mode: NORMAL
+  myViewsTabBar: "standard"
+  numExecutors: 0
+  primaryView:
+    all:
+      name: "all"
+  projectNamingStrategy: "standard"
+  quietPeriod: 5
+  remotingSecurity:
+    enabled: true
+  scmCheckoutRetryCount: 0
+  securityRealm:
+    github:
+      clientID: "8a0658e09b02856e7b91"
+      clientSecret: "{...}"
+      githubApiUri: "https://api.github.com"
+      githubWebUri: "https://github.com"
+      oauthScopes: "read:org,user:email"
+  slaveAgentPort: 0
+  updateCenter:
+    sites:
+    - id: "default"
+      url: "https://updates.jenkins.io/update-center.json"
+  views:
+  - all:
+      name: "all"
+  viewsTabBar: "standard"
+security:
+  apiToken:
+    creationOfLegacyTokenEnabled: false
+    tokenGenerationOnCreationEnabled: false
+    usageStatisticsEnabled: true
+  globalJobDslSecurityConfiguration:
+    useScriptSecurity: true
+  queueItemAuthenticator:
+    authenticators:
+    - global:
+        strategy: "triggeringUsersAuthorizationStrategy"
+  sSHD:
+    port: -1
+unclassified:
+  ansiColorBuildWrapper:
+    colorMaps:
+    - black: "#000000"
+      blackB: "#4C4C4C"
+      blue: "#1E90FF"
+      blueB: "#4682B4"
+      cyan: "#00CDCD"
+      cyanB: "#00FFFF"
+      green: "#00CD00"
+      greenB: "#00FF00"
+      magenta: "#CD00CD"
+      magentaB: "#FF00FF"
+      name: "xterm"
+      red: "#CD0000"
+      redB: "#FF0000"
+      white: "#E5E5E5"
+      whiteB: "#FFFFFF"
+      yellow: "#CDCD00"
+      yellowB: "#FFFF00"
+    - black: "#000000"
+      blackB: "#555555"
+      blue: "#0000AA"
+      blueB: "#5555FF"
+      cyan: "#00AAAA"
+      cyanB: "#55FFFF"
+      defaultBackground: 0
+      defaultForeground: 7
+      green: "#00AA00"
+      greenB: "#55FF55"
+      magenta: "#AA00AA"
+      magentaB: "#FF55FF"
+      name: "vga"
+      red: "#AA0000"
+      redB: "#FF5555"
+      white: "#AAAAAA"
+      whiteB: "#FFFFFF"
+      yellow: "#AA5500"
+      yellowB: "#FFFF55"
+    - black: "black"
+      blackB: "black"
+      blue: "blue"
+      blueB: "blue"
+      cyan: "cyan"
+      cyanB: "cyan"
+      green: "green"
+      greenB: "green"
+      magenta: "magenta"
+      magentaB: "magenta"
+      name: "css"
+      red: "red"
+      redB: "red"
+      white: "white"
+      whiteB: "white"
+      yellow: "yellow"
+      yellowB: "yellow"
+    - black: "#2E3436"
+      blackB: "#2E3436"
+      blue: "#3465A4"
+      blueB: "#3465A4"
+      cyan: "#06989A"
+      cyanB: "#06989A"
+      defaultBackground: 0
+      defaultForeground: 7
+      green: "#4E9A06"
+      greenB: "#4E9A06"
+      magenta: "#75507B"
+      magentaB: "#75507B"
+      name: "gnome-terminal"
+      red: "#CC0000"
+      redB: "#CC0000"
+      white: "#D3D7CF"
+      whiteB: "#D3D7CF"
+      yellow: "#C4A000"
+      yellowB: "#C4A000"
+  bitbucketEndpointConfiguration:
+    endpoints:
+    - bitbucketCloudEndpoint:
+        enableCache: false
+        manageHooks: false
+        repositoriesCacheDuration: 0
+        teamCacheDuration: 0
+  commonConfig:
+    nodeSelection: LABEL_ONLY
+    parallel: true
+    skipRoaming: true
+    timeoutInMilliseconds: 900000
+  defaultFolderConfiguration:
+    healthMetrics:
+    - worstChildHealthMetric:
+        recursive: true
+  gitHubConfiguration:
+    apiRateLimitChecker: ThrottleForNormalize
+    endpoints:
+    - apiUri: "https://api.github.com"
+      name: "Public GitHub API"
+  gitHubPluginConfig:
+    configs:
+    - credentialsId: "github-manage-webhooks-token"
+      name: "Public GitHub.com"
+    hookUrl: "https://localhost:8443/github-webhook/"
+  gitSCM:
+    createAccountBasedOnEmail: false
+    globalConfigEmail: "ci+jenkins@cicdenv.com"
+    globalConfigName: "cicdenv"
+    showEntireCommitSummaryInChanges: false
+    useExistingAccountWithSameEmail: false
+  globalDefaultFlowDurabilityLevel:
+    durabilityHint: PERFORMANCE_OPTIMIZED
+  globalLibraries:
+    libraries:
+    - allowVersionOverride: false
+      defaultVersion: "master"
+      implicit: true
+      includeInChangesets: false
+      name: "jenkins-global-library"
+      retriever:
+        modernSCM:
+          scm:
+            git:
+              credentialsId: "github-jenkins-token"
+              id: "72cecc21-b252-4cd3-b608-071e2aaca18e"
+              remote: "https://github.com/cicdenv/jenkins-global-library.git"
+              traits:
+              - "gitBranchDiscovery"
+  location:
+    adminAddress: "admin+jenkins@cicdenv.com"
+    url: "https://localhost:8443/"
+  mailer:
+    charset: "UTF-8"
+    useSsl: false
+  pollSCM:
+    pollingThreadCount: 10
+  resourceRoot:
+    url: "https://127.0.0.1:8443/"
+  shell:
+    shell: "/bin/bash"
+  simple-theme-plugin:
+    elements:
+    - cssUrl:
+        url: "https://localhost:8443/userContent/neo-light.css"
+    - cssText:
+        text: |
+          #header {
+              background-color: #0087f6;
+          }
+
+          #breadcrumbBar, #footer-container, .top-sticker-inner {
+              background-color: #f1f1f1 !important;
+          }
+
+          .pane-frame .pane-header {
+              border-bottom: 2px solid #3477b4;
+          }
+
+          #header #search-box {
+              color: #26262d;
+              padding-left: 20px;
+              background: white url(../images/16x16/search.png) no-repeat 2px center;
+          }
+    - cssUrl:
+        url: "https://localhost:8443/userContent/neo-light.css"
+    - cssText:
+        text: |
+          #header {
+              background-color: #0087f6;
+          }
+
+          #breadcrumbBar, #footer-container, .top-sticker-inner {
+              background-color: #f1f1f1 !important;
+          }
+
+          .pane-frame .pane-header {
+              border-bottom: 2px solid #3477b4;
+          }
+
+          #header #search-box {
+              color: #26262d;
+              padding-left: 20px;
+              background: white url(../images/16x16/search.png) no-repeat 2px center;
+          }
+    - cssUrl:
+        url: "https://localhost:8443/userContent/neo-light.css"
+    - cssText:
+        text: |
+          #header {
+              background-color: #0087f6;
+          }
+
+          #breadcrumbBar, #footer-container, .top-sticker-inner {
+              background-color: #f1f1f1 !important;
+          }
+
+          .pane-frame .pane-header {
+              border-bottom: 2px solid #3477b4;
+          }
+
+          #header #search-box {
+              color: #26262d;
+              padding-left: 20px;
+              background: white url(../images/16x16/search.png) no-repeat 2px center;
+          }
+    - cssUrl:
+        url: "https://localhost:8443/userContent/neo-light.css"
+    - cssText:
+        text: |
+          #header {
+              background-color: #0087f6;
+          }
+
+          #breadcrumbBar, #footer-container, .top-sticker-inner {
+              background-color: #f1f1f1 !important;
+          }
+
+          .pane-frame .pane-header {
+              border-bottom: 2px solid #3477b4;
+          }
+
+          #header #search-box {
+              color: #26262d;
+              padding-left: 20px;
+              background: white url(../images/16x16/search.png) no-repeat 2px center;
+          }
+  slackNotifier:
+    botUser: false
+    sendAsText: false
+  timestamperConfig:
+    allPipelines: false
+    elapsedTimeFormat: "'<b>'HH:mm:ss.S'</b> '"
+    systemTimeFormat: "'<b>'HH:mm:ss'</b> '"
+  upstream:
+    globalUpstreamFilterStrategy: UseOldest
+  whitelist:
+    enabled: false
+tool:
+  git:
+    installations:
+    - home: "git"
+      name: "Default"

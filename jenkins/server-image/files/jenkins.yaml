@@ -1,0 +1,11 @@
+jenkins:
+  systemMessage:
+  numExecutors: 0
+  slaveAgentPort: -1
+  agentProtocols:
+
+unclassified:
+  # configureJenkinsLocation.groovy
+  location:
+    adminAddress: System.env.ADMIN_EMAIL
+    url: System.env.SERVER_URL

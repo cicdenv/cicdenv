@@ -1,8 +1,10 @@
 build-server: build-jenkinsci-docker
 	# Build & Tag by version
 	docker build -t "$(SERVER_IMAGE_NAME):$(SERVER_VERSION)"  \
+	    --build-arg='jettyVersion=$(JETTY_VERSION)'           \
 	    --build-arg='FOOTER_URL=$(FOOTER_URL)'                \
-	    server-image
+	    server-image                                          \
+	    -f server-image/Dockerfile-$(JDK_VERSION)
 
 	# Tag as latest
 	docker tag "$(SERVER_IMAGE_NAME):$(SERVER_VERSION)" "$(SERVER_IMAGE_NAME):latest"
@@ -14,20 +16,25 @@ build-agent: build-server
 	    --build-arg='REMOTING_VERSION=$(REMOTING_VERSION)'  \
 	    --build-arg='uid=$(JENKINS_UID)'                    \
 	    --build-arg='gid=$(JENKINS_GID)'                    \
-	    agent-image
+	    agent-image                                         \
+	    -f agent-image/Dockerfile-$(JDK_VERSION)
 
 	# Tag as latest
 	docker tag "$(AGENT_IMAGE_NAME):$(AGENT_VERSION)" "$(AGENT_IMAGE_NAME):latest"
 
 build-jenkinsci-docker: pull-jenkinsci-docker
-	docker build -t jenkins-upstream:latest               \
-	    --build-arg='uid=$(JENKINS_UID)'                  \
-	    --build-arg='gid=$(JENKINS_GID)'                  \
-	    --build-arg='JENKINS_VERSION=$(JENKINS_VERSION)'  \
-	    --build-arg='JENKINS_SHA=$(JENKINS_SHA)'          \
-	    --build-arg='agent_port=$(AGENT_PORT)'            \
-	    server-image/jenkins-ci.docker                    \
-	    -f server-image/jenkins-ci.docker/Dockerfile-jdk11
+	if [[ ! -f server-image/jenkins-ci.docker/Dockerfile-jdk8 ]]; then  \
+		cp server-image/jenkins-ci.docker/Dockerfile                    \
+	          server-image/jenkins-ci.docker/Dockerfile-jdk8;           \
+	fi
+	docker build -t jenkins-upstream-$(JDK_VERSION):latest  \
+	    --build-arg='uid=$(JENKINS_UID)'                    \
+	    --build-arg='gid=$(JENKINS_GID)'                    \
+	    --build-arg='JENKINS_VERSION=$(JENKINS_VERSION)'    \
+	    --build-arg='JENKINS_SHA=$(JENKINS_SHA)'            \
+	    --build-arg='agent_port=$(AGENT_PORT)'              \
+	    server-image/jenkins-ci.docker                      \
+	    -f server-image/jenkins-ci.docker/Dockerfile-$(JDK_VERSION)
 
 pull-jenkinsci-docker:
 	if [[ ! -d server-image/jenkins-ci.docker ]]; then \

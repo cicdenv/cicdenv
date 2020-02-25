@@ -90,11 +90,10 @@ RUN mkdir -p "${HOME}/cache" \
 VOLUME "${HOME}/cache"
 
 # Install AWS ECR credential helper
-ARG ECR_CREDS_VERSION=0.2.0-1
-RUN curl --create-dirs -sSLo /var/cache/amazon-ecr-credential-helper_${ECR_CREDS_VERSION}_amd64.deb \
-         http://launchpadlibrarian.net/406814547/amazon-ecr-credential-helper_${ECR_CREDS_VERSION}_amd64.deb \
- && dpkg -i /var/cache/amazon-ecr-credential-helper_${ECR_CREDS_VERSION}_amd64.deb \
- && rm /var/cache/amazon-ecr-credential-helper_${ECR_CREDS_VERSION}_amd64.deb
+ARG ECR_CREDS_VERSION=0.4.0
+RUN curl --create-dirs -sSLo /usr/bin/docker-credential-ecr-login \
+ https://amazon-ecr-credential-helper-releases.s3.us-west-2.amazonaws.com/${ECR_CREDS_VERSION}/linux-amd64/docker-credential-ecr-login \
+ && chmod +x /usr/bin/docker-credential-ecr-login
 
 #
 # Install AWS CLI
@@ -110,10 +109,10 @@ RUN apt-get update                     \
  && rm -rf /var/lib/apt/lists/*
 
 # Custom java.util.logging configs
-COPY *.properties /var/lib/jenkins/
+COPY files/*.properties /var/lib/jenkins/
 
 # Container entry-point agent launcher
-COPY jenkins-agent.sh /usr/local/bin/jenkins-agent.sh
+COPY jenkins-agent-jdk11.sh /usr/local/bin/jenkins-agent.sh
 
 USER jenkins
 

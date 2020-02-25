@@ -57,8 +57,8 @@ shell:
 	    fi)                                                                         \
 	    --env TZ=$(timezone)                                                        \
 	    --env PATH=$(_PATH)                                                         \
-        --env "HOST_PATH=$(CURDIR)"                                                 \
-        --env "HOST_HOME=$(HOME)"                                                   \
+	    --env "HOST_PATH=$(CURDIR)"                                                 \
+	    --env "HOST_HOME=$(HOME)"                                                   \
 	    --env PS1=$(_PS1)                                                           \
 	    --entrypoint /bin/bash                                                      \
 	    $(image_name):$(image_tag)

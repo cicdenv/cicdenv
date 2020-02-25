@@ -1,4 +1,4 @@
-FROM jenkins-upstream
+FROM jenkins-upstream-jdk8
 
 USER root
 
@@ -27,16 +27,23 @@ RUN for plugin in       \
     touch /usr/share/jenkins/ref/plugins/${plugin}.jpi.disabled; \
 done
 
-# Download HTTP/2 jdk-9+ ALPN support
-ARG MVN_URL=https://repo.maven.apache.org/maven2/org/eclipse/jetty
-ARG jettyVersion=9.4.25.v20191220
+# Download HTTP/2 jdk-8 ALPN support
+# https://www.eclipse.org/jetty/documentation/current/alpn-chapter.html#alpn-versions
+# 1.8.0_212 => https://repo.maven.apache.org/maven2/org/mortbay/jetty/alpn/alpn-boot/8.1.13.v20181017/alpn-boot-8.1.13.v20181017.jar
+ARG MVN_URL=https://repo.maven.apache.org/maven2
+ARG jettyVersion=9.4.26.v20200117
+ARG alpnVersion=8.1.13.v20181017
 RUN curl --create-dirs -sSLo \
-      /usr/share/jenkins/ref/extraLibs/jetty-alpn-java-server-${jettyVersion}.jar \
-      ${MVN_URL}/jetty-alpn-java-server/${jettyVersion}/jetty-alpn-java-server-${jettyVersion}.jar \
+      /usr/share/jenkins/ref/extraLibs/jetty-alpn-server-${jettyVersion}.jar \
+      ${MVN_URL}/org/eclipse/jetty/jetty-alpn-server/${jettyVersion}/jetty-alpn-server-${jettyVersion}.jar \
  && curl --create-dirs -sSLo \
-      /usr/share/jenkins/ref/extraLibs/jetty-alpn-conscrypt-server-${jettyVersion}.jar \
-      ${MVN_URL}/jetty-alpn-conscrypt-server/${jettyVersion}/jetty-alpn-conscrypt-server-${jettyVersion}.jar \
- && chmod o+rx /usr/share/jenkins/ref/extraLibs
+      /usr/share/jenkins/ref/extraLibs/jetty-alpn-openjdk8-server-${jettyVersion}.jar \
+      ${MVN_URL}/org/eclipse/jetty/jetty-alpn-openjdk8-server/${jettyVersion}/jetty-alpn-openjdk8-server-${jettyVersion}.jar \
+ && curl --create-dirs -sSLo \
+      /usr/share/jenkins/ref/bootclasspath/alpn-boot-${alpnVersion}.jar \
+      ${MVN_URL}/org/mortbay/jetty/alpn/alpn-boot/${alpnVersion}/alpn-boot-${alpnVersion}.jar
+RUN chmod o+rx /usr/share/jenkins/ref/extraLibs \
+               /usr/share/jenkins/ref/bootclasspath
 
 # Custom plugin builds
 RUN mkdir -p /usr/share/jenkins/ref/plugins
@@ -56,7 +63,7 @@ RUN mkdir -p /var/jenkins_home/secrets;                                         
     echo 'false' > /var/jenkins_home/secrets/slave-to-master-security-kill-switch
 
 # Modified launcher
-COPY jenkins.sh /usr/local/bin/jenkins.sh
+COPY jenkins-jdk8.sh /usr/local/bin/jenkins.sh
 
 # Download third-party theme files
 RUN mkdir -p /usr/share/jenkins/ref/userContent                               \

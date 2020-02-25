@@ -7,6 +7,7 @@ import org.jenkinsci.plugins.simpletheme.CssTextThemeElement
 def jenkinsUrl = JenkinsLocationConfiguration.get().url
 
 def desc = Jenkins.instance.getDescriptor("org.codefirst.SimpleThemeDecorator")
+desc.elements.clear()
 
 def cssUrl = new CssUrlThemeElement("${jenkinsUrl}userContent/neo-light.css")
 desc.elements.add(cssUrl)
