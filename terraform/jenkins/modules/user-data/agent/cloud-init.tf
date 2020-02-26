@@ -100,7 +100,7 @@ chown -R jenkins:jenkins "/var/lib/jenkins/.docker"
 mkdir -p "/var/lib/jenkins/.aws"
 chmod 0700 "/var/lib/jenkins/.aws"
 
-echo <<EOFF > "/var/lib/jenkins/.aws/config"
+cat <<EOFF > "/var/lib/jenkins/.aws/config"
 [default]
 region = $${AWS_DEFAULT_REGION}
 output = json

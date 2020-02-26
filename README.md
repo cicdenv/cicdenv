@@ -44,12 +44,19 @@ Add to search path:
 cicdenv$ . bin/activate
 ```
 
+## One Time Setup
+```bash
+cicdenv$ cicdctl apply kops/shared:${WORKSPACE}
+```
+
 ## Setup
 ```bash
 # Build base AMI (main account)
-cicdenv$ cicdctl apply kops/shared:main
+cicdenv$ cicdctl apply kops/nat-gateways:main
+
 cicdenv$ cicdctl packer build
-cicdenv$ cicdctl destroy kops/shared:main
+
+cicdenv$ cicdctl destroy kops/nat-gateways:main
 
 # PKI - decrpt CA private key
 cicdenv$ make
@@ -60,8 +67,8 @@ cicdenv$ make
 ## Usage
 Example: `dev` account
 ```bash
-# Create kubernetes shared resource
-cicdenv$ cicdctl apply kops/shared:dev -auto-approve
+# Turn on private subnet NAT gateways
+cicdenv$ cicdctl apply kops/nat-gateways:dev -auto-approve
 
 # Create kubernetes cluster
 cicdenv$ cicdctl apply-cluster 1-16:dev -auto-approve
@@ -69,8 +76,9 @@ cicdenv$ cicdctl validate-cluster 1-16:dev
 
 # Cleanup
 cicdenv$ cicdctl destroy-cluster 1-16:dev -force
-cicdenv$ cicdctl destroy kops/bastion:dev -force
-cicdenv$ cicdctl destroy kops/shared:dev -force
+
+# Turn off private subnet NAT gateways
+cicdenv$ cicdctl destroy kops/nat-gateways:dev -force
 ```
 
 ## Host Access
@@ -78,11 +86,28 @@ cicdenv$ cicdctl destroy kops/shared:dev -force
 # Inspect with bastion service
 cicdenv$ cicdctl apply kops/bastion:dev -auto-approve
 # Linux
-cicdenv$ cicdctl bastion ssh dev --user $USER
+cicdenv$ cicdctl bastion ssh dev # --user $USER
 # Mac
 cicdenv$ make
 📦 $USER:~/cicdenv$ eval "$(ssh-agent)"; ssh-add ~/.ssh/kops_rsa
-📦 $USER:~/cicdenv$ cicdctl bastion ssh dev --user $USER
+📦 $USER:~/cicdenv$ cicdctl bastion ssh dev # --user $USER
+```
+
+## Jenkins
+```bash
+# Turn on private subnet NAT gateways
+cicdenv$ cicdctl apply kops/nat-gateways:dev -auto-approve
+
+# Create Jenkins instances
+cicdenv$ cicdctl apply-jenkins dist:dev --type distributed -auto-approve
+cicdenv$ cicdctl apply-jenkins test:dev --type colocated   -auto-approve
+
+# Cleanup
+cicdenv$ cicdctl destroy-jenkins dist:dev --type distributed -auto-approve
+cicdenv$ cicdctl destroy-jenkins test:dev --type colocated   -auto-approve
+
+# Turn off private subnet NAT gateways
+cicdenv$ cicdctl destroy kops/nat-gateways:dev -force
 ```
 
 ### Interactive

@@ -13,6 +13,7 @@ from cicdctl.commands.console       import run_console
 from cicdctl.commands.whitelist     import run_whitelist
 from cicdctl.commands.test          import run_test
 from cicdctl.commands.new           import run_new
+from cicdctl.commands.jenkins       import run_jenkins
 
 
 def __add_terraform(subparsers):
@@ -210,6 +211,27 @@ def __add_new(subparsers):
                   .set_defaults(func=run_new)
 
 
+def __add_jenkins(subparsers):
+    _target = argparse.ArgumentParser(add_help=False)  # <instance>:<worksapce>, supports multiple values
+    _target.add_argument("target", nargs='+', help="target jenkins instance in the form: <instance-name>:<workspace>.")
+
+    _passthru = argparse.ArgumentParser(add_help=False)
+    _passthru.add_argument("overrides", nargs=argparse.REMAINDER, help="extra arguments for terraform.")
+
+    _jenkins = [_target, _passthru]
+    _jenkins_cmds = [
+        "init-jenkins",
+        "apply-jenkins",
+        "destroy-jenkins",
+        "validate-jenkins",
+        "start-jenkins",
+        "stop-jenkins",
+    ]
+    for _jenkins_cmd in _jenkins_cmds:
+        subparsers.add_parser(_jenkins_cmd, parents=_jenkins, help=f"jenkins {_jenkins_cmd}.") \
+                  .set_defaults(func=run_jenkins)
+
+
 def parse_command_line():
     main_parser = argparse.ArgumentParser(
         prog='cicdctl', 
@@ -231,6 +253,7 @@ def parse_command_line():
     __add_whitelist(subparsers)
     __add_test(subparsers)
     __add_new(subparsers)
+    __add_jenkins(subparsers)
 
     if len(argv[1:]) == 0:
         main_parser.print_help()
