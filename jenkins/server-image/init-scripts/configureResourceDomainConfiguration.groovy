@@ -13,8 +13,8 @@ def rdc = ResourceDomainConfiguration.get()
 
 def resourceUrl = System.env.RESOURCE_URL
 
-if (rdc.getUrl() != resourceUrl) {
+if (rdc.url != resourceUrl) {
     println "Configured jenkins.security.ResourceDomainConfiguration::url => ${resourceUrl}"
 
-    rdc.setUrl(resourceUrl)
+    rdc.url = resourceUrl
 }

@@ -30,21 +30,6 @@ build-scriptler-plugin: local-plugin-builder m2
 	      mvn package)
 
 build-github-oauth-plugin: local-plugin-builder m2
-	# this process cannot be automated at the moment
-	#if [[ ! -d server-image/plugins/github-oauth-plugin ]]; then \
-	#    git clone \
-	#        git@github.com:jenkinsci/github-oauth-plugin.git \
-	#        --branch master server-image/plugins/github-oauth-plugin; \
-	#else \
-	#    (cd server-image/plugins/github-oauth-plugin; \
-	#        git checkout master && git pull origin master; \
-	#        git checkout JENKINS-43214 && rebase master); \
-	#fi
-	#(cd server-image/plugins/github-oauth-plugin; \
-	#    git fetch origin pull/111/head:JENKINS-43214; \
-	#    git checkout JENKINS-43214); 
-	# rebase with master, fix conflict, add "local" patches
-	#\
 	(cd server-image/plugins/github-oauth-plugin; \
 	 time docker run -it --rm \
 	     -v "$(CURDIR)/.m2:/home/$(user_name)/.m2" \

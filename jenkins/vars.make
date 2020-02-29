@@ -23,8 +23,8 @@ EDIT_IN_PLACE=$(shell if uname -s | grep Darwin > /dev/null; then echo '-i' \'\'
 
 AGENT_NAME=127.0.0.1
 
-UNSECURE_URL=http://localhost:$(HTTP_PORT)
-SERVER_URL=https://jenkins-server:$(HTTPS_PORT)
+UNSECURE_URL=http://$(IP_ADDRESS):$(HTTP_PORT)
+SERVER_URL=https://$(IP_ADDRESS):$(HTTPS_PORT)
 RESOURCE_URL=https://127.0.0.1:$(HTTPS_PORT)
 FOOTER_URL=$(shell git config --get remote.origin.url | sed -e 's/git@/https:\/\//' -e 's/github.com:/github.com\//' -e 's/\.git$$/\//')
 

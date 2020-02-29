@@ -62,3 +62,4 @@ include $(CURDIR)/maint.make
 include $(CURDIR)/clean.make
 include $(CURDIR)/cli.make
 include $(CURDIR)/mac.make
+include $(CURDIR)/ip.make

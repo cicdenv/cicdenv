@@ -67,8 +67,8 @@ RUN mkdir -p /var/jenkins_home/secrets;                                         
 COPY jenkins-jdk8.sh /usr/local/bin/jenkins.sh
 
 # Download third-party theme files
-RUN mkdir -p /usr/share/jenkins/ref/userContent                               \
- && curl -o /usr/share/jenkins/ref/userContent/neo-light.css                  \
+RUN mkdir -p /usr/share/jenkins/ref/custom-css                               \
+ && curl -o /usr/share/jenkins/ref/custom-css/neo-light.css                  \
          -fsSL https://tobix.github.io/jenkins-neo2-theme/dist/neo-light.css
 
 ARG FOOTER_URL
