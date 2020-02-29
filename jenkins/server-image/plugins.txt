@@ -27,7 +27,6 @@ exclusive-execution
 generic-webhook-trigger
 git
 github
-github-oauth:0.31
 github-scm-trait-notification-context
 git-userContent
 http_request

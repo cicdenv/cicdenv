@@ -33,7 +33,9 @@ String oauthScopes = 'read:org,user:email'
 String githubWebUri = 'https://github.com'
 String githubApiUri = 'https://api.github.com'
 
-SecurityRealm github_realm = new GithubSecurityRealm(githubWebUri, githubApiUri, clientID, clientSecret, oauthScopes)
+String redirectUri = System.env.GITHUB_OAUTH_REDIRECT_URI ?: ""
+
+SecurityRealm github_realm = new GithubSecurityRealm(githubWebUri, githubApiUri, clientID, clientSecret, oauthScopes, redirectUri)
 
 if (!github_realm.equals(Jenkins.instance.getSecurityRealm())) {
     Jenkins.instance.setSecurityRealm(github_realm)

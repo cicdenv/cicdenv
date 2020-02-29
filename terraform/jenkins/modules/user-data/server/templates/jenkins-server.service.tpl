@@ -22,6 +22,7 @@ ExecStart=/usr/bin/docker run --rm                                    \
     --env "RESOURCE_URL=${content_url}"                               \
     --env "JENKINS_INSTANCE=${jenkins_instance}"                      \
     --env "GITHUB_SECRET_ARN=${github_secrets_arn}"                   \
+    --env "GITHUB_OAUTH_REDIRECT_URI=${github_oauth_redirect_uri}"    \
     -v "/var/jenkins_workspace:/var/jenkins_home/workspace"           \
     -v "/var/jenkins_builds:/var/jenkins_home/builds"                 \
     -v "/var/jenkins_home/logs:/var/jenkins_home/logs"                \

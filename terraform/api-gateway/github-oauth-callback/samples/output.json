@@ -1,0 +1,7 @@
+{
+    "isBase64Encoded": "true|false",
+    "statusCode": "httpStatusCode",
+    "headers": { "headerName": "headerValue", "...": "..." },
+    "multiValueHeaders": { "headerName": ["headerValue", "headerValue2", "..."], "...": "..." },
+    "body": "..."
+}

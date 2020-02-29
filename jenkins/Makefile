@@ -1,10 +1,6 @@
 include $(CURDIR)/vars.make
 
-all: build-plugins builds
-
 builds: build-server build-agent
-
-build-plugins: build-scriptler-plugin
 
 run-agent: local-build-agent network
 	docker run --rm --name 'jenkins-agent' --init              \

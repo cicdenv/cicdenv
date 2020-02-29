@@ -1,0 +1,17 @@
+---
+swagger: "2.0"
+info:
+  version: "2020-02-29T06:30:51Z"
+  title: "jenkins-github-oauth-callbacks"
+host: "jenkins.cicdenv.com"
+schemes:
+- "https"
+paths:
+  /securityRealm/finishLogin/{account}/{instance}:
+    get:
+      responses:
+        302:
+          description: "302 response"
+          headers:
+            Location:
+              type: "string"

@@ -28,6 +28,7 @@ target
 
 jenkins/server-image/jenkins-ci.docker
 jenkins/server-image/plugins/scriptler-plugin
+jenkins/server-image/plugins/github-oauth-plugin
 
 .m2
 .venv

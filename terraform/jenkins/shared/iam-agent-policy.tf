@@ -1,4 +1,3 @@
-
 resource "aws_iam_policy" "jenkins_agent" {
   name   = "JenkinsAgent"
   policy = data.aws_iam_policy_document.jenkins_agent.json

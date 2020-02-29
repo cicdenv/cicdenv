@@ -22,5 +22,7 @@ data "template_file" "jenkins_server_service" {
     content_url = local.content_url
 
     github_secrets_arn = local.jenkins_github_secrets.arn
+    
+    github_oauth_redirect_uri = local.github_oauth_redirect_uri
   }
 }

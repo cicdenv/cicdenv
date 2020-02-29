@@ -40,7 +40,8 @@ RUN curl --create-dirs -sSLo \
 
 # Custom plugin builds
 RUN mkdir -p /usr/share/jenkins/ref/plugins
-COPY plugins/scriptler-plugin/target/scriptler.hpi /usr/share/jenkins/ref/plugins
+COPY plugins/scriptler-plugin/target/scriptler.hpi        /usr/share/jenkins/ref/plugins
+COPY plugins/github-oauth-plugin/target/github-oauth.hpi  /usr/share/jenkins/ref/plugins
 
 # Config Files
 COPY files/logging.properties /usr/share/jenkins/ref/logging.properties
