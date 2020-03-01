@@ -1,55 +1,150 @@
 {
-  "path": "/test/hello",
-  "headers": {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-    "Accept-Encoding": "gzip, deflate, lzma, sdch, br",
-    "Accept-Language": "en-US,en;q=0.8",
-    "CloudFront-Forwarded-Proto": "https",
-    "CloudFront-Is-Desktop-Viewer": "true",
-    "CloudFront-Is-Mobile-Viewer": "false",
-    "CloudFront-Is-SmartTV-Viewer": "false",
-    "CloudFront-Is-Tablet-Viewer": "false",
-    "CloudFront-Viewer-Country": "US",
-    "Host": "wt6mne2s9k.execute-api.us-west-2.amazonaws.com",
-    "Upgrade-Insecure-Requests": "1",
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36 OPR/39.0.2256.48",
-    "Via": "1.1 fb7cca60f0ecd82ce07790c9c5eef16c.cloudfront.net (CloudFront)",
-    "X-Amz-Cf-Id": "nBsWBOrSHMgnaROZJK1wGCZ9PcRcSpq_oSXZNQwQ10OTZL4cimZo3g==",
-    "X-Forwarded-For": "192.168.100.1, 192.168.1.1",
-    "X-Forwarded-Port": "443",
-    "X-Forwarded-Proto": "https"
-  },
-  "pathParameters": {
-    "proxy": "hello"
-  },
-  "requestContext": {
-    "accountId": "123456789012",
-    "resourceId": "us4z18",
-    "stage": "test",
-    "requestId": "41b45ea3-70b5-11e6-b7bd-69b5aaebc7d9",
-    "identity": {
-      "cognitoIdentityPoolId": "",
-      "accountId": "",
-      "cognitoIdentityId": "",
-      "caller": "",
-      "apiKey": "",
-      "sourceIp": "192.168.100.1",
-      "cognitoAuthenticationType": "",
-      "cognitoAuthenticationProvider": "",
-      "userArn": "",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36 OPR/39.0.2256.48",
-      "user": ""
-    },
-    "resourcePath": "/{proxy+}",
+    "resource": "/securityRealm/finishLogin/{account}/{instance}",
+    "path": "/securityRealm/finishLogin/dev/dist",
     "httpMethod": "GET",
-    "apiId": "wt6mne2s9k"
-  },
-  "resource": "/{proxy+}",
-  "httpMethod": "GET",
-  "queryStringParameters": {
-    "name": "me"
-  },
-  "stageVariables": {
-    "stageVarName": "stageVarValue"
-  }
+    "headers": {
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-US,en;q=0.9",
+        "CloudFront-Forwarded-Proto": "https",
+        "CloudFront-Is-Desktop-Viewer": "true",
+        "CloudFront-Is-Mobile-Viewer": "false",
+        "CloudFront-Is-SmartTV-Viewer": "false",
+        "CloudFront-Is-Tablet-Viewer": "false",
+        "CloudFront-Viewer-Country": "US",
+        "Cookie": "JSESSIONID.32709dc6=node01kzwp4k05olg61qlcb3z4lq5vv4.node0; JSESSIONID.76b9b8c0=node012u7fylek4qqryff4tiusr9472.node0",
+        "Host": "jenkins.cicdenv.com",
+        "Referer": "https://github.com/",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "cross-site",
+        "upgrade-insecure-requests": "1",
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36",
+        "Via": "2.0 a998f328ddbb3cec6c0b16ccd7c148b6.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "tZs9M-EcFa2tVs5txcRYtyv-Jk_cJ2tSMaF16q13YENmZZqYHEf-Hg==",
+        "X-Amzn-Trace-Id": "Root=1-5e5a0924-06d4f6a608824b40cf1107ec",
+        "X-Forwarded-For": "198.27.223.50, 70.132.18.88",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Proto": "https"
+    },
+    "multiValueHeaders": {
+        "Accept": [
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+        ],
+        "Accept-Encoding": [
+            "gzip, deflate, br"
+        ],
+        "Accept-Language": [
+            "en-US,en;q=0.9"
+        ],
+        "CloudFront-Forwarded-Proto": [
+            "https"
+        ],
+        "CloudFront-Is-Desktop-Viewer": [
+            "true"
+        ],
+        "CloudFront-Is-Mobile-Viewer": [
+            "false"
+        ],
+        "CloudFront-Is-SmartTV-Viewer": [
+            "false"
+        ],
+        "CloudFront-Is-Tablet-Viewer": [
+            "false"
+        ],
+        "CloudFront-Viewer-Country": [
+            "US"
+        ],
+        "Cookie": [
+            "JSESSIONID.32709dc6=node01kzwp4k05olg61qlcb3z4lq5vv4.node0; JSESSIONID.76b9b8c0=node012u7fylek4qqryff4tiusr9472.node0"
+        ],
+        "Host": [
+            "jenkins.cicdenv.com"
+        ],
+        "Referer": [
+            "https://github.com/"
+        ],
+        "sec-fetch-dest": [
+            "document"
+        ],
+        "sec-fetch-mode": [
+            "navigate"
+        ],
+        "sec-fetch-site": [
+            "cross-site"
+        ],
+        "upgrade-insecure-requests": [
+            "1"
+        ],
+        "User-Agent": [
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36"
+        ],
+        "Via": [
+            "2.0 a998f328ddbb3cec6c0b16ccd7c148b6.cloudfront.net (CloudFront)"
+        ],
+        "X-Amz-Cf-Id": [
+            "tZs9M-EcFa2tVs5txcRYtyv-Jk_cJ2tSMaF16q13YENmZZqYHEf-Hg=="
+        ],
+        "X-Amzn-Trace-Id": [
+            "Root=1-5e5a0924-06d4f6a608824b40cf1107ec"
+        ],
+        "X-Forwarded-For": [
+            "198.27.223.50, 70.132.18.88"
+        ],
+        "X-Forwarded-Port": [
+            "443"
+        ],
+        "X-Forwarded-Proto": [
+            "https"
+        ]
+    },
+    "queryStringParameters": {
+        "code": "b5494ef5b5d0498d9886",
+        "state": "aMqbgwxjLdnWJwfW-QydI1x-k.R"
+    },
+    "multiValueQueryStringParameters": {
+        "code": [
+            "b5494ef5b5d0498d9886"
+        ],
+        "state": [
+            "aMqbgwxjLdnWJwfW-QydI1x-k.R"
+        ]
+    },
+    "pathParameters": {
+        "account": "dev",
+        "instance": "dist"
+    },
+    "stageVariables": null,
+    "requestContext": {
+        "resourceId": "jwhftk",
+        "resourcePath": "/securityRealm/finishLogin/{account}/{instance}",
+        "httpMethod": "GET",
+        "extendedRequestId": "IpZdpG1avHcF0Ow=",
+        "requestTime": "29/Feb/2020:06:48:04 +0000",
+        "path": "/securityRealm/finishLogin/dev/dist",
+        "accountId": "014719181291",
+        "protocol": "HTTP/1.1",
+        "stage": "live",
+        "domainPrefix": "jenkins",
+        "requestTimeEpoch": 1582958884085,
+        "requestId": "980ef061-63c0-4a29-a35a-2800eec31eb1",
+        "identity": {
+            "cognitoIdentityPoolId": null,
+            "accountId": null,
+            "cognitoIdentityId": null,
+            "caller": null,
+            "sourceIp": "198.27.223.50",
+            "principalOrgId": null,
+            "accessKey": null,
+            "cognitoAuthenticationType": null,
+            "cognitoAuthenticationProvider": null,
+            "userArn": null,
+            "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36",
+            "user": null
+        },
+        "domainName": "jenkins.cicdenv.com",
+        "apiId": "lvlohonet6"
+    },
+    "body": null,
+    "isBase64Encoded": false
 }
