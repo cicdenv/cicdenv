@@ -5,7 +5,7 @@ IP_ADDRESS=\
 $(shell \
 if uname -s | grep Darwin > /dev/null; \
 then ipconfig getifaddr $(MAC_INTERFACE); \
-else ip route get 1 | awk '{print $(NF); exit}'; \
+else ip route get 1 | awk '{print $$(NF); exit}'; \
 fi\
 )
 

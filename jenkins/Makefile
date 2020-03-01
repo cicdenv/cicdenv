@@ -45,8 +45,8 @@ run-server: network
 	    "$(SERVER_IMAGE_NAME)"
 
 network:
-	if ! docker network inspect '$(DOCKER_NETWORK)' &>/dev/null; then \
-	    docker network create '$(DOCKER_NETWORK)'; \
+	if ! docker network inspect '$(DOCKER_NETWORK)' &>/dev/null; then  \
+	    docker network create '$(DOCKER_NETWORK)';                     \
 	fi
 
 ui:
