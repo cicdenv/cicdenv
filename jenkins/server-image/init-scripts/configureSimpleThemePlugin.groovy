@@ -1,5 +1,6 @@
 import jenkins.model.Jenkins
 
+import org.jenkinsci.plugins.simpletheme.ThemeElement
 import org.jenkinsci.plugins.simpletheme.CssUrlThemeElement
 import org.jenkinsci.plugins.simpletheme.CssTextThemeElement
 
@@ -10,9 +11,7 @@ desc.elements.clear()
 
 // https://tobix.github.io/jenkins-neo2-theme/dist/neo-light.css
 // at /var/jenkins_home/custom-css/neo-light.css
-def cssNeoLight = new CssTextThemeElement(new File(jenkins.rootDir, 'custom-css/neo-light.css').text)
-desc.elements.add(cssNeoLight)
-
+def cssBase = new CssTextThemeElement(new File(jenkins.rootDir, 'custom-css/neo-light.css').text)
 def cssOverrides = new CssTextThemeElement('''\
 #header {
     background-color: #000000;
@@ -38,6 +37,10 @@ def cssOverrides = new CssTextThemeElement('''\
     background: white;
 }
 ''')
-desc.elements.add(cssOverrides)
 
+List<ThemeElement> settings = new ArrayList<>();
+settings.add(cssBase)
+settings.add(cssOverrides)
+
+desc.elements = settings
 desc.save()
