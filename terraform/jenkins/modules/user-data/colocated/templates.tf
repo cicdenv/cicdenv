@@ -24,6 +24,10 @@ data "template_file" "jenkins_server_service" {
     github_secrets_arn = local.jenkins_github_secrets.arn
 
     github_oauth_redirect_uri = local.github_oauth_redirect_uri
+
+    aws_region = var.region
+    
+    aws_main_account_id = local.main_account.id
   }
 }
 

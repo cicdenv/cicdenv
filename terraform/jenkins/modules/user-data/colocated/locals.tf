@@ -18,4 +18,6 @@ locals {
   content_url = "https://builds-${var.jenkins_instance}.${local.account_hosted_zone.domain}"
 
   github_oauth_redirect_uri = "https://jenkins.${local.site_hosted_zone.domain}/securityRealm/finishLogin/${terraform.workspace}/${var.jenkins_instance}"
+
+  main_account = data.terraform_remote_state.iam_organizations.outputs.master_account
 }

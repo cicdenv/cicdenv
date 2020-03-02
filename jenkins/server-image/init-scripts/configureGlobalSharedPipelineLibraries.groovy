@@ -16,7 +16,7 @@ import net.sf.json.JSONObject
 String specialInstance = 'test'  // 'test' instance is special - for testing shared library PRs
 String jenkinsInstance = System.env.JENKINS_INSTANCE
 
-def organization = System.env.GITHUB_ORGANIZATION ?: 'cicdenv'
+def organization = System.env.GITHUB_ORGANIZATION ?: 'vogtech'
 
 globalPipelineLibraries = [
     'jenkins-global-library': [

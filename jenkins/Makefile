@@ -35,7 +35,8 @@ run-server: network
 	    --env "GITHUB_SECRET_ARN=$(GITHUB_SECRET_ARN)"          \
 	    --env "GITHUB_ORGANIZATION=$(GITHUB_ORGANIZATION)"      \
 	    --env "GITHUB_AGENT_USER=$(GITHUB_AGENT_USER)"          \
-	    --env "EXTRA_JAVA_OPTS=$(EXTRA_SERVER_OPTS)"            \
+	    --env "AWS_MAIN_ACCOUNT_ID=$(AWS_MAIN_ACCOUNT_ID)"      \
+	    --env "AWS_DEFAULT_REGION=$(AWS_REGION)"                \
 	    -v jenkins-server-home:/var/jenkins_home                \
 	    -v $(HOOK_SCRIPTS):/var/jenkins_home/init.groovy.d      \
 	    -v $(CASC_CONFIG):/var/jenkins_home/jenkins.yaml        \

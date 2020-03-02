@@ -11,6 +11,11 @@ jenkins:
       env:
       - key: "JENKINS_INSTANCE"
         value: "${JENKINS_INSTANCE}"
+      - key: "AWS_DEFAULT_REGION"
+        value: "${AWS_DEFAULT_REGION}"
+      - key: "AWS_MAIN_ACCOUNT_ID"
+        value: "${AWS_MAIN_ACCOUNT_ID}"
+  
   remotingSecurity:
     enabled: true
   crumbIssuer:

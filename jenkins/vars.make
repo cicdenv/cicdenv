@@ -1,7 +1,9 @@
 SHELL=/bin/bash
 
 JENKINS_INSTANCE=local
+
 AWS_REGION=us-west-2
+AWS_MAIN_ACCOUNT_ID=014719181291
 
 JDK_VERSION=jdk8
 #JDK_VERSION=jdk11
@@ -89,7 +91,7 @@ GITHUB_SECRET_ARN=arn:aws:secretsmanager:us-west-2:014719181291:secret:jenkins-g
 AGENT_SECRET_ARN=arn:aws:secretsmanager:us-west-2:014719181291:secret:jenkins-agent-PYFC56
 ENV_SECRET_ARN=arn:aws:secretsmanager:us-west-2:014719181291:secret:jenkins-env-l28fUe
 
-GITHUB_ORGANIZATION=cicdenv
+GITHUB_ORGANIZATION=vogtech
 GITHUB_AGENT_USER=jenkins-$(GITHUB_ORGANIZATION)
 GITHUB_SSHKEY=$(HOME)/.jenkins/jenkins_rsa
 
