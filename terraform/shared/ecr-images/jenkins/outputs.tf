@@ -19,3 +19,13 @@ output "jenkins_agent_image_repo" {
     latest         = "2.222-2020.02.23-03"
   }
 }
+
+output "ci_builds_image_repo" {
+  value = {
+    id             = aws_ecr_repository.ci_builds.id
+    name           = aws_ecr_repository.ci_builds.name
+    arn            = aws_ecr_repository.ci_builds.arn
+    registry_id    = aws_ecr_repository.ci_builds.registry_id
+    repository_url = aws_ecr_repository.ci_builds.repository_url
+  }
+}

@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "jenkins_server" {
     ]
 
     resources = [
-      local.ecr_jenkins_server_arn,
+      local.ecr_jenkins_server.arn,
     ]
   }
 

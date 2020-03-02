@@ -15,7 +15,8 @@ data "aws_iam_policy_document" "jenkins_agent" {
     ]
 
     resources = [
-      local.ecr_jenkins_agent_arn,
+      local.ecr_jenkins_agent.arn,
+      local.ecr_ci_builds.arn,
     ]
   }
 
