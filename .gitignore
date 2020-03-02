@@ -32,3 +32,5 @@ jenkins/server-image/plugins/github-oauth-plugin
 
 .m2
 .venv
+
+jenkins/cli-cookies.txt

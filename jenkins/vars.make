@@ -97,6 +97,9 @@ AWS_CONFIG_OPTIONS=$(HOME)/.jenkins/aws
 TLS_CONFIG=$(HOME)/.jenkins/tls
 TRUST_STORE=/var/lib/jenkins/truststore.jks
 
+HOOK_SCRIPTS=$(CURDIR)/server-image/init-scripts
+CASC_CONFIG=$(CURDIR)/server-image/files/jenkins.yaml
+
 EXTRA_SERVER_OPTS=\
 -Djavax.net.ssl.trustStore=/var/jenkins_home/tls/truststore.jks \
 -Djavax.net.ssl.trustStorePassword=jenkins \

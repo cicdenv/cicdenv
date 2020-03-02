@@ -3,9 +3,39 @@ jenkins:
   numExecutors: 0
   slaveAgentPort: -1
   agentProtocols:
+  markupFormatter:
+    rawHtml:
+      disableSyntaxHighlighting: true
+  globalNodeProperties:
+  - envVars:
+      env:
+      - key: "JENKINS_INSTANCE"
+        value: "${JENKINS_INSTANCE}"
+  remotingSecurity:
+    enabled: true
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: true
+  updateCenter:
+    sites:
+    - id: "default"
+      url: "https://updates.jenkins.io/update-center.json"
+
+security:
+  queueItemAuthenticator:
+    authenticators:
+    - global:
+        strategy: "triggeringUsersAuthorizationStrategy"
 
 unclassified:
-  # configureJenkinsLocation.groovy
-  location:
-    adminAddress: System.env.ADMIN_EMAIL
-    url: System.env.SERVER_URL
+  shell:
+    shell: "/bin/bash"
+  gitSCM:
+    globalConfigName: "cicdenv"
+    globalConfigEmail: "ci+jenkins@cicdenv.com"
+  gitHubConfiguration:
+    endpoints:
+    - apiUri: "https://api.github.com"
+      name: "Public GitHub API"
+  globalDefaultFlowDurabilityLevel:
+    durabilityHint: PERFORMANCE_OPTIMIZED

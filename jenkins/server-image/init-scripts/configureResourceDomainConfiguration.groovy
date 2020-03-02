@@ -2,7 +2,6 @@ import jenkins.security.ResourceDomainConfiguration
 
 /*
 $JENKINS_HOME/jenkins.security.ResourceDomainConfiguration.xml
-
 <?xml version='1.1' encoding='UTF-8'?>
 <jenkins.security.ResourceDomainConfiguration>
   <url>http://jenkins-server/</url>
