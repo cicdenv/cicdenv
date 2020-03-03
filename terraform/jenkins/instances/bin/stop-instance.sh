@@ -21,7 +21,7 @@ pushd "terraform/jenkins/instances/${instance_name}" >/dev/null
 terraform workspace list | grep "$workspace"   >/dev/null || terraform workspace new    "$workspace"
 terraform workspace list | grep "* $workspace" >/dev/null || terraform workspace select "$workspace"
 
-asg_ids=$(terraform output -json 'autoscaling_groups' | jq -r '.value[].ids')
+asg_ids=$(terraform output -json 'autoscaling_groups' | jq -r '.[].id')
 
 for asg in $asg_ids; do
     echo "ASG [$asg]"

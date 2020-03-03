@@ -15,7 +15,6 @@ ExecStart=/usr/bin/docker run --rm                                    \
     --name jenkins-server                                             \
     --network jenkins                                                 \
     --init                                                            \
-    --tmpfs /tmp                                                      \
     -p 443:8443                                                       \
     -p 9443:9443                                                      \
     --env "SERVER_URL=${server_url}"                                  \
@@ -25,6 +24,7 @@ ExecStart=/usr/bin/docker run --rm                                    \
     --env "GITHUB_OAUTH_REDIRECT_URI=${github_oauth_redirect_uri}"    \
     --env "AWS_MAIN_ACCOUNT_ID=${aws_main_account_id}"                \
     --env "AWS_DEFAULT_REGION=${aws_region}"                          \
+    --env "AWS_ACCOUNT_NAME=${aws_account_alias}"                     \
     -v "/var/jenkins_workspace:/var/jenkins_home/workspace"           \
     -v "/var/jenkins_builds:/var/jenkins_home/builds"                 \
     -v "/var/jenkins_home/logs:/var/jenkins_home/logs"                \

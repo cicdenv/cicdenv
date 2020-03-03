@@ -48,6 +48,6 @@ def run_jenkins(args):
             run_terraform(_args)
         elif args.command == 'stop-jenkins':
             environment = environ.copy()  # Inherit cicdctl's environment
-            gen_cmd = ['terraform/jenkins/bin/stop-instance.sh', _target]
+            gen_cmd = ['terraform/jenkins/instances/bin/stop-instance.sh', _target]
             log_cmd_line(gen_cmd)
             subprocess.run(gen_cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)

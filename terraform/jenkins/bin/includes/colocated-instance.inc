@@ -14,3 +14,9 @@ module "jenkins_instance" {
   executors = 12
 }
 EOF
+
+cat <<EOF > "instances/${instance_name}/outputs.tf"
+output "autoscaling_groups" {
+  value = module.jenkins_instance.autoscaling_groups
+}
+EOF

@@ -16,6 +16,24 @@ data "aws_iam_policy_document" "jenkins_agent" {
 
     resources = [
       local.ecr_jenkins_agent.arn,
+    ]
+  }
+  
+  # ecr - ci builds image
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:InitiateLayerUpload",
+      "ecr:UploadLayerPart",
+      "ecr:CompleteLayerUpload",
+      "ecr:PutImage",
+    ]
+
+    resources = [
       local.ecr_ci_builds.arn,
     ]
   }

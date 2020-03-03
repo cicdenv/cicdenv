@@ -15,7 +15,8 @@ jenkins:
         value: "${AWS_DEFAULT_REGION}"
       - key: "AWS_MAIN_ACCOUNT_ID"
         value: "${AWS_MAIN_ACCOUNT_ID}"
-  
+      - key: "AWS_ACCOUNT_NAME"
+        value: "${AWS_ACCOUNT_NAME}"
   remotingSecurity:
     enabled: true
   crumbIssuer:

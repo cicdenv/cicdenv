@@ -8,7 +8,7 @@ module "cloudinit" {
   executors        = var.executors
 }
 
-module "colocated_instance" {
+module "colocated" {
   source = "../../compute/server"
 
   region = var.region

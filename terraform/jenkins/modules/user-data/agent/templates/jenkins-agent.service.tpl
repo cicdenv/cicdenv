@@ -13,7 +13,6 @@ ExecStart=/usr/bin/docker run --rm                                  \
     --name jenkins-agent                                            \
     --network jenkins                                               \
     --init                                                          \
-    --tmpfs /tmp                                                    \
     --env "AGENT_NAME=$${NODE_ID}"                                  \
     --env "EXECUTORS=${executors}"                                  \
     --env "SERVER_URL=${server_url}"                                \

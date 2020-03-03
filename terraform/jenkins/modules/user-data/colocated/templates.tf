@@ -28,6 +28,8 @@ data "template_file" "jenkins_server_service" {
     aws_region = var.region
     
     aws_main_account_id = local.main_account.id
+    
+    aws_account_alias = terraform.workspace
   }
 }
 
