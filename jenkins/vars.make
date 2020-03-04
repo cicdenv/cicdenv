@@ -92,8 +92,7 @@ GITHUB_SECRET_ARN=arn:aws:secretsmanager:us-west-2:014719181291:secret:jenkins-g
 AGENT_SECRET_ARN=arn:aws:secretsmanager:us-west-2:014719181291:secret:jenkins-agent-PYFC56
 ENV_SECRET_ARN=arn:aws:secretsmanager:us-west-2:014719181291:secret:jenkins-env-l28fUe
 
-GITHUB_ORGANIZATION=vogtech
-GITHUB_AGENT_USER=jenkins-$(GITHUB_ORGANIZATION)
+GITHUB_AGENT_USER=jenkins-cicdenv
 GITHUB_SSHKEY=$(HOME)/.jenkins/jenkins_rsa
 
 AWS_CONFIG_OPTIONS=$(HOME)/.jenkins/aws

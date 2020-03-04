@@ -33,7 +33,6 @@ run-server: network
 	    --env "RESOURCE_URL=$(RESOURCE_URL)"                    \
 	    --env "JENKINS_INSTANCE=$(JENKINS_INSTANCE)"            \
 	    --env "GITHUB_SECRET_ARN=$(GITHUB_SECRET_ARN)"          \
-	    --env "GITHUB_ORGANIZATION=$(GITHUB_ORGANIZATION)"      \
 	    --env "GITHUB_AGENT_USER=$(GITHUB_AGENT_USER)"          \
 	    --env "AWS_ACCOUNT_NAME=$(AWS_ACCOUNT_NAME)"            \
 	    --env "AWS_MAIN_ACCOUNT_ID=$(AWS_MAIN_ACCOUNT_ID)"      \
