@@ -41,7 +41,7 @@ resource "aws_s3_bucket_policy" "apt_repo" {
       ],
       "Condition": {
         "StringEquals": {
-          "aws:sourceVpce": ${jsonencode(compact(split("\n", file("${path.module}/../../data/vpc-endpoints.txt"))))}
+          "aws:sourceVpce": ${jsonencode(local.vpc_endpoints)}
         }
       }
     }

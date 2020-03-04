@@ -9,6 +9,7 @@ from cicdctl.logs import log_cmd_line
 from aws.credentials import StsAssumeRoleCredentials
 from terraform.files import backend_config, varfile_dir, parse_terraform_tf, parse_tfvars, parse_variable_comments_tf
 from terraform.dependencies import get_cascades
+from terraform.external import dynamodb
 
 _init_command = ['init', '-upgrade', f'-backend-config={backend_config}']  # needs terraform[-<version>] prepended
 
@@ -92,13 +93,19 @@ def run_terraform(args):
         if not workspaced and workspace is None:
             workspace = 'main'  # Default to the only valid value in this case
 
+        aws_profile = f'admin-{workspace}'
+        aws_region = 'us-west-2'
+
         # Refresh sub account AWS mfa credentials if needed
         StsAssumeRoleCredentials().refresh_profile(f'admin-{workspace}')
 
         environment = environ.copy()  # Inherit cicdctl's environment
 
         # Set aws credentials profile with env variables
-        environment['AWS_PROFILE'] = f'admin-{workspace}'
+        environment['AWS_PROFILE'] = aws_profile
+
+        # Set default aws region
+        environment['AWS_DEFAULT_REGION'] = aws_region
 
         # Shared terraform plugin cache
         environment['TF_PLUGIN_CACHE_DIR'] = path.join(getcwd(), '.terraform.d/plugin-cache')
@@ -123,18 +130,21 @@ def run_terraform(args):
         elif sub_command in ['import', 'output', 'refresh', 'plan', 'apply', 'destroy']:
             _state_prep(state_dir, workspace, environment, workspaced, terraform)  # "state prep" the state first, then proceed
 
-            # Load variables.tf, locate values from terraform/*.tfvars
+            # Load variables.tf, locate values from {terraform/*.tfvars, data sources}
             var_opts = []
             if sub_command in ['refresh', 'plan', 'apply', 'destroy', 'import']:
-                vars = parse_variable_comments_tf(path.join(state_dir, 'variables.tf'))  # name -> tfvar file
+                vars = parse_variable_comments_tf(path.join(state_dir, 'variables.tf'))  # name -> tfvar {source}
                 backend_vars = parse_tfvars(backend_config)
-                for name, file in vars.items():
-                    if file == 'backend-config.tfvars':  # Backend variables get individual bindings
+                for name, source in vars.items():
+                    if source.startswith('dynamodb['):  # DynamoDB item scan: `dynamodb[<table>][<field>]`
+                        var_opts.append('-var')
+                        var_opts.append(f'{name}={dynamodb.get_items(source, aws_profile, aws_region)}')
+                    elif source == 'backend-config.tfvars':  # Backend variables get individual bindings
                         var_opts.append('-var')
                         var_opts.append(f'{name}={backend_vars[name]}')
                     else:  # Other global variables should be single value for file bindings
                         var_opts.append('-var-file')
-                        var_opts.append(path.join(varfile_dir, file))
+                        var_opts.append(path.join(varfile_dir, source))
 
             command_line = [terraform, sub_command]
             command_line.extend(var_opts)

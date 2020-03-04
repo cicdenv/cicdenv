@@ -20,8 +20,5 @@ cicdenv$ cicdctl <init|plan|apply|output> kops/backend:main
 
 NOTE:
 ```
-Sub-account kops/shared workspaced states add their s3-VPC-endpoint to
-terraform/data/vpc-endpoints.txt to gain access to the common kops state store s3 bucket.
-
 The sub-account admin IAM role is similarly sourced to provide access to users/workspaced-terraform.
 ```

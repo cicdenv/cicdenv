@@ -18,15 +18,4 @@ aws --region=${self.triggers.region}    \
     --tags 'Key=kubernetes.io/cluster/${self.triggers.cluster_name},Value=shared'
 EOF
   }
-
-  # Add this cluster to the list of tags sourced by the shared state
-  provisioner "local-exec" {
-    command = "echo '${self.triggers.cluster_name}' >> ../../../shared/data/${self.triggers.workspace}/clusters.txt"
-  }
-
-  # Remove this cluster to the list of tags sourced by the shared state
-  provisioner "local-exec" {
-    command = "sed -i'' -e '/^${self.triggers.cluster_name}$/d' ../../../shared/data/${self.triggers.workspace}/clusters.txt"
-    when = destroy
-  }
 }

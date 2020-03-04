@@ -8,7 +8,7 @@ resource "aws_dynamodb_table" "terraform_lock" {
   billing_mode = "PAY_PER_REQUEST"
 
   lifecycle {
-    ignore_changes = ["read_capacity", "write_capacity"]
+    ignore_changes = [read_capacity, write_capacity]
   }
 
   attribute {

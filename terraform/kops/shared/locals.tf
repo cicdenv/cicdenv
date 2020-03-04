@@ -1,18 +1,7 @@
-data "null_data_source" "cluster_tags" {
-  count = length(compact(split("\n", file("${path.module}/data/${terraform.workspace}/clusters.txt"))))
-
-  inputs = {
-    Key   = "kubernetes.io/cluster/${element(compact(split("\n", file("${path.module}/data/${terraform.workspace}/clusters.txt"))), count.index)}"
-    Value = "shared"
-  }
-}
-
 locals {
   network_cidr = "10.16.0.0/16"
 
   domain = var.domain
-
-  cluster_names = compact(split("\n", file("${path.module}/data/${terraform.workspace}/clusters.txt")))
 
   public_subnet_tags = {
     "kubernetes.io/role/elb" = "1"

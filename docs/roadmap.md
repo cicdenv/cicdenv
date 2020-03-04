@@ -27,7 +27,6 @@
 - [ ] jupyter notebook server
 
 ## Multiple Contributors
-- [ ] external data store for items
 - [ ] per cluster kops version
    https://github.com/kilna/kopsenv
 - [ ] per component terraform version
@@ -66,8 +65,7 @@
 - [ ] assert file paths (states match expected conventions)
 - [ ] detect stale console session (image rebuild needed)
 - [ ] `Makefile` warn on trying to build the docker image from a console session
-- [ ] list-cluster command
-  `terraform/kops/shared/data/*/clusters.txt`
+- [ ] list-clusters (all accounts) command
 
 ## Accounts
 - [ ] root account(s) creds/MFA support

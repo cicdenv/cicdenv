@@ -5,6 +5,7 @@ Items:
 * remote state bucket and policy
 * cloudtrail
 * kms customer master key
+* dynamodb tables for sub-account items
 
 ## Workspaces
 N/A.

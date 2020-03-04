@@ -9,23 +9,6 @@ resource "aws_vpc_endpoint" "s3" {
   ])
 }
 
-resource "null_resource" "endpoint" {
-  triggers = {
-    endpoint_id = aws_vpc_endpoint.s3.id
-  }
-
-  # Add this workspaces VPC S3 endpoint to the main acct kops state bucket access policy
-  provisioner "local-exec" {
-    command = "echo '${self.triggers.endpoint_id}' >> '${path.module}/../../../data/vpc-endpoints.txt'"
-  }
-
-  # Remove this this workspaces VPC S3 endpoint to the main acct kops state bucket access policy
-  provisioner "local-exec" {
-    command = "sed -i'' -e '/^${self.triggers.endpoint_id}/d' '${path.module}/../../../data/vpc-endpoints.txt'"
-    when = destroy
-  }
-}
-
 resource "aws_vpc_endpoint" "ecr" {
   vpc_id            = aws_vpc.me.id
   service_name      = data.aws_vpc_endpoint_service.ecr.service_name

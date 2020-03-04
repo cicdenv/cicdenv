@@ -78,10 +78,6 @@ output "nodes_instance_profile_arn" {
   value = aws_iam_instance_profile.kops_node.arn
 }
 
-output "cluster_names" {
-  value = local.cluster_names
-}
-
 output "public_subnet_tags" {
   value = merge(local.cluster_tags, local.public_subnet_tags)
 }
