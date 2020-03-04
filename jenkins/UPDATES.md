@@ -34,8 +34,11 @@ cicdenv/jenkins$ cicdctl console
 📦 $USER:~/cicdenv$ (cd jenkins; make aws-creds)
 
 # Run the new docker images locally
-cicdenv/jenkins$ make run-server # first terminal
-cicdenv/jenkins$ make run-agent  # second terminal
+cicdenv/jenkins$ make clean-server run-server # first terminal
+cicdenv/jenkins$ make clean-agent run-agent  # second terminal
+
+# Access UI
+cicdenv/jenkins$ make ui
 
 # Test a build
 cicdenv/ Folder item
@@ -49,6 +52,7 @@ cicdenv/jenkins$ git status
 ...plugin-versions/2.194-2019.09.08-01.txt
 
 # Update exported JCasC config
+# NOTE: disconnect the agent first
 cicdenv/jenkins$ make export-config
 cicdenv/jenkins$ git status
 ...

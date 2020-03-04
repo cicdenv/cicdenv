@@ -35,6 +35,7 @@ run-server: network
 	    --env "GITHUB_SECRET_ARN=$(GITHUB_SECRET_ARN)"          \
 	    --env "GITHUB_ORGANIZATION=$(GITHUB_ORGANIZATION)"      \
 	    --env "GITHUB_AGENT_USER=$(GITHUB_AGENT_USER)"          \
+	    --env "AWS_ACCOUNT_NAME=$(AWS_ACCOUNT_NAME)"            \
 	    --env "AWS_MAIN_ACCOUNT_ID=$(AWS_MAIN_ACCOUNT_ID)"      \
 	    --env "AWS_DEFAULT_REGION=$(AWS_REGION)"                \
 	    -v jenkins-server-home:/var/jenkins_home                \

@@ -31,4 +31,5 @@ export-config:
 	    "$(SERVER_URL)/configuration-as-code/export"                                         \
 	    | sed -E -e 's/(\s+secret:\s+)".+"/\1"..."/'                                         \
 	             -e 's/(\s+password:\s+)".+"/\1"..."/'                                       \
-	    | tee $(CURDIR)/server-image/jcasc/exported-jenkins.yaml
+	             -e 's/(\s+clientSecret:\s+)".+"/\1"..."/'                                   \
+	    | tee $(CURDIR)/server-image/jcasc/exported-jenkins-$(SERVER_VERSION).yaml
