@@ -93,7 +93,7 @@ jenkins:
   securityRealm:
     github:
       clientID: "8a0658e09b02856e7b91"
-      clientSecret: "{AQAAABAAAAAwA06TiKui2oGNczuIregOqrfB/pnDELk1+cMBg2zxIbYOqdKh93QXvcOLBuVY5F8cjOfN4XL9jlYrHLuao6PJpw==}"
+      clientSecret: "..."
       githubApiUri: "https://api.github.com"
       githubWebUri: "https://github.com"
       oauthScopes: "read:org,user:email"
