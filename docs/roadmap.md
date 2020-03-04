@@ -7,7 +7,7 @@
 - [ ] wiregaurd or OpenVPN to replace whitelisted external networks
 
 ## CI
-- [ ] dedicated ec2 instances w/containerized Jenkins
+- [x] dedicated ec2 instances w/containerized Jenkins
   - [ ] ansible playbook for pushing updated jenkins processes
 - [ ] SecretsManager credentials plugin
 - [ ] golang 3rd party libs s3/host/workspace caching service
