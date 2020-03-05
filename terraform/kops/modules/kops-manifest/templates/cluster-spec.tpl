@@ -63,4 +63,4 @@ ${public_subnets}
     auditLogMaxBackups:    1 # Logs to retain
     auditLogMaxSize:     100 # Max size in MB
   docker:
-    version: "19.03.6"
+    version: "19.03.7"
