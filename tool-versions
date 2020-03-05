@@ -16,13 +16,13 @@ KEYBASE_BUILD =  $(shell echo "$(_KEYBASE_FULL_VERSION)" | awk -F- '{print $$2}'
 HCLQ_TAG = 0.5.3
 
 # https://www.terraform.io/downloads.html
-TERRAFORM_VERSION  = 0.12.20
-TERRAFORM_SHA256   = 46bd906f8cb9bbb871905ecb23ae7344af8017d214d735fbb6d6c8e0feb20ff3
+TERRAFORM_VERSION  = 0.12.21
+TERRAFORM_SHA256   = ca0d0796c79d14ee73a3d45649dab5e531f0768ee98da71b31e423e3278e9aa9
 TERRAFORM_RELEASES = https://releases.hashicorp.com/terraform
 
 # https://github.com/kubernetes/kops/releases
-KOPS_VERSION   = 1.16.0-beta.2
-KOPS_SHA256    = 1d50a6fcd1bbd38cfcebea0826426985149f7a080ac67ffb863ad7baa05d3aa1
+KOPS_VERSION   = 1.17.0-beta.1
+KOPS_SHA256    = 0413e75e97596e1821bf9a0e1369a966b7c2803effdf21c1928e876080a34a5c
 KOPS_DOWNLOADS = https://github.com/kubernetes/kops/releases/download
 
 # https://www.packer.io/downloads.html
@@ -31,8 +31,8 @@ PACKER_SHA256   = c7277f64d217c7d9ccfd936373fe352ea935454837363293f8668f9e42d8d9
 PACKER_RELEASES = https://releases.hashicorp.com/packer
 
 # https://github.com/kubernetes/kubernetes/releases
-KUBE_VERSION   = 1.17.2
-KUBE_SHA512    = c5cd8954953ea348318f207c99c9dcb679d73dbaf562ac72660f7dab85616fd45b0f349d49eae9ea1f6aac7cae5bba839bf70f40b8be686d35605ae147339399
+KUBE_VERSION   = 1.17.3
+KUBE_SHA512    = 351d6b0d8077cadd8d4b95c145b165be5bc5cd07b59d44b7e81e6dc46f5b85f7419642f8273520ea1b63c9ac6f98c832c9cd46db8a1ca7dd03423f94d782557f
 KUBE_DOWNLOADS = https://dl.k8s.io
 
 # https://github.com/kubernetes-sigs/aws-iam-authenticator/releases

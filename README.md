@@ -29,14 +29,14 @@ cicdenv$ make versions
 [Tool]                     [Version]
 -----------------------------------------
 bash                   --> 5.0.0(1)
-python                 --> 3.7.3
+python                 --> 3.7.5
 make                   --> 4.2.1
-terraform              --> v0.12.2
-packer                 --> v1.4.1
-kops                   --> 1.12.1
-kubectl                --> v1.11.10
-aws-iam-authenticator  --> 0.4.0
-aws (cli)              --> 1.16.179
+terraform              --> v0.12.21
+packer                 --> v1.5.4
+kops                   --> 1.17.0-beta.1
+kubectl                --> v1.17.3
+aws-iam-authenticator  --> 0.5.0
+aws (cli)              --> 1.18.13
 ```
 
 Add to search path:

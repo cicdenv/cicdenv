@@ -35,8 +35,6 @@
   https://aws.amazon.com/about-aws/whats-new/2019/09/amazon-eks-adds-support-to-assign-iam-permissions-to-kubernetes-service-accounts/
 
 ## KOPS
-- [ ] custom docker runtime version
-  https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#docker
 - [ ] {kops, kubernetes, instance-type} setable from cicdctl
 
 ## Apt Repo
