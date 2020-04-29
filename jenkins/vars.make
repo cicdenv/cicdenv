@@ -27,7 +27,7 @@ EDIT_IN_PLACE=$(shell if uname -s | grep Darwin > /dev/null; then echo '-i' \'\'
 AGENT_NAME=127.0.0.1
 
 UNSECURE_URL=http://$(IP_ADDRESS):$(HTTP_PORT)
-SERVER_URL=https://$(IP_ADDRESS):$(HTTPS_PORT)
+SERVER_URL=https://localhost:$(HTTPS_PORT)
 RESOURCE_URL=https://127.0.0.1:$(HTTPS_PORT)
 FOOTER_URL=$(shell git config --get remote.origin.url | sed -e 's/git@/https:\/\//' -e 's/github.com:/github.com\//' -e 's/\.git$$/\//')
 
@@ -39,11 +39,11 @@ JENKINS_DOCKER_BRANCH=master
 JENKINS_UID=8008
 JENKINS_GID=8008
 
-JENKINS_VERSION=2.223
-RELEASE_DATE=2020.03.01
-JENKINS_SHA=03e2c986e2d78dbd50d4f05f2be36dbdce4cd0fbcea5f810d1d567bdd4819ecb
+JENKINS_VERSION=2.234
+RELEASE_DATE=2020-04-27
+JENKINS_SHA=481ecc74bd6e5df1f32fe6acac59b0cf5e49790c3c2c48ee124ce469d133f4c0
 JETTY_VERSION=9.4.26.v20200117
-REMOTING_VERSION=4.2
+REMOTING_VERSION=4.3
 
 # Reset to 01 when changing the Jenkins version
 IMAGE_REVISION=01

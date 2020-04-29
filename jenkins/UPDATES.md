@@ -7,31 +7,38 @@ Check for core / remoting / jetty releases:
   * [winstone/jetty-version =%gt; pom.xml/properties/jetty.version](https://github.com/jenkinsci/winstone/blob/master/pom.xml#L22)
 * https://github.com/jenkinsci/remoting/releases
 
-Take note of version and release date.
+Take note of `version` and `release` date.
 
 [vogtech/cicdenv/jenkins](https://github.com/vogtech/cicdenv/blob/master/jenkins/):
 ```bash
 # Update version vars
 cicdenv/jenkins$ vim vars.make
-JENKINS_VERSION=2.223
-RELEASE_DATE=2020.03.01
+JENKINS_VERSION=2.234
+RELEASE_DATE=2020-04-27
 JETTY_VERSION=9.4.26.v20200117
-REMOTING_VERSION=4.2
+REMOTING_VERSION=4.3
 IMAGE_REVISION=01
 
 # Update checksum
 cicdenv/jenkins$ make checksum
 cicdenv/jenkins$ git diff
-+JENKINS_VERSION=2.223
-+RELEASE_DATE=2020.03.01
-+JENKINS_SHA=03e2c986e2d78dbd50d4f05f2be36dbdce4cd0fbcea5f810d1d567bdd4819ecb
++JENKINS_VERSION=2.234
++RELEASE_DATE=2020-04-27
++JENKINS_SHA=481ecc74bd6e5df1f32fe6acac59b0cf5e49790c3c2c48ee124ce469d133f4c0
++REMOTING_VERSION=4.3
 
 # Create new docker images
 cicdenv/jenkins$ make
 
-# Refresh sts jenkins server/agent sessions
+# Refresh sts jenkins server/agent sessions, regen certs
+cicdenv/jenkins$ make ip-address
+<external-ip>
+
 cicdenv/jenkins$ cicdctl console
-📦 $USER:~/cicdenv$ (cd jenkins; make aws-creds)
+📦 $USER:~/cicdenv$ cicdctl creds aws-mfa main && (cd jenkins; make aws-creds)
+📦 $USER:~/cicdenv/jenkins$ make IP_ADDRESS=<external-ip> tls
+
+cicdenv/jenkins$ make import-cert
 
 # Run the new docker images locally
 cicdenv/jenkins$ make clean-server run-server # first terminal
