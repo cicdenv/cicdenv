@@ -37,6 +37,7 @@ run-server: network
 	    --env "AWS_ACCOUNT_NAME=$(AWS_ACCOUNT_NAME)"            \
 	    --env "AWS_MAIN_ACCOUNT_ID=$(AWS_MAIN_ACCOUNT_ID)"      \
 	    --env "AWS_DEFAULT_REGION=$(AWS_REGION)"                \
+	    --env "EXTRA_SERVER_OPTS=$(EXTRA_SERVER_OPTS)"          \
 	    -v jenkins-server-home:/var/jenkins_home                \
 	    -v $(HOOK_SCRIPTS):/var/jenkins_home/init.groovy.d      \
 	    -v $(CASC_CONFIG):/var/jenkins_home/jenkins.yaml        \

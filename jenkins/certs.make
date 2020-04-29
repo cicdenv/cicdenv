@@ -5,7 +5,7 @@ tls:
 	    -nodes \
 	    -keyout "$(TLS_CONFIG)/server-key.pem" \
 	    -x509 \
-	    -days 36500 \
+	    -days 30 \
 	    -out "$(TLS_CONFIG)/server-cert.pem" \
 	    -subj "/C=US/ST=CA/L=San Francisco/O=cicdenv/OU=local/CN=localhost/emailAddress=jenkins@cicdenv.com" \
 	    -reqexts SAN \
@@ -53,7 +53,7 @@ import-cert:
 	else \
 	    if [ -x $(which certutil) ]; then \
 	        certutil -d "sql:$(HOME)/.pki/nssdb" -D -n "jenkins-local" || true; \
-	        certutil -d "sql:$(HOME)/.pki/nssdb" -A -t "P,," -n "jenkins-local" -i "$(HOME)/.jenkins/tls/server-cert.pem"; \
+	        certutil -d "sql:$(HOME)/.pki/nssdb" -A -t "C,," -n "jenkins-local" -i "$(HOME)/.jenkins/tls/server-cert.pem"; \
 	        certutil -d "sql:$(HOME)/.pki/nssdb" -L; \
 	    fi; \
 	fi
