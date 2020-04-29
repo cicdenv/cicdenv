@@ -17,6 +17,10 @@ module "jenkins_instance" {
 EOF
 
 cat <<EOF > "instances/${instance_name}/outputs.tf"
+output "type" {
+  value = "${instance_type}"
+}
+
 output "autoscaling_groups" {
   value = module.jenkins_instance.autoscaling_groups
 }

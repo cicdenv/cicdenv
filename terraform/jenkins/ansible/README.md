@@ -3,8 +3,10 @@ Ansible playbooks for in-place server/agent updates.
 
 Use cases:
 * updating jenkins process images
-* updating jenkins config
-  * [configuration-as-code:configuration-reload](https://github.com/jenkinsci/configuration-as-code-plugin/blob/master/docs/features/configurationReload.md)
 
-NOTE:  for host changes we'll update the launch configuration 
+NOTE:  for "host" changes we'll update the launch configuration 
 and terminate the existing instance(s)
+
+## Links
+* https://docs.ansible.com/ansible/latest/modules/lineinfile_module.html
+* https://docs.ansible.com/ansible/latest/dev_guide/developing_locally.html

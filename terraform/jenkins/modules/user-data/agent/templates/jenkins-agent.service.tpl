@@ -6,8 +6,9 @@ After=docker.service jenkins-agent-disks.service jenkins-network.service
 [Service]
 TimeoutStartSec=0
 Restart=always
-ExecStartPre=/usr/bin/docker pull ${ecr_url}:${tag}
-ExecStartPre=/usr/bin/docker tag ${ecr_url}:${tag} ${image}:${tag}
+EnvironmentFile=/etc/systemd/system/jenkins-agent.env
+ExecStartPre=/usr/bin/docker pull ${ecr_url}:$${TAG}
+ExecStartPre=/usr/bin/docker tag ${ecr_url}:$${TAG} ${image}:$${TAG}
 ExecStartPre=/bin/bash -c "/bin/systemctl set-environment NODE_ID=`ec2metadata --instance-id`-`ec2metadata --local-ipv4`"
 ExecStart=/usr/bin/docker run --rm                                  \
     --name jenkins-agent                                            \
@@ -27,7 +28,7 @@ ExecStart=/usr/bin/docker run --rm                                  \
     -v "/var/lib/jenkins/.docker:/var/lib/jenkins/.docker"          \
     -v "/var/lib/jenkins/.aws:/var/lib/jenkins/.aws"                \
     -v "/dev/urandom:/dev/random"                                   \
-    '${image}:${tag}'
+    '${image}:$${TAG}'
 
 [Install]
 WantedBy=multi-user.target

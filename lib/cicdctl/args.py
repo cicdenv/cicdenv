@@ -226,6 +226,7 @@ def __add_jenkins(subparsers):
         "validate-jenkins",
         "start-jenkins",
         "stop-jenkins",
+        "deploy-jenkins",
     ]
     for _jenkins_cmd in _jenkins_cmds:
         subparsers.add_parser(_jenkins_cmd, parents=_jenkins, help=f"jenkins {_jenkins_cmd}.") \

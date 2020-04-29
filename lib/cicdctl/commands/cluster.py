@@ -79,6 +79,6 @@ def run_cluster(args):
             run_terraform(_args)
         elif args.command == 'stop-cluster':
             environment = environ.copy()  # Inherit cicdctl's environment
-            gen_cmd = ['terraform/kops/clusters/bin/stop-cluster.sh', _target]
-            log_cmd_line(gen_cmd)
-            subprocess.run(gen_cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)
+            stop_cmd = ['terraform/kops/clusters/bin/stop-cluster.sh', _target]
+            log_cmd_line(stop_cmd)
+            subprocess.run(stop_cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)

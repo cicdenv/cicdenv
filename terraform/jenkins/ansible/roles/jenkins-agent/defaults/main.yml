@@ -1,0 +1,3 @@
+environment_file: /etc/systemd/system/jenkins-agent.env
+
+jenkins_agent_tag:

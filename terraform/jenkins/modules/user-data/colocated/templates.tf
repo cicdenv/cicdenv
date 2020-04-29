@@ -7,6 +7,14 @@ data "template_file" "jenkins_server_disks" {
   }
 }
 
+data "template_file" "jenkins_server_environment" {
+  template = file("${path.module}/templates/jenkins-server.env.tpl")
+
+  vars = {
+    tag = local.jenkins_server_image.latest
+  }
+}
+
 data "template_file" "jenkins_server_service" {
   template = file("${path.module}/templates/jenkins-server.service.tpl")
 
@@ -16,7 +24,6 @@ data "template_file" "jenkins_server_service" {
     host_name = local.host_name
     ecr_url   = local.jenkins_server_image.repository_url
     image     = local.jenkins_server_image.name
-    tag       = local.jenkins_server_image.latest
 
     server_url  = local.server_url
     content_url = local.content_url
@@ -33,6 +40,14 @@ data "template_file" "jenkins_server_service" {
   }
 }
 
+data "template_file" "jenkins_agent_environment" {
+  template = file("${path.module}/templates/jenkins-agent.env.tpl")
+
+  vars = {
+    tag = local.jenkins_agent_image.latest
+  }
+}
+
 data "template_file" "jenkins_agent_service" {
   template = file("${path.module}/templates/jenkins-agent.service.tpl")
 
@@ -43,7 +58,6 @@ data "template_file" "jenkins_agent_service" {
     host_name = local.host_name
     ecr_url   = local.jenkins_agent_image.repository_url
     image     = local.jenkins_agent_image.name
-    tag       = local.jenkins_agent_image.latest
 
     server_url = local.server_url
     

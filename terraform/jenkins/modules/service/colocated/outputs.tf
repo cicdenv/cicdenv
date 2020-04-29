@@ -4,6 +4,7 @@ output "autoscaling_groups" {
       id   = module.colocated.autoscaling_group.id
       name = module.colocated.autoscaling_group.name
       arn  = module.colocated.autoscaling_group.arn
+      role = "colocated"
     },
   ]
 }

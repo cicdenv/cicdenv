@@ -1,0 +1,26 @@
+ansible_python_interpreter: /usr/bin/python3
+ansible_user: ubuntu
+ansible_ssh_common_args: >
+  -o StrictHostKeyChecking=no
+  -o UserKnownHostsFile=/dev/null
+  -o IdentitiesOnly=yes
+  -o LogLevel=ERROR
+  -o ForwardAgent=true
+  -o ConnectTimeout=5
+  -o ServerAliveInterval=60
+  -o ServerAliveCountMax=120
+  -i {{ lookup("env", "HOME") }}/.ssh/kops_rsa
+  -o ProxyCommand="
+  ssh 
+  -o StrictHostKeyChecking=no
+  -o UserKnownHostsFile=/dev/null
+  -o IdentitiesOnly=yes
+  -o LogLevel=ERROR
+  -o ForwardAgent=true
+  -o ConnectTimeout=5
+  -o ServerAliveInterval=60
+  -o ServerAliveCountMax=120
+  -i {{ lookup("env", "HOME") }}/.ssh/id_rsa
+  -W %h:%p 
+  {{ lookup("env", "USER") }}@bastion-{{ lookup("env", "WORKSPACE") }}.kops.{{ lookup("env", "DOMAIN") }}
+  "

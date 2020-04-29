@@ -9,8 +9,9 @@ Restart=always
 Environment=IIDENC_FILE=/var/jenkins_home/identity.key.enc
 Environment=SECKEY_FILE=/var/jenkins_home/secret.key
 Environment=NSSKEY_FILE=/var/jenkins_home/secret.key.not-so-secret
-ExecStartPre=/usr/bin/docker pull ${ecr_url}:${tag}
-ExecStartPre=/usr/bin/docker tag ${ecr_url}:${tag} ${image}:${tag}
+EnvironmentFile=/etc/systemd/system/jenkins-server.env
+ExecStartPre=/usr/bin/docker pull ${ecr_url}:$${TAG}
+ExecStartPre=/usr/bin/docker tag ${ecr_url}:$${TAG} ${image}:$${TAG}
 ExecStart=/usr/bin/docker run --rm                                    \
     --name jenkins-server                                             \
     --network jenkins                                                 \
@@ -39,7 +40,7 @@ ExecStart=/usr/bin/docker run --rm                                    \
     -v "/var/lib/jenkins/.ssh:/var/lib/jenkins/.ssh"                  \
     -v "/var/lib/jenkins/tls:/var/jenkins_home/tls"                   \
     -v "/dev/urandom:/dev/random"                                     \
-    '${image}:${tag}'
+    '${image}:$${TAG}'
 
 [Install]
 WantedBy=multi-user.target

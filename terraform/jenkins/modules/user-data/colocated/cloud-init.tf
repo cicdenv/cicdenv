@@ -17,6 +17,9 @@ write_files:
 - path: "/etc/systemd/system/jenkins-agent-disks.service"
   content: |
     ${indent(4, file("${path.module}/files/jenkins-agent-disks.service"))}
+- path: "/etc/systemd/system/jenkins-agent.env"
+  content: |
+    ${indent(4, "${data.template_file.jenkins_agent_environment.rendered}")}
 - path: "/etc/systemd/system/jenkins-agent.service"
   content: |
     ${indent(4, "${data.template_file.jenkins_agent_service.rendered}")}
@@ -26,6 +29,9 @@ write_files:
 - path: "/etc/systemd/system/jenkins-server-disks.service"
   content: |
     ${indent(4, file("${path.module}/files/jenkins-server-disks.service"))}
+- path: "/etc/systemd/system/jenkins-server.env"
+  content: |
+    ${indent(4, "${data.template_file.jenkins_server_environment.rendered}")}
 - path: "/etc/systemd/system/jenkins-server.service"
   content: |
     ${indent(4, "${data.template_file.jenkins_server_service.rendered}")}

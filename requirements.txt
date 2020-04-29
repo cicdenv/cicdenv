@@ -1,8 +1,9 @@
 awscli
 aws-mfa
-pyhcl
+pyhcl==0.4.0
 pytz
 PyYAML
 tzlocal
 ansible
 terraform_external_data
+python-jenkins

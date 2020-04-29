@@ -21,7 +21,6 @@ def _ssh_cmd(user, port, ssh_key, workspace):
         '-o', 'ConnectTimeout=5',
         '-o', 'ServerAliveInterval=60',
         '-o', 'ServerAliveCountMax=120',
-        '-A', 
         '-p', port,
         '-i', f'{ssh_key}',
         f'{user}@bastion-{workspace}.kops.{domain}',

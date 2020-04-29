@@ -1,0 +1,11 @@
+- hosts: all
+  gather_facts: no
+  tasks:
+    - name: stop accepting builds
+      delegate_to: localhost
+      jenkins:
+        api: /quietDown
+    - name: wait for builds to complete
+      delegate_to: localhost
+      jenkins:
+        wait_for: running_jobs

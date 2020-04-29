@@ -1,0 +1,7 @@
+- name: update agent image tag
+  lineinfile:
+    path: '{{ environment_file }}'
+    regexp: '^TAG=.*'
+    line: TAG={{ jenkins_agent_tag }}
+  notify:
+    - restart service

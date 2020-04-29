@@ -16,12 +16,12 @@ def main():
     config_logging(args)
 
     try:
-    	args.func(args)
+        args.func(args)
     except ArgumentTypeError as e:
-    	sys.stderr.write(str(e) + '\n')
-    	sys.exit(1)
+        sys.stderr.write(str(e) + '\n')
+        sys.exit(1)
     except KeyboardInterrupt:
-    	sys.exit(1)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
