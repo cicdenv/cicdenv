@@ -68,7 +68,7 @@ cicdenv/jenkins$ make push
 cicdenv$ vim terraform/shared/ecr-images/jenkins/outputs.tf
 ...
 # jenkins_{server,agent}_image_repo
-latest = "2.223-2020.03.01-01"
+latest = "2.234-2020.04.27-01"
 ...
 cicdenv$ cicdctl apply shared/ecr-images/jenkins:main
 ```
