@@ -20,10 +20,10 @@ def run_jenkins(args):
         # hacky jenkins deployment type override
         #   accepts '--type {distirubted|colocated}'
         if '--type' in args.overrides:
-            type_idx = args.index('--type')
+            type_idx = args.overrides.index('--type')
             _type = args.overrides[type_idx + 1]
-            del args[type_idx]  # remove flag
-            del args[type_idx]  # remove flag value
+            del args.overrides[type_idx]  # remove flag
+            del args.overrides[type_idx]  # remove flag value
 
         jenkins_state = f'jenkins/instances/{instance}:{workspace}'
 
