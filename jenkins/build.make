@@ -22,6 +22,19 @@ build-agent: build-server
 	# Tag as latest
 	docker tag "$(AGENT_IMAGE_NAME):$(AGENT_VERSION)" "$(AGENT_IMAGE_NAME):latest"
 
+local-build-agent:
+	printf "\
+	FROM $(AGENT_IMAGE_NAME)\n\
+	USER root\n\
+	RUN if echo '$(docker_group)' | grep 'daemon'; then  \\\\\n\
+	    addgroup jenkins root;                           \\\\\n\
+	else                                                 \\\\\n\
+	    sed -i 's/:8088:/:$(docker_gid):/' /etc/group;   \\\\\n\
+	fi\n\
+	USER jenkins\n\
+	"\
+	| docker build -t "$(AGENT_IMAGE_NAME)-local" -
+
 build-jenkinsci-docker: pull-jenkinsci-docker
 	if [[ ! -f server-image/jenkins-ci.docker/Dockerfile-jdk8 ]]; then  \
 		cp server-image/jenkins-ci.docker/Dockerfile                    \
@@ -70,15 +83,12 @@ push:
 	docker push "$(ECR_URL)/$(SERVER_IMAGE_NAME):$(SERVER_VERSION)"
 	docker push "$(ECR_URL)/$(AGENT_IMAGE_NAME):$(AGENT_VERSION)"
 
-local-build-agent:
-	printf "\
-	FROM $(AGENT_IMAGE_NAME)\n\
-	USER root\n\
-	RUN if echo '$(docker_group)' | grep 'daemon'; then  \\\\\n\
-	    addgroup jenkins root;                           \\\\\n\
-	else                                                 \\\\\n\
-	    sed -i 's/:8088:/:$(docker_gid):/' /etc/group;   \\\\\n\
-	fi\n\
-	USER jenkins\n\
-	"\
-	| docker build -t "$(AGENT_IMAGE_NAME)-local" -
+update-default-tags:
+	shopt -s xpg_echo; echo \
+variable \"jenkins_server_default_tag\" {  \\n\
+\  default = \"$(SERVER_VERSION)\"         \\n\
+} > "$(CURDIR)/../terraform/shared/ecr-images/jenkins/variables-server-tag.tf"
+	shopt -s xpg_echo; echo \
+variable \"jenkins_agent_default_tag\" {  \\n\
+\  default = \"$(AGENT_VERSION)\"         \\n\
+} > "$(CURDIR)/../terraform/shared/ecr-images/jenkins/variables-agent-tag.tf"

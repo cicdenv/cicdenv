@@ -5,7 +5,7 @@ output "jenkins_server_image_repo" {
     arn            = aws_ecr_repository.jenkins_server.arn
     registry_id    = aws_ecr_repository.jenkins_server.registry_id
     repository_url = aws_ecr_repository.jenkins_server.repository_url
-    latest         = "2.223-2020.03.01-01"
+    latest         = var.jenkins_server_default_tag
   }
 }
 
@@ -16,7 +16,7 @@ output "jenkins_agent_image_repo" {
     arn            = aws_ecr_repository.jenkins_agent.arn
     registry_id    = aws_ecr_repository.jenkins_agent.registry_id
     repository_url = aws_ecr_repository.jenkins_agent.repository_url
-    latest         = "2.223-2020.03.01-01"
+    latest         = var.jenkins_agent_default_tag
   }
 }
 

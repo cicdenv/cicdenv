@@ -65,10 +65,6 @@ cicdenv/jenkins$ git status
 cicdenv/jenkins$ make push
 
 # Release
-cicdenv$ vim terraform/shared/ecr-images/jenkins/outputs.tf
-...
-# jenkins_{server,agent}_image_repo
-latest = "2.234-2020.04.27-01"
-...
+cicdenv/jenkins$ make update-default-tags
 cicdenv$ cicdctl apply shared/ecr-images/jenkins:main
 ```
