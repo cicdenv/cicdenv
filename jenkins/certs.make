@@ -10,7 +10,7 @@ tls:
 	    -subj "/C=US/ST=CA/L=San Francisco/O=cicdenv/OU=local/CN=localhost/emailAddress=jenkins@cicdenv.com" \
 	    -reqexts SAN \
 	    -extensions SAN \
-	    -config <(cat /etc/ssl/openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:localhost,IP:127.0.0.1,IP:$(IP_ADDRESS),DNS:jenkins-server,DNS:builds-server\n")) \
+	    -config <(cat /etc/ssl/openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:localhost,IP:127.0.0.1,DNS:jenkins-server,DNS:builds-server\n")) \
 	    -addext "basicConstraints=CA:TRUE"
 	    -passin "pass:jenkins"
 	openssl rsa \

@@ -31,12 +31,9 @@ cicdenv/jenkins$ git diff
 cicdenv/jenkins$ make
 
 # Refresh sts jenkins server/agent sessions, regen certs
-cicdenv/jenkins$ make ip-address
-<external-ip>
-
 cicdenv/jenkins$ cicdctl console
 📦 $USER:~/cicdenv$ cicdctl creds aws-mfa main && (cd jenkins; make aws-creds)
-📦 $USER:~/cicdenv/jenkins$ make IP_ADDRESS=<external-ip> tls
+📦 $USER:~/cicdenv/jenkins$ make tls
 
 cicdenv/jenkins$ make import-cert
 
