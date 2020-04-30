@@ -64,6 +64,11 @@ RUN mkdir -p /usr/share/jenkins/ref/custom-css                               \
  && curl -o /usr/share/jenkins/ref/custom-css/neo-light.css                  \
          -fsSL https://tobix.github.io/jenkins-neo2-theme/dist/neo-light.css
 
+# Download third-party images
+RUN mkdir -p /usr/share/jenkins/ref/userContent                         \
+ && curl -o /usr/share/jenkins/ref/userContent/socotra-logo-square.png  \
+         -fsSL https://media.glassdoor.com/sql/1072552/socotra-squarelogo-1468344985845.png
+
 # Configuration as Code yaml file(s)
 COPY files/jenkins.yaml /usr/share/jenkins/ref/
 

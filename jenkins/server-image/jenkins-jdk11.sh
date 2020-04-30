@@ -42,7 +42,10 @@ JAVA_OPTS="\
 -Djenkins.model.Jenkins.workspacesDir=${JENKINS_WORKSPACE_LOCATION}     \
 -Djenkins.model.Jenkins.buildsDir=${JENKINS_BUILDS_LOCATION}            \
 -Dhudson.InitReactorRunner.concurrency=$(($(nproc) * 8))                \
-${EXTRA_JAVA_OPTS-}"
+\
+${EXTRA_JAVA_OPTS-} \
+\
+${EXTRA_SERVER_OPTS-}"
 
 JENKINS_OPTS="${JENKINS_OPTS-\
 --httpPort=${HTTP_PORT-8080} \
