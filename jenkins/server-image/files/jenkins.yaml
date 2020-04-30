@@ -1,4 +1,5 @@
 jenkins:
+  noUsageStatistics: true
   systemMessage:
   numExecutors: 0
   slaveAgentPort: -1
