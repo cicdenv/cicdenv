@@ -4,4 +4,4 @@
     regexp: '^TAG=.*'
     line: TAG={{ jenkins_server_tag }}
   notify:
-    - restart service
+    - restart jenkins server service

@@ -1,2 +1,2 @@
-- name: restart service
+- name: restart jenkins agent service
   service: name=jenkins-agent state=restarted
