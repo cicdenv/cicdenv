@@ -1,19 +1,19 @@
 #!/bin/bash
 
-mkdir -p "instances/${instance_name}"
+mkdir -p "instances/${name}"
 
-cat <<EOF > "instances/${instance_name}/backend.tf"
+cat <<EOF > "instances/${name}/backend.tf"
 terraform {
   required_version = ">= ${TERRAFORM_VERSION}"
   backend "s3" {
-    key = "jenkins-instances-${instance_name}/terraform.tfstate"
+    key = "jenkins-instances-${name}/terraform.tfstate"
 
     workspace_key_prefix = "state"
   }
 }
 EOF
 
-cat <<'EOF' > "instances/${instance_name}/providers.tf"
+cat <<'EOF' > "instances/${name}/providers.tf"
 provider "aws" {
   region = var.target_region
 
@@ -21,7 +21,7 @@ provider "aws" {
 }
 EOF
 
-cat <<'EOF' > "instances/${instance_name}/variables.tf"
+cat <<'EOF' > "instances/${name}/variables.tf"
 variable "region" {} # backend-config.tfvars
 variable "bucket" {} # backend-config.tfvars
 
@@ -30,16 +30,16 @@ variable "target_region" {
 }
 EOF
 
-cat <<EOF > "instances/${instance_name}/README.md"
+cat <<EOF > "instances/${name}/README.md"
 ## Purpose
-${instance_name} Jenkins service resources.
+${name} Jenkins service resources.
 
 ## Workspaces
 This state is per-account.
 
 ## Usage
 \`\`\`
-${repo}\$ cicdctl <init|plan|apply|destroy|output> jenkins/instances/${instance_name}:\${WORKSPACE}
+${repo}\$ cicdctl <init|plan|apply|destroy|output> jenkins/instances/${name}:\${WORKSPACE}
 ...
 \`\`\`
 EOF

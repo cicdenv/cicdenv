@@ -33,11 +33,11 @@ def run_jenkins(args):
 
         # Generate the terraform component folder if needed
         if args.command in ['init-jenkins', 'apply-jenkins']:
-            if not path.isdir(path.join(getcwd(), f'terraform/jenkins/instances/{instance}')):
-                environment = environ.copy()  # Inherit cicdctl's environment
-                gen_cmd = ['terraform/jenkins/bin/generate-instance.sh', instance, _type]
-                log_cmd_line(gen_cmd)
-                subprocess.run(gen_cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)
+            environment = environ.copy()  # Inherit cicdctl's environment
+            gen_cmd = ['terraform/jenkins/bin/generate-instance.sh', instance, _type, *args.overrides]
+            log_cmd_line(gen_cmd)
+            subprocess.run(gen_cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)
+            _args.overrides = [override for override in _args.overrides if override.startswith('-')]
 
         if args.command == 'init-jenkins':
             _args.command = 'init'

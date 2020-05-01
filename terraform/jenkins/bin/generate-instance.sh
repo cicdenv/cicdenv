@@ -8,15 +8,46 @@ pushd "$DIR/.." >/dev/null
 
 usage_message="
 
-Usage $0 <instance-name> <instance-type>
+Usage $0 <name> <type> [terraform variable bindings]
 
-Supported [instance-type] values:
+Supported <type> values:
 colocated
-distributed"
+distributed
 
-# Jenkins unique instance name
-instance_name=${1?"<instance-name> required.""${usage_message}"}
-instance_type=${2?"<instance-type> required.""${usage_message}"}
+Terraform variable bindings:  <var>:<value>
+instance_type:
+executors:
+
+server_instance_type:
+agent_instance_type:
+executors:
+"
+
+# Jenkins unique instance name / agent type
+name=${1?"<name> required.${usage_message}"}; shift
+type=${1?"<type> required.${usage_message}"}; shift
+
+# Terraform variable bindings
+case "${type}" in
+colocated)
+    declare -A tf_vars=([instance_type]=m5dn.xlarge [executors]=2)
+    ;;
+distributed)
+    declare -A tf_vars=([server_instance_type]=m5dn.large [agent_instance_type]=z1d.large [executors]=2)
+    ;;
+*)
+    echo "unsupported [type] value: '${type}'"
+    echo
+    echo "$usage_message" >&2
+    exit 1
+    ;;
+esac
+for binding in "$@"; do
+	var="${binding%%:*}"
+    val="${binding#*:}"
+
+    tf_vars["${var}"]="${val}"
+done
 
 #
 # New state defaults
@@ -27,4 +58,4 @@ source "../bin/new-state-defaults.inc"
 # Jenkins instance state
 #
 source "bin/includes/common.inc"
-source "bin/includes/${instance_type}-instance.inc"
+source "bin/includes/${type}-instance.inc"

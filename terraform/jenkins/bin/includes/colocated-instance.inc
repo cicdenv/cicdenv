@@ -1,23 +1,33 @@
 #!/bin/bash
 
-cat <<EOF > "instances/${instance_name}/jenkins.tf"
+cat <<EOF >> "instances/${name}/variables.tf"
+
+variable "instance_type" {
+  default = "${tf_vars[instance_type]}"
+}
+variable "executors" {
+  default = ${tf_vars[executors]}
+}
+EOF
+
+cat <<EOF > "instances/${name}/jenkins.tf"
 module "jenkins_instance" {
   source = "../../modules/service/colocated"
 
   region = var.region
   bucket = var.bucket
   
-  name = "${instance_name}"
+  name = "${name}"
 
-  instance_type = "m5dn.4xlarge"
+  instance_type = var.instance_type
 
-  executors = 12
+  executors = var.executors
 }
 EOF
 
-cat <<EOF > "instances/${instance_name}/outputs.tf"
+cat <<EOF > "instances/${name}/outputs.tf"
 output "type" {
-  value = "${instance_type}"
+  value = "${type}"
 }
 
 output "autoscaling_groups" {
