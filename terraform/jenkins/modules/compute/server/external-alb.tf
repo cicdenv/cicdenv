@@ -17,7 +17,7 @@ resource "aws_lb_listener_rule" "external_https" {
 }
 
 resource "aws_lb_target_group" "external_https" {
-  name = "jenkins-servers-external-HTTPS"
+  name = "jenkins-ext-${var.jenkins_instance}"
 
   vpc_id   = local.vpc_id
 
