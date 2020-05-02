@@ -5,6 +5,9 @@ Routine actions are defined as Makefile targets:
 * Version updates & plugin version recording
 * Plugin/Image builds uploads to AWS
 
+## Updates
+See [docs/UPDATES.md]
+
 ## Usage
 ```
 # terminal #1 Set AWS credentials (last 1 hour)
