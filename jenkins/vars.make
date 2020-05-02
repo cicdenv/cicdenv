@@ -20,14 +20,8 @@ SERVER_DEBUGGER_PORT=8000
 AGENT_DEBUGGER_PORT=9000
 CLI_DEBUGGER_PORT=7000
 
-DEFAULT_BROWSER=$(shell if uname -s | grep Darwin > /dev/null; then echo open; else echo x-www-browser; fi)
-
-EDIT_IN_PLACE=$(shell if uname -s | grep Darwin > /dev/null; then echo '-i' \'\'; else echo '-i'; fi)
-
 AGENT_NAME=127.0.0.1
 
-UNSECURE_URL=http://localhost:$(HTTP_PORT)
-SERVER_URL=https://localhost:$(HTTPS_PORT)
 RESOURCE_URL=https://127.0.0.1:$(HTTPS_PORT)
 FOOTER_URL=$(shell git config --get remote.origin.url | sed -e 's/git@/https:\/\//' -e 's/github.com:/github.com\//' -e 's/\.git$$/\//')
 
@@ -55,7 +49,6 @@ AGENT_VERSION=$(JENKINS_VERSION)-$(RELEASE_DATE)-$(IMAGE_REVISION)
 # Use: make checksum-jenkins-war
 #
 JENKINS_WAR_DOWNLOAD_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/$(JENKINS_VERSION)/jenkins-war-$(JENKINS_VERSION).war
-SHA256_CMD=$(shell if uname -s | grep Darwin > /dev/null; then echo 'shasum -a 256'; else echo sha256sum; fi)
 
 user_name=$(shell whoami)
 group_name=$(shell id -g -n $(user_name))
@@ -99,8 +92,8 @@ AWS_CONFIG_OPTIONS=$(HOME)/.jenkins/aws
 TLS_CONFIG=$(HOME)/.jenkins/tls
 TRUST_STORE=/var/lib/jenkins/truststore.jks
 
-HOOK_SCRIPTS=$(CURDIR)/server-image/init-scripts
-CASC_CONFIG=$(CURDIR)/server-image/files/jenkins.yaml
+HOOK_SCRIPTS=$(CURDIR)/images/server/init-scripts
+CASC_CONFIG=$(CURDIR)/images/server/files/jenkins.yaml
 
 EXTRA_SERVER_OPTS=\
 -Djavax.net.ssl.trustStore=/var/jenkins_home/tls/truststore.jks \

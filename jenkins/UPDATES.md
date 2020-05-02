@@ -30,11 +30,11 @@ cicdenv/jenkins$ git diff
 # Create new docker images
 cicdenv/jenkins$ make
 
-# Refresh sts jenkins server/agent sessions, regen certs
-cicdenv/jenkins$ cicdctl console
-📦 $USER:~/cicdenv$ cicdctl creds aws-mfa main && (cd jenkins; make aws-creds)
+# Refresh sts jenkins server/agent sessions, regen/import certs
+cicdenv$ cicdctl creds aws-mfa main
+cicdenv$ cicdctl console
+📦 $USER:~/cicdenv/jenkins$ make aws-creds
 📦 $USER:~/cicdenv/jenkins$ make tls
-
 cicdenv/jenkins$ make import-cert
 
 # Run the new docker images locally

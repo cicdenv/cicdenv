@@ -1,0 +1,4 @@
+DEFAULT_BROWSER=x-www-browser
+
+ui:
+	$(DEFAULT_BROWSER) $(SERVER_URL)

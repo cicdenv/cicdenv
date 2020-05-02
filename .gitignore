@@ -14,8 +14,8 @@ kops-admin.kubeconfig
 
 target
 
-jenkins/server-image/jenkins-ci.docker
-jenkins/server-image/plugins/scriptler-plugin
+jenkins/images/server/jenkins-ci.docker
+jenkins/images/server/plugins/scriptler-plugin
 
 packer/ec2_amazon-ebs.pem
 
@@ -26,9 +26,9 @@ shared/ecr-images/bastion-sshd-worker/files/libnss-iam-*.deb
 
 target
 
-jenkins/server-image/jenkins-ci.docker
-jenkins/server-image/plugins/scriptler-plugin
-jenkins/server-image/plugins/github-oauth-plugin
+jenkins/images/server/jenkins-ci.docker
+jenkins/images/server/plugins/scriptler-plugin
+jenkins/images/server/plugins/github-oauth-plugin
 
 .m2
 .venv

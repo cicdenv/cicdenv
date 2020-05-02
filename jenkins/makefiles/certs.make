@@ -1,3 +1,7 @@
+ifdef IP_ADDRESS
+    ADDITION_SANS=,IP:$(IP_ADDRESS)
+endif
+
 tls:
 	mkdir -p "$(TLS_CONFIG)"
 	openssl req \
@@ -10,7 +14,7 @@ tls:
 	    -subj "/C=US/ST=CA/L=San Francisco/O=cicdenv/OU=local/CN=localhost/emailAddress=jenkins@cicdenv.com" \
 	    -reqexts SAN \
 	    -extensions SAN \
-	    -config <(cat /etc/ssl/openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:localhost,IP:127.0.0.1,DNS:jenkins-server,DNS:builds-server\n")) \
+	    -config <(cat /etc/ssl/openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:localhost,IP:127.0.0.1$(ADDITION_SANS)\n")) \
 	    -addext "basicConstraints=CA:TRUE"
 	    -passin "pass:jenkins"
 	openssl rsa \
@@ -45,18 +49,6 @@ tls:
 	keytool -list -keystore "$(TLS_CONFIG)/truststore.jks" -storepass "jenkins"
 	keytool -list -keystore "$(TLS_CONFIG)/truststore.jks" -storepass "jenkins" -rfc -alias "jenkins-server"
 
-import-cert:
-	if uname -s | grep Darwin > /dev/null; then \
-	    sudo security add-trusted-cert \
-	        -k /Library/Keychains/System.keychain \
-	        -d "$(HOME)/.jenkins/tls/server-cert.pem"; \
-	else \
-	    if [ -x $(which certutil) ]; then \
-	        certutil -d "sql:$(HOME)/.pki/nssdb" -D -n "jenkins-local" || true; \
-	        certutil -d "sql:$(HOME)/.pki/nssdb" -A -t "C,," -n "jenkins-local" -i "$(HOME)/.jenkins/tls/server-cert.pem"; \
-	        certutil -d "sql:$(HOME)/.pki/nssdb" -L; \
-	    fi; \
-	fi
 
 print-server-cert:
 	openssl s_client -showcerts -servername localhost -connect localhost:8443 </dev/null \

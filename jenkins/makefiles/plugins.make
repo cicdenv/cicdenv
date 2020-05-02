@@ -13,14 +13,14 @@ m2:
 	if [[ ! -d "$(CURDIR)/.m2" ]]; then mkdir -p "$(CURDIR)/.m2"; fi
 
 build-scriptler-plugin: local-plugin-builder m2
-	if [[ ! -d server-image/plugins/scriptler-plugin ]]; then \
+	if [[ ! -d images/server/plugins/scriptler-plugin ]]; then \
 	    git clone --depth 1 \
 	        git@github.com:jenkinsci/scriptler-plugin.git \
-	        --branch master server-image/plugins/scriptler-plugin; \
+	        --branch master images/server/plugins/scriptler-plugin; \
 	else \
-		(cd server-image/plugins/scriptler-plugin; git pull origin master); \
+		(cd images/server/plugins/scriptler-plugin; git pull origin master); \
 	fi
-	(cd server-image/plugins/scriptler-plugin; \
+	(cd images/server/plugins/scriptler-plugin; \
 	 time docker run -it --rm \
 	     -v "$(CURDIR)/.m2:/home/$(user_name)/.m2" \
 	     -v "$$(pwd):/project" \
@@ -30,7 +30,14 @@ build-scriptler-plugin: local-plugin-builder m2
 	      mvn package)
 
 build-github-oauth-plugin: local-plugin-builder m2
-	(cd server-image/plugins/github-oauth-plugin; \
+	if [[ ! -d images/server/plugins/github-oauth-plugin ]]; then \
+	    git clone --depth 1 \
+	        git@github.com:vogtech/github-oauth-plugin.git \
+	        --branch JENKINS-43214 images/server/plugins/github-oauth-plugin; \
+	else \
+		(cd images/server/plugins/github-oauth-plugin; git pull origin master); \
+	fi
+	(cd images/server/plugins/github-oauth-plugin; \
 	 time docker run -it --rm \
 	     -v "$(CURDIR)/.m2:/home/$(user_name)/.m2" \
 	     -v "$$(pwd):/project" \

@@ -8,8 +8,13 @@ Routine actions are defined as Makefile targets:
 ## Usage
 ```
 # terminal #1 Set AWS credentials (last 1 hour)
+cicdenv$ cicdctl creds aws-mfa main
 cicdenv$ cicdctl console
-📦 $USER:~/cicdenv$ cicdctl creds aws-mfa main && (cd jenkins; make aws-creds)
+📦 $USER:~/cicdenv/jenkins$ make aws-creds
+
+# Create/Renew self signed cert
+📦 $USER:~/cicdenv/jenkins$ make tls
+cicdenv/jenkins$ make import-cert
 
 # terminal #2
 cicdenv/jenkins$ make build-server run-server
@@ -18,36 +23,12 @@ cicdenv/jenkins$ make build-server run-server
 cicdenv/jenkins$ make build-agent run-agent
 ```
 
-## Updates
-### Jenkins
-https://jenkins.io/changelog/ (get version, release date)
-```
-# Edit: vars.make
-JENKINS_VERSION=2.220
-RELEASE_DATE=2020.02.09
-
-# New images
-cicdenv/jenkins$ make checksum builds
-
-# Test
-cicdenv/jenkins$ make run-server
-cicdenv/jenkins$ make run-agent
-
-# Releases
-terraform/shared/ecr-images/jenkins/outputs.tf
-cicdctl apply shared/ecr-images/jenkins:main
-```
-
 ## Setup
 One time setup includes:
-- [ ] secrets
-  cicdenv ssh key
-  cli/agent auth
-- [ ] tls
-  server cert
-  client truststore
-- [ ] Docker volumes
 - [ ] custom plugins
+- [ ] cicdenv ssh key
+- [ ] cli/agent auth
+- [ ] Docker volumes
 
 NOTE: refreshing the assumed server/agent aws sts sessions is required hourly
 
@@ -63,13 +44,10 @@ Obtain the `cicdenv` Github user ssh key:
 cicdenv/jenkins$ make ssh-key
 ```
 
-### CLI Authentication
-Populate local agent auth file `~/.jenkins/.auth`
+### Agent Authentication
+Obtain the cli/agent to server creds
 ```
-Github: (User) -> Settings -> Developer settings -> Personal access tokens:
-jenkins-cli — read:org
-
-=> <user>:<token>
+cicdenv/jenkins$ make agent-auth
 ```
 
 ### Docker Desktop Volumes
@@ -82,12 +60,4 @@ Linux - We create similar volumes on the host
 Create the necessary volumes:
 ```
 cicdenv/jenkins$ make volumes
-```
-
-### Secrets Files
-Installs:
-* `jenkins_home/{secret.key,secret.key.not-so-secret,identity.key.enc}`
-* `jenkins_home/secrets/{master.key,org.*,hudson.*,jenkins.*}`
-```
-cicdenv/jenkins$ make secrets-files
 ```
