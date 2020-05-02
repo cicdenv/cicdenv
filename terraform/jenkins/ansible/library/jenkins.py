@@ -57,7 +57,6 @@ def main():
     server_name = f'https://jenkins-{instance}.{workspace}.{domain}'
 
     server = Jenkins(server_name, username=github_user, password=github_token, timeout=10)
-    serverAPI = jenkinsapi.jenkins.Jenkins(server_name, username=github_user, password=github_token, timeout=10, useCrumb=True)
 
     if module.params['api']:
         info, _ = inspect_server(server, result)
@@ -78,6 +77,7 @@ def main():
                 pass
 
             if 'mode' in info and info['mode'] == "NORMAL":
+                serverAPI = jenkinsapi.jenkins.Jenkins(server_name, username=github_user, password=github_token, timeout=10, useCrumb=True)
                 if serverAPI.is_quieting_down:
                     serverAPI.cancel_quiet_down()
                     result['changed'] = True

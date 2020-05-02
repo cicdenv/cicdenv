@@ -73,9 +73,14 @@ def run_jenkins(args):
 
             ansible_dir = path.join(getcwd(), 'terraform/jenkins/ansible')
 
-            ecr_outputs = get_outputs('main', 'shared/ecr-images/jenkins')
-            server_image_tag = ecr_outputs['jenkins_server_image_repo']['value']['latest']
-            agent_image_tag = ecr_outputs['jenkins_agent_image_repo']['value']['latest']
+            if '--image-tag' in args.overrides:  # Specific image requested
+                image_tag = args.overrides[args.overrides.index('--image-tag') + 1]
+                server_image_tag = image_tag
+                agent_image_tag = image_tag
+            else:  # Source default values
+                ecr_outputs = get_outputs('main', 'shared/ecr-images/jenkins')
+                server_image_tag = ecr_outputs['jenkins_server_image_repo']['value']['latest']
+                agent_image_tag = ecr_outputs['jenkins_agent_image_repo']['value']['latest']
 
             actions = []
             _type = get_output(workspace, f'jenkins/instances/{instance}', 'type')
