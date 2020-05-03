@@ -12,11 +12,6 @@ crash.log
 ca-key.pem
 kops-admin.kubeconfig
 
-target
-
-jenkins/images/server/jenkins-ci.docker
-jenkins/images/server/plugins/scriptler-plugin
-
 packer/ec2_amazon-ebs.pem
 
 terraform/shared/apt-packages/amazon-ecr-credential-helper/amazon-ecr-credential-helper-*

@@ -1,5 +1,3 @@
-include $(CURDIR)/vars.make
-
 UNSECURE_URL=http://localhost:$(HTTP_PORT)
 SERVER_URL=https://localhost:$(HTTPS_PORT)
 
@@ -45,4 +43,5 @@ run-server:
 
 include $(CURDIR)/makefiles/linux/certs.make
 include $(CURDIR)/makefiles/linux/disks.make
+include $(CURDIR)/makefiles/linux/maint.make
 include $(CURDIR)/makefiles/linux/ui.make

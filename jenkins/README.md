@@ -20,10 +20,10 @@ cicdenv$ cicdctl console
 cicdenv/jenkins$ make import-cert
 
 # terminal #2
-cicdenv/jenkins$ make build-server run-server
+cicdenv/jenkins$ make [JDK_VERSION=jdk8|jdk11] build-server run-server
 
 # terminal #3
-cicdenv/jenkins$ make build-agent run-agent
+cicdenv/jenkins$ make [JDK_VERSION=jdk8|jdk11] build-agent run-agent
 ```
 
 ## Setup

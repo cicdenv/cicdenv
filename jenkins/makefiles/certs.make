@@ -15,7 +15,7 @@ tls:
 	    -reqexts SAN \
 	    -extensions SAN \
 	    -config <(cat /etc/ssl/openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:localhost,IP:127.0.0.1$(ADDITION_SANS)\n")) \
-	    -addext "basicConstraints=CA:TRUE"
+	    -addext "basicConstraints=CA:TRUE" \
 	    -passin "pass:jenkins"
 	openssl rsa \
 	    -in "$(TLS_CONFIG)/server-key.pem" \

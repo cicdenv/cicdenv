@@ -1,5 +1,3 @@
-include $(CURDIR)/vars.make
-
 UNSECURE_URL=http://$(IP_ADDRESS):$(HTTP_PORT)
 SERVER_URL=https://$(IP_ADDRESS):$(HTTPS_PORT)
 
@@ -54,6 +52,7 @@ network:
 
 include $(CURDIR)/makefiles/mac/certs.make
 include $(CURDIR)/makefiles/mac/disks.make
+include $(CURDIR)/makefiles/mac/maint.make
 include $(CURDIR)/makefiles/mac/xhyve.make
 include $(CURDIR)/makefiles/mac/ip.make
 include $(CURDIR)/makefiles/mac/ui.make
