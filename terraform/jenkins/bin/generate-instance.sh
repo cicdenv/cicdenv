@@ -43,8 +43,8 @@ distributed)
     ;;
 esac
 for binding in "$@"; do
-	var="${binding%%:*}"
-    val="${binding#*:}"
+	var="${binding%%=*}"
+    val="${binding#*=}"
 
     tf_vars["${var}"]="${val}"
 done
