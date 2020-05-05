@@ -137,7 +137,6 @@ def __add_kubectl(subparsers):
     _target.add_argument("target", help="target kops cluster in the form: <cluster>:<workspace>.")
 
     _passthru = argparse.ArgumentParser(add_help=False)
-    _passthru.add_argument('--admin', help="use cluster admin creds.", action='store_true')
     _passthru.add_argument("arguments", nargs=argparse.REMAINDER, help="extra arguments for kubectl.")
 
     _kubectl = [_target, _passthru]

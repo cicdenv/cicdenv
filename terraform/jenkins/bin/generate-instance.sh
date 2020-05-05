@@ -30,10 +30,17 @@ type=${1?"<type> required.${usage_message}"}; shift
 # Terraform variable bindings
 case "${type}" in
 colocated)
-    declare -A tf_vars=([instance_type]=m5dn.xlarge [executors]=2)
+    declare -A tf_vars=(
+        [instance_type]=m5dn.xlarge
+        [executors]=2
+    )
     ;;
 distributed)
-    declare -A tf_vars=([server_instance_type]=m5dn.large [agent_instance_type]=z1d.large [executors]=2)
+    declare -A tf_vars=(
+        [server_instance_type]=m5dn.large
+        [agent_instance_type]=z1d.large
+        [executors]=2
+    )
     ;;
 *)
     echo "unsupported [type] value: '${type}'"
@@ -43,10 +50,12 @@ distributed)
     ;;
 esac
 for binding in "$@"; do
-	var="${binding%%=*}"
-    val="${binding#*=}"
+    if [[ "$binding" != -* ]]; then
+        var="${binding%%=*}"
+        val="${binding#*=}"
 
-    tf_vars["${var}"]="${val}"
+        tf_vars["${var}"]="${val}"
+    fi
 done
 
 #

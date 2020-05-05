@@ -19,8 +19,8 @@ data "template_file" "kops_node_instance_group" {
     cluster_name     = var.cluster_name
     ami              = var.ami
     instance_type    = var.node_instance_type
-    max_size         = var.node_count / length(var.availability_zones)
-    min_size         = var.node_count / length(var.availability_zones)
+    max_size         = ceil(var.node_count / length(var.availability_zones))
+    min_size         = ceil(var.node_count / length(var.availability_zones))
     root_volume_size = var.node_volume_size
 
     iam_profile_arn = "${var.node_iam_profile}"

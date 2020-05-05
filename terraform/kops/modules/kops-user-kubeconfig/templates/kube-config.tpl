@@ -15,6 +15,9 @@ users:
         - token
         - -i
         - ${cluster_name}
+      env:
+        - name: AWS_PROFILE
+          value: admin-main
 contexts:
 - name: ${cluster_name}
   context:

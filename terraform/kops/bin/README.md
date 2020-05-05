@@ -10,5 +10,6 @@ a cluster state for each workspace.
 
 ## Usage
 ```
-cicdenv$ terraform/kops/bin/generate-cluster-states.sh 1-12
+cicdenv$ terraform/kops/bin/generate-cluster-states.sh 1-17a
+cicdenv$ terraform/kops/bin/generate-cluster-states.sh 1-17a node_instance_type=r5dn.2xlarge node_count=6
 ```

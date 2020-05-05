@@ -15,15 +15,17 @@ def run_kubectl(args):
     environment = environ.copy()  # Inherit cicdctl's environment
 
     # Kube client config
-    kubeconfig = None
-    if args.admin:
-    	kubeconfig = path.join(getcwd(), f'terraform/kops/clusters/{cluster}/cluster/{workspace}/kops-admin.kubeconfig')
+    # hacky accepts '--admin' override
+    if '--admin' in args.arguments:
+        admin_idx = args.arguments.index('--admin')
+        del args.arguments[admin_idx]  # remove flag
+        kubeconfig = path.join(getcwd(), f'terraform/kops/clusters/{cluster}/cluster/{workspace}/kops-admin.kubeconfig')
     else:
-    	kubeconfig = path.join(getcwd(), f'terraform/kops/clusters/{cluster}/cluster/{workspace}/kops-user.kubeconfig')
+        kubeconfig = path.join(getcwd(), f'terraform/kops/clusters/{cluster}/cluster/{workspace}/kops-user.kubeconfig')
     environment['KUBECONFIG'] = kubeconfig
 
     # Set aws credentials profile with env variables
-    environment['AWS_PROFILE'] = f'admin-{workspace}'
+    environment['AWS_PROFILE'] = f'admin-main'
 
     try:
         cmd = ['kubectl']

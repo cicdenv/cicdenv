@@ -17,9 +17,12 @@ EOF
 
 cat <<EOF > "${cluster_config_state}/locals.tf"
 locals {
-  kubernetes_version = "${kubernetes_version}"
-
   cluster_short_name = "${cluster_name}-\${terraform.workspace}"
+
+  kubernetes_version   = "${tf_vars[kubernetes_version]}"
+  master_instance_type = "${tf_vars[master_instance_type]}"
+  node_instance_type   = "${tf_vars[node_instance_type]}"
+  node_count           = "${tf_vars[node_count]}"
 }
 EOF
 
@@ -32,7 +35,11 @@ module "kops_driver" {
   domain = var.domain
 
   cluster_short_name = local.cluster_short_name
-  kubernetes_version = local.kubernetes_version
+
+  kubernetes_version   = local.kubernetes_version
+  master_instance_type = local.master_instance_type
+  node_instance_type   = local.node_instance_type
+  node_count           = local.node_count
 
   cluster_home = "${path.module}/.."
   

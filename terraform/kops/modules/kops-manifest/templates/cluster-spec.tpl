@@ -11,7 +11,8 @@ spec:
       type: Internal
       additionalSecurityGroups: ${lb_security_groups}
   authentication:
-    aws: {}
+    aws:
+      image: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-iam-authenticator:v0.4.0
   authorization:
     rbac: {}
   channel: stable
