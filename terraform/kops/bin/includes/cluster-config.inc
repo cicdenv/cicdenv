@@ -22,7 +22,7 @@ locals {
   kubernetes_version   = "${tf_vars[kubernetes_version]}"
   master_instance_type = "${tf_vars[master_instance_type]}"
   node_instance_type   = "${tf_vars[node_instance_type]}"
-  node_count           = "${tf_vars[node_count]}"
+  node_count           = ${tf_vars[node_count]}
 }
 EOF
 
