@@ -1,0 +1,420 @@
+---
+apiVersion: kops/v1alpha2
+kind: Cluster
+metadata:
+  name: 1-18a-dev.kops.cicdenv.com
+spec:
+  addons:
+  - manifest: s3://kops.cicdenv.com/1-18a-dev.kops.cicdenv.com/addons/custom-channel.yaml
+  api:
+    loadBalancer:
+      type: Internal
+      additionalSecurityGroups: [sg-05648b405f7e40884]
+  authentication:
+    aws:
+      image: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-iam-authenticator:v0.4.0
+  authorization:
+    rbac: {}
+  channel: stable
+  cloudProvider: aws
+  configBase: s3://kops.cicdenv.com/1-18a-dev.kops.cicdenv.com
+  dnsZone: Z09422972460V9DOBEONQ
+  etcdClusters:
+  - etcdMembers:
+    - instanceGroup: master-us-west-2a
+      name: a
+      encryptedVolume: true
+      kmsKeyId: arn:aws:kms:us-west-2:977594567050:key/40375c75-582c-4572-94cb-c6fd87e5bfa9
+    - instanceGroup: master-us-west-2b
+      name: b
+      encryptedVolume: true
+      kmsKeyId: arn:aws:kms:us-west-2:977594567050:key/40375c75-582c-4572-94cb-c6fd87e5bfa9
+    - instanceGroup: master-us-west-2c
+      name: c
+      encryptedVolume: true
+      kmsKeyId: arn:aws:kms:us-west-2:977594567050:key/40375c75-582c-4572-94cb-c6fd87e5bfa9
+    name: main
+  - etcdMembers:
+    - instanceGroup: master-us-west-2a
+      name: a
+      encryptedVolume: true
+      kmsKeyId: arn:aws:kms:us-west-2:977594567050:key/40375c75-582c-4572-94cb-c6fd87e5bfa9
+    - instanceGroup: master-us-west-2b
+      name: b
+      encryptedVolume: true
+      kmsKeyId: arn:aws:kms:us-west-2:977594567050:key/40375c75-582c-4572-94cb-c6fd87e5bfa9
+    - instanceGroup: master-us-west-2c
+      name: c
+      encryptedVolume: true
+      kmsKeyId: arn:aws:kms:us-west-2:977594567050:key/40375c75-582c-4572-94cb-c6fd87e5bfa9
+    name: events
+  iam:
+    allowContainerRegistry: true
+    legacy: false
+  kubeDNS:
+    provider: CoreDNS
+  kubernetesApiAccess:
+  - 0.0.0.0/0
+  kubelet:
+    anonymousAuth: false
+  kubernetesVersion: 1.18.2
+  masterInternalName: api.internal.1-18a-dev.kops.cicdenv.com
+  masterPublicName: api.1-18a-dev.kops.cicdenv.com
+  networkCIDR: 10.16.0.0/16
+  networkID: vpc-05e996360e6d81043
+  networking:
+    canal: {}
+  nonMasqueradeCIDR: 100.64.0.0/10
+  subnets:
+  - cidr: 10.16.32.0/19
+    id: subnet-0230bf84c0ca70352
+    name: us-west-2a
+    type: Private
+    zone: us-west-2a
+  - cidr: 10.16.64.0/19
+    id: subnet-0d9574ecb5a5ac0ee
+    name: us-west-2b
+    type: Private
+    zone: us-west-2b
+  - cidr: 10.16.96.0/19
+    id: subnet-0f984b3662e26d4e6
+    name: us-west-2c
+    type: Private
+    zone: us-west-2c
+  - cidr: 10.16.0.0/22
+    id: subnet-0fe6e7b15f31088c5
+    name: utility-us-west-2a
+    type: Utility
+    zone: us-west-2a
+  - cidr: 10.16.4.0/22
+    id: subnet-094d995cd873d3728
+    name: utility-us-west-2b
+    type: Utility
+    zone: us-west-2b
+  - cidr: 10.16.8.0/22
+    id: subnet-0af21c86ed70071c8
+    name: utility-us-west-2c
+    type: Utility
+    zone: us-west-2c
+  topology:
+    dns:
+      type: Private
+    masters: private
+    nodes: private
+  fileAssets:
+  - name: kubernetes-audit
+    path: /srv/kubernetes/audit.yaml
+    roles: [Master]
+    content: |
+      apiVersion: audit.k8s.io/v1
+      kind: Policy
+      omitStages:
+        - "RequestReceived"
+      rules:
+      - level: None
+        users: ["system:kube-proxy"]
+        verbs: ["watch"]
+        resources:
+          - group: ""
+            resources: ["endpoints", "services", "services/status"]
+      - level: None
+        userGroups: ["system:nodes"]
+        verbs: ["get"]
+        resources:
+          - group: ""
+            resources: ["nodes", "nodes/status"]
+      - level: None
+        users:
+          - system:kube-controller-manager
+          - system:kube-scheduler
+          - system:serviceaccount:kube-system:endpoint-controller
+        verbs: ["get", "update"]
+        namespaces: ["kube-system"]
+        resources:
+          - group: ""
+            resources: ["endpoints"]
+      - level: None
+        users: ["system:apiserver"]
+        verbs: ["get"]
+        resources:
+          - group: ""
+            resources: ["namespaces", "namespaces/status", "namespaces/finalize"]
+      - level: None
+        users: ["cluster-autoscaler"]
+        verbs: ["get", "update"]
+        namespaces: ["kube-system"]
+        resources:
+          - group: ""
+            resources: ["configmaps", "endpoints"]
+      - level: None
+        users:
+          - system:kube-controller-manager
+        verbs: ["get", "list"]
+        resources:
+          - group: "metrics.k8s.io"
+      - level: None
+        nonResourceURLs:
+          - /healthz*
+          - /version
+          - /swagger*
+      - level: None
+        resources:
+          - group: ""
+            resources: ["events"]
+      - level: None
+        resources:
+        - group: ""
+          resources: ["configmaps"]
+          resourceNames: ["controller-leader"]
+      - level: None
+        userGroups: ["system:authenticated"]
+        nonResourceURLs:
+        - "/api*"
+        - "/version"
+      - level: RequestResponse
+        resources:
+        - group: ""
+          resources: ["pods"]
+      - level: Request
+        users:
+        - "kubelet"
+        - "system:node-problem-detector"
+        - "system:serviceaccount:kube-system:node-problem-detector"
+        verbs: ["update","patch"]
+        resources:
+          - group: ""
+            resources: ["nodes/status", "pods/status"]
+        omitStages:
+          - "RequestReceived"
+      - level: Request
+        userGroups: ["system:nodes"]
+        verbs: ["update","patch"]
+        resources:
+          - group: ""
+            resources: ["nodes/status", "pods/status"]
+        omitStages:
+          - "RequestReceived"
+      - level: Request
+        users: ["system:serviceaccount:kube-system:namespace-controller"]
+        verbs: ["deletecollection"]
+        omitStages:
+          - "RequestReceived"
+      - level: Request
+        verbs: ["get", "list", "watch"]
+        resources:
+          - group: ""
+          - group: "admissionregistration.k8s.io"
+          - group: "apiextensions.k8s.io"
+          - group: "apiregistration.k8s.io"
+          - group: "apps"
+          - group: "authentication.k8s.io"
+          - group: "authorization.k8s.io"
+          - group: "autoscaling"
+          - group: "batch"
+          - group: "certificates.k8s.io"
+          - group: "extensions"
+          - group: "metrics.k8s.io"
+          - group: "networking.k8s.io"
+          - group: "node.k8s.io"
+          - group: "policy"
+          - group: "rbac.authorization.k8s.io"
+          - group: "scheduling.k8s.io"
+          - group: "settings.k8s.io"
+          - group: "storage.k8s.io"
+        omitStages:
+          - "RequestReceived"
+      - level: RequestResponse
+        resources:
+          - group: ""
+          - group: "admissionregistration.k8s.io"
+          - group: "apiextensions.k8s.io"
+          - group: "apiregistration.k8s.io"
+          - group: "apps"
+          - group: "authentication.k8s.io"
+          - group: "authorization.k8s.io"
+          - group: "autoscaling"
+          - group: "batch"
+          - group: "certificates.k8s.io"
+          - group: "extensions"
+          - group: "metrics.k8s.io"
+          - group: "networking.k8s.io"
+          - group: "node.k8s.io"
+          - group: "policy"
+          - group: "rbac.authorization.k8s.io"
+          - group: "scheduling.k8s.io"
+          - group: "settings.k8s.io"
+          - group: "storage.k8s.io"
+        omitStages:
+          - "RequestReceived"
+      - level: Request
+        resources:
+        - group: ""
+        - group: "extensions"
+      - level: Metadata
+        resources:
+        - group: ""
+          resources: ["secrets", "configmaps"]
+      - level: Metadata
+        resources:
+          - group: ""
+            resources: ["secrets", "configmaps"]
+          - group: authentication.k8s.io
+            resources: ["tokenreviews"]
+        omitStages:
+          - "RequestReceived"
+      - level: Metadata
+        omitStages:
+          - "RequestReceived"
+  kubeAPIServer:
+    auditLogPath:       /var/log/kube-apiserver-audit.log
+    auditPolicyFile:    /srv/kubernetes/audit.yaml
+    auditLogMaxAge:       10 # Days
+    auditLogMaxBackups:    1 # Logs to retain
+    auditLogMaxSize:     100 # Max size in MB
+  docker:
+    version: "19.03.8"
+
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: 1-18a-dev.kops.cicdenv.com
+  name: master-us-west-2a
+spec:
+  image: ami-0a5a445878d40f4e8
+  machineType: c5d.large
+  maxSize: 1
+  minSize: 1
+  nodeLabels:
+    kops.k8s.io/instancegroup: master-us-west-2a
+  role: Master
+  rootVolumeSize: 100
+  iam:
+    profile: arn:aws:iam::977594567050:instance-profile/kops-master
+  additionalSecurityGroups: [sg-01b7dec4801ca3963]
+  subnets:
+  - us-west-2a
+  cloudLabels:
+
+  detailedInstanceMonitoring: true
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: 1-18a-dev.kops.cicdenv.com
+  name: master-us-west-2b
+spec:
+  image: ami-0a5a445878d40f4e8
+  machineType: c5d.large
+  maxSize: 1
+  minSize: 1
+  nodeLabels:
+    kops.k8s.io/instancegroup: master-us-west-2b
+  role: Master
+  rootVolumeSize: 100
+  iam:
+    profile: arn:aws:iam::977594567050:instance-profile/kops-master
+  additionalSecurityGroups: [sg-01b7dec4801ca3963]
+  subnets:
+  - us-west-2b
+  cloudLabels:
+
+  detailedInstanceMonitoring: true
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: 1-18a-dev.kops.cicdenv.com
+  name: master-us-west-2c
+spec:
+  image: ami-0a5a445878d40f4e8
+  machineType: c5d.large
+  maxSize: 1
+  minSize: 1
+  nodeLabels:
+    kops.k8s.io/instancegroup: master-us-west-2c
+  role: Master
+  rootVolumeSize: 100
+  iam:
+    profile: arn:aws:iam::977594567050:instance-profile/kops-master
+  additionalSecurityGroups: [sg-01b7dec4801ca3963]
+  subnets:
+  - us-west-2c
+  cloudLabels:
+
+  detailedInstanceMonitoring: true
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: 1-18a-dev.kops.cicdenv.com
+  name: nodes-us-west-2a
+spec:
+  image: ami-0a5a445878d40f4e8
+  machineType: r5dn.xlarge
+  maxSize: 1
+  minSize: 1
+  nodeLabels:
+    kops.k8s.io/instancegroup: nodes-us-west-2a
+  role: Node
+  rootVolumeSize: 100
+  iam:
+    profile: arn:aws:iam::977594567050:instance-profile/kops-node
+  additionalSecurityGroups: [sg-085fcc2a8cfe305e5]
+  subnets:
+  - us-west-2a
+  cloudLabels:
+
+  detailedInstanceMonitoring: true
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: 1-18a-dev.kops.cicdenv.com
+  name: nodes-us-west-2b
+spec:
+  image: ami-0a5a445878d40f4e8
+  machineType: r5dn.xlarge
+  maxSize: 1
+  minSize: 1
+  nodeLabels:
+    kops.k8s.io/instancegroup: nodes-us-west-2b
+  role: Node
+  rootVolumeSize: 100
+  iam:
+    profile: arn:aws:iam::977594567050:instance-profile/kops-node
+  additionalSecurityGroups: [sg-085fcc2a8cfe305e5]
+  subnets:
+  - us-west-2b
+  cloudLabels:
+
+  detailedInstanceMonitoring: true
+---
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: 1-18a-dev.kops.cicdenv.com
+  name: nodes-us-west-2c
+spec:
+  image: ami-0a5a445878d40f4e8
+  machineType: r5dn.xlarge
+  maxSize: 1
+  minSize: 1
+  nodeLabels:
+    kops.k8s.io/instancegroup: nodes-us-west-2c
+  role: Node
+  rootVolumeSize: 100
+  iam:
+    profile: arn:aws:iam::977594567050:instance-profile/kops-node
+  additionalSecurityGroups: [sg-085fcc2a8cfe305e5]
+  subnets:
+  - us-west-2c
+  cloudLabels:
+
+  detailedInstanceMonitoring: true
