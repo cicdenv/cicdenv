@@ -115,14 +115,6 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 # Hashicorp signing key
 RUN curl -sl https://keybase.io/hashicorp/pgp_keys.asc | gpg --import
 
-# KOPS terraform output isn't ready for v0.12
-RUN curl -o terraform_0.11.14_linux_amd64.zip                                                                                    \
-         -sL https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_linux_amd64.zip                                  \
-&&  echo "9b9a4492738c69077b079e595f5b2a9ef1bc4e8fb5596610f69a6f322a8af8dd  terraform_0.11.14_linux_amd64.zip" | sha256sum -c -  \
-&&  unzip terraform_0.11.14_linux_amd64.zip -d /bin                                                                              \
-&&  mv /bin/terraform /bin/terraform-0.11.14                                                                                     \
-&&  rm -f terraform_0.11.14_linux_amd64.zip
-
 # Terraform cli
 ARG terraform_version
 ARG terraform_sha256
