@@ -14,7 +14,7 @@ from terraform.external import dynamodb
 _init_command = ['init', '-upgrade', f'-backend-config={backend_config}']  # needs terraform[-<version>] prepended
 
 
-def _state_prep(state_dir, workspace, environment, workspaced, terraform):
+def _state_prep(state_dir, workspace, environment, workspaced):
     # Odd, but you init, then workspace (first time only)
     # otherwise you workspace then init
     terrform_state = path.join(state_dir, '.terraform', 'terraform.tfstate')
@@ -22,27 +22,27 @@ def _state_prep(state_dir, workspace, environment, workspaced, terraform):
 
     # Never init'd states must be init'd first before setting the workspace
     if first_time:
-        _run([terraform] + _init_command, state_dir, environment)
+        _run(['terraform'] + _init_command, state_dir, environment)
 
     # If applicable: create workspace where neded before selecting it
     if workspaced:
         try:
-            log_cmd_line([terraform, 'workspace', 'list'], cwd=state_dir)
-            workspaces = subprocess.check_output([terraform, 'workspace', 'list'], env=environment, cwd=state_dir).decode("utf-8").strip().splitlines()
+            log_cmd_line(['terraform', 'workspace', 'list'], cwd=state_dir)
+            workspaces = subprocess.check_output(['terraform', 'workspace', 'list'], env=environment, cwd=state_dir).decode("utf-8").strip().splitlines()
             workspaces = [w.strip() for w in workspaces]  # Strip whitespace
             if not f'* {workspace}' in workspaces:
                 if not workspace in workspaces:
-                    log_cmd_line([terraform, 'workspace', 'new', workspace], cwd=state_dir)
-                    subprocess.run([terraform, 'workspace', 'new', workspace], env=environment, cwd=state_dir, stdout=stdout, stderr=stderr, check=True)
+                    log_cmd_line(['terraform', 'workspace', 'new', workspace], cwd=state_dir)
+                    subprocess.run(['terraform', 'workspace', 'new', workspace], env=environment, cwd=state_dir, stdout=stdout, stderr=stderr, check=True)
                 else:
-                    log_cmd_line([terraform, 'workspace', 'select', workspace], cwd=state_dir)
-                    subprocess.run([terraform, 'workspace', 'select', workspace], env=environment, cwd=state_dir, stdout=stdout, stderr=stderr, check=True)
+                    log_cmd_line(['terraform', 'workspace', 'select', workspace], cwd=state_dir)
+                    subprocess.run(['terraform', 'workspace', 'select', workspace], env=environment, cwd=state_dir, stdout=stdout, stderr=stderr, check=True)
         except subprocess.CalledProcessError as cpe:
             exit(cpe.returncode)
     
     # Safe to init here for non-first time workspaced states
     if not first_time:
-        _run([terraform] + _init_command, state_dir, environment)
+        _run(['terraform'] + _init_command, state_dir, environment)
 
 
 def _unpack_args(args):
@@ -110,14 +110,6 @@ def run_terraform(args):
         # Shared terraform plugin cache
         environment['TF_PLUGIN_CACHE_DIR'] = path.join(getcwd(), '.terraform.d/plugin-cache')
 
-        # Handle version compatibility
-        #  '>= ...'  => /bin/terraform (latest)
-        #  '0.11.14' => /bin/terraform-0.11.14
-        required_version = parse_terraform_tf(path.join(state_dir, 'backend.tf'))['required_version']
-        terraform = 'terraform'
-        if not required_version.strip().startswith('>='):
-            terraform = f'terraform-{required_version}'
-
         # Handle sub-command dependencies (init, workspace ordering )
         sub_command = args.command
         if sub_command == 'unlock':  # Special case
@@ -126,9 +118,9 @@ def run_terraform(args):
             log_cmd_line(gen_cmd)
             subprocess.run(gen_cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)
         elif sub_command in ['init', 'workspace']:
-            _state_prep(state_dir, workspace, environment, workspaced, terraform)  # "state prep" will handle these completely
+            _state_prep(state_dir, workspace, environment, workspaced)  # "state prep" will handle these completely
         elif sub_command in ['import', 'output', 'refresh', 'plan', 'apply', 'destroy']:
-            _state_prep(state_dir, workspace, environment, workspaced, terraform)  # "state prep" the state first, then proceed
+            _state_prep(state_dir, workspace, environment, workspaced)  # "state prep" the state first, then proceed
 
             # Load variables.tf, locate values from {terraform/*.tfvars, data sources}
             var_opts = []
@@ -146,7 +138,7 @@ def run_terraform(args):
                         var_opts.append('-var-file')
                         var_opts.append(path.join(varfile_dir, source))
 
-            command_line = [terraform, sub_command]
+            command_line = ['terraform', sub_command]
             command_line.extend(var_opts)
             command_line.extend(overrides)
             _run(command_line, state_dir, environment)

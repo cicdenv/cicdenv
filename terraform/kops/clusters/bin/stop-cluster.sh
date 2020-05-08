@@ -15,17 +15,14 @@ bin/cicdctl creds aws-mfa "$workspace"
 export AWS_PROFILE=admin-${workspace}
 AWS_OPTS="--profile=${AWS_PROFILE} --region=us-west-2"
 
-# Kops TF output is not 0.12 compatible
-TERRAFORM=/bin/terraform-0.11.14
-
 pushd "terraform/kops/clusters/${cluster}/cluster/${workspace}" >/dev/null
 
 # Target the correct workspace
-$TERRAFORM workspace list | grep "$workspace"   >/dev/null || $TERRAFORM workspace new "$workspace"
-$TERRAFORM workspace list | grep "* $workspace" >/dev/null || $TERRAFORM workspace select "$workspace"
+terraform workspace list | grep "$workspace"   >/dev/null || terraform workspace new "$workspace"
+terraform workspace list | grep "* $workspace" >/dev/null || terraform workspace select "$workspace"
 
-master_asg_ids=$($TERRAFORM output -json 'master_autoscaling_group_ids' | jq -r '.value[]')
-node_asg_ids=$(  $TERRAFORM output -json 'node_autoscaling_group_ids'   | jq -r '.value[]')
+master_asg_ids=$(terraform output -json 'master_autoscaling_group_ids' | jq -r '.[]')
+node_asg_ids=$(  terraform output -json 'node_autoscaling_group_ids'   | jq -r '.[]')
 
 for asg in $master_asg_ids $node_asg_ids; do
     echo "ASG [$asg]"
