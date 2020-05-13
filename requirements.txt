@@ -1,6 +1,6 @@
 awscli
 aws-mfa
-pyhcl==0.4.0
+pyhcl
 pytz
 PyYAML
 tzlocal
