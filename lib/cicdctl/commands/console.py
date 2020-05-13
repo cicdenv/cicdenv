@@ -7,7 +7,7 @@ from cicdctl.logs import log_cmd_line
 
 def run_console(args):
     _PS1='\\u:\\w\\$ '  # Default prompt string
-    with open(path.join(getcwd(), 'Makefile'), 'r') as f:
+    with open(path.join(getcwd(), 'tool-vars'), 'r') as f:
         for line in f:
             if line.startswith('_PS1='):
                 # Strip assingment, quotes, make dollar escapes
