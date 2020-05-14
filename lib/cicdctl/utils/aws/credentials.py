@@ -206,4 +206,4 @@ class StsAssumeRoleCredentials(object):
         
         # Use the mfa-code to login
         mfa_cmd = ['aws-mfa', f'--profile={profile}', f'--duration={duration}', '--log-level=ERROR']
-        self.runner.run(mfa_cmd, input=totp.decode(), stdout=DEVNULL)
+        self.runner.run(mfa_cmd, input=totp.encode(), stdout=DEVNULL)

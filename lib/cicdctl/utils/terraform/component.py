@@ -2,8 +2,8 @@ from os import path
 import subprocess
 
 from ..aws import DEFAULT_REGION
-from . import backend_config
-from . import parse_variable_comments_tf, parse_tfvars
+from . import (backend_config, varfile_dir, 
+    parse_variable_comments_tf, parse_tfvars)
 
 
 def is_workspaced(component_dir):

@@ -21,9 +21,9 @@ COMMANDS = {
         'init',
         'create',
         'destroy',
+        'validate',
         'start',
         'stop',
-        'deploy',
     ],
     'console': [
     ],

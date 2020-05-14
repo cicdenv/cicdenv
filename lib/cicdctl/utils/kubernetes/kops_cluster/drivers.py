@@ -106,13 +106,7 @@ class ClusterDriver(object):
 
     def validate(self):
         admin_kubeconfig = kubeconfig(self.name, self.workspace, 'admin')
-        user_kubeconfig = kubeconfig(self.name, self.workspace, 'user')
-        kubeconfig = admin_kubeconfig if path.isfile(admin_kubeconfig) else user_kubeconfig
-        self.environment['KUBECONFIG'] = kubeconfig
-
-        bucket = state_store()
-
-        self.runner.run(['kops', 'validate', 'cluster', f'--name={cluster}-{workspace}.kops.{domain}', f'--state=s3://{bucket}'])
+        KopsDriver(self.settings, self.cluster, path.isfile(admin_kubeconfig)).run(['validate', 'cluster'])
 
     def start(self):
         # cluster must exist
