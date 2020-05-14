@@ -1,86 +1,35 @@
-from sys import stdout, stderr
-from os import path, getcwd, environ
-import subprocess
+import click
 
-from types import SimpleNamespace
+from . import PASS_THRU_FLAGS, commands
+from .types.cluster import ClusterParamType
+from .types.flag import FlagParamType
 
-from cicdctl.logs import log_cmd_line
-from aws.credentials import StsAssumeRoleCredentials
-from terraform.files import parse_tfvars, domain_config
-from cicdctl.commands.terraform import run_terraform
+from ..utils.aws.credentials import StsAssumeRoleCredentials
+from ..utils.kubernetes.kops_cluster.drivers import ClusterDriver
 
+"""cicdctl cluster <command> <cluster> [tf-options|vars]"""
 
-def cluster_states(cluster, workspace):
-    return [
-        f'kops/clusters/{cluster}/cluster-config:{workspace}',
-        f'kops/clusters/{cluster}/cluster/{workspace}:{workspace}',
-        f'kops/clusters/{cluster}/external-access:{workspace}',
-    ]
+@click.group()
+@click.pass_obj
+def cluster(settings):
+    # Refresh main account AWS sts creds
+    if settings.creds:
+        sts = StsAssumeRoleCredentials(settings)
+        sts.refresh('main')
 
-
-def run_cluster(args):
-    for _target in args.target:
-        cluster, workspace = _target.split(':')
-        if args.command == 'init-cluster' or args.command == 'apply-cluster':
-            if not path.isdir(path.join(getcwd(), f'terraform/kops/clusters/{cluster}')):
-                environment = environ.copy()  # Inherit cicdctl's environment
-                gen_cmd = ['terraform/kops/bin/generate-cluster-states.sh', cluster, *args.overrides]
-                log_cmd_line(gen_cmd)
-                subprocess.run(gen_cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)
-            # Cleanup pass thru args
-            overrides = [override for override in args.overrides if override.startswith('-')]
-            # Always apply the cluster-config state
-            _args = SimpleNamespace()
-            _args.command = 'apply'
-            _args.target = [cluster_states(cluster, workspace)[0]]
-            _args.overrides = overrides
-            run_terraform(_args)
-            # cluster / external-access states init/apply
-            _args = SimpleNamespace()
-            _args.command = 'init' if args.command == 'init-cluster' else 'apply'
-            _args.target = cluster_states(cluster, workspace)[1:]
-            _args.overrides = overrides
-            run_terraform(_args)
-        elif args.command == 'destroy-cluster':
-            _args = SimpleNamespace()
-            _args.command = 'destroy'
-            _args.target = cluster_states(cluster, workspace)[::-1]  # Destroy in reverse order
-            _args.overrides = args.overrides
-            run_terraform(_args)
-        elif args.command == 'validate-cluster':
-            # Refresh AWS mfa credentials if needed
-            StsAssumeRoleCredentials().refresh_profile(f'admin-{workspace}')
-     
-            environment = environ.copy()  # Inherit cicdctl's environment
-
-            # Kube client config
-            kubeconfig = path.join(getcwd(), f'terraform/kops/clusters/{cluster}/cluster/{workspace}/kops-admin.kubeconfig')
-            if not path.isfile(kubeconfig):  # Use admin creds if available
-                kubeconfig = path.join(getcwd(), f'terraform/kops/clusters/{cluster}/cluster/{workspace}/kops-user.kubeconfig')
-            environment['KUBECONFIG'] = kubeconfig
-            
-            # Set aws credentials profile with env variables
-            environment['AWS_PROFILE'] = f'admin-main'
-
-            domain = parse_tfvars(domain_config)['domain']
-            bucket = bucket = f'kops.{domain}'
-
-            try:
-                cmd = ['kops', 'validate', 'cluster', f'--name={cluster}-{workspace}.kops.{domain}', f'--state=s3://{bucket}']
-                log_cmd_line(cmd)
-                
-                subprocess.run(cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)
-            except subprocess.CalledProcessError as cpe:
-                exit(cpe.returncode)
-        elif args.command == 'start-cluster':
-            # Apply the cluster state to restore the ASG counts
-            _args = SimpleNamespace()
-            _args.command = 'apply'
-            _args.target = [cluster_states(cluster, workspace)[1]]
-            _args.overrides = args.overrides
-            run_terraform(_args)
-        elif args.command == 'stop-cluster':
-            environment = environ.copy()  # Inherit cicdctl's environment
-            stop_cmd = ['terraform/kops/clusters/bin/stop-cluster.sh', _target]
-            log_cmd_line(stop_cmd)
-            subprocess.run(stop_cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)
+  
+for command in commands(__file__):
+    def bind_command(command):
+        @click.pass_obj
+        @click.argument('cluster', type=ClusterParamType())
+        @click.argument('flags', nargs=-1, type=FlagParamType())
+        def command_func(settings, cluster, flags):
+            if settings.creds:  # Refreshes sub account AWS mfa credentials if needed
+                sts = StsAssumeRoleCredentials(settings)
+                sts.refresh(cluster.workspace)
+            driver_method = getattr(ClusterDriver(settings, cluster, flags), command)
+            driver_method()
+        command_func.__name__ = command
+    
+        cluster.command(name=command, context_settings=PASS_THRU_FLAGS)(command_func)
+    bind_command(command)

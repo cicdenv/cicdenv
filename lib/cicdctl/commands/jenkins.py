@@ -1,140 +1,80 @@
-from sys import stdout, stderr
-from os import path, getcwd, environ
-import subprocess
-import io
+import click
 
-import getpass
+from . import PASS_THRU_FLAGS, commands
+from .types.instance import InstanceParamType
+from .types.flag import FlagParamType
 
-from types import SimpleNamespace
+from ..utils.aws.credentials import StsAssumeRoleCredentials
+from ..utils.jenkins.driver import JenkinsDriver
 
-from cicdctl.logs import log_cmd_line
-from aws.credentials import StsAssumeRoleCredentials
-from terraform.files import parse_tfvars, domain_config
-from terraform.outputs import get_outputs, get_output
-from cicdctl.commands.terraform import run_terraform
+"""cicdctl jenkins <command> <instance-name:workspace> [tf-options|tf-vars|options]"""
 
+@click.group()
+@click.pass_obj
+def jenkins(settings):
+    # Refresh main account AWS sts creds
+    if settings.creds:
+        sts = StsAssumeRoleCredentials(settings)
+        sts.refresh('main')
 
-def run_jenkins(args):
-    for _target in args.target:
-        instance, workspace = _target.split(':')
-        # hacky jenkins deployment type override
-        #   accepts '--type {distirubted|colocated}'
-        if '--type' in args.overrides:
-            type_idx = args.overrides.index('--type')
-            _type = args.overrides[type_idx + 1]
-            del args.overrides[type_idx]  # remove flag
-            del args.overrides[type_idx]  # remove flag value
+  
+for command in [command for command in commands(__file__) if command in [
+        'init',
+        'create',
+    ]]:
+    def bind_command(command):
+        @click.pass_obj
+        @click.argument('instance', type=InstanceParamType())
+        @click.option('--type', '_type', type=click.Choice(['colocated', 'distributed'], case_sensitive=False), required=True)
+        @click.argument('flags', nargs=-1, type=FlagParamType())
+        def command_func(settings, instance, _type, flags):
+            if settings.creds:  # Refreshes sub account AWS mfa credentials if needed
+                sts = StsAssumeRoleCredentials(settings)
+                sts.refresh(instance.workspace)
+            driver_method = getattr(JenkinsDriver(settings, instance, flags=flags, type=_type), command)
+            driver_method()
+        command_func.__name__ = command
+    
+        jenkins.command(name=command, context_settings=PASS_THRU_FLAGS)(command_func)
+    bind_command(command)
 
-        jenkins_state = f'jenkins/instances/{instance}:{workspace}'
+for command in [command for command in commands(__file__) if command in [
+        'start',
+        'destroy',
+    ]]:
+    def bind_command(command):
+        @click.pass_obj
+        @click.argument('instance', type=InstanceParamType())
+        @click.argument('flags', nargs=-1, type=FlagParamType())
+        def command_func(settings, instance, flags):
+            if settings.creds:  # Refreshes sub account AWS mfa credentials if needed
+                sts = StsAssumeRoleCredentials(settings)
+                sts.refresh(instance.workspace)
+            driver_method = getattr(JenkinsDriver(settings, instance, flags=flags), command)
+            driver_method()
+        command_func.__name__ = command
+    
+        jenkins.command(name=command, context_settings=PASS_THRU_FLAGS)(command_func)
+    bind_command(command)
 
-        _args = SimpleNamespace()
-        _args.target = jenkins_state
-        _args.overrides = args.overrides
+@jenkins.command(context_settings=PASS_THRU_FLAGS)
+@click.pass_obj
+@click.argument('instance', type=InstanceParamType())
+def stop(settings, instance):
+    if settings.creds:  # Refreshes sub account AWS mfa credentials if needed
+        sts = StsAssumeRoleCredentials(settings)
+        sts.refresh(instance.workspace)
+    JenkinsDriver(settings, instance).stop()
 
-        # Generate the terraform component folder if needed
-        if args.command in ['init-jenkins', 'apply-jenkins']:
-            if not path.isdir(path.join(getcwd(), f'terraform/jenkins/instances/{instance}')):
-                environment = environ.copy()  # Inherit cicdctl's environment
-                gen_cmd = ['terraform/jenkins/bin/generate-instance.sh', instance, _type, *args.overrides]
-                log_cmd_line(gen_cmd)
-                subprocess.run(gen_cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)
-                _args.overrides = [override for override in _args.overrides if override.startswith('-')]
-
-        if args.command == 'init-jenkins':
-            _args.command = 'init'
-            run_terraform(_args)
-        elif args.command == 'apply-jenkins':
-            _args.command = 'apply'
-            run_terraform(_args)
-        elif args.command == 'destroy-jenkins':
-            _args.command = 'destroy'
-            run_terraform(_args)
-        elif args.command == 'start-jenkins':
-            # Apply the cluster state to restore the ASG counts
-            _args.command = 'apply'
-            run_terraform(_args)
-        elif args.command == 'stop-jenkins':
-            environment = environ.copy()  # Inherit cicdctl's environment
-            stop_cmd = ['terraform/jenkins/instances/bin/stop-instance.sh', _target]
-            log_cmd_line(stop_cmd)
-            subprocess.run(stop_cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)
-        elif args.command == 'deploy-jenkins':
-            proc = subprocess.Popen(['terraform/jenkins/instances/bin/list-instances.sh', _target], stdout=subprocess.PIPE)
-            private_ips = [private_ip.rstrip() for private_ip in io.TextIOWrapper(proc.stdout, encoding="utf-8")]
-
-            environment = environ.copy()  # Inherit cicdctl's environment
-            environment['USER'] = getpass.getuser()
-
-            environment['INSTANCE'] = instance
-            environment['WORKSPACE'] = workspace
-
-            domain = parse_tfvars(domain_config)['domain']
-            environment['DOMAIN'] = domain
-
-            ansible_dir = path.join(getcwd(), 'terraform/jenkins/ansible')
-
-            if '--image-tag' in args.overrides:  # Specific image requested
-                image_tag = args.overrides[args.overrides.index('--image-tag') + 1]
-                server_image_tag = image_tag
-                agent_image_tag = image_tag
-            else:  # Source default values
-                ecr_outputs = get_outputs('main', 'shared/ecr-images/jenkins')
-                server_image_tag = ecr_outputs['jenkins_server_image_repo']['value']['latest']
-                agent_image_tag = ecr_outputs['jenkins_agent_image_repo']['value']['latest']
-
-            actions = []
-            _type = get_output(workspace, f'jenkins/instances/{instance}', 'type')
-            if _type == 'distributed':
-                actions = [
-                    {
-                        'playbook': 'start.yml',
-                        'hosts': [private_ips[0]],
-                    },
-                    {
-                        'playbook': 'server.yml',
-                        'hosts': [private_ips[0]],
-                        'vars': {
-                            'jenkins_server_tag': server_image_tag,
-                            'jenkins_agent_tag': agent_image_tag,
-                        }
-                    },
-                    {
-                        'playbook': 'agent.yml',
-                        'hosts': private_ips[1:],
-                        'vars': {
-                            'jenkins_server_tag': server_image_tag,
-                            'jenkins_agent_tag': agent_image_tag,
-                        }
-                    },
-                    {
-                        'playbook': 'end.yml',
-                        'hosts': [private_ips[0]],
-                    },
-                ]
-            else:  # 'colocated'
-                actions = [
-                    {
-                        'playbook': 'start.yml',
-                        'hosts': [private_ips[0]],
-                    },
-                    {
-                        'playbook': 'colocated.yml',
-                        'hosts': [private_ips[0]],
-                        'vars': {
-                            'jenkins_server_tag': server_image_tag,
-                            'jenkins_agent_tag': agent_image_tag,
-                        }
-                    },
-                    {
-                        'playbook': 'end.yml',
-                        'hosts': [private_ips[0]],
-                    },
-                ]
-            for action in actions:
-                playbook = action['playbook']
-                inventory_list = ','.join(action['hosts']) + ','
-                extra_vars = ' '.join([f'{var}={value}' for var, value in action['vars'].items()]) if 'vars' in action else ''
-
-                ansible_cmd = ['ansible-playbook', playbook, '-i', inventory_list, '--extra-vars', extra_vars]
-                log_cmd_line(ansible_cmd)
-                subprocess.run(ansible_cmd, env=environment, cwd=ansible_dir, stdout=stdout, stderr=stderr, check=True)
+@jenkins.command(context_settings=PASS_THRU_FLAGS)
+@click.pass_obj
+@click.argument('instance', type=InstanceParamType())
+@click.option('--image-tag')
+def deploy(settings, instance, image_tag):
+    if settings.creds:  # Refreshes sub account AWS mfa credentials if needed
+        sts = StsAssumeRoleCredentials(settings)
+        sts.refresh(instance.workspace)
+    if image_tag:
+        JenkinsDriver(settings, instance, flags=['--image-tag', image_tag]).deploy()
+    else:
+        JenkinsDriver(settings, instance).deploy()

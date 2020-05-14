@@ -1,42 +1,22 @@
-from sys import stdout, stderr
-from os import path, getcwd, environ
-import subprocess
+import click
 
-from cicdctl.logs import log_cmd_line
-from aws.credentials import StsAssumeRoleCredentials
-from terraform.files import parse_tfvars, domain_config
+from . import PASS_THRU_FLAGS
+from .types.cluster import ClusterParamType
+from .types.flag import FlagParamType
 
+from ..utils.aws.credentials import StsAssumeRoleCredentials
+from ..utils.kubernetes.kops_cluster.drivers import KopsDriver
 
-def run_kops(args):
-    cluster, workspace = args.target.split(':')
+"""cicdctl kops <cluster> [--admin] ..."""
 
-    # Refresh main account AWS mfa credentials if needed
-    StsAssumeRoleCredentials().refresh_profile(f'admin-{workspace}')
-
-    environment = environ.copy()  # Inherit cicdctl's environment
-
-    environment['KOPS_STATE_S3_ACL'] = 'bucket-owner-full-control'
-
-    # Kube client config
-    kubeconfig = None
-    if args.admin:
-    	kubeconfig = path.join(getcwd(), f'terraform/kops/clusters/{cluster}/cluster/{workspace}/kops-admin.kubeconfig')
-    else:
-    	kubeconfig = path.join(getcwd(), f'terraform/kops/clusters/{cluster}/cluster/{workspace}/kops-user.kubeconfig')
-    environment['KUBECONFIG'] = kubeconfig
-
-    # Set aws credentials profile with env variables
-    environment['AWS_PROFILE'] = f'admin-{workspace}'
-
-    domain = parse_tfvars(domain_config)['domain']
-    bucket = f'kops.{domain}'
-
-    try:
-        cmd = ['kops']
-        cmd.extend(args.arguments)
-        cmd.extend([f'--name={cluster}-{workspace}.kops.{domain}', f'--state=s3://{bucket}'])
-        log_cmd_line(cmd)
-
-        subprocess.run(cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)
-    except subprocess.CalledProcessError as cpe:
-        exit(cpe.returncode)
+@click.command(context_settings=PASS_THRU_FLAGS)
+@click.pass_obj
+@click.argument('cluster', type=ClusterParamType())
+@click.option('--admin', is_flag=True, default=False)
+@click.argument('flags', nargs=-1, type=FlagParamType())
+def kops(settings, cluster, admin, flags):
+    if settings.creds:  # Refreshes main/sub account AWS mfa credentials if needed
+        sts = StsAssumeRoleCredentials(settings)
+        sts.refresh('main')
+        sts.refresh(cluster.workspace)
+    KopsDriver(settings, cluster, admin).run(flags)

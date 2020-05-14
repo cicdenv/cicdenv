@@ -23,8 +23,8 @@ timezone=$(shell if [[ -f /etc/timezone ]]; then cat /etc/timezone; else echo 'A
 # For terraform state captured absolute paths.
 repo=$(shell git config --get remote.origin.url | sed -E 's!.*/([^.]+).git$$!\1!')
 
-include tool-versions
-include tool-vars
+include tool-versions.mk
+include tool-vars.mk
 
 shell:
 	@if [[ ! -d ~/.local                  ]]; then mkdir -p ~/.local;               fi

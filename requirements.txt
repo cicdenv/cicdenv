@@ -1,5 +1,7 @@
 awscli
 aws-mfa
+pytest
+click
 pyhcl
 pytz
 PyYAML

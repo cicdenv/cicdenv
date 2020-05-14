@@ -1,48 +1,32 @@
-import urllib.request
+import click
 
-from terraform.files import whitelisted_networks, parse_tfvars
+from . import commands
+from .types.cidr import CIDRParamType
 
+from ..utils.whitelist.driver import WhitelistDriver
 
-"""
-./terraform/whitelisted-networks.tfvars structure:
-#
-# Office Access
-#
-whitelisted_cidr_blocks = [
-  <cidr-1>,
-  <cidr-2>,
-  ...,
-]
-"""
-def _update_whitelisted_networks(cidrs):
-    header = []
-    with open(whitelisted_networks, 'r') as f:
-        for line in f:
-            if line.startswith('whitelisted_cidr_blocks = ['):
-                header.append(line)
-                break
-            header.append(line)
+"""cicdctl whitelist <sub-command> [options]"""
 
-    with open(whitelisted_networks, 'w') as f:
-        f.writelines(header)
-        for cidr in cidrs:
-            print(f'  "{cidr}",', file=f)
-        print(']', file=f)
+@click.group()
+@click.pass_obj
+def whitelist(settings):
+    pass
 
 
-def run_whitelist(args):
-    cidr = None
-    if args.cidr == 'my-ip':  # Special case
-        external_ip = urllib.request.urlopen('https://api.ipify.org/').read().decode('utf8')
-        cidr = f'{external_ip}/32'
-    else:
-        if '/' in args.cidr:
-            cidr = args.cidr
-        else:
-            cidr = f'{args.cidr}/32'
-        
-    cidrs = parse_tfvars(whitelisted_networks)['whitelisted_cidr_blocks']
-    if not cidr in cidrs:
-        print(f'Adding to whitelist: {cidr}')
-        cidrs.append(cidr)
-        _update_whitelisted_networks(cidrs)
+@whitelist.command()
+@click.pass_obj
+def list(settings):
+    WhitelistDriver(settings).list()
+
+   
+for command in [command for command in commands(__file__) if command in ['add', 'remove']]:
+    def bind_command(command):
+        @click.pass_obj
+        @click.option('--cidr', type=CIDRParamType())
+        def command_func(settings, cidr):
+            driver_method = getattr(WhitelistDriver(settings), command)
+            driver_method(cidr)
+        command_func.__name__ = command
+    
+        whitelist.command(name=command)(command_func)
+    bind_command(command)

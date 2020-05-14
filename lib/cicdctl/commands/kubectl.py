@@ -1,37 +1,22 @@
-from sys import stdout, stderr
-from os import path, getcwd, environ
-import subprocess
+import click
 
-from cicdctl.logs import log_cmd_line
-from aws.credentials import StsAssumeRoleCredentials
+from . import PASS_THRU_FLAGS
+from .types.cluster import ClusterParamType
+from .types.flag import FlagParamType
 
+from ..utils.aws.credentials import StsAssumeRoleCredentials
+from ..utils.kubernetes.kops_cluster.drivers import KubectlDriver
 
-def run_kubectl(args):
-    cluster, workspace = args.target.split(':')
+"""cicdctl kubectl <cluster> [--admin] ..."""
 
-    # Refresh main account AWS mfa credentials if needed
-    StsAssumeRoleCredentials().refresh_profile(f'admin-{workspace}')
-
-    environment = environ.copy()  # Inherit cicdctl's environment
-
-    # Kube client config
-    # hacky accepts '--admin' override
-    if '--admin' in args.arguments:
-        admin_idx = args.arguments.index('--admin')
-        del args.arguments[admin_idx]  # remove flag
-        kubeconfig = path.join(getcwd(), f'terraform/kops/clusters/{cluster}/cluster/{workspace}/kops-admin.kubeconfig')
-    else:
-        kubeconfig = path.join(getcwd(), f'terraform/kops/clusters/{cluster}/cluster/{workspace}/kops-user.kubeconfig')
-    environment['KUBECONFIG'] = kubeconfig
-
-    # Set aws credentials profile with env variables
-    environment['AWS_PROFILE'] = f'admin-main'
-
-    try:
-        cmd = ['kubectl']
-        cmd.extend(args.arguments)
-        log_cmd_line(cmd)
-        
-        subprocess.run(cmd, env=environment, cwd=getcwd(), stdout=stdout, stderr=stderr, check=True)
-    except subprocess.CalledProcessError as cpe:
-        exit(cpe.returncode)
+@click.command(context_settings=PASS_THRU_FLAGS)
+@click.pass_obj
+@click.argument('cluster', type=ClusterParamType())
+@click.option('--admin', is_flag=True, default=False)
+@click.argument('flags', nargs=-1, type=FlagParamType())
+def kubectl(settings, cluster, admin, flags):
+    if settings.creds:  # Refreshes main/sub account AWS mfa credentials if needed
+        sts = StsAssumeRoleCredentials(settings)
+        sts.refresh('main')
+        sts.refresh(cluster.workspace)
+    KubectlDriver(settings, cluster, admin).run(flags)

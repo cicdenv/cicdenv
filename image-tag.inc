@@ -15,7 +15,7 @@ fi
 image_tag=$(cat              \
       Dockerfile             \
       requirements.txt       \
-      tool-versions          \
+      tool-versions.mk       \
       <(keybase version -S)  \
 | sed -e '/^\s*#.*$/d'       \
       -e '/^$/d'             \
