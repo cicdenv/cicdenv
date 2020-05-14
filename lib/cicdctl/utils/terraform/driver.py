@@ -13,7 +13,7 @@ from .dependencies import get_cascades
 
 from ...commands.types.target import parse_target
 
-commands_no_vars = ['output', 'fmt', 'validate']
+commands_no_vars = ['output', 'fmt', 'validate', 'state']
 commands_with_vars = [
     'plan',
     'show',
@@ -23,7 +23,6 @@ commands_with_vars = [
     'import',
     'taint',
     'untaint',
-    'state',
     'console',
 ]
 unlock_script = 'terraform/bin/clear-state-lock.sh'
@@ -92,6 +91,10 @@ class TerraformDriver(object):
 
     def output_value(self, key):
         return self.outputs()[key]['value']
+
+    def has_resources(self):
+        self._state_prep()  # "state prep" the state first, then proceed
+        return len(self.runner.output_list(['terraform', 'state', 'list'])) != 0
 
     def _run_command_without_vars(self, command):
         self._state_prep()  # "state prep" the state first, then proceed

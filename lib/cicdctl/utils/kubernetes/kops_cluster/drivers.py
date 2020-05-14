@@ -91,6 +91,11 @@ class ClusterDriver(object):
         driver_method = getattr(TerraformDriver(self.settings, target, flags), op)
         driver_method()
 
+    def _has_resources(self, idx):
+        target = self.targets[idx]
+        return TerraformDriver(self.settings, target).has_resources()
+
+
     def init(self):
         self._cluster_prep()
 
@@ -100,8 +105,10 @@ class ClusterDriver(object):
         self._terraform('apply', ACCESS,  self.tf_flags)
 
     def destroy(self):
-        self._terraform('destroy', ACCESS,  self.tf_flags)
-        self._terraform('destroy', CLUSTER, self.tf_flags)
+        if self._has_resources(ACCESS):
+            self._terraform('destroy', ACCESS,  self.tf_flags)
+        if self._has_resources(CLUSTER):
+            self._terraform('destroy', CLUSTER, self.tf_flags)
         self._terraform('destroy', CONFIG,  self.tf_flags)
 
     def validate(self):
