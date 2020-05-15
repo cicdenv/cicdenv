@@ -1,8 +1,6 @@
 from os import path, getcwd
 import json
 
-import hcl
-
 from . import env
 from . import backend_config
 
@@ -38,9 +36,12 @@ class TerraformDriver(object):
         _component = self.component.rstrip("/").replace(getcwd(), '').replace('/terraform/', '')  # Normalize
         self.component_dir = path.join(getcwd(), 'terraform', _component)
         
-        self.envVars, self.aws_profile = env(self.settings, self.workspace)
+        self.env_ctx, self.aws_profile = env(self.settings, self.workspace)
 
-        self.runner = self.settings.runner(cwd=self.component_dir, envVars=self.envVars)
+        self.runner = self.settings.runner(cwd=self.component_dir, env_ctx=self.env_ctx)
+        self._exec = self.runner.exec
+        self._output_list = self.runner.output_list
+        self._output_string = self.runner.output_string
 
     def _state_prep(self, flags=[]):
         # Odd, but you init, then workspace (first time only)
@@ -50,53 +51,49 @@ class TerraformDriver(object):
 
         # First time (locally) - components must be init'd first before setting the workspace
         if first_time:
-            self.runner.exec(['terraform', 'init'] + list(flags) + ['-upgrade', f'-backend-config={backend_config}'], check=False)
+            self._exec(['terraform', 'init'] + list(flags) + ['-upgrade', f'-backend-config={backend_config}'], check=False)
 
         # If applicable: create workspace where neded before selecting it
         if is_workspaced(self.component_dir):
-                workspaces = self.runner.output_list(['terraform', 'workspace', 'list'])
+                workspaces = self._output_list(['terraform', 'workspace', 'list'])
                 if not f'* {self.workspace}' in workspaces:
                     if not self.workspace in workspaces:
-                        self.runner.exec(['terraform', 'workspace', 'new', self.workspace])
+                        self._exec(['terraform', 'workspace', 'new', self.workspace])
                     else:
-                        self.runner.exec(['terraform', 'workspace', 'select', self.workspace])
+                        self._exec(['terraform', 'workspace', 'select', self.workspace])
         
         # Safe to init here for non-first time workspaced states
         if not first_time:
-            self.runner.exec(['terraform', 'init'] + list(flags) + ['-upgrade', f'-backend-config={backend_config}'])
+            self._exec(['terraform', 'init'] + list(flags) + ['-upgrade', f'-backend-config={backend_config}'])
 
     def init(self):
         # "state prep" will handle this completely
         self._state_prep(self.flags)
 
     def unlock(self):
-        self.runner.exec([unlock_script, f'{self.component}:{self.workspace}'], cwd=getcwd())
+        self._exec([unlock_script, f'{self.component}:{self.workspace}'], cwd=getcwd())
 
-    def outputs(self, format=None):
+    def outputs(self):
         self._state_prep()  # "state prep" the state first, then proceed
-        if format == 'json':
-            json_stdout = self.runner.output_string(['terraform', 'output', '-json'])
-            return json.loads(json_stdout)
-        else:  # Default to HCL output (terraform output default)
-            hcl_stdout = self.runner.output_string(['terraform', 'output'])
-            return hcl.loads(hcl_stdout)
+        json_stdout = self._output_string(['terraform', 'output', '-json'])
+        return json.loads(json_stdout)
 
     def output_value(self, key):
         return self.outputs()[key]['value']
 
     def has_resources(self):
         self._state_prep()  # "state prep" the state first, then proceed
-        return len(self.runner.output_list(['terraform', 'state', 'list'])) != 0
+        return len(self._output_list(['terraform', 'state', 'list'])) != 0
 
     def _run_command_without_vars(self, command):
         self._state_prep()  # "state prep" the state first, then proceed
-        self.runner.exec(['terraform', command] + list(self.flags))
+        self._exec(['terraform', command] + list(self.flags))
         self._run_cascades(command)
 
     def _run_command_with_vars(self, command):
         self._state_prep()  # "state prep" the state first, then proceed
         var_opts = resolve_variable_opts(self.component_dir, self.aws_profile)
-        self.runner.exec(['terraform', command] + var_opts + list(self.flags))
+        self._exec(['terraform', command] + var_opts + list(self.flags))
         self._run_cascades(command)
 
     def _run_cascades(self, command):

@@ -5,7 +5,7 @@ import re
 
 import hcl
 
-from ..runners import EnvVars
+from ..runners import EnvironmentContext
 from ..aws import DEFAULT_REGION, config_profile
 
 # terraform/ (*.tfvars parent folder)
@@ -26,7 +26,9 @@ var_tf_pattern = re.compile(r'variable\s+"(?P<name>[^"]+)"\s+{}?\s+#\s+(?P<file>
 plugin_cach_dir = path.join(getcwd(), '.terraform.d/plugin-cache')
 
 
-def env(settings, workspace, environment=environ.copy()):  # Inherits cicdctl's environment by default
+def env(settings, workspace):
+    environment = environ.copy()  # Inherits cicdctl's environment by default
+
     # Set default aws region
     environment['AWS_DEFAULT_REGION'] = DEFAULT_REGION
 
@@ -39,7 +41,8 @@ def env(settings, workspace, environment=environ.copy()):  # Inherits cicdctl's 
     # Set aws credentials profile with env variables
     environment['AWS_PROFILE'] = aws_profile = config_profile(workspace)
 
-    return EnvVars(environment, ['TF_PLUGIN_CACHE_DIR', 'AWS_DEFAULT_REGION', 'AWS_PROFILE']), aws_profile
+    logged_keys = ['TF_PLUGIN_CACHE_DIR', 'AWS_DEFAULT_REGION', 'AWS_PROFILE']
+    return EnvironmentContext(environment, logged_keys), aws_profile
 
 
 """

@@ -3,6 +3,7 @@ aws-mfa
 pytest
 click
 pyhcl
+python-hcl2
 pytz
 PyYAML
 tzlocal

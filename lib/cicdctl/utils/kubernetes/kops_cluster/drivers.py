@@ -10,26 +10,24 @@ from ...terraform.driver import TerraformDriver
 
 class AuthenticatorDriver(object):
     def __init__(self, settings, cluster):
-        self.settings = settings
         self.cluster = cluster
         self.name = cluster.name
         self.workspace = cluster.workspace
         self.cluster_fqdn = cluster_fqdn(self.name, self.workspace)
 
-        self.envVars = env(self.workspace)
+        self.env_ctx = env(self.workspace)
 
-        self.runner = self.settings.runner(cwd=getcwd(), envVars=self.envVars)
+        self._run = settings.runner(cwd=getcwd(), env_ctx=self.env_ctx).run
 
     def token(self):
-        self.envVars.vars['KUBECONFIG'] = kubeconfig(self.name, self.workspace, 'user')
-        self.envVars.keys.append('KUBECONFIG')
+        self.env_ctx.env['KUBECONFIG'] = kubeconfig(self.name, self.workspace, 'user')
+        self.env_ctx.keys.append('KUBECONFIG')
 
-        self.runner.run(['aws-iam-authenticator', 'token', '-i', self.cluster_fqdn])
+        self._run(['aws-iam-authenticator', 'token', '-i', self.cluster_fqdn])
 
 
 class KopsDriver(object):
     def __init__(self, settings, cluster, admin):
-        self.settings = settings
         self.cluster = cluster
         self.name = cluster.name
         self.workspace = cluster.workspace
@@ -37,34 +35,33 @@ class KopsDriver(object):
         self.cluster_fqdn = cluster_fqdn(self.name, self.workspace)
         self.bucket = state_store()
 
-        self.envVars = env(self.workspace)
+        self.env_ctx = env(self.workspace)
 
-        self.runner = self.settings.runner(cwd=getcwd(), envVars=self.envVars)
+        self._run = settings.runner(cwd=getcwd(), env_ctx=self.env_ctx).run
 
     def run(self, flags):
-        self.envVars.vars['KUBECONFIG'] = kubeconfig(self.name, self.workspace, self.perms)
-        self.envVars.keys.append('KUBECONFIG')
+        self.env_ctx.env['KUBECONFIG'] = kubeconfig(self.name, self.workspace, self.perms)
+        self.env_ctx.keys.append('KUBECONFIG')
 
-        self.runner.run(['kops'] + list(flags) + [f'--name={self.cluster_fqdn}', f'--state=s3://{self.bucket}'])
+        self._run(['kops'] + list(flags) + [f'--name={self.cluster_fqdn}', f'--state=s3://{self.bucket}'])
 
 
 class KubectlDriver(object):
     def __init__(self, settings, cluster, admin):
-        self.settings = settings
         self.cluster = cluster
         self.name = cluster.name
         self.workspace = cluster.workspace
         self.perms = 'admin' if admin else 'user'
 
-        self.envVars = env(self.workspace)
+        self.env_ctx = env(self.workspace)
 
-        self.runner = self.settings.runner(cwd=getcwd(), envVars=self.envVars)
+        self._run = settings.runner(cwd=getcwd(), env_ctx=self.env_ctx).run
 
     def run(self, flags):
-        self.envVars.vars['KUBECONFIG'] = kubeconfig(self.name, self.workspace, self.perms)
-        self.envVars.keys.append('KUBECONFIG')
+        self.env_ctx.env['KUBECONFIG'] = kubeconfig(self.name, self.workspace, self.perms)
+        self.env_ctx.keys.append('KUBECONFIG')
 
-        self.runner.run(['kubectl'] + list(flags))
+        self._run(['kubectl'] + list(flags))
 
 
 class ClusterDriver(object):
@@ -79,14 +76,14 @@ class ClusterDriver(object):
         
         self.targets = cluster_targets(self.name, self.workspace)
 
-        self.envVars = env(self.workspace)
+        self.env_ctx = env(self.workspace)
 
-        self.runner = self.settings.runner(cwd=getcwd(), envVars=self.envVars)
+        self._run = self.settings.runner(cwd=getcwd(), env_ctx=self.env_ctx).run
 
     def _cluster_prep(self):
         cluster_folder = cluster_dir(self.name)
         if not path.isdir(cluster_folder):
-            self.runner.run([new_cluster_script, self.name] + self.tf_vars)
+            self._run([new_cluster_script, self.name] + self.tf_vars)
         self._terraform('apply', CONFIG, ['-auto-approve'])
 
     def _terraform(self, op, idx, flags=[]):
@@ -97,7 +94,6 @@ class ClusterDriver(object):
     def _has_resources(self, idx):
         target = self.targets[idx]
         return TerraformDriver(self.settings, target).has_resources()
-
 
     def init(self):
         self._cluster_prep()
@@ -124,4 +120,4 @@ class ClusterDriver(object):
 
     def stop(self):
         # cluster must exist
-        self.runner.run([stop_cluster_script, self.cluster])
+        self._run([stop_cluster_script, self.cluster])

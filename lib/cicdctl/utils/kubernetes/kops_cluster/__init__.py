@@ -2,7 +2,7 @@ from os import path, getcwd, environ
 
 from ....commands.types.target import parse_target
 
-from ...runners import EnvVars
+from ...runners import EnvironmentContext
 from ...aws import DEFAULT_REGION, config_profile
 from ...terraform import parse_tfvars, domain_config
 
@@ -42,7 +42,9 @@ def cluster_targets(name, workspace):
     ]
 
 
-def env(workspace, environment=environ.copy()):  # Inherits cicdctl's environment by default
+def env(workspace):
+    environment=environ.copy()  # Inherits cicdctl's environment by default
+    
     # Set default aws region
     environment['AWS_DEFAULT_REGION'] = DEFAULT_REGION
 
@@ -50,4 +52,5 @@ def env(workspace, environment=environ.copy()):  # Inherits cicdctl's environmen
     aws_profile = config_profile(workspace)
     environment['AWS_PROFILE'] = aws_profile
 
-    return EnvVars(environment, ['AWS_DEFAULT_REGION', 'AWS_PROFILE'])
+    logged_keys = ['AWS_DEFAULT_REGION', 'AWS_PROFILE']
+    return EnvironmentContext(environment, logged_keys)

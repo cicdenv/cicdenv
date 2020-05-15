@@ -8,11 +8,13 @@ from pprint import pprint
 # import logging
 
 
-class EnvVars(namedtuple('EnvVars', ['vars', 'keys'])):
+class EnvironmentContext(namedtuple('EnvironmentContext', ['env', 'keys'])):
     """Environment vars and keys that should be echo'd."""
     def __str__(self):
-        return f'{" ".join(self.keys)}\n{pprint.pformat(self.vars)}'
+        return f'{" ".join(self.keys)}\n{pprint.pformat(self.env)}'
 
+
+DEFAULT_ENV_CTX = EnvironmentContext(environ.copy(), [])
 
 
 def _log_interrupted():
@@ -23,9 +25,9 @@ def _log_returncode(returncode):
     print(f'  => {returncode}')
 
 
-def _log_env_vars(envVars):
-    if len(envVars.keys) > 0:
-        custom_env = [f'{key}={envVars.vars[key]}' for key in envVars.keys]
+def _log_env_ctx(env_ctx):
+    if len(env_ctx.keys) > 0:
+        custom_env = [f'{key}={env_ctx.env[key]}' for key in env_ctx.keys]
         # logging.getLogger("cicdctl").info(' '.join(custom_env))
         print('\n'.join(custom_env))
 
@@ -45,24 +47,24 @@ def _log_command_line(command_line, cwd=None):
 
 
 class SubprocessRunner(object):
-    def __init__(self, settings, cwd, envVars, stdout, stderr, check):
+    def __init__(self, settings, cwd, env_ctx, stdout, stderr, check):
         self.settings = settings
         self.cwd = cwd
-        self.envVars = envVars
+        self.env_ctx = env_ctx
         self.stdout = stdout
         self.stderr = stderr
         self.check = check
 
     def run(self, command_line, **kwargs):
         cwd = kwargs.get('cwd', self.cwd)
-        envVars = kwargs.get('envVars', self.envVars)
+        env_ctx = kwargs.get('env_ctx', self.env_ctx)
         _input = kwargs.get('input', None)
         stdout = kwargs.get('stdout', self.stdout)
         stderr = kwargs.get('stderr', self.stderr)
         check = kwargs.get('check', self.check)
 
         if not self.settings.quiet:
-            _log_env_vars(envVars)
+            _log_env_ctx(env_ctx)
             _log_command_line(command_line, cwd=cwd)
 
         if not self.settings.dry_run:
@@ -72,7 +74,7 @@ class SubprocessRunner(object):
                                       stdout=stdout,
                                       stderr=stderr,
                                       cwd=cwd,
-                                      env=envVars.vars,
+                                      env=env_ctx.env,
                                       check=check)
             try:
                 if check:  # Non-zero exit status is fatal
@@ -92,13 +94,13 @@ class SubprocessRunner(object):
 
     def exec(self, command_line, **kwargs):
         cwd = kwargs.get('cwd', self.cwd)
-        envVars = kwargs.get('envVars', self.envVars)
+        env_ctx = kwargs.get('env_ctx', self.env_ctx)
         stdout = kwargs.get('stdout', self.stdout)
         stderr = kwargs.get('stderr', self.stderr)
         check = kwargs.get('check', self.check)
 
         if not self.settings.quiet:
-            _log_env_vars(envVars)
+            _log_env_ctx(env_ctx)
             _log_command_line(command_line, cwd=cwd)
         
         if not self.settings.dry_run:
@@ -106,7 +108,7 @@ class SubprocessRunner(object):
                                  stdout=stdout,
                                  stderr=stderr,
                                  cwd=cwd,
-                                 env=envVars.vars)
+                                 env=env_ctx.env)
             try:
                 p.communicate()
             except KeyboardInterrupt:
@@ -120,16 +122,16 @@ class SubprocessRunner(object):
     
     def output_string(self, command_line, **kwargs):
         cwd = kwargs.get('cwd', self.cwd)
-        envVars = kwargs.get('envVars', self.envVars)
+        env_ctx = kwargs.get('env_ctx', self.env_ctx)
         stderr = kwargs.get('stderr', self.stderr)
 
         if not self.settings.quiet:
-            _log_env_vars(envVars)
+            _log_env_ctx(env_ctx)
             _log_command_line(command_line, cwd=cwd)
 
         try:
             raw = subprocess.check_output(command_line, 
-                                          env=envVars.vars, 
+                                          env=env_ctx.env, 
                                           cwd=cwd, 
                                           stderr=self.stderr)
         except subprocess.CalledProcessError as cpe:
@@ -152,5 +154,5 @@ class SubprocessRunnerFactory(object):
     def __init__(self, settings):
         self.settings = settings
 
-    def __call__(self, cwd=getcwd(), envVars=EnvVars(environ.copy(), []), stdout=stdout, stderr=stderr, check=True):
-        return SubprocessRunner(self.settings, cwd, envVars, stdout, stderr, check)
+    def __call__(self, cwd=getcwd(), env_ctx=DEFAULT_ENV_CTX, stdout=stdout, stderr=stderr, check=True):
+        return SubprocessRunner(self.settings, cwd, env_ctx, stdout, stderr, check)

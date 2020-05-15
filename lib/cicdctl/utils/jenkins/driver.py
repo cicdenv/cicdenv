@@ -25,9 +25,11 @@ class JenkinsDriver(object):
         self.target_arg = f'{self.component}:{self.workspace}'
         self.target = parse_target(self.target_arg)
 
-        self.envVars = env(self.name, self.workspace)
+        self.env_ctx = env(self.name, self.workspace)
 
-        self.runner = self.settings.runner(envVars=self.envVars)
+        self.runner = self.settings.runner(env_ctx=self.env_ctx)
+        self._run = self.runner.run
+        self._output_list = self.runner.output_list
 
     def _terraform(self, op):
         driver_method = getattr(TerraformDriver(self.settings, self.target, self.tf_flags), op)
@@ -35,7 +37,7 @@ class JenkinsDriver(object):
 
     def _ensure_component(self):
         if not path.isdir(path.join(getcwd(), f'terraform/{self.component}')):
-            self.runner.run([new_instance_script, self.name, self.type, *self.tf_vars])
+            self._run([new_instance_script, self.name, self.type, *self.tf_vars])
 
     def _tf_outputs(self, component, workspace, keys):
         target = Target(component, workspace)
@@ -56,10 +58,10 @@ class JenkinsDriver(object):
         self._terraform('apply')
 
     def stop(self):
-        self.runner.run([stop_instance_script, self.target_arg])
+        self.run([stop_instance_script, self.target_arg])
 
     def deploy(self):
-        private_ips = self.runner.output_list([list_ips_script, self.target_arg])
+        private_ips = self._output_list([list_ips_script, self.target_arg])
 
         if '--image-tag' in self.flags:  # Specific image requested
             image_tag = self.flags[self.flags.index('--image-tag') + 1]
@@ -67,8 +69,8 @@ class JenkinsDriver(object):
             agent_image_tag = image_tag
         else:  # Source default values
             ecr_outputs = self._tf_outputs('shared/ecr-images/jenkins', 'main')
-            server_image_tag = ecr_outputs['jenkins_server_image_repo']['latest']
-            agent_image_tag = ecr_outputs['jenkins_agent_image_repo']['latest']
+            server_image_tag = ecr_outputs['jenkins_server_image_repo']['value']['latest']
+            agent_image_tag = ecr_outputs['jenkins_agent_image_repo']['value']['latest']
         self.type = self._tf_outputs(self.component, self.workspace)['type']
         
         for action in playbook_actions(self.type, private_ips, server_image_tag, agent_image_tag):
@@ -77,4 +79,4 @@ class JenkinsDriver(object):
             extra_vars = ' '.join([f'{var}={value}' for var, value in action['vars'].items()]) if 'vars' in action else ''
             
             ansible_cmd = ['ansible-playbook', playbook, '-i', inventory_list, '--extra-vars', extra_vars]
-            self.runner.run(ansible_cmd, cwd=ansible_dir)
+            self._run(ansible_cmd, cwd=ansible_dir)

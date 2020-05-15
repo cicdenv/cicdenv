@@ -1,10 +1,12 @@
 from os import path, getcwd, environ
 
-from ..runners import EnvVars
+from ..runners import EnvironmentContext
 from ..aws import DEFAULT_REGION
 
 
-def env(environment=environ.copy()):  # Inherits cicdctl's environment by default
+def env():
+    environment=environ.copy()  # Inherits cicdctl's environment by default
+    
     # Set default aws region
     environment['AWS_DEFAULT_REGION'] = DEFAULT_REGION
     
@@ -18,4 +20,5 @@ def env(environment=environ.copy()):  # Inherits cicdctl's environment by defaul
 
     environment['PS1'] = _PS1
 
-    return EnvVars(environment, ['AWS_DEFAULT_REGION', 'PS1'])
+    logged_keys = ['AWS_DEFAULT_REGION']
+    return EnvironmentContext(environment, logged_keys)

@@ -1,10 +1,6 @@
-from os import path, environ
+from os import path
 
-from ..runners import EnvVars
 from ..terraform import parse_tfvars, domain_config
-
-def env(environment=environ.copy()):  # Inherits cicdctl's environment by default
-    return EnvVars(environment, [])
 
 DEFAULT_USER_IDENTITY = path.expanduser('~/.ssh/id_rsa')
 DEFAULT_HOST_IDENTITY = path.expanduser('~/.ssh/kops_rsa')

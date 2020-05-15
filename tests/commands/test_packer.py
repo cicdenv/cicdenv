@@ -11,6 +11,6 @@ packer_outputs = [(command, '') for command in commands('packer')]
 
 @pytest.mark.parametrize('command,output', packer_outputs)
 def test_command(runner, command, output):
-    result = runner.invoke(cli, ['--no-creds', '--dry-run', 'packer', command])
+    result = runner.invoke(cli, ['--dry-run', 'packer', command])
     assert result.exit_code == 0
     assert output in result.output

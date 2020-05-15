@@ -1,7 +1,7 @@
 from os import path
 import json
 
-from . import (env, ssh_cmd, 
+from . import (ssh_cmd, 
     DEFAULT_USER_IDENTITY,
     DEFAULT_HOST_IDENTITY)
 
@@ -13,16 +13,13 @@ bastion_commands = [
 
 class BastionDriver(object):
     def __init__(self, settings, workspace, user, host, jump, flags=[]):
-        self.settings = settings
         self.workspace = workspace
         self.user = user
         self.host = host
         self.jump = jump
         self.flags = flags
-        
-        self.envVars = env()
 
-        self.runner = self.settings.runner(envVars=self.envVars)
+        self._run = settings.runner().run
 
     def _run_bastion(self, command):
         if self.host:  # Accesing bastion host for debugging
@@ -33,7 +30,7 @@ class BastionDriver(object):
             user = self.user
             port = 22
             identity = DEFAULT_USER_IDENTITY
-        self.runner.run(ssh_cmd(command, user, port, identity, self.jump, self.workspace, self.flags))
+        self._run(ssh_cmd(command, user, port, identity, self.jump, self.workspace, self.flags))
 
     def __getattr__(self, name):
         if name in bastion_commands:

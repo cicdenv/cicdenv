@@ -5,7 +5,7 @@ from click.testing import CliRunner
 from cicdctl import cli
 
 
-from cicdctl.utils.bastion import (env, ssh_opts, bastion_address,
+from cicdctl.utils.bastion import (ssh_opts, bastion_address,
     DEFAULT_USER_IDENTITY,
     DEFAULT_HOST_IDENTITY)
 
