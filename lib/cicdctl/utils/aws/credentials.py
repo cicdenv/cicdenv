@@ -85,21 +85,18 @@ class MfaCodeGenerator(object):
         Gets the next un-used MFA code.
         """
         
-        try:
+        totp, hashed_totp = self._run_oathtool()
+
+        last_used = self._load_last_used()
+        if hashed_totp in last_used:
+            logging.getLogger("cicdctl").info("Waiting for next mfa-code ...")
+        while hashed_totp in last_used:
+            time.sleep(1)
             totp, hashed_totp = self._run_oathtool()
+            last_used = self._load_last_used()  # Reload last_used each sleep cycle
+        self._update_last_used(hashed_totp)
 
-            last_used = self._load_last_used()
-            if hashed_totp in last_used:
-                logging.getLogger("cicdctl").info("Waiting for next mfa-code ...")
-            while hashed_totp in last_used:
-                time.sleep(1)
-                totp, hashed_totp = self._run_oathtool()
-                last_used = self._load_last_used()  # Reload last_used each sleep cycle
-            self._update_last_used(hashed_totp)
-
-            return totp
-        except subprocess.CalledProcessError as cpe:
-            exit(cpe.returncode)
+        return totp
 
 
 class StsAssumeRoleCredentials(object):
@@ -133,11 +130,7 @@ class StsAssumeRoleCredentials(object):
         self._remove_stale_profiles()
         self._ensure_profile_prototype(profile)
         if not self._has_profile(profile):
-            try:  
-                self._renew_profile(profile)
-            except subprocess.CalledProcessError as cpe:
-                print(f'Failed to login, profile={profile}', file=stderr)
-                exit(cpe.returncode)
+            self._renew_profile(profile)
 
     def _load_credentials(self):
         credentials = ConfigParser()
@@ -161,12 +154,8 @@ class StsAssumeRoleCredentials(object):
             credentials.write(f)
 
     def _get_assume_role(self, workspace):
-        try:
-            outputs = TerraformDriver(self.settings, parse_target(f'iam/organizations:{workspace}')).outputs()
-
-            return [role for role in outputs['org_account_admin_roles']['value'] if role.endswith(f'/{workspace}-admin')][0]
-        except subprocess.CalledProcessError as cpe:
-            exit(cpe.returncode)
+        outputs = TerraformDriver(self.settings, parse_target(f'iam/organizations:{workspace}')).outputs()
+        return [role for role in outputs['org_account_admin_roles']['value'] if role.endswith(f'/{workspace}-admin')][0]
 
     def _ensure_profile_prototype(self, profile):
         workspace = profile.replace('admin-', '')

@@ -1,6 +1,7 @@
 from os import path, environ
 import getpass
 
+from ..runners import EnvVars
 from ..aws import DEFAULT_REGION, config_profile
 from ..terraform import parse_tfvars, domain_config
 
@@ -24,4 +25,4 @@ def env(name, workspace, environment=environ.copy()):  # Inherits cicdctl's envi
     domain = parse_tfvars(domain_config)['domain']
     environment['DOMAIN'] = domain
 
-    return environment
+    return EnvVars(environment, ['AWS_DEFAULT_REGION', 'AWS_PROFILE', 'USER', 'INSTANCE', 'WORKSPACE', 'DOMAIN'])

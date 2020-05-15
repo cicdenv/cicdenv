@@ -25,9 +25,9 @@ class JenkinsDriver(object):
         self.target_arg = f'{self.component}:{self.workspace}'
         self.target = parse_target(self.target_arg)
 
-        self.environment = env(self.name, self.workspace)
+        self.envVars = env(self.name, self.workspace)
 
-        self.runner = self.settings.runner(env=self.environment)
+        self.runner = self.settings.runner(envVars=self.envVars)
 
     def _terraform(self, op):
         driver_method = getattr(TerraformDriver(self.settings, self.target, self.tf_flags), op)

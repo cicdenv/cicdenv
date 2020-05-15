@@ -1,5 +1,6 @@
 from os import path, getcwd, environ
 
+from ..runners import EnvVars
 from ..aws import DEFAULT_REGION
 
 
@@ -17,4 +18,4 @@ def env(environment=environ.copy()):  # Inherits cicdctl's environment by defaul
 
     environment['PS1'] = _PS1
 
-    return environment
+    return EnvVars(environment, ['AWS_DEFAULT_REGION', 'PS1'])

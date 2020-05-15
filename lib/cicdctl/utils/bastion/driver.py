@@ -20,9 +20,9 @@ class BastionDriver(object):
         self.jump = jump
         self.flags = flags
         
-        self.environment = env()
+        self.envVars = env()
 
-        self.runner = self.settings.runner(env=self.environment)
+        self.runner = self.settings.runner(envVars=self.envVars)
 
     def _run_bastion(self, command):
         if self.host:  # Accesing bastion host for debugging

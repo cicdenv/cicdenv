@@ -5,7 +5,6 @@ import hcl
 
 from . import env
 from . import backend_config
-from ..aws import config_profile
 
 from .component import is_workspaced
 from .component import resolve_variable_opts
@@ -39,16 +38,9 @@ class TerraformDriver(object):
         _component = self.component.rstrip("/").replace(getcwd(), '').replace('/terraform/', '')  # Normalize
         self.component_dir = path.join(getcwd(), 'terraform', _component)
         
-        self.environment = env()
+        self.envVars, self.aws_profile = env(self.settings, self.workspace)
 
-        if self.settings.verbose:
-            self.environment['TF_LOG'] = 'DEBUG'
-
-        # Set aws credentials profile with env variables
-        self.aws_profile = config_profile(self.workspace)
-        self.environment['AWS_PROFILE'] = self.aws_profile
-
-        self.runner = self.settings.runner(cwd=self.component_dir, env=self.environment)
+        self.runner = self.settings.runner(cwd=self.component_dir, envVars=self.envVars)
 
     def _state_prep(self, flags=[]):
         # Odd, but you init, then workspace (first time only)

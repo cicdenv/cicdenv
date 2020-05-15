@@ -2,6 +2,7 @@ from os import path, getcwd, environ
 
 from ....commands.types.target import parse_target
 
+from ...runners import EnvVars
 from ...aws import DEFAULT_REGION, config_profile
 from ...terraform import parse_tfvars, domain_config
 
@@ -49,4 +50,4 @@ def env(workspace, environment=environ.copy()):  # Inherits cicdctl's environmen
     aws_profile = config_profile(workspace)
     environment['AWS_PROFILE'] = aws_profile
 
-    return environment
+    return EnvVars(environment, ['AWS_DEFAULT_REGION', 'AWS_PROFILE'])

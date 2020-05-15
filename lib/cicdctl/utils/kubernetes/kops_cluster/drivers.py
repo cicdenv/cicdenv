@@ -16,12 +16,13 @@ class AuthenticatorDriver(object):
         self.workspace = cluster.workspace
         self.cluster_fqdn = cluster_fqdn(self.name, self.workspace)
 
-        self.environment = env(self.workspace)
+        self.envVars = env(self.workspace)
 
-        self.runner = self.settings.runner(cwd=getcwd(), env=self.environment)
+        self.runner = self.settings.runner(cwd=getcwd(), envVars=self.envVars)
 
     def token(self):
-        self.environment['KUBECONFIG'] = kubeconfig(self.name, self.workspace, 'user')
+        self.envVars.vars['KUBECONFIG'] = kubeconfig(self.name, self.workspace, 'user')
+        self.envVars.keys.append('KUBECONFIG')
 
         self.runner.run(['aws-iam-authenticator', 'token', '-i', self.cluster_fqdn])
 
@@ -36,12 +37,13 @@ class KopsDriver(object):
         self.cluster_fqdn = cluster_fqdn(self.name, self.workspace)
         self.bucket = state_store()
 
-        self.environment = env(self.workspace)
+        self.envVars = env(self.workspace)
 
-        self.runner = self.settings.runner(cwd=getcwd(), env=self.environment)
+        self.runner = self.settings.runner(cwd=getcwd(), envVars=self.envVars)
 
     def run(self, flags):
-        self.environment['KUBECONFIG'] = kubeconfig(self.name, self.workspace, self.perms)
+        self.envVars.vars['KUBECONFIG'] = kubeconfig(self.name, self.workspace, self.perms)
+        self.envVars.keys.append('KUBECONFIG')
 
         self.runner.run(['kops'] + list(flags) + [f'--name={self.cluster_fqdn}', f'--state=s3://{self.bucket}'])
 
@@ -54,12 +56,13 @@ class KubectlDriver(object):
         self.workspace = cluster.workspace
         self.perms = 'admin' if admin else 'user'
 
-        self.environment = env(self.workspace)
+        self.envVars = env(self.workspace)
 
-        self.runner = self.settings.runner(cwd=getcwd(), env=self.environment)
+        self.runner = self.settings.runner(cwd=getcwd(), envVars=self.envVars)
 
     def run(self, flags):
-        self.environment['KUBECONFIG'] = kubeconfig(self.name, self.workspace, self.perms)
+        self.envVars.vars['KUBECONFIG'] = kubeconfig(self.name, self.workspace, self.perms)
+        self.envVars.keys.append('KUBECONFIG')
 
         self.runner.run(['kubectl'] + list(flags))
 
@@ -76,9 +79,9 @@ class ClusterDriver(object):
         
         self.targets = cluster_targets(self.name, self.workspace)
 
-        self.environment = env(self.workspace)
+        self.envVars = env(self.workspace)
 
-        self.runner = self.settings.runner(cwd=getcwd(), env=self.environment)
+        self.runner = self.settings.runner(cwd=getcwd(), envVars=self.envVars)
 
     def _cluster_prep(self):
         cluster_folder = cluster_dir(self.name)

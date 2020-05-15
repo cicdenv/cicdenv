@@ -1,5 +1,6 @@
 from os import path, getcwd, environ
 
+from ..runners import EnvVars
 from ..aws import DEFAULT_REGION, config_profile
 
 workspace = 'main'
@@ -14,4 +15,4 @@ def env(environment=environ.copy()):  # Inherits cicdctl's environment by defaul
     # Set aws credentials profile with env variables
     environment['AWS_PROFILE'] = config_profile(workspace)
 
-    return environment
+    return EnvVars(environment, ['AWS_DEFAULT_REGION', 'AWS_PROFILE'])

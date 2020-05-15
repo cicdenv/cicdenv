@@ -4,9 +4,9 @@ class TemplateDriver(object):
     def __init__(self, settings):
         self.settings = settings
 
-        self.environment = env()
+        self.envVars = env()
 
-        self.runner = self.settings.runner(env=self.environment)
+        self.runner = self.settings.runner(envVars=self.envVars)
 
     def new(self, workspaced, component):
         if workspaced:

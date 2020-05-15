@@ -5,7 +5,8 @@ from click.testing import CliRunner
 from cicdctl import cli
 
 from cicdctl.commands import commands
-from cicdctl.utils.terraform.driver import unlock_script, commands_no_vars, commands_with_vars
+from cicdctl.utils.terraform.driver import (unlock_script, 
+	commands_no_vars, commands_with_vars)
 
 non_workspaced_component='backend'
 non_workspaced_target = f'backend:main'
@@ -18,8 +19,8 @@ root_dir = getcwd()
 
 init_command = f'(cd terraform/{component}; terraform init -upgrade -backend-config={root_dir}/terraform/backend-config.tfvars)'
 var_opts = '-var region=us-west-2 -var bucket=terraform.cicdenv.com'
-output_no_vars = lambda command: '\n'.join([init_command, f'(cd terraform/{component}; terraform {command})'])
-output_with_vars = lambda command: '\n'.join([init_command, f'(cd terraform/{component}; terraform {command} {var_opts})'])
+output_no_vars = lambda command: f'(cd terraform/{component}; terraform {command})'
+output_with_vars = lambda command: f'(cd terraform/{component}; terraform {command} {var_opts})'
 
 terraform_outputs = [(command, target, output_no_vars(command)) for command in commands_no_vars if command not in ['init', 'unlock']]
 terraform_outputs.extend([(command, target, output_with_vars(command)) for command in commands_with_vars if command not in ['init', 'unlock']])

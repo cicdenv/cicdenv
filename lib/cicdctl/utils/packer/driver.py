@@ -17,9 +17,9 @@ class PackerDriver(object):
         self.settings = settings
         self.flags = flags
         
-        self.environment = env()
+        self.envVars = env()
 
-        self.runner = self.settings.runner(cwd=packer_dir, env=self.environment)
+        self.runner = self.settings.runner(cwd=packer_dir, envVars=self.envVars)
 
     def _tf_outputs(self, component, keys):
         target = Target(component, 'main')
