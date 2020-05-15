@@ -5,7 +5,7 @@ Shared public AWS Route53 hosted zone for kops kubernetes clusters.
 N/A.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy|output> kops/domains:main
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy|output> kops/domains:main
 ...
 ```

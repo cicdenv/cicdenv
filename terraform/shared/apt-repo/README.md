@@ -7,13 +7,13 @@ NOTE: the indexer lives in [terraform/shared/apt-repo-indexer](../apt-repo-index
 N/A.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy> shared/apt-repo:main
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> shared/apt-repo:main
 ...
 ```
 
 ## Manual Install
-```
+```bash
 cp <apt-transport-s3.py> /usr/lib/apt/methods/s3
 chmod +x /usr/lib/apt/methods/s3
 echo 'deb [trusted=yes] s3://apt-repo-cicdenv-com/ repo/dists/' > /etc/apt/sources.list.d/s3-repos.list

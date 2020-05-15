@@ -7,7 +7,7 @@ API Gateway logging access to cloudwatch logs.
 This state is per-account.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy> api-gateway:${WORKSPACE}
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> api-gateway:${WORKSPACE}
 ...
 ```

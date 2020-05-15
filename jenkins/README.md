@@ -9,7 +9,7 @@ Routine actions are defined as Makefile targets:
 See [docs/UPDATES.md]
 
 ## Usage
-```
+```bash
 # terminal #1 Set AWS credentials (last 1 hour)
 cicdenv$ cicdctl creds aws-mfa main
 cicdenv$ cicdctl console
@@ -43,13 +43,13 @@ cicdenv/jenkins$ make build-plugins
 
 ### SSH Key
 Obtain the `cicdenv` Github user ssh key:
-```
+```bash
 cicdenv/jenkins$ make ssh-key
 ```
 
 ### Agent Authentication
 Obtain the cli/agent to server creds
-```
+```bash
 cicdenv/jenkins$ make agent-auth
 ```
 
@@ -61,6 +61,6 @@ Linux - We create similar volumes on the host
 ```
 
 Create the necessary volumes:
-```
+```bash
 cicdenv/jenkins$ make volumes
 ```

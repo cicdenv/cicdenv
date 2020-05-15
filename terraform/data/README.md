@@ -5,7 +5,7 @@ DynamoDB tables for account specific items (kops clusters).
 This state is per-account.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy> data:${WORKSPACE}
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> data:${WORKSPACE}
 ...
 ```

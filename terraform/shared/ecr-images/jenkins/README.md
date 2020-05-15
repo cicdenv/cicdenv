@@ -5,7 +5,7 @@ Jenkins service server, agent container images.
 N/A.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy> shared/ecr-images/jenkins:main
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> shared/ecr-images/jenkins:main
 ...
 ```

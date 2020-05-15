@@ -11,6 +11,6 @@ Roles:
 N/A.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|output> iam/assumed-roles:main
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|output> iam/assumed-roles:main
 ```

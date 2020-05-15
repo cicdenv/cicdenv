@@ -12,7 +12,7 @@ This custom addon is automatically installed during KOPS cluster bootstrap.
   * Short answer: using kops channels +s3 integrates more smoothly with terraform
 
 ## Debugging
-```
+```bash
 # There should be a daemonset
 kubectl get      daemonsets/kube2iam --namespace kube-system
 kubectl describe daemonsets/kube2iam --namespace kube-system

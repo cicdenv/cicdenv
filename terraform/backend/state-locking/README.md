@@ -5,7 +5,7 @@ Per account terraform backend locking.
 This state is per-account.
 
 ## Init
-```
+```bash
 # Interactive shell
 cicdenv$ make
 
@@ -32,7 +32,7 @@ ${USER}:~/cicdenv$ exit
 ```
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy> backend/state-locking:${WORKSPACE}
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> backend/state-locking:${WORKSPACE}
 ...
 ```

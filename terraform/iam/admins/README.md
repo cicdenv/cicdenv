@@ -5,8 +5,8 @@ Master (main) account IAM admin users.
 N/A.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|output> iam/admins:main
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|output> iam/admins:main
 ```
 
 NOTE:
@@ -28,7 +28,7 @@ This must be enabled by the root account.
 https://console.aws.amazon.com/iam/home#/security_credentials
 
 These should be removed after creating admin IAM users:
-```
+```bash
 # Interactive shell
 cicdenv$ make
 
@@ -43,24 +43,24 @@ ${USER}:~/cicdenv$ exit
 
 ### Access Key
 ```
-cicdenv$ cicdctl output iam/admins:main -json user_access_keys | jq -r ".${USER}"
+cicdenv$ cicdctl terraform output iam/admins:main -json user_access_keys | jq -r ".${USER}"
 ```
 
 ### Secrets
-```
+```bash
 # Interactive shell
 cicdenv$ make
 
 # Initial console password and secret key
 ${USER}:~/cicdenv$ for output in user_passwords user_secret_keys; do \
-    cicdctl output iam/admins:main -json "$output" | jq -r ".${USER}" | base64 -d | keybase pgp decrypt
+    cicdctl terraform output iam/admins:main -json "$output" | jq -r ".${USER}" | base64 -d | keybase pgp decrypt
 done
 ${USER}:~/cicdenv$ exit
 ```
 
 ### MFA
 Admin creates a virtual-mfa device for a new IAM user:
-```
+```bash
 # Interactive shell
 cicdenv$ make
 

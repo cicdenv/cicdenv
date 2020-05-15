@@ -7,14 +7,14 @@ This component can be used to import / manage those resources post creation.
 This state is per-account.
 
 ## Setup
-```
-cicdenv$ cicdctl init iam/organization-account:${WORKSPACE}
+```bash
+cicdenv$ cicdctl terraform init iam/organization-account:${WORKSPACE}
 cicdenv$ terraform/iam/organization-account/bin/import-resources.sh ${WORKSPACE}
-cicdenv$ cicdctl apply iam/organization-account:${WORKSPACE}
+cicdenv$ cicdctl terraform apply iam/organization-account:${WORKSPACE}
 ```
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy> iam/organization-account:${WORKSPACE}
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> iam/organization-account:${WORKSPACE}
 ...
 ```

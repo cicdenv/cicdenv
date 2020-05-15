@@ -1,2 +1,2 @@
 ## Purpose
-Resources used by all accounts / VPCs.
+Resources used by all accounts that reside in the main account.

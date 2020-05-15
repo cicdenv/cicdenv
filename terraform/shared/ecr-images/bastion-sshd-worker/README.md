@@ -5,12 +5,12 @@ Bastion service worker container image.
 N/A.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy> shared/ecr-images/bastion-sshd-worker:main
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> shared/ecr-images/bastion-sshd-worker:main
 ...
 ```
 
 ## Image Maintenance
-```
+```bash
 cicdenv/shared/ecr-images/bastion-sshd-worker$ make 
 ```

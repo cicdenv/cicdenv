@@ -5,14 +5,14 @@ S3 backed debian/ubuntu apt repo lambda indexer.
 N/A.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy> shared/apt-repo-lambda:main
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> shared/apt-repo-lambda:main
 ...
 ```
 
 ## Testing
 Local:
-```
+```bash
 # Copy a .deb file into a cicdenv container
 #  NOTE: if you're running multiple cicdenv sessions:
 #        `cat /proc/self/cgroup` to get the right container-id
@@ -35,24 +35,24 @@ SHA256: 2af37af1a8fd243f2cfb28e57ed9f6f5d549a7c5c8bef5a46567c6bc2f091e4d
 ```
 
 Uploading .deb(s):
-```
+```bash
 # Uploads any debs in the s3apt/ folder
 ${USER}:~/cicdenv/terraform/shared/apt-repo-indexer/s3apt$ make upload
 ```
 
 Lambda updates:
-```
+```bash
 # Upload new code to S3
 cicdenv/terraform/shared/apt-repo-indexer/s3apt$ make publish
 
 # Re-apply terraform state to use the new version
-cicdenv$ cicdctl apply shared/apt-repo-indexer:main -auto-approve
+cicdenv$ cicdctl terraform apply shared/apt-repo-indexer:main -auto-approve
 
 # Test in Lambda UI using a the faux event in test/put-event.json
 ```
 
 Host:
-```
+```bash
 # Verify the s3 method is working and deps are met
 $ cat <<'EOF' | /usr/lib/apt/methods/s3
 600 URI Acquire

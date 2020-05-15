@@ -18,6 +18,6 @@ aws cli `kms` to encrypt / decrypt.
 This is automatic if using `cicdctl apply-cluster ...`.
 
 ## Resetting
-```
+```bash
 cicdenv$ rm -rf terraform/kops/backend/pki/*/ca*
 ```

@@ -5,8 +5,8 @@ Master (main) common IAM items.
 N/A.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|output> iam/common:main
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|output> iam/common:main
 ```
 
 ## MFA

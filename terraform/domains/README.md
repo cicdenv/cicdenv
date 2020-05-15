@@ -5,7 +5,7 @@ Route53 public / private DNS zones for the target account.
 This state is per-account.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy> domains:${WORKSPACE}
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> domains:${WORKSPACE}
 ...
 ```

@@ -11,18 +11,18 @@ Items:
 N/A.
 
 ## Init
-```
+```bash
 # Interactive shell
 cicdenv$ make
 
-# Create the aws resources manually
+# Create the initial aws resources manually
 ${USER}:~/cicdenv$ terraform/backend/bin/create-resources.sh
 ${USER}:~/cicdenv$ exit
 
 # Intialize terraform
 # NOTE: comment out any actual resources to produce a remote state file: kms.tf, s3.tf
 #       comment out imports.tf [iam/organizations], and references to it locals.tf
-cicdenv$ cicdctl apply backend:main
+cicdenv$ cicdctl terraform init backend:main
 
 # Interactive shell (again)
 cicdenv$ make
@@ -32,14 +32,14 @@ ${USER}:~/cicdenv$ terraform/backend/bin/import-resources.sh
 ${USER}:~/cicdenv$ exit
 
 # Next apply iam/organizations
-cicdenv$ cicdctl apply iam/organizations:main
+cicdenv$ cicdctl terraform apply iam/organizations:main
 
-# Now uncomment resources and apply again
+# Apply again
 # - kms.tf, s3.tf, imports.tf, locals.tf
-cicdenv$ cicdctl apply backend:main
+cicdenv$ cicdctl terraform apply backend:main
 ```
 
 ## Usage
-```
-cicdenv$ cicdctl <plan|apply> backend:main
+```bash
+cicdenv$ cicdctl terraform <plan|apply> backend:main
 ```

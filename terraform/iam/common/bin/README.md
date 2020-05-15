@@ -4,7 +4,7 @@ Simple scripts to create/enable virtual MFA devices.
 ## Background
 https://thirld.com/blog/2016/01/16/generating-two-factor-authentication-codes-on-linux/
 
-```
+```bash
 Base32StringSeed
 
 QRCodePNG
@@ -30,7 +30,7 @@ aws iam
 
 ## setup-virtual-mfa-device.sh
 Dettach mfa device (for rerunning the script):
-```
+```bash
 aws --profile=admin-root \
     iam deactivate-mfa-device \
           --user-name fvogt \

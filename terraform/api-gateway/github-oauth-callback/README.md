@@ -11,8 +11,8 @@ Date: Fri, 08 Jul 2016 16:16:44 GMT
 Location: http://www.amazon.com/
 ```
 
-```
-
+Makefile:
+```make
 venv:
 	if [ ! -d "$(venv)" ]; then python -m venv $(venv); fi
 	source $(venv)/bin/activate;     \

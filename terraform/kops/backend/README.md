@@ -13,8 +13,8 @@ cicdenv$ terraform/kops/backend/bin/create-ca.sh
 ```
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|output> kops/backend:main
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|output> kops/backend:main
 ...
 ```
 

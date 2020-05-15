@@ -6,13 +6,13 @@ This state is per-account.
 
 ## Init
 Build region list: (one time only)
-```
+```bash
 cicdenv$ terraform/networking/default-vpc/bin/populate-regions.sh
 ```
 
 ## Usage
 One time only per workspace.
-```
+```bash
 # creates ${WORKSPACE}.tfvars from existing ids
 cicdenv$ terraform/networking/default-vpcs/bin/populate-vpcs-vars.sh ${WORKSPACE}
 
@@ -24,8 +24,8 @@ cicdenv$ terraform/networking/default-vpcs/bin/import-resources.sh ${WORKSPACE}
 ```
 
 Normal workflow
-```
-cicdenv$ cicdctl <plan|apply|destroy> networking/default-vpcs:${WORKSPACE} -var-file ${WORKSPACE}.tfvars
+```bash
+cicdenv$ cicdctl terraform <plan|apply|destroy> networking/default-vpcs:${WORKSPACE} -var-file ${WORKSPACE}.tfvars
 ```
 
 ## Items
@@ -39,7 +39,7 @@ cicdenv$ cicdctl <plan|apply|destroy> networking/default-vpcs:${WORKSPACE} -var-
 ```
 
 ## Regions
-```
+```bash
 AWS_PROFILE=admin-${WORKSPACE} aws --region=us-west-2 ec2 describe-regions | jq -r '.Regions[].RegionName'
 eu-north-1
 ap-south-1

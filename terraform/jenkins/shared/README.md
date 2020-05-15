@@ -15,7 +15,7 @@ Jenkins resources that live in sub-accounts account.
 This state is per-account.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy> jenkins/common:${WORKSPACE}
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> jenkins/common:${WORKSPACE}
 ...
 ```

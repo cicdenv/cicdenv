@@ -5,7 +5,7 @@ Common resources for all KOPS kubernetes clusters in the same region/account.
 This state is per-account.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy|output> kops/shared:${WORKSPACE}
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy|output> kops/shared:${WORKSPACE}
 ...
 ```

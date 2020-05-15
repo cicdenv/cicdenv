@@ -5,8 +5,8 @@ Any resources needed by packer (not VPC+subnets however).
 N/A.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy> packer:main
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> packer:main
 ...
 ```
 

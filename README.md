@@ -21,6 +21,7 @@ Test:
 ```bash
 cicdenv$ make
 📦 $USER:~/cicdenv$ cicdctl
+📦 $USER:~/cicdenv$ cicdctl test
 ```
 
 Confirm tool versions:
@@ -28,86 +29,89 @@ Confirm tool versions:
 cicdenv$ make versions
 [Tool]                     [Version]
 -----------------------------------------
-bash                   --> 5.0.0(1)
-python                 --> 3.7.5
-make                   --> 4.2.1
-terraform              --> v0.12.21
-packer                 --> v1.5.4
-kops                   --> 1.17.0-beta.1
-kubectl                --> v1.17.3
-aws-iam-authenticator  --> 0.5.0
-aws (cli)              --> 1.18.13
+bash                   --> ...
+python                 --> ...
+make                   --> ...
+terraform              --> ...
+packer                 --> ...
+kops                   --> ...
+kubectl                --> ...
+aws-iam-authenticator  --> ...
+aws (cli)              --> ...
 ```
 
-Add to search path:
+Add to shell search path:
 ```
 cicdenv$ . bin/activate
 ```
 
-## One Time Setup
+## Base AMI
 ```bash
-cicdenv$ cicdctl apply kops/shared:${WORKSPACE}
+# Build base AMI (main account)
+cicdenv$ cicdctl terraform  apply kops/nat-gateways:main
+
+cicdenv$ cicdctl packer build
+
+cicdenv$ cicdctl terraform destroy kops/nat-gateways:main
 ```
 
 ## Setup
 ```bash
-# Build base AMI (main account)
-cicdenv$ cicdctl apply kops/nat-gateways:main
-
-cicdenv$ cicdctl packer build
-
-cicdenv$ cicdctl destroy kops/nat-gateways:main
-
-# PKI - decrpt CA private key
+# PKI - decrpt KOPS CA private key
 cicdenv$ make
 📦 $USER:~/cicdenv$ terraform/kops/backend/bin/decrypt-ca-key.sh
 📦 $USER:~/cicdenv$ exit
 ```
 
 ## Usage
-Example: `dev` account
+Example: `dev` account, `1-18a3` kops cluster
 ```bash
+# One time setup
+cicdenv$ cicdctl terraform apply kops/shared:dev
+
 # Turn on private subnet NAT gateways
-cicdenv$ cicdctl apply kops/nat-gateways:dev -auto-approve
+cicdenv$ cicdctl terraform apply kops/nat-gateways:dev -auto-approve
 
 # Create kubernetes cluster
-cicdenv$ cicdctl apply-cluster 1-16:dev -auto-approve
-cicdenv$ cicdctl validate-cluster 1-16:dev
+cicdenv$ cicdctl cluster create 1-18a3:dev -auto-approve
+cicdenv$ cicdctl cluster validate 1-18a3:dev
 
 # Cleanup
-cicdenv$ cicdctl destroy-cluster 1-16:dev -force
+cicdenv$ cicdctl cluster destroy 1-18a3:dev -force
 
 # Turn off private subnet NAT gateways
-cicdenv$ cicdctl destroy kops/nat-gateways:dev -force
+cicdenv$ cicdctl terraform destroy kops/nat-gateways:dev -force
 ```
 
 ## Host Access
+Example: `dev` account
 ```bash
 # Inspect with bastion service
 cicdenv$ cicdctl apply kops/bastion:dev -auto-approve
 # Linux
-cicdenv$ cicdctl bastion ssh dev # --user $USER
+cicdenv$ cicdctl bastion ssh dev
 # Mac
 cicdenv$ make
 📦 $USER:~/cicdenv$ eval "$(ssh-agent)"; ssh-add ~/.ssh/kops_rsa
-📦 $USER:~/cicdenv$ cicdctl bastion ssh dev # --user $USER
+📦 $USER:~/cicdenv$ cicdctl bastion ssh dev
 ```
 
 ## Jenkins
+Example: `dev` account, `dist`, `test` Jenkins instances
 ```bash
 # Turn on private subnet NAT gateways
-cicdenv$ cicdctl apply kops/nat-gateways:dev -auto-approve
+cicdenv$ cicdctl terraform apply kops/nat-gateways:dev -auto-approve
 
 # Create Jenkins instances
-cicdenv$ cicdctl apply-jenkins dist:dev --type distributed -auto-approve
-cicdenv$ cicdctl apply-jenkins test:dev --type colocated   -auto-approve
+cicdenv$ cicdctl jenkins create dist:dev --type distributed -auto-approve
+cicdenv$ cicdctl jenkins create test:dev --type colocated   -auto-approve
 
 # Cleanup
 cicdenv$ cicdctl destroy-jenkins dist:dev --type distributed -auto-approve
-cicdenv$ cicdctl destroy-jenkins test:dev --type colocated   -auto-approve
+cicdenv$ cicdctl jenkins destroy test:dev --type colocated   -auto-approve
 
 # Turn off private subnet NAT gateways
-cicdenv$ cicdctl destroy kops/nat-gateways:dev -force
+cicdenv$ cicdctl terraform destroy kops/nat-gateways:dev -force
 ```
 
 ### Interactive

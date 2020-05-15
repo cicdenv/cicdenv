@@ -10,7 +10,7 @@ they can be destroyed separately when no ec2 instances are running.
 This state is per-account.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy> kops/nat-gateways:${WORKSPACE}
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> kops/nat-gateways:${WORKSPACE}
 ...
 ```

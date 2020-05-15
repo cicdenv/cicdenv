@@ -21,14 +21,14 @@ lambda.
 
 Clone the repo.
 
-```
+```bash
 git clone https://github.com/szinck/s3apt.git
 cd s3apt
 ```
 
 Configure your bucket name.
 
-```
+```bash
 cp config.py.example config.py
 vim config.py
 # Edit the APT_REPO_BUCKET_NAME to be the name of the bucket (with no s3:// prefix)
@@ -36,7 +36,7 @@ vim config.py
 
 Create a zip file of the code.
 
-```
+```bash
 zip  code.zip s3apt.py config.py
 (cd venv/lib/python2.7/site-packages/ ; zip -r ../../../../code.zip *)
 ```
@@ -62,7 +62,7 @@ Testing
 
 Setup
 
-```
+```bash
 virtualenv venv
 . venv/bin/activate
 pip install -r requirements.txt
@@ -73,7 +73,7 @@ Testing against your packages:
 If you specify the name of the package on the command line you can cause the
 code to generate a package index entry.
 
-```
+```bash
 $ python s3apt.py elasticsearch-2.3.3.deb
 Package: elasticsearch
 Version: 2.3.3

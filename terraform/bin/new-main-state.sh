@@ -62,8 +62,8 @@ if [[ ! -f "${state_dir}/README.md" ]]; then
 N/A.
 
 ## Usage
-\`\`\`
-${repo}\$ cicdctl <init|plan|apply|destroy> ${new_state}:main
+\`\`\`bash
+${repo}\$ cicdctl terraform <init|plan|apply|destroy> ${new_state}:main
 ...
 \`\`\`
 EOF

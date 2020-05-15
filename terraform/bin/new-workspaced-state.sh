@@ -68,8 +68,8 @@ if [[ ! -f "${state_dir}/README.md" ]]; then
 This state is per-account.
 
 ## Usage
-\`\`\`
-${repo}\$ cicdctl <init|plan|apply|destroy> ${new_state}:\${WORKSPACE}
+\`\`\`bash
+${repo}\$ cicdctl terraform <init|plan|apply|destroy> ${new_state}:\${WORKSPACE}
 ...
 \`\`\`
 EOF

@@ -9,7 +9,7 @@ NOTE: ECR images are managed by `shared/ecr-images/jenkins`.
 N/A.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy> jenkins/backend:main
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> jenkins/backend:main
 ...
 ```

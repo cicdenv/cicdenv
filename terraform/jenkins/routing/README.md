@@ -5,7 +5,7 @@
 This state is per-account.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy> jenkins/routing:${WORKSPACE}
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> jenkins/routing:${WORKSPACE}
 ...
 ```

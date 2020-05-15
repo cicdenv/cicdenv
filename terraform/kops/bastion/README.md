@@ -5,8 +5,8 @@ Jump host(s) for KOPS VPCs.
 This state is per-account.
 
 ## Usage
-```
-cicdenv$ cicdctl <init|plan|apply|destroy|output> kops/bastion:${WORKSPACE}
+```bash
+cicdenv$ cicdctl terraform <init|plan|apply|destroy|output> kops/bastion:${WORKSPACE}
 ...
 ```
 
@@ -23,7 +23,7 @@ Currently serving out of `s3://kops.cicdenv.com` because this authorizes by S3 V
 * Follow the build instructions: https://github.com/gfleury/libnss-iam
 
 Upload to s3:
-```
+```bash
 libnss-iam$ AWS_OPTS="--profile=admin-main --region=us-west-2"
 libnss-iam$ for item in iam libnss_iam.so.2 libnss-iam-0.1.deb; do
     aws $AWS_OPTS s3 cp --acl 'bucket-owner-full-control' "${item}" "s3://kops.cicdenv.com/libnss_iam/${item}"
