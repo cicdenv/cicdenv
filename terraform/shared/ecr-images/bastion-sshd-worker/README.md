@@ -12,5 +12,5 @@ cicdenv$ cicdctl terraform <init|plan|apply|destroy> shared/ecr-images/bastion-s
 
 ## Image Maintenance
 ```bash
-cicdenv/shared/ecr-images/bastion-sshd-worker$ make 
+📦 $USER:~/cicdenv/shared/ecr-images/bastion-sshd-worker$ make
 ```
