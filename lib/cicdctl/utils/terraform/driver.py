@@ -36,7 +36,7 @@ class TerraformDriver(object):
         _component = self.component.rstrip("/").replace(getcwd(), '').replace('/terraform/', '')  # Normalize
         self.component_dir = path.join(getcwd(), 'terraform', _component)
         
-        self.env_ctx, self.aws_profile = env(self.settings, self.workspace)
+        self.env_ctx = env(self.settings, self.workspace)
 
         self.runner = self.settings.runner(cwd=self.component_dir, env_ctx=self.env_ctx)
         self._exec = self.runner.exec
@@ -92,7 +92,7 @@ class TerraformDriver(object):
 
     def _run_command_with_vars(self, command):
         self._state_prep()  # "state prep" the state first, then proceed
-        var_opts = resolve_variable_opts(self.component_dir, self.aws_profile)
+        var_opts = resolve_variable_opts(self.component_dir, self.workspace)
         self._exec(['terraform', command] + var_opts + list(self.flags))
         self._run_cascades(command)
 
@@ -104,7 +104,7 @@ class TerraformDriver(object):
                 target = parse_target(cascade['target'])
                 flags = [cascade['opts']]
                 driver = TerraformDriver(self.settings, target, flags)
-                driver.getattr(_command)()
+                getattr(driver, _command)()
 
     def __getattr__(self, name):
         if name in commands_no_vars:

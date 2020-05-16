@@ -4,7 +4,7 @@ import subprocess
 from ..aws import DEFAULT_REGION
 from . import (backend_config, varfile_dir, 
     parse_variable_comments_tf, parse_tfvars)
-
+from . import dynamodb
 
 def is_workspaced(component_dir):
     # Sniff the backend.tf to determine if target is a workspaced state
@@ -15,7 +15,7 @@ def is_workspaced(component_dir):
             return False
 
 
-def resolve_variable_opts(component_dir, aws_profile):
+def resolve_variable_opts(component_dir, workspace):
     # Load variables.tf, locate values from {terraform/*.tfvars, data sources}
     var_opts = []
     vars = parse_variable_comments_tf(path.join(component_dir, 'variables.tf'))  # name -> tfvar {source}
@@ -23,7 +23,7 @@ def resolve_variable_opts(component_dir, aws_profile):
     for name, source in vars.items():
         if source.startswith('dynamodb['):  # DynamoDB item scan: `dynamodb[<table>][<field>]`
             var_opts.append('-var')
-            var_opts.append(f'{name}={dynamodb.get_items(source, aws_profile, DEFAULT_REGION)}')
+            var_opts.append(f'{name}={dynamodb.get_items(source, workspace, DEFAULT_REGION)}')
         elif source == 'backend-config.tfvars':  # Backend variables get individual bindings
             var_opts.append('-var')
             var_opts.append(f'{name}={backend_vars[name]}')

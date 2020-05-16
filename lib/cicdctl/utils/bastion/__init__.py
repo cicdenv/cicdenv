@@ -32,7 +32,7 @@ def ssh_opts(port, identity, flags):
 
     # any non -o key=value options
     _ssh_args = {  # port, identity can be overriden
-        '-P': port, 
+        '-p': str(port), 
         '-i': identity,
     }
     for k, v in zip(flags[0::2], flags[1::2]):

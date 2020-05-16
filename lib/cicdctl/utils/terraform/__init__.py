@@ -39,10 +39,10 @@ def env(settings, workspace):
         environment['TF_LOG'] = 'DEBUG'
 
     # Set aws credentials profile with env variables
-    environment['AWS_PROFILE'] = aws_profile = config_profile(workspace)
+    environment['AWS_PROFILE'] = config_profile(workspace)
 
     logged_keys = ['TF_PLUGIN_CACHE_DIR', 'AWS_DEFAULT_REGION', 'AWS_PROFILE']
-    return EnvironmentContext(environment, logged_keys), aws_profile
+    return EnvironmentContext(environment, logged_keys)
 
 
 """
