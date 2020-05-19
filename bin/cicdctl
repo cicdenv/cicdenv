@@ -91,8 +91,9 @@ else  # Run cicdenv in our tools environment, then quit
         KBPROXY_PORT=$(python -c 'import socket; s = socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()')
         extra_vars="$extra_vars --env KBPROXY_PORT=${KBPROXY_PORT}"
 
-        _KB_SOCKET="/Users/$USER/Library/Group Containers/keybase/Library/Caches/Keybase/keybased.sock"
-        (while true; do nc -lk 127.0.0.1 "$KBPROXY_PORT" <"$_KBPROXY_FIFO"; done) | nc -U "$_KB_SOCKET" >"$_KBPROXY_FIFO" &
+        _KB_SOCKET="${HOME}/Library/Group Containers/keybase/Library/Caches/Keybase/keybased.sock"
+        
+        nc -lk 127.0.0.1 "$KBPROXY_PORT" <"$_KBPROXY_FIFO" | nc -U "$_KB_SOCKET" >"$_KBPROXY_FIFO" &
         
         trap "exit" INT TERM ERR
         trap "{ kill 0; rm -f $_KBPROXY_FIFO; }" EXIT

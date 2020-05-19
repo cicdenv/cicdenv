@@ -7,11 +7,9 @@ set -euo pipefail
 #
 # Connects to a listening socket at host(127.0.0.1):$KBPROXY_PORT
 #
+_KBPROXY_FIFO=`mktemp -u`
+mkfifo $_KBPROXY_FIFO
 
-_fifo="/tmp/.keybase-fifo"
+_KB_SOCKET="${HOME}/.config/keybase/keybased.sock"
 
-if [[ ! -p "$_fifo" ]]; then
-    mkfifo "$_fifo"
-fi
-
-(while true; do nc host.docker.internal "$KBPROXY_PORT" <"$_fifo"; done) | nc -Ulk ~/.config/keybase/keybased.sock >"$_fifo" &
+nc host.docker.internal "$KBPROXY_PORT" <"$_fifo" | nc -Ulk "$_KB_SOCKET" >"$_fifo" &

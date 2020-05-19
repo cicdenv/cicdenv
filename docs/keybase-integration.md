@@ -52,12 +52,12 @@ UNIX sockets:
 
 Routing: 
 ```
-keybase server on Mac:
-  "recv"  - host:ephemeral-tcp-port => host:/keybased.sock => host:fifo
-  "sends" - host:fifo => host:ephemeral-tcp-port
 keybase client in container:
   "sends" - container:/keybased.sock => container:fifo => host:ephemeral-tcp-port
   "recv"  - host:ephemeral-tcp-port => ~/.config/keybase/keybased.sock
+keybase server on Mac:
+  "recv"  - host:ephemeral-tcp-port => host:/keybased.sock => host:fifo
+  "sends" - host:fifo => host:ephemeral-tcp-port
 ```
 
 Proxies:
