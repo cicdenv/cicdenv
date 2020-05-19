@@ -12,4 +12,4 @@ mkfifo $_KBPROXY_FIFO
 
 _KB_SOCKET="${HOME}/.config/keybase/keybased.sock"
 
-nc host.docker.internal "$KBPROXY_PORT" <"$_fifo" | nc -Ulk "$_KB_SOCKET" >"$_fifo" &
+nc host.docker.internal "$KBPROXY_PORT" <"$_KBPROXY_FIFO" | nc -Ulk "$_KB_SOCKET" >"$_KBPROXY_FIFO" &
