@@ -2,7 +2,7 @@ from sys import exit, stderr
 from os import path, getcwd
 import subprocess
 from subprocess import DEVNULL
-  
+
 from pathlib import Path
 from configparser import ConfigParser
 import getpass
@@ -58,7 +58,7 @@ class MfaCodeGenerator(object):
 
     def _decrypt_totp_config(self):
         # Keybase login required prior
-        secret = self.runner.output_string(['keybase', 'decrypt', '--infile', self.totp_secrets_file], stderr=DEVNULL)
+        secret = self.runner.output_string(['keybase', '--no-auto-fork', '--local-rpc-debug-unsafe', 'A', 'decrypt', '--infile', self.totp_secrets_file], stderr=DEVNULL)
         return secret
 
     def _run_oathtool(self):
