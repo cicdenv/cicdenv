@@ -64,9 +64,13 @@ else  # Run cicdenv in our tools environment, then quit
 
     _PATH="/home/${user_name}/${repo}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
-    # Mac's don't get agent forwarding
+    ssh_agent_forwarding=
     if [[ "$OSTYPE" == "darwin"* ]]; then
-        ssh_agent_forwarding=
+        if [[ "${SSH_AUTH_SOCK-unset}" != 'unset' ]]; then
+            # https://docs.docker.com/docker-for-mac/osxfs/#ssh-agent-forwarding
+            _SSH_AUTH_PATH=/run/host-services/ssh-auth.sock
+            ssh_agent_forwarding="--mount type=bind,src=${_SSH_AUTH_PATH},target=${_SSH_AUTH_PATH} -e SSH_AUTH_SOCK=${_SSH_AUTH_PATH}"
+        fi
     else
         if [[ "${SSH_AUTH_SOCK-unset}" != 'unset' ]]; then
             agent_socket=$(dirname $SSH_AUTH_SOCK)
@@ -92,7 +96,7 @@ else  # Run cicdenv in our tools environment, then quit
         extra_vars="$extra_vars --env KBPROXY_PORT=${KBPROXY_PORT}"
 
         _KB_SOCKET="${HOME}/Library/Group Containers/keybase/Library/Caches/Keybase/keybased.sock"
-        
+
         nc -lk 127.0.0.1 "$KBPROXY_PORT" <"$_KBPROXY_FIFO" | nc -U "$_KB_SOCKET" >"$_KBPROXY_FIFO" &
         
         trap "exit" INT TERM ERR
