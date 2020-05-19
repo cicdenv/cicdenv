@@ -11,4 +11,8 @@ locals {
   ami       = data.aws_ami.custom_base.id
 
   security_group = data.terraform_remote_state.shared.outputs.bastion_service_security_group_id
+  
+  events_security_group = data.terraform_remote_state.shared.outputs.bastion_events_security_group_id
+
+  iam_user_updates_sns_topic = data.terraform_remote_state.iam_events.outputs.iam_user_updates_sns_topic
 }

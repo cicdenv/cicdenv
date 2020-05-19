@@ -33,3 +33,12 @@ data "terraform_remote_state" "iam_organizations" {
     region = var.region
   }
 }
+
+data "terraform_remote_state" "iam_events" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/iam-events/terraform.tfstate"
+    region = var.region
+  }
+}

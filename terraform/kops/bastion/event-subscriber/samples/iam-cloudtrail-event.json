@@ -1,0 +1,35 @@
+{
+  "eventVersion": "1.05",
+  "userIdentity": {
+    "type": "IAMUser",
+    "principalId": "AIDAQG3KU4HV6AOKCVI3N",
+    "arn": "arn:aws:iam::014719181291:user/users/fvogt",
+    "accountId": "014719181291",
+    "accessKeyId": "ASIAQG3KU4HV3WFP7HB3",
+    "userName": "fvogt",
+    "sessionContext": {
+      "sessionIssuer": {},
+      "webIdFederationData": {},
+      "attributes": {
+        "mfaAuthenticated": "true",
+        "creationDate": "2020-05-17T19:22:22Z"
+      }
+    }
+  },
+  "eventTime": "2020-05-17T21:47:11Z",
+  "eventSource": "iam.amazonaws.com",
+  "eventName": "UpdateSSHPublicKey",
+  "awsRegion": "us-east-1",
+  "sourceIPAddress": "198.27.223.45",
+  "userAgent": "console.amazonaws.com",
+  "requestParameters": {
+    "userName": "fvogt",
+    "sSHPublicKeyId": "APKAQG3KU4HV53DUBJ5X",
+    "status": "Inactive"
+  },
+  "responseElements": null,
+  "requestID": "5098d6cf-b767-473e-b156-dae0d589cb52",
+  "eventID": "2068cda6-4497-4309-9da4-5380f5e2d4f7",
+  "eventType": "AwsApiCall",
+  "recipientAccountId": "014719181291"
+}

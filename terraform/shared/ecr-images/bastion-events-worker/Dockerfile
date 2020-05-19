@@ -16,6 +16,7 @@ RUN apt-get update \
     ca-certificates \
     curl \
     git \
+    gnupg2 \
     libbz2-dev \
     libncurses5-dev \
     libncursesw5-dev \
@@ -27,6 +28,7 @@ RUN apt-get update \
     make \
     netbase \
     pkg-config \
+    software-properties-common \
     tk-dev \
     wget \
     xz-utils \
@@ -53,13 +55,20 @@ RUN apt-get update \
     libffi-dev \
     liblzma-dev \
     python-openssl \
-    git
+    git \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN curl -sL https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 
 COPY .python-version /
 RUN pyenv install "$(cat .python-version)" \
  && pyenv global "$(pyenv versions --bare)"
+
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
+ && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends docker-ce-cli \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY requirements.txt /
 RUN pip install --upgrade pip
@@ -68,5 +77,6 @@ COPY src /app
 WORKDIR /app
 RUN pip install -e .
 
-ENTRYPOINT ["/opt/pyenv/shims/bastion-sns-subscriber"]
+ENV FLASK_ENV=development
+ENTRYPOINT ["bastion-events-worker"]
 CMD []

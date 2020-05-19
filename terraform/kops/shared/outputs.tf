@@ -34,6 +34,10 @@ output "private_dns_zone" {
   value = aws_route53_zone.private.zone_id
 }
 
+output "bastion_events_security_group_id" {
+  value = aws_security_group.events.id
+}
+
 output "bastion_service_security_group_id" {
   value = aws_security_group.bastion.id
 }

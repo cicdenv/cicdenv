@@ -78,3 +78,9 @@ output "account_ous_by_name" {
   value = zipmap(aws_organizations_account.accounts.*.name, 
                  data.template_file.account_ous.*.rendered)
 }
+
+output "organization" {
+  value = {
+    id = aws_organizations_organization.organization.id
+  }
+}

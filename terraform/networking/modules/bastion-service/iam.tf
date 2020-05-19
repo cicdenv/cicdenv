@@ -53,11 +53,12 @@ data "aws_iam_policy_document" "bastion" {
     actions = [
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage",
-      "ecr:BatchCheckLayerAvailability"
+      "ecr:BatchCheckLayerAvailability",
     ]
 
     resources = [
-      local.ecr_bastion_sshd_worker_arn,
+      local.ecr_bastion_sshd_worker.arn,
+      local.ecr_bastion_events_worker.arn,
     ]
   }
 }

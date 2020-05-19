@@ -1,0 +1,14 @@
+[Unit]
+Description=IAM User events agents for closing ssh sessions
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/docker run --rm -i                                       \
+                              -p 5000:5000                                  \
+                              -v /var/run/docker.sock:/var/run/docker.sock  \
+                              events-worker                                 \
+                              --host 0.0.0.0                                \
+                              --port 5000
+
+[Install]
+WantedBy=multi-user.target

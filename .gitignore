@@ -10,6 +10,7 @@ terraform.tfstate.d
 crash.log
 *.deb
 *.zip
+*.dist-info
 .venv
 
 ca-key.pem

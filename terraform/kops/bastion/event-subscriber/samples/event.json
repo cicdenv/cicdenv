@@ -1,0 +1,22 @@
+{
+  "Records": [
+    {
+      "EventSource": "aws:sns",
+      "EventVersion": "1.0",
+      "EventSubscriptionArn": "arn:aws:sns:us-east-1:014719181291:iam-user-updates:44998824-4439-488e-bdd1-6e86eac29074",
+      "Sns": {
+        "Type": "Notification",
+        "MessageId": "878325eb-4a07-5b9b-8713-72d779ba98b3",
+        "TopicArn": "arn:aws:sns:us-east-1:014719181291:iam-user-updates",
+        "Subject": null,
+        "Message": "{\"version\":\"0\",\"id\":\"822e80dd-3a72-ba81-f4bf-450a9bdf7c37\",\"detail-type\":\"AWS API Call via CloudTrail\",\"source\":\"aws.iam\",\"account\":\"014719181291\",\"time\":\"2020-05-18T06:55:55Z\",\"region\":\"us-east-1\",\"resources\":[],\"detail\":{\"eventVersion\":\"1.05\",\"userIdentity\":{\"type\":\"IAMUser\",\"principalId\":\"AIDAQG3KU4HV6AOKCVI3N\",\"arn\":\"arn:aws:iam::014719181291:user/users/fvogt\",\"accountId\":\"014719181291\",\"accessKeyId\":\"ASIAQG3KU4HV3WFP7HB3\",\"userName\":\"fvogt\",\"sessionContext\":{\"sessionIssuer\":{},\"webIdFederationData\":{},\"attributes\":{\"mfaAuthenticated\":\"true\",\"creationDate\":\"2020-05-17T19:22:22Z\"}}},\"eventTime\":\"2020-05-18T06:55:55Z\",\"eventSource\":\"iam.amazonaws.com\",\"eventName\":\"UpdateSSHPublicKey\",\"awsRegion\":\"us-east-1\",\"sourceIPAddress\":\"198.27.223.45\",\"userAgent\":\"console.amazonaws.com\",\"requestParameters\":{\"userName\":\"fvogt\",\"sSHPublicKeyId\":\"APKAQG3KU4HV53DUBJ5X\",\"status\":\"Active\"},\"responseElements\":null,\"requestID\":\"650c4058-b33f-45e3-bc3a-2cd43157022d\",\"eventID\":\"af2daf2d-d7ad-476d-836c-6d2c6f15d957\",\"eventType\":\"AwsApiCall\"}}",
+        "Timestamp": "2020-05-18T06:55:57.582Z",
+        "SignatureVersion": "1",
+        "Signature": "aHFDBJhMns5nnUEuBK+EWwUoMVuRkzOpIrMnuzESL4ZMlqbr9PzqOe3UOLt/4fqncLIyKAWYCB1Tp8gzvgTXt8xuOs0PlkBnVisnWZ+0czRVOnu4aZJRJBYkQLYUQKJXSS8uFHOsHl+73rTNgynmeAQ083aXeSjsGA6HecEPmXQVSmrRxv4RFL+ahDN44gFqV+D6zyFpzk2fngy8UT4e7HCsOCCR9LDCV0FGkJJfGqyLRJEwFYrfUGACSmLeH3lxPO0Bb8Gj7WwYgX1b7bTwm15rd/sb7KtrSxYRau8jzOQlttN59Qw+Pr9N9sHlJge4CoaKFI2ESErJZgjbuerrrw==",
+        "SigningCertUrl": "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-a86cb10b4e1f29c941702d737128f7b6.pem",
+        "UnsubscribeUrl": "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:014719181291:iam-user-updates:44998824-4439-488e-bdd1-6e86eac29074",
+        "MessageAttributes": {}
+      }
+    }
+  ]
+}

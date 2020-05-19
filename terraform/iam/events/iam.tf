@@ -77,4 +77,6 @@ data "aws_iam_policy_document" "iam_user_updates" {
 resource "aws_sns_topic_policy" "iam_user_updates" {
   arn =  aws_sns_topic.iam_user_updates.arn
   policy = data.aws_iam_policy_document.iam_user_updates.json
+  
+  provider = aws.us-east-1
 }

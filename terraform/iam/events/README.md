@@ -12,3 +12,28 @@ N/A.
 cicdenv$ cicdctl terraform <init|plan|apply|destroy> iam/events:main
 ...
 ```
+
+## Samples
+```json
+{
+  "source": [
+    "aws.cloudtrail"
+  ],
+  "detail-type": [
+    "AWS API Call via CloudTrail"
+  ],
+  "detail": {
+    "eventSource": [
+      "iam.amazonaws.com"
+    ],
+    "eventName": [
+      "DeleteUser",
+      "DeleteSSHPublicKey",
+      "UpdateSSHPublicKey"
+    ]
+  }
+}
+```
+
+## Links
+* https://aws.amazon.com/premiumsupport/knowledge-center/iam-cloudwatch-sns-rule/

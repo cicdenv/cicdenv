@@ -1,10 +1,10 @@
-resource "aws_ecr_repository" "bastion_sns_subscriber" {
-  name                 = "bastion-sns-subscriber"
+resource "aws_ecr_repository" "bastion_events_worker" {
+  name                 = "bastion-events-worker"
   image_tag_mutability = "MUTABLE"
 }
 
-resource "aws_ecr_repository_policy" "bastion_sns_subscriber" {
-  repository = aws_ecr_repository.bastion_sns_subscriber.name
+resource "aws_ecr_repository_policy" "bastion_events_worker" {
+  repository = aws_ecr_repository.bastion_events_worker.name
 
   # arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
   policy = <<EOF

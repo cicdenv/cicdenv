@@ -32,6 +32,9 @@ write_files:
 - path: "/etc/systemd/system/sshd-worker@.service"
   content: |
     ${indent(4, "${data.template_file.ssh_worker_service.rendered}")}
+- path: "/etc/systemd/system/events-worker.service"
+  content: |
+    ${indent(4, file("${path.module}/files/events-worker.service"))}
 EOF
   }
 
@@ -46,19 +49,25 @@ set -e
 
 set -eu -o pipefail
 
+# Download the sshd-worker image
+docker pull "${local.ecr_bastion_sshd_worker.repository_url}"
+docker tag "${local.ecr_bastion_sshd_worker.repository_url}" sshd-worker
+
+# Download the events-worker image
+docker pull "${local.ecr_bastion_events_worker.repository_url}"
+docker tag "${local.ecr_bastion_events_worker.repository_url}" events-worker
+
 # Configure host sshd to run on port a non-standard port
 sed -i 's/^#Port 22/Port ${var.host_ssh_port}/' /etc/ssh/sshd_config
 systemctl restart sshd.service
 systemctl daemon-reload
 systemctl enable sshd-worker.socket
 systemctl start sshd-worker.socket
+systemctl enable events-worker.service
+systemctl start events-worker.service
 
 # Set 'host' hostname to match dns
 hostnamectl set-hostname ${local.host_name}
-
-# Download the sshd-worker image
-docker pull "${local.ecr_bastion_sshd_worker_url}"
-docker tag "${local.ecr_bastion_sshd_worker_url}" sshd-worker
 EOF
   }
 }

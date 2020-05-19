@@ -5,7 +5,7 @@ SHELL=/bin/bash
 AWS_PROFILE=admin-main
 AWS_REGION=us-west-2
 
-IMAGE_NAME=bastion-sns-subscriber
+IMAGE_NAME=bastion-events-worker
 IMAGE_VERSION=latest
 
 domain_config=$(CURDIR)/../../../domain.tfvars
@@ -36,4 +36,4 @@ debug:
 	docker run -it --rm --entrypoint=/bin/bash $(IMAGE_NAME)
 
 run:
-	docker run -it --rm $(IMAGE_NAME) --port=5000 --endpoint=http://127.0.0.1:5000
+	docker run -it --rm $(IMAGE_NAME) --port=5000

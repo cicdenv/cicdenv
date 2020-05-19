@@ -1,18 +1,17 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='bastion-sns-subscriber',
+    name='bastion-events-worker',
     version="1.0",
     packages=find_packages(),
-    py_modules=['sns'],
+    py_modules=['events_worker'],
     include_package_data=True,
     install_requires=[
         'Flask',
-        'boto3',
-        'requests',
+        'docker',
     ],
     entry_points='''
         [console_scripts]
-        bastion-sns-subscriber=main:cli
+        bastion-events-worker=main:cli
     ''',
 )

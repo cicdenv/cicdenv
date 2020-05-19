@@ -23,6 +23,7 @@ locals {
   
   apt_repo_policy_arn = data.terraform_remote_state.iam_common_policies.outputs.apt_repo_policy_arn
 
-  bastion_service_ssh_port  = 22
-  bastion_service_host_port = 2222
+  bastion_service_ssh_port   = 22
+  bastion_service_host_port  = 2222
+  bastion_service_event_port = 5000
 }

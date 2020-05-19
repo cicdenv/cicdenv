@@ -1,4 +1,2 @@
-Flask
 boto3
 requests
-pytest
