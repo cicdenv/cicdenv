@@ -15,4 +15,6 @@ locals {
   events_security_group = data.terraform_remote_state.shared.outputs.bastion_events_security_group_id
 
   iam_user_updates_sns_topic = data.terraform_remote_state.iam_events.outputs.iam_user_updates_sns_topic
+
+  event_subscriber_function_name = "event-subscriber-KOPS-BASTION"
 }
