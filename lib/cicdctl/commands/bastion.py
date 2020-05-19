@@ -1,26 +1,29 @@
-import getpass
-
 import click
 
 from . import PASS_THRU_FLAGS, commands
 from .types.workspace import WorkspaceParamType
 from .types.flag import FlagParamType
 
+from ..utils.aws.credentials import StsAssumeRoleCredentials
 from ..utils.bastion.driver import BastionDriver
+from ..utils.aws import iam
 
 """cicdctl bastion <command> <workspace> [options]"""
 
 @click.group()
 @click.pass_obj
 def bastion(settings):
-    pass
+    # Refresh main account AWS sts creds
+    if settings.creds:
+        sts = StsAssumeRoleCredentials(settings)
+        sts.refresh('main')
 
     
 for command in commands(__file__):
     def bind_command(command):
         @click.pass_obj
         @click.argument('workspace', type=WorkspaceParamType())
-        @click.option('--user', default=getpass.getuser())
+        @click.option('--user', default=iam.get_username())
         @click.option('--host', is_flag=True, default=False)
         @click.option('--jump')
         @click.argument('flags', nargs=-1, type=FlagParamType())

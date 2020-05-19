@@ -1,5 +1,3 @@
-import getpass
-
 import click
 
 from . import PASS_THRU_FLAGS

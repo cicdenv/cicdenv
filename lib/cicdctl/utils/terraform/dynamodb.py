@@ -14,7 +14,7 @@ dynamodb              # dynamodb
 
 def get_items(dynamodb_ref, workspace, region=DEFAULT_REGION):
     session = boto3.session.Session(profile_name=config_profile(workspace))
-    dynamodb = session.resource('dynamodb', region_name=region)  # FIXME: hard-coded region
+    dynamodb = session.resource('dynamodb', region_name=region)
 
     match = dynamodb_ref_regex.match(dynamodb_ref)
     table_name = match['table']

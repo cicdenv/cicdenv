@@ -1,9 +1,9 @@
 from os import path, environ
-import getpass
 
 from ..runners import EnvironmentContext
 from ..aws import DEFAULT_REGION, config_profile
 from ..terraform import parse_tfvars, domain_config
+from ..aws import iam
 
 new_instance_script  = 'terraform/jenkins/bin/generate-instance.sh'
 stop_instance_script = 'terraform/jenkins/instances/bin/stop-instance.sh'
@@ -19,7 +19,7 @@ def env(name, workspace):
     aws_profile = config_profile(workspace)
     environment['AWS_PROFILE'] = aws_profile
 
-    environment['USER'] = getpass.getuser()
+    environment['USER'] = iam.get_username()
     
     environment['INSTANCE'] = name
     environment['WORKSPACE'] = workspace
