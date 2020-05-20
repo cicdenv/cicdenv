@@ -23,11 +23,13 @@ for command in commands(__file__):
     def bind_command(command):
         @click.pass_obj
         @click.argument('workspace', type=WorkspaceParamType())
-        @click.option('--user', default=iam.get_username())
+        @click.option('--user')
         @click.option('--host', is_flag=True, default=False)
         @click.option('--jump')
         @click.argument('flags', nargs=-1, type=FlagParamType())
         def command_func(settings, workspace, user, host, jump, flags):
+            if user == None:
+                user = iam.get_username()
             driver_method = getattr(BastionDriver(settings, workspace, user, host, jump, flags), command)
             driver_method()
         command_func.__name__ = command
