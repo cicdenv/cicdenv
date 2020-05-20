@@ -106,7 +106,7 @@ resource "aws_api_gateway_integration_response" "response_302" {
   http_method = aws_api_gateway_method.jenkins_github_oauth_callbacks.http_method
   status_code = aws_api_gateway_method_response.response_302.status_code
 
-  selection_pattern = "-"
+  selection_pattern = ""
 
   response_parameters = {
     "method.response.header.Location" = "integration.response.body.Location"
