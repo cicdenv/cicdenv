@@ -124,6 +124,7 @@ class SubprocessRunner(object):
         cwd = kwargs.get('cwd', self.cwd)
         env_ctx = kwargs.get('env_ctx', self.env_ctx)
         stderr = kwargs.get('stderr', self.stderr)
+        check = kwargs.get('check', self.check)
 
         if not self.settings.quiet:
             _log_env_ctx(env_ctx)
@@ -137,7 +138,10 @@ class SubprocessRunner(object):
         except subprocess.CalledProcessError as cpe:
             if not self.settings.quiet:
                 _log_returncode(cpe.returncode)
-            exit(cpe.returncode)
+            if check:
+                exit(cpe.returncode)
+            else:
+                return None
         except KeyboardInterrupt:
             if not self.settings.quiet:
                 _log_interrupted()
@@ -146,6 +150,8 @@ class SubprocessRunner(object):
 
     def output_list(self, command_line, func=lambda line: line.strip(), **kwargs):
         raw = self.output_string(command_line, **kwargs)
+        if raw == None:
+            return None
         lines = raw.splitlines()
         return [func(line) for line in lines] if func else lines
 

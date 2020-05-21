@@ -154,7 +154,7 @@ class StsAssumeRoleCredentials(object):
             credentials.write(f)
 
     def _get_assume_role(self, workspace):
-        outputs = TerraformDriver(self.settings, parse_target(f'iam/organizations:{workspace}')).outputs()
+        outputs = TerraformDriver(self.settings, parse_target(f'iam/organizations:main')).outputs()
         return [role for role in outputs['org_account_admin_roles']['value'] if role.endswith(f'/{workspace}-admin')][0]
 
     def _ensure_profile_prototype(self, profile):

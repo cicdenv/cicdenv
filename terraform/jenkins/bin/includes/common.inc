@@ -6,7 +6,7 @@ cat <<EOF > "instances/${name}/backend.tf"
 terraform {
   required_version = ">= ${TERRAFORM_VERSION}"
   backend "s3" {
-    key = "jenkins-instances-${name}/terraform.tfstate"
+    key = "jenkins_instances_${name}/terraform.tfstate"
 
     workspace_key_prefix = "state"
   }

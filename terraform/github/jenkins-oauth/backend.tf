@@ -1,6 +1,6 @@
 terraform {
   required_version = ">= 0.12.20"
   backend "s3" {
-    key = "state/main/api-gateway/terraform.tfstate"
+    key = "state/main/github_jenkins-oauth/terraform.tfstate"
   }
 }

@@ -55,12 +55,15 @@ class TerraformDriver(object):
 
         # If applicable: create workspace where neded before selecting it
         if is_workspaced(self.component_dir):
-                workspaces = self._output_list(['terraform', 'workspace', 'list'])
-                if not f'* {self.workspace}' in workspaces:
-                    if not self.workspace in workspaces:
-                        self._exec(['terraform', 'workspace', 'new', self.workspace])
-                    else:
-                        self._exec(['terraform', 'workspace', 'select', self.workspace])
+                workspaces = self._output_list(['terraform', 'workspace', 'list'], check=False)
+                if workspaces == None:
+                    self._exec(['terraform', 'init'] + list(flags) + ['-upgrade', f'-backend-config={backend_config}'], check=False)
+                else:
+                    if not f'* {self.workspace}' in workspaces:
+                        if not self.workspace in workspaces:
+                            self._exec(['terraform', 'workspace', 'new', self.workspace])
+                        else:
+                            self._exec(['terraform', 'workspace', 'select', self.workspace])
         
         # Safe to init here for non-first time workspaced states
         if not first_time:

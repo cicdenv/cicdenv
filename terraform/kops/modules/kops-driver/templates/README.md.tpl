@@ -6,6 +6,6 @@ This state is hard-wired to a single account/region.
 
 ## Usage
 ```
-cicdenv$ cicdctl <init|plan|apply|destroy> kops/clusters/${cluster_instance}/cluster/${workspace}:${workspace}
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> kops/clusters/${cluster_instance}/cluster/${workspace}:${workspace}
 ...
 ```

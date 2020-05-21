@@ -8,7 +8,7 @@ cat <<EOF > "${external_access_state}/backend.tf"
 terraform {
   required_version = ">= ${TERRAFORM_VERSION}"
   backend "s3" {
-    key = "kops-clusters-${cluster_name}-external-access/terraform.tfstate"
+    key = "kops_clusters_${cluster_name}_external-access/terraform.tfstate"
 
     workspace_key_prefix = "state"
   }
@@ -83,7 +83,7 @@ This state is per-account.
 
 ## Usage
 \`\`\`
-${repo}\$ cicdctl <init|plan|apply|destroy|output> kops/${external_access_state}:\${WORKSPACE}
+${repo}\$ cicdctl terraform <init|plan|apply|destroy|output> kops/${external_access_state}:\${WORKSPACE}
 ...
 \`\`\`
 EOF

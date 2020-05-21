@@ -8,7 +8,7 @@ cat <<EOF > "${cluster_config_state}/backend.tf"
 terraform {
   required_version = ">= ${TERRAFORM_VERSION}"
   backend "s3" {
-    key = "kops-clusters-${cluster_name}-cluster-config/terraform.tfstate"
+    key = "kops_clusters_${cluster_name}_cluster-config/terraform.tfstate"
 
     workspace_key_prefix = "state"
   }
@@ -112,7 +112,7 @@ This state is per-account.
 
 ## Usage
 \`\`\`
-${repo}\$ cicdctl <init|plan|apply|destroy|output> kops/${cluster_config_state}:\${WORKSPACE}
+${repo}\$ cicdctl terraform <init|plan|apply|destroy|output> kops/${cluster_config_state}:\${WORKSPACE}
 ...
 \`\`\`
 EOF
