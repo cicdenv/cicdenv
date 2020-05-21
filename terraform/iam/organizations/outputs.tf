@@ -1,51 +1,30 @@
-data "template_file" "org_account_admin_roles" {
-  count = length(var.accounts)
-  
-  template = "arn:aws:iam::$${account_id}:role/$${role_name}"
-
-  vars = {
-    role_name = "${lookup(var.accounts[count.index], "name")}-admin"
-    # role_name  = aws_organizations_account.accounts[count.index].role_name
-    account_id = aws_organizations_account.accounts[count.index].id
-  }
-}
-
-data "template_file" "main_root" {
-  template = "arn:aws:iam::$${account_id}:root"
-
-  vars = {
-    account_id = data.aws_caller_identity.current.account_id
-  }
-}
-
-data "template_file" "org_account_roots" {
-  count = length(aws_organizations_account.accounts.*.id)
-  
-  template = "arn:aws:iam::$${account_id}:root"
-
-  vars = {
-    account_id = aws_organizations_account.accounts[count.index].id
-  }
-}
+# name
+# id
+# admin-role
+# acct-root
+# ou
 
 output "org_account_admin_roles" {
-  value = data.template_file.org_account_admin_roles.*.rendered
+  value = [for acct in keys(var.accounts) : "arn:aws:iam::${aws_organizations_account.accounts[acct].id}:role/${acct}-admin"]
 }
 
 output "org_account_roots" {
-  value = data.template_file.org_account_roots.*.rendered
+  value = [for acct in keys(var.accounts) : "arn:aws:iam::${aws_organizations_account.accounts[acct].id}:root"]
 }
 
 output "all_account_roots" {
-  value = flatten([data.template_file.main_root.rendered, data.template_file.org_account_roots.*.rendered])
+  value = flatten([
+    "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root", 
+    [for acct in keys(var.accounts) : "arn:aws:iam::${aws_organizations_account.accounts[acct].id}:root"],
+  ])
 }
 
 output "main_account_root" {
-  value = data.template_file.main_root.rendered
+  value = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
 }
 
 output "org_account_ids" {
-  value = aws_organizations_account.accounts.*.id
+  value = [for acct in keys(var.accounts) : aws_organizations_account.accounts[acct].id]
 }
 
 output "master_account" {
@@ -56,27 +35,15 @@ output "master_account" {
 }
 
 output "account_names" {
-  value = aws_organizations_account.accounts.*.name
+  value = keys(var.accounts)
 }
 
 output "account_ids_by_name" {
-  value = zipmap(aws_organizations_account.accounts.*.name, 
-                 aws_organizations_account.accounts.*.id)
-}
-
-data "template_file" "account_ous" {
-  count = length(var.accounts)
-
-  template = "$${ou}"
-
-  vars = {
-    ou = var.accounts[count.index]["ou"]
-  }
+  value = {for name, acct in var.accounts : name => aws_organizations_account.accounts[name].id}
 }
 
 output "account_ous_by_name" {
-  value = zipmap(aws_organizations_account.accounts.*.name, 
-                 data.template_file.account_ous.*.rendered)
+  value = {for name, acct in var.accounts : name => acct.ou}
 }
 
 output "organization" {

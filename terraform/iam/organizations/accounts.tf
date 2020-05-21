@@ -1,12 +1,12 @@
 resource "aws_organizations_account" "accounts" {
-  count = length(var.accounts)
+  for_each = var.accounts
   
-  name  = lookup(var.accounts[count.index], "name")
-  email = lookup(var.accounts[count.index], "email")
+  name  = each.key
+  email = each.value["email"]
   
   iam_user_access_to_billing = "DENY"
 
-  role_name = "${lookup(var.accounts[count.index], "name")}-admin"
+  role_name = "${each.key}-admin"
   
   provider = aws.us-east-1
 }
