@@ -1,5 +1,5 @@
 ## Purpose
-Any resources needed by packer (not VPC+subnets however).
+AWS Resources needed by packer (not VPC+subnets however).
 
 ## Workspaces
 N/A.

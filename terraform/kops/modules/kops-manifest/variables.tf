@@ -22,7 +22,7 @@ variable "availability_zones" {
 }
 
 # IGs
-variable "ami" {}
+variable "ami_id" {}
 
 variable "node_count" {}
 variable "node_instance_type" {}

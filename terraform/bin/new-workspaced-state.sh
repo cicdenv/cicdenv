@@ -17,7 +17,7 @@ if [[ ! -f "${state_dir}/backend.tf" ]]; then
 terraform {
   required_version = ">= ${TERRAFORM_VERSION}"
   backend "s3" {
-    key = "${new_state//\//-}/terraform.tfstate"
+    key = "${new_state//\//_}/terraform.tfstate"
 
     workspace_key_prefix = "state"
   }

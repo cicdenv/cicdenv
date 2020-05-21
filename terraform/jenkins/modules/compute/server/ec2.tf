@@ -1,6 +1,6 @@
 resource "aws_launch_configuration" "jenkins_server" {
   name_prefix          = "jenkins-server-${var.jenkins_instance}-"
-  image_id             = local.ami
+  image_id             = var.ami_id
   instance_type        = var.instance_type
   iam_instance_profile = var.instance_profile_arn
   security_groups      = [local.security_group.id]

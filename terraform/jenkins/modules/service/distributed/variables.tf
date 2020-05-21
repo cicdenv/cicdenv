@@ -1,5 +1,6 @@
 variable "region" {}
 variable "bucket" {}
+variable "ami_id" {}
 
 variable "name" {
   description = "Unique Jenkins instance name."

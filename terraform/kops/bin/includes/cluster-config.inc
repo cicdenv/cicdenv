@@ -33,6 +33,7 @@ module "kops_driver" {
   region = var.region
   bucket = var.bucket
   domain = var.domain
+  ami_id = var.kops_ami_id
 
   cluster_short_name = local.cluster_short_name
 
@@ -97,6 +98,7 @@ cat <<'EOF' > "${cluster_config_state}/variables.tf"
 variable "region"      {} # backend-config.tfvars
 variable "bucket"      {} # backend-config.tfvars
 variable "domain"      {} # domain.tfvars
+variable "kops_ami_id" {} # amis.tfvars
 
 variable "target_region" {
   default = "us-west-2"

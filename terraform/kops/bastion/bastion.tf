@@ -9,7 +9,7 @@ module "bastion" {
   public_subnets  = local.public_subnets
   private_subnets = local.private_subnets
 
-  ami = local.ami
+  ami_id = local.ami_id
   
   ssh_key = "~/.ssh/kops_rsa.pub"
 

@@ -22,6 +22,7 @@ module "server" {
 
   region = var.region
   bucket = var.bucket
+  ami_id = var.ami_id
 
   jenkins_instance = var.name
   instance_type    = var.server_instance_type
@@ -36,6 +37,7 @@ module "agents" {
 
   region = var.region
   bucket = var.bucket
+  ami_id = var.ami_id
   
   jenkins_instance = var.name
   instance_type    = var.agent_instance_type

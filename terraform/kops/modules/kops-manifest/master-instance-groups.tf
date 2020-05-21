@@ -17,7 +17,7 @@ data "template_file" "kops_master_instance_group" {
     name             = "master-${var.availability_zones[count.index]}"
     role             = "Master"
     cluster_name     = var.cluster_name
-    ami              = var.ami
+    ami_id           = var.ami_id
     instance_type    = var.master_instance_type
     max_size         = "1"
     min_size         = "1"

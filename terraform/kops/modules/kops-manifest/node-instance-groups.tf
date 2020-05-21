@@ -17,7 +17,7 @@ data "template_file" "kops_node_instance_group" {
     name             = "nodes-${var.availability_zones[count.index]}"
     role             = "Node"
     cluster_name     = var.cluster_name
-    ami              = var.ami
+    ami_id           = var.ami_id
     instance_type    = var.node_instance_type
     max_size         = ceil(var.node_count / length(var.availability_zones))
     min_size         = ceil(var.node_count / length(var.availability_zones))

@@ -7,33 +7,45 @@ Custom ubuntu AMIs.
 cicdenv$ cicdctl packer build
 ```
 
-### Terraform
-```hcl
-data "aws_ami" "custom" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["base/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
-  }
-
-  owners = ["<master-account-id>"]
-}
-
-# => data.aws_ami.custom.id
-```
-
 ### Testing
 ```
 # Launch an instance using the latest base AMI
 cicdenv$ cicdctl console
-📦 $USER:~/cicdenv$ cicdctl apply test-vpc:${WORKSPACE}
+📦 $USER:~/cicdenv$ cicdctl terraform apply test-vpc:${WORKSPACE}
 📦 $USER:~/cicdenv$ terraform/test-vpc/bin/launch-instances.sh ${WORKSPACE} m5dn.large
 📦 $USER:~/cicdenv$ ssh -i /home/terraform/.ssh/manual-testing.pem ubuntu@<public-ip>
 
 # Teardown
 📦 $USER:~/cicdenv$ terraform/test-vpc/bin/terminate-instances.sh ${WORKSPACE}
 📦 $USER:~/cicdenv$ cicdctl destroy test-vpc:${WORKSPACE}
+```
+
+## Releases
+### Base
+To make the lastest base AMI the default:
+```
+cicdenv$ cicdctl terraform apply shared/packer:main
+```
+
+To test with an unreleased lastest AMI (for example bastion, jenkins):
+```
+# Set a value in: terraform/amis.tfvars
+base_ami_id = "..."
+
+cicdenv$ cicdctl jenkins create <instance>:<workspace>
+```
+
+### KOPS
+kops masters/nodes require a supported [docker version](https://github.com/kubernetes/kops/blob/master/nodeup/pkg/model/docker.go).
+
+The version installed in the AMI must be a supported version.
+For example `19.03.8`.
+
+The version present in the AMI should be specified in the KOPS cluster spec:
+* [terraform/kops/modules/kops-manifest/templates/cluster-spec.tpl](https://github.com/vogtech/cicdenv/blob/master/terraform/kops/modules/kops-manifest/templates/cluster-spec.tpl):
+```yaml
+docker:
+  version: "19.03.8"
 ```
 
 ## Cleanup

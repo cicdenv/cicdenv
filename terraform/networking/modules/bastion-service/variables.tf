@@ -17,7 +17,7 @@ variable "instance_type" {
   default = "c5d.large"
 }
 
-variable "ami" {}
+variable "ami_id" {}
 
 variable "ssh_key" {
   default = "~/.ssh/kops_rsa.pub"

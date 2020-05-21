@@ -7,3 +7,5 @@ variable "whitelisted_cidr_blocks" {  # whitelisted-networks.tfvars
 variable "target_region" {
   default = "us-west-2"
 }
+
+variable "base_ami_id" {} # amis.tfvars

@@ -21,9 +21,27 @@ provider "aws" {
 }
 EOF
 
+cat <<'EOF' > "instances/${name}/imports.tf"
+data "terraform_remote_state" "amis" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/shared_packer/terraform.tfstate"
+    region = var.region
+  }
+}
+EOF
+
+cat <<'EOF' > "instances/${name}/locals.tf"
+locals {
+  ami_id = var.base_ami_id != "" ? var.base_ami_id : data.terraform_remote_state.amis.outputs.base_ami.id
+}
+EOF
+
 cat <<'EOF' > "instances/${name}/variables.tf"
-variable "region" {} # backend-config.tfvars
-variable "bucket" {} # backend-config.tfvars
+variable "region"      {} # backend-config.tfvars
+variable "bucket"      {} # backend-config.tfvars
+variable "base_ami_id" {} # amis.tfvars
 
 variable "target_region" {
   default = "us-west-2"

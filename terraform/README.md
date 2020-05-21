@@ -7,6 +7,8 @@ The main account hosts serveral resources that are used by sub-accounts
 * IAM users
 * kops state bucket
 * custom AMIs
+* ECR container images
+* Github OAuth routers
 
 ## States
 Can be categorized by target AWS account:

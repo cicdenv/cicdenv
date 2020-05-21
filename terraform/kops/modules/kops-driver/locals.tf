@@ -15,9 +15,7 @@ locals {
 
   availability_zones = data.terraform_remote_state.shared.outputs.availability_zones
   node_count         = var.node_count != -1 ? var.node_count : length(local.availability_zones) * 1
-
-  ami_owner            = data.terraform_remote_state.iam_organizations.outputs.master_account["id"]
-  ami                  = data.aws_ami.custom_base.id
+  
   master_instance_type = var.master_instance_type
   master_volume_size   = var.master_volume_size
   node_instance_type   = var.node_instance_type

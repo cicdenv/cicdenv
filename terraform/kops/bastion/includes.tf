@@ -1,10 +1,8 @@
-data "aws_ami" "custom_base" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["base/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
+data "terraform_remote_state" "amis" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/shared_packer/terraform.tfstate"
+    region = var.region
   }
-
-  owners = [local.ami_owner]
 }

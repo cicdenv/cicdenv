@@ -1,6 +1,7 @@
-variable "region"      {} # backend-config.tfvars
-variable "bucket"      {} # backend-config.tfvars
-variable "domain"      {} # domain.tfvars
+variable "region" {}
+variable "bucket" {}
+variable "domain" {}
+variable "ami_id" {}
 
 variable "cluster_short_name" {}
 variable "kubernetes_version" {}

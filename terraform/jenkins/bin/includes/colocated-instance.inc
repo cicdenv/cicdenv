@@ -16,6 +16,7 @@ module "jenkins_instance" {
 
   region = var.region
   bucket = var.bucket
+  ami_id = local.ami_id
   
   name = "${name}"
 

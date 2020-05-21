@@ -5,3 +5,8 @@ output "autoscaling_group" {
     arn  = aws_autoscaling_group.jenkins_server.arn
   }
 }
+
+output "ami_id" {
+  value = var.ami_id
+}
+

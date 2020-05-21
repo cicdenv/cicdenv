@@ -6,7 +6,7 @@ metadata:
     kops.k8s.io/cluster: ${cluster_name}
   name: ${name}
 spec:
-  image: ${ami}
+  image: ${ami_id}
   machineType: ${instance_type}
   maxSize: ${max_size}
   minSize: ${min_size}

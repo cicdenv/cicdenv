@@ -20,7 +20,7 @@ module "kops_manifest" {
   node_volume_size     = local.node_volume_size
   master_instance_type = local.master_instance_type
   master_volume_size   = local.master_volume_size
-  ami                  = local.ami
+  ami_id               = var.ami_id
 
   cloud_labels = local.cloud_labels
 
