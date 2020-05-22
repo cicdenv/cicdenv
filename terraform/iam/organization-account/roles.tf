@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "assumed_admin_assume_role_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = [local.main_account_root]
+      identifiers = [local.main_account.root]
     }
   }
 }

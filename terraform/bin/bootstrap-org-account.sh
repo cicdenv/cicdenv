@@ -9,8 +9,8 @@ pushd "$DIR/../.." >/dev/null
 workspace=${1?Usage: $0 <workspace>}
 
 # Org Account / OU
-bin/cicdctl apply "iam/organizations:main"
-./terraform/iam/organizations/bin/populate-organizational-units.sh
+bin/cicdctl apply "backend:main"
+./terraform/backend/bin/populate-organizational-units.sh
 
 # State Locking
 terraform/backend/state-locking/bin/create-resources.sh "${workspace}"

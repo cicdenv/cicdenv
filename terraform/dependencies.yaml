@@ -8,11 +8,7 @@ cascades:
     target: shared/apt-repo:main  # cross account s3 (VPC Endpoints)
     type: apply
     opts: -auto-approve
-  iam/organizations:
-  - ops: [apply]
-    target: backend:main  # cross account s3/kms (IAM roots)
-    type: apply
-    opts: -auto-approve
+  backend:
   - ops: [apply]
     target: packer:main  # cross account AMIs
     type: apply

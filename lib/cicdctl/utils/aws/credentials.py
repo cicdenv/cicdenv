@@ -20,6 +20,7 @@ from . import config_profile
 from ..terraform.driver import TerraformDriver
 from ...commands.types.target import parse_target
 
+
 def _is_mfa_admin_creds(section):
     """
     Filter for ~/.aws/credentials profile section names.
@@ -155,7 +156,7 @@ class StsAssumeRoleCredentials(object):
 
     def _get_assume_role(self, workspace):
         outputs = TerraformDriver(self.settings, parse_target(f'iam/organizations:main')).outputs()
-        return [role for role in outputs['org_account_admin_roles']['value'] if role.endswith(f'/{workspace}-admin')][0]
+        return outputs['organization_accounts']['value'][workspace]['role']
 
     def _ensure_profile_prototype(self, profile):
         workspace = profile.replace('admin-', '')

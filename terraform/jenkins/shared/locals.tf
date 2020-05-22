@@ -27,5 +27,5 @@ locals {
   bastion_service_security_group_id = data.terraform_remote_state.shared.outputs.bastion_service_security_group_id
   kops_node_security_group_id       = data.terraform_remote_state.shared.outputs.nodes_security_group_id
 
-  main_account_root = data.terraform_remote_state.iam_organizations.outputs.main_account_root
+  main_account = data.terraform_remote_state.accounts.outputs.main_account
 }

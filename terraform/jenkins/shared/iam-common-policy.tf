@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "jenkins_trust" {
       type = "AWS"
 
       identifiers = [
-        local.main_account_root,
+        local.main_account.root,
       ]
     }
   }

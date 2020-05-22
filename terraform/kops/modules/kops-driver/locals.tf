@@ -48,11 +48,11 @@ locals {
 
   cloud_labels = var.cloud_labels
   
-  admin_users = data.terraform_remote_state.iam_admins.outputs.admin_users
+  admin_users = data.terraform_remote_state.iam_users.outputs.admin_users
 
   admin_role = "${terraform.workspace == "main" ?
-                  data.terraform_remote_state.iam_admins.outputs.terraform_role_arn
-                : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${terraform.workspace}-admin"}"
+                  data.terraform_remote_state.iam_users.outputs.main_admin_role.arn
+                : data.terraform_remote_state.accounts.outputs.organization_accounts[terraform.workspace].role
 
   pki_folder = var.pki_folder
 }

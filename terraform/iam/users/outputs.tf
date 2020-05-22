@@ -13,25 +13,14 @@ output "user_secret_keys" {
   description = ""
 }
 
-output "account_id" {
-  value = data.aws_caller_identity.current.account_id
-}
-
-output "account_alias" {
-  value = data.aws_iam_account_alias.current.account_alias
-}
-
-output "console_url" {
-  value = [
-    "https://${data.aws_caller_identity.current.account_id}.signin.aws.amazon.com/console/", 
-    "https://${data.aws_iam_account_alias.current.account_alias}.signin.aws.amazon.com/console/",
-  ]
-}
-
-output "terraform_role_arn" {
-  value = aws_iam_role.terraform_admin.arn
-}
-
 output "admin_users" {
   value = zipmap(aws_iam_user.admin.*.name, aws_iam_user.admin.*.arn)
+}
+
+output "main_admin_role" {
+  value = {
+    name = aws_iam_role.main_admin.name
+    arn  = aws_iam_role.main_admin.arn
+    path = aws_iam_role.main_admin.path
+  }
 }

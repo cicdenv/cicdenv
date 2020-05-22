@@ -1,5 +1,5 @@
 locals {
-    org_account_roots = data.terraform_remote_state.iam_organizations.outputs.org_account_roots
+  org_account_roots = data.terraform_remote_state.accounts.outputs.org_roots
 
-    vpc_endpoints = split(",", data.external.vpc-endpoints.result.items)
+  vpc_endpoints = split(",", data.external.vpc-endpoints.result.items)
 }

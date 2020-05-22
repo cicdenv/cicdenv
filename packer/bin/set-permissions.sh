@@ -31,7 +31,7 @@ fields=($(echo $current_image | tr '/' ' '))
 image_id=${fields[0]}
 snap_id=${fields[1]}
 
-accounts=$(cd terraform/iam/organizations/; AWS_PROFILE=${AWS_PROFILE} terraform output -json org_account_ids | jq -r '.[]' | xargs)
+accounts=$(cd terraform/backend; AWS_PROFILE=${AWS_PROFILE} terraform output -json organization_accounts | jq -r '..|.id' | xargs)
 
 # Image permissions
 for account in $accounts; do

@@ -9,16 +9,3 @@ outside of terraform.
   * terraform/backend
   * terraform/backend/state-locking
 - [x] import manually created terraform resources into terraform
-
-```
-#
-# Using helper scripts
-#
-cicdenv$ bin/new-main-state.sh       backend
-# Note: patch up providers.tf/variables.tf to be hard-wired to us-west-2
-
-cicdenv$ bin/new-workspaced-state.sh backend/state-locking
-```
-
-## Possible Improvements
-* backend, backend/state-locking, iam/organizations ` => cycle`

@@ -10,7 +10,7 @@ resource "aws_iam_group_policy_attachment" "admin" {
 
 resource "aws_iam_group_policy_attachment" "admin_mfa" {
   group      = aws_iam_group.admin.name
-  policy_arn = data.terraform_remote_state.iam_common.outputs.mfa_policy_arn
+  policy_arn = aws_iam_policy.mfa.arn
 }
 
 resource "aws_iam_group_membership" "admin" {

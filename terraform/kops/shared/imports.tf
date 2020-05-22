@@ -6,3 +6,12 @@ data "terraform_remote_state" "iam_common_policies" {
     region = var.region
   }
 }
+
+data "terraform_remote_state" "accounts" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/backend/terraform.tfstate"
+    region = var.region
+  }
+}

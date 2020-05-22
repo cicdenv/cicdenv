@@ -65,7 +65,7 @@ data "aws_iam_policy_document" "iam_user_updates" {
 
     principals {
       type        = "AWS"
-      identifiers = local.org_account_roots
+      identifiers = local.all_account_roots
     }
 
     resources = [

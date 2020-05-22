@@ -16,21 +16,21 @@ def is_workspaced(component_dir):
 
 
 def resolve_variable_opts(component_dir, workspace):
-    # Load variables.tf, locate values from {terraform/*.tfvars, data sources}
+    # Load variables.tf
     var_opts = []
     vars = parse_variable_comments_tf(path.join(component_dir, 'variables.tf'))  # name -> tfvar {source}
-    backend_vars = parse_tfvars(backend_config)
-    ami_vars = parse_tfvars(ami_config)
+    
+    # locate values from {terraform/*.tfvars, data sources}
+    values = {}
+    values[path.basename(backend_config)] = parse_tfvars(backend_config)
+    values[path.basename(ami_config)] = parse_tfvars(ami_config)
     for name, source in vars.items():
         if source.startswith('dynamodb['):  # DynamoDB item scan: `dynamodb[<table>][<field>]`
             var_opts.append('-var')
             var_opts.append(f'{name}={dynamodb.get_items(source, workspace, DEFAULT_REGION)}')
-        elif source == backend_config:  # Backend variables get individual bindings
+        elif source in values:  # Individual bindings
             var_opts.append('-var')
-            var_opts.append(f'{name}={backend_vars[name]}')
-        elif source == ami_config:  # AMI variables get individual bindings
-            var_opts.append('-var')
-            var_opts.append(f'{name}={ami_vars[name]}')
+            var_opts.append(f'{name}={values[source][name]}')
         else:  # Other global variables should be single value for file bindings
             var_opts.append('-var-file')
             var_opts.append(path.join(varfile_dir, source))

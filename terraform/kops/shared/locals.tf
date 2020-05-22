@@ -26,4 +26,6 @@ locals {
   bastion_service_ssh_port   = 22
   bastion_service_host_port  = 2222
   bastion_service_event_port = 5000
+
+  account = data.terraform_remote_state.accounts.outputs.organization_accounts["${terraform.workspace}"]
 }

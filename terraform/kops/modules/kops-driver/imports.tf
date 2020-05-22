@@ -16,11 +16,20 @@ data "terraform_remote_state" "backend" {
   }
 }
 
-data "terraform_remote_state" "iam_admins" {
+data "terraform_remote_state" "accounts" {
   backend = "s3"
   config = {
     bucket = var.bucket
-    key    = "state/main/iam_admins/terraform.tfstate"
+    key    = "state/main/backend/terraform.tfstate"
+    region = var.region
+  }
+}
+
+data "terraform_remote_state" "iam_users" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/iam_users/terraform.tfstate"
     region = var.region
   }
 }
