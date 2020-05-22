@@ -1,20 +1,13 @@
-output "user_passwords" {
-  value = zipmap(local.admin_users, aws_iam_user_login_profile.admin.*.encrypted_password)
-  description = ""
+output "admins" {
+  value = {for name, info in var.admins : name => aws_iam_user.admin[name].arn}
 }
 
-output "user_access_keys" {
-  value = zipmap(local.admin_users, aws_iam_access_key.admin.*.id)
-  description = ""
-}
-
-output "user_secret_keys" {
-  value = zipmap(local.admin_users, aws_iam_access_key.admin.*.encrypted_secret)
-  description = ""
-}
-
-output "admin_users" {
-  value = zipmap(aws_iam_user.admin.*.name, aws_iam_user.admin.*.arn)
+output "credentials" {
+  value = {for name, info in var.admins : name => {
+    password   = aws_iam_user_login_profile.admin[name].encrypted_password
+    access_key = aws_iam_access_key.admin[name].id
+    secret_key = aws_iam_access_key.admin[name].encrypted_secret
+  }}
 }
 
 output "main_admin_role" {

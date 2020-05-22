@@ -6,7 +6,7 @@ N/A.
 
 ## Usage
 ```bash
-cicdenv$ cicdctl terraform <init|plan|apply|output> iam/admins:main
+cicdenv$ cicdctl terraform <init|plan|apply|output> iam/users:main
 ```
 
 NOTE:
@@ -32,7 +32,7 @@ These should be removed after creating admin IAM users:
 # Interactive shell
 cicdenv$ make
 
-${USER}:~/cicdenv$ terraform/iam/admins/bin/delete-root-access-keys.sh
+${USER}:~/cicdenv$ terraform/iam/users/bin/delete-root-access-keys.sh
 ${USER}:~/cicdenv$ exit
 ```
 
@@ -43,18 +43,31 @@ ${USER}:~/cicdenv$ exit
 
 ### Access Key
 ```
-cicdenv$ cicdctl terraform output iam/admins:main -json user_access_keys | jq -r ".${USER}"
+cicdenv$ cicdctl terraform output iam/users:main -json user_access_keys | jq -r ".${USER}"
 ```
 
 ### Secrets
 ```bash
 # Interactive shell
-cicdenv$ make
+cicdenv$ cicdctl console
 
 # Initial console password and secret key
-${USER}:~/cicdenv$ for output in user_passwords user_secret_keys; do \
-    cicdctl terraform output iam/admins:main -json "$output" | jq -r ".${USER}" | base64 -d | keybase pgp decrypt
+${USER}:~/cicdenv$ cicdctl terraform init iam/users:main
+${USER}:~/cicdenv$ for key in password secret_key; do (          \
+    cd terraform/iam/users;                                      \
+    echo "${key} ...";                                           \
+    AWS_PROFILE=admin-main terraform output -json "credentials"  \
+        | jq -r ".$(id -u -n) | .${key}"                         \
+        | base64 -d                                              \
+        | keybase pgp decrypt;                                   \
+    echo
+)
 done
+(cd terraform/iam/users;                                      \
+ echo "access_key ...";                                       \
+ AWS_PROFILE=admin-main terraform output -json "credentials"  \
+ | jq -r ".$(id -u -n) | .access_key")
+${USER}:~/cicdenv$ access_key
 ${USER}:~/cicdenv$ exit
 ```
 
@@ -62,7 +75,7 @@ ${USER}:~/cicdenv$ exit
 Admin creates a virtual-mfa device for a new IAM user:
 ```bash
 # Interactive shell
-cicdenv$ make
+cicdenv$ cicdctl console
 
 ${USER}:~/cicdenv$ terraform/iam/common/bin/setup-virtual-mfa-device.sh <iam-user> <keybase-user>
 ...

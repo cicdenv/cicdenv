@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "main_admin_assume_role_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = aws_iam_user.admin.*.arn
+      identifiers = [for iam_user in aws_iam_user.admin : iam_user.arn]
     }
   }
 }

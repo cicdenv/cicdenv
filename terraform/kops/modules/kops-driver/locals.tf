@@ -48,7 +48,7 @@ locals {
 
   cloud_labels = var.cloud_labels
   
-  admin_users = data.terraform_remote_state.iam_users.outputs.admin_users
+  admin_users = data.terraform_remote_state.iam_users.outputs.admins
 
   admin_role = "${terraform.workspace == "main" ?
                   data.terraform_remote_state.iam_users.outputs.main_admin_role.arn

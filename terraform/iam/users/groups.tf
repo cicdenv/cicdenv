@@ -17,5 +17,5 @@ resource "aws_iam_group_membership" "admin" {
   name  = "admin-group-membership"
   group = aws_iam_group.admin.name
 
-  users = aws_iam_user.admin.*.name
+  users = [for iam_user in aws_iam_user.admin : iam_user.name]
 }
