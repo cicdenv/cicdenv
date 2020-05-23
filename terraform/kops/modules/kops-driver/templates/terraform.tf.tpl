@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.12.24"
+  required_version = ">= 0.12.25"
   backend "s3" {
     key = "kops_clusters_${cluster_instance}_cluster/terraform.tfstate"
 

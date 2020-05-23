@@ -2,7 +2,7 @@
 
 mkdir -p "instances/${name}"
 
-cat <<EOF > "instances/${name}/backend.tf"
+cat <<EOF > "instances/${name}/terraform.tf"
 terraform {
   required_version = ">= ${TERRAFORM_VERSION}"
   backend "s3" {

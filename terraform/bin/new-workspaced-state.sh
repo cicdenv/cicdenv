@@ -12,8 +12,8 @@ new_state=${1?Use $0 <path> \# NOTE: path is the relative folder under terraform
 state_dir="terraform/${new_state}"
 mkdir -p "${state_dir}"
 
-if [[ ! -f "${state_dir}/backend.tf" ]]; then
-    cat <<EOF > "${state_dir}/backend.tf"
+if [[ ! -f "${state_dir}/terraform.tf" ]]; then
+    cat <<EOF > "${state_dir}/terraform.tf"
 terraform {
   required_version = ">= ${TERRAFORM_VERSION}"
   backend "s3" {

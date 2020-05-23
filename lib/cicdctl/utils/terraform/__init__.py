@@ -11,6 +11,12 @@ from ..aws import DEFAULT_REGION, config_profile
 # terraform/ (*.tfvars parent folder)
 varfile_dir = path.join(getcwd(), 'terraform')
 
+# file containing the terraform block
+terraform_config = 'terraform.tf'
+
+# file containing variable(s) to autobind values to
+variables_config = 'variables.tf'
+
 # s3 backend config
 backend_config = path.join(varfile_dir, 'backend-config.tfvars')
 

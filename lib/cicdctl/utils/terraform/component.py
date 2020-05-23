@@ -2,13 +2,13 @@ from os import path
 import subprocess
 
 from ..aws import DEFAULT_REGION
-from . import (varfile_dir, backend_config, ami_config, bastion_config,
-    parse_variable_comments_tf, parse_tfvars)
+from . import (varfile_dir, terraform_config, backend_config, ami_config, bastion_config,
+    parse_variable_comments_tf, parse_tfvars, variables_config)
 from . import dynamodb
 
 def is_workspaced(component_dir):
-    # Sniff the backend.tf to determine if target is a workspaced state
-    with open(path.join(component_dir, 'backend.tf'), 'r') as backend:
+    # Sniff the terraform.tf to determine if target is a workspaced state
+    with open(path.join(component_dir, terraform_config), 'r') as backend:
         if 'workspace_key_prefix' in backend.read():
             return True
         else:
@@ -18,7 +18,7 @@ def is_workspaced(component_dir):
 def resolve_variable_opts(component_dir, workspace):
     # Load variables.tf
     var_opts = []
-    vars = parse_variable_comments_tf(path.join(component_dir, 'variables.tf'))  # name -> tfvar {source}
+    vars = parse_variable_comments_tf(path.join(component_dir, variables_config))  # name -> tfvar {source}
     
     # locate values from {terraform/*.tfvars, data sources}
     values = {}

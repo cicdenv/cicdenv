@@ -1,6 +1,6 @@
 variable "template_files" {
   default = [
-    "backend.tf",
+    "terraform.tf",
     "README.md",
   ]
 }

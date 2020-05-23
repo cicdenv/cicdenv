@@ -4,7 +4,7 @@
 cluster_config_state="clusters/${cluster_name}/cluster-config"
 mkdir -p "$cluster_config_state"
 
-cat <<EOF > "${cluster_config_state}/backend.tf"
+cat <<EOF > "${cluster_config_state}/terraform.tf"
 terraform {
   required_version = ">= ${TERRAFORM_VERSION}"
   backend "s3" {

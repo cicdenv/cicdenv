@@ -4,7 +4,7 @@
 external_access_state="clusters/${cluster_name}/external-access"
 mkdir -p "$external_access_state"
 
-cat <<EOF > "${external_access_state}/backend.tf"
+cat <<EOF > "${external_access_state}/terraform.tf"
 terraform {
   required_version = ">= ${TERRAFORM_VERSION}"
   backend "s3" {
