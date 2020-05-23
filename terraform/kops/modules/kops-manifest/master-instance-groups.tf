@@ -23,7 +23,7 @@ data "template_file" "kops_master_instance_group" {
     min_size         = "1"
     root_volume_size = var.master_volume_size
 
-    iam_profile_arn = var.master_iam_profile
+    iam_profile_arn = var.master_iam_profile.arn
 
     security_groups = length(var.master_security_groups) == 0 ? "[]": "[${join(",", var.master_security_groups)}]"
 

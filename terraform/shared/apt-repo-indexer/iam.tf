@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "s3apt" {
       "s3:GetBucketLocation",
     ]
     resources = [
-      local.apt_repo_bucket_arn
+      local.apt_repo_bucket.arn
     ]
   }
 
@@ -40,9 +40,9 @@ data "aws_iam_policy_document" "s3apt" {
     ]
 
     resources = [
-      "${local.apt_repo_bucket_arn}",
-      "${local.apt_repo_bucket_arn}/repo/control-data-cache/*",
-      "${local.apt_repo_bucket_arn}/repo/dists/*",
+      "${local.apt_repo_bucket.arn}",
+      "${local.apt_repo_bucket.arn}/repo/control-data-cache/*",
+      "${local.apt_repo_bucket.arn}/repo/dists/*",
     ]
   }
 

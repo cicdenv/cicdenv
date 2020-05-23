@@ -1,7 +1,7 @@
 resource "null_resource" "kops_create" {
   triggers = {
     region       = data.aws_region.current.name
-    state_store  = var.state_store
+    state_store  = var.state_store.bucket.name
     cluster_name = var.cluster_name
   }
 

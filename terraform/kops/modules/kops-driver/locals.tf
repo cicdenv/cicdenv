@@ -5,15 +5,15 @@ locals {
   state_store   = data.terraform_remote_state.backend.outputs.state_store
   state_key_arn = data.terraform_remote_state.backend.outputs.kops_state_key_arn
 
-  etcd_key_arn = data.terraform_remote_state.shared.outputs.etcd_key_arn
+  etcd_kms_key = data.terraform_remote_state.shared.outputs.etcd_kms_key
 
   kubernetes_version = var.kubernetes_version
   
-  network_cidr = data.terraform_remote_state.shared.outputs.cidr_block
+  network_cidr = data.terraform_remote_state.network.outputs.vpc.cidr_block
 
-  private_dns_zone = data.terraform_remote_state.shared.outputs.private_dns_zone
+  private_dns_zone = data.terraform_remote_state.network.outputs.private_dns_zone
 
-  availability_zones = data.terraform_remote_state.shared.outputs.availability_zones
+  availability_zones = data.terraform_remote_state.network.outputs.availability_zones
   node_count         = var.node_count != -1 ? var.node_count : length(local.availability_zones) * 1
   
   master_instance_type = var.master_instance_type
@@ -21,21 +21,18 @@ locals {
   node_instance_type   = var.node_instance_type
   node_volume_size     = var.node_volume_size
 
-  vpc_id             = data.terraform_remote_state.shared.outputs.vpc_id
-  private_subnets    = data.terraform_remote_state.shared.outputs.private_subnet_ids
-  public_subnets     = data.terraform_remote_state.shared.outputs.public_subnet_ids
-  s3_vpc_endpoint_id = data.terraform_remote_state.shared.outputs.s3_vpc_endpoint_id
+  vpc_id = data.terraform_remote_state.network.outputs.vpc.id
 
-  masters_iam_role_name = data.terraform_remote_state.shared.outputs.masters_role_name
-  nodes_iam_role_name   = data.terraform_remote_state.shared.outputs.nodes_role_name
+  subnets             = data.terraform_remote_state.network.outputs.subnets
+  public_subnets_ids  = values(local.subnets["public"]).*.id
+  private_subnets_ids = values(local.subnets["private"]).*.id
 
-  master_iam_profile = data.terraform_remote_state.shared.outputs.master_instance_profile_arn
-  node_iam_profile   = data.terraform_remote_state.shared.outputs.nodes_instance_profile_arn
+  iam = data.terraform_remote_state.shared.outputs.iam
 
-  master_security_groups = [data.terraform_remote_state.shared.outputs.masters_security_group_id]
-  node_security_groups   = [data.terraform_remote_state.shared.outputs.nodes_security_group_id]
+  master_security_groups = [data.terraform_remote_state.shared.outputs.security_groups.master.id]
+  node_security_groups   = [data.terraform_remote_state.shared.outputs.security_groups.node.id]
 
-  internal_apiserver_security_groups = [data.terraform_remote_state.shared.outputs.internal_apiserver_security_group_id]
+  internal_apiserver_security_groups = [data.terraform_remote_state.shared.outputs.security_groups.internal_apiserver.id]
   
   public_key           = "~/.ssh/kops_rsa.pub"
   kops_ca_cert         = "${var.cluster_home}/cluster/${terraform.workspace}/kops.cacrt"

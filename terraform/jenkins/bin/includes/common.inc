@@ -57,7 +57,7 @@ This state is per-account.
 
 ## Usage
 \`\`\`
-${repo}\$ cicdctl <init|plan|apply|destroy|output> jenkins/instances/${name}:\${WORKSPACE}
+${repo}\$ cicdctl terraform <init|plan|apply|destroy|output> jenkins/instances/${name}:\${WORKSPACE}
 ...
 \`\`\`
 EOF

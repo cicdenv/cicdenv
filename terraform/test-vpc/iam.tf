@@ -44,7 +44,7 @@ resource "aws_iam_role_policy_attachment" "test" {
 
 resource "aws_iam_role_policy_attachment" "apt_repo" {
   role       = aws_iam_role.test.name
-  policy_arn = local.apt_repo_policy_arn
+  policy_arn = local.apt_repo_policy.arn
 }
 
 resource "aws_iam_instance_profile" "test" {

@@ -2,7 +2,7 @@ from os import path
 import subprocess
 
 from ..aws import DEFAULT_REGION
-from . import (varfile_dir, backend_config, ami_config, 
+from . import (varfile_dir, backend_config, ami_config, bastion_config,
     parse_variable_comments_tf, parse_tfvars)
 from . import dynamodb
 
@@ -24,6 +24,7 @@ def resolve_variable_opts(component_dir, workspace):
     values = {}
     values[path.basename(backend_config)] = parse_tfvars(backend_config)
     values[path.basename(ami_config)] = parse_tfvars(ami_config)
+    values[path.basename(bastion_config)] = parse_tfvars(bastion_config)
     for name, source in vars.items():
         if source.startswith('dynamodb['):  # DynamoDB item scan: `dynamodb[<table>][<field>]`
             var_opts.append('-var')

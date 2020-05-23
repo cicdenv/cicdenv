@@ -117,7 +117,7 @@ resource "aws_iam_policy" "kops_master" {
         "route53:GetHostedZone"
       ],
       "Resource": [
-        "arn:aws:route53:::hostedzone/${aws_route53_zone.private.zone_id}"
+        "arn:aws:route53:::hostedzone/${local.private_dns_zone.zone_id}"
       ]
     },
     {
@@ -165,7 +165,7 @@ resource "aws_iam_role_policy_attachment" "kops_master" {
 
 resource "aws_iam_role_policy_attachment" "kops_master_apt_repo" {
   role       = aws_iam_role.kops_master.name
-  policy_arn = local.apt_repo_policy_arn
+  policy_arn = local.apt_repo_policy.arn
 }
 
 resource "aws_iam_instance_profile" "kops_master" {

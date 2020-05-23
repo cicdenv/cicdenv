@@ -1,7 +1,7 @@
 resource "aws_elb" "api_public_clb" {
   name     = "api-${var.cluster_short_name}"
   subnets  = var.public_subnet_ids
-  security_groups = [var.apiserver_security_group_id]
+  security_groups = [var.security_group_id]
 
   cross_zone_load_balancing = true
 
@@ -24,8 +24,8 @@ resource "aws_elb" "api_public_clb" {
 }
 
 resource "aws_autoscaling_attachment" "masters_to_external_clb" {
-  count = length(var.master_asg_names)
+  for_each = toset(var.master_asg_names)
 
   elb                    = aws_elb.api_public_clb.id
-  autoscaling_group_name = var.master_asg_names[count.index]
+  autoscaling_group_name = each.key
 }

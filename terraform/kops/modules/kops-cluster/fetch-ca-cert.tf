@@ -1,12 +1,13 @@
 resource "null_resource" "kops_ca_cert_fetch" {
   triggers = {
     kops_ca_cert = var.kops_ca_cert
+    state_store  = var.state_store.bucket.name
   }
 
   provisioner "local-exec" {
     command = <<EOF
-id=$(kops get secret ca --name=${var.cluster_name} --state=s3://${var.state_store} | tail -n+2 | awk '{print $NF}');
-aws --region ${data.aws_region.current.name} s3 cp "s3://${var.state_store}/${var.cluster_name}/pki/issued/ca/$id.crt" - > "${var.kops_ca_cert}"
+id=$(kops get secret ca --name=${var.cluster_name} --state=s3://${self.triggers.state_store} | tail -n+2 | awk '{print $NF}');
+aws --region ${data.aws_region.current.name} s3 cp "s3://${self.triggers.state_store}/${var.cluster_name}/pki/issued/ca/$id.crt" - > "${var.kops_ca_cert}"
 EOF
   }
 

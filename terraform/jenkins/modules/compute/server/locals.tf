@@ -1,13 +1,10 @@
 locals {
   account_hosted_zone = data.terraform_remote_state.domains.outputs.account_public_zone
-  private_hosted_zone = {
-    id = data.terraform_remote_state.shared.outputs.private_dns_zone
-  }
+  private_hosted_zone = data.terraform_remote_state.network.outputs.private_dns_zone
 
-  vpc_id = data.terraform_remote_state.shared.outputs.vpc_id
+  vpc_id = data.terraform_remote_state.network.outputs.vpc.id
   
-  public_subnets  = data.terraform_remote_state.shared.outputs.public_subnet_ids
-  private_subnets = data.terraform_remote_state.shared.outputs.private_subnet_ids
+  subnets = data.terraform_remote_state.network.outputs.subnets
 
   key_pair = data.terraform_remote_state.jenkins_shared.outputs.jenkins_key_pair
 

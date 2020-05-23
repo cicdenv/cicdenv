@@ -3,7 +3,7 @@ resource "aws_lb" "jenkins_internal" {
   internal           = true
   load_balancer_type = "application"
   security_groups    = [local.internal_alb_security_group.id]
-  subnets            = local.private_subnets
+  subnets            = values(local.subnets["private"]).*.id
 
   idle_timeout = 4000
   enable_http2 = false

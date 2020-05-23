@@ -18,7 +18,7 @@ resource "aws_route53_record" "cert_validations" {
   type    = "CNAME"
   name    =  aws_acm_certificate.jenkins_cert.domain_validation_options.0.resource_record_name
   records = [aws_acm_certificate.jenkins_cert.domain_validation_options.0.resource_record_value]
-  zone_id = local.account_hosted_zone.id
+  zone_id = local.account_hosted_zone.zone_id
   ttl     = 60
 }
 

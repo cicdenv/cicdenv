@@ -20,10 +20,10 @@ terraform/backend/state-locking/bin/create-resources.sh "${workspace}"
 terraform/backend/state-locking/bin/import-resources.sh "${workspace}"
 
 # Eliminate default VPCs
-terraform/networking/default-vpcs/bin/populate-vpcs-vars.sh "${workspace}"
-bin/cicdctl init "networking/default-vpcs:${workspace}"
-terraform/networking/default-vpcs/bin/import-resources.sh "${workspace}"
-bin/cicdctl destroy "networking/default-vpcs:${workspace}" -var-file ${workspace}.tfvars -force
+terraform/network/default-vpcs/bin/populate-vpcs-vars.sh "${workspace}"
+bin/cicdctl init "network/default-vpcs:${workspace}"
+terraform/network/default-vpcs/bin/import-resources.sh "${workspace}"
+bin/cicdctl destroy "network/default-vpcs:${workspace}" -var-file ${workspace}.tfvars -force
 
 # Import Account
 bin/cicdctl init "iam/organization-account:${workspace}"

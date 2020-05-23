@@ -20,7 +20,7 @@ resource "aws_autoscaling_group" "jenkins_agents" {
   
   launch_configuration = aws_launch_configuration.jenkins_agent.name
   
-  vpc_zone_identifier = local.private_subnets
+  vpc_zone_identifier = values(local.subnets["private"]).*.id
   
   tags = [
     {

@@ -20,6 +20,9 @@ domain_config = path.join(varfile_dir, 'domain.tfvars')
 # default AMI ids
 ami_config = path.join(varfile_dir, 'amis.tfvars')
 
+# bastion tcp ports
+bastion_config = path.join(varfile_dir, 'bastion.tfvars')
+
 # whitelisted network cidrs
 whitelisted_networks = path.join(varfile_dir, 'whitelisted-networks.tfvars')
 

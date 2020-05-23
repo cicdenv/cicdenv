@@ -1,31 +1,9 @@
 locals {
-  network_cidr = "10.16.0.0/16"
+  vpc_id           = data.terraform_remote_state.network.outputs.vpc.id
+  bastion          = data.terraform_remote_state.network.outputs.bastion_service
+  private_dns_zone = data.terraform_remote_state.network.outputs.private_dns_zone
 
-  domain = var.domain
+  apt_repo_policy = data.terraform_remote_state.iam_common_policies.outputs.apt_repo_policy
 
-  public_subnet_tags = {
-    "kubernetes.io/role/elb" = "1"
-    "SubnetType"             = "Utility"
-  }
-
-  private_subnet_tags = {
-    "kubernetes.io/role/internal-elb" = "1"
-    "SubnetType"                      = "Private"
-  }
-
-  cluster_tags = zipmap(data.null_data_source.cluster_tags.*.outputs.Key,
-                        data.null_data_source.cluster_tags.*.outputs.Value)
-
-  # Limit AZs to no more than 3
-  availability_zones = split(",", length(data.aws_availability_zones.azs.names) > 3 ? 
-      join(",", slice(data.aws_availability_zones.azs.names, 0, 3)) 
-    : join(",", data.aws_availability_zones.azs.names))
-  
-  apt_repo_policy_arn = data.terraform_remote_state.iam_common_policies.outputs.apt_repo_policy_arn
-
-  bastion_service_ssh_port   = 22
-  bastion_service_host_port  = 2222
-  bastion_service_event_port = 5000
-
-  account = data.terraform_remote_state.accounts.outputs.organization_accounts["${terraform.workspace}"]
+  account = terraform.workspace == "main" ? data.terraform_remote_state.accounts.outputs.main_account : data.terraform_remote_state.accounts.outputs.organization_accounts[terraform.workspace]
 }

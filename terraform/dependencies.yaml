@@ -1,20 +1,16 @@
 cascades:
-  kops/shared:
-  - ops: [apply, destroy]
-    target: kops/backend:main # VPC Endpoint Authorization
-    type: apply
-    opts: -auto-approve
+  network/shared:
   - ops: [apply, destroy]
     target: shared/apt-repo:main  # cross account s3 (VPC Endpoints)
     type: apply
     opts: -auto-approve
   backend:
   - ops: [apply]
-    target: packer:main  # cross account AMIs
+    target: shared/apt-repo:main  # cross account s3 (IAM roots)
     type: apply
     opts: -auto-approve
   - ops: [apply]
-    target: shared/apt-repo:main  # cross account s3 (IAM roots)
+    target: packer:main  # cross account AMIs
     type: apply
     opts: -auto-approve
   - ops: [apply]

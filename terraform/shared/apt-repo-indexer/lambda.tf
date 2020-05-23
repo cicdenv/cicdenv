@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "s3apt" {
-  s3_bucket     = local.apt_repo_bucket
+  s3_bucket     = local.apt_repo_bucket.id
   s3_key        = "s3apt.zip"
   function_name = "s3apt"
   description   = "Automatic s3 apt repo indexer."
@@ -14,7 +14,7 @@ resource "aws_lambda_function" "s3apt" {
 
   environment {
     variables = {
-      bucket       = local.apt_repo_bucket
+      bucket       = local.apt_repo_bucket.id
       cache_prefix = "repo/control-data-cache"
     }
   }
@@ -25,7 +25,7 @@ resource "aws_lambda_permission" "allow_bucket" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.s3apt.arn
   principal     = "s3.amazonaws.com"
-  source_arn    = local.apt_repo_bucket_arn
+  source_arn    = local.apt_repo_bucket.arn
 }
 
 resource "aws_s3_bucket_notification" "bucket_notification" {

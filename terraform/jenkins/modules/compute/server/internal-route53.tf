@@ -1,6 +1,6 @@
 resource "aws_route53_record" "jenkins_internal_alb" {
   name    = "jenkins-${var.jenkins_instance}.${terraform.workspace}"
-  zone_id = local.private_hosted_zone.id
+  zone_id = local.private_hosted_zone.zone_id
   type    = "A"
 
   alias {
@@ -12,7 +12,7 @@ resource "aws_route53_record" "jenkins_internal_alb" {
 
 resource "aws_route53_record" "builds_internal_alb" {
   name    = "builds-${var.jenkins_instance}.${terraform.workspace}"
-  zone_id = local.private_hosted_zone.id
+  zone_id = local.private_hosted_zone.zone_id
   type    = "A"
 
   alias {

@@ -1,6 +1,6 @@
 resource "aws_security_group" "kops_masters" {
   name   = "kops-masters"
-  vpc_id = module.vpc.vpc_id
+  vpc_id = local.vpc_id
 
   description = "kops-masters"
 
@@ -30,7 +30,7 @@ resource "aws_security_group_rule" "kops_master_ssh_from_bastion" {
   to_port     = 22
 
   security_group_id        = aws_security_group.kops_masters.id
-  source_security_group_id = aws_security_group.bastion.id
+  source_security_group_id = local.bastion.security_group.id
 }
 
 resource "aws_security_group_rule" "external-lb-https-to-master" {

@@ -16,7 +16,7 @@ variable "master_asg_names" {
   type = list
 }
 
-variable "apiserver_security_group_id" {
+variable "security_group_id" {
   description = "External API server security group"
 }
 

@@ -10,11 +10,11 @@ variable "network_cidr" {}
 variable "private_dns_zone" {}
 
 variable "private_subnets" {
-  type = list
+  type = map
 }
 
 variable "public_subnets" {
-  type = list
+  type = map
 }
 
 variable "availability_zones" {
@@ -46,11 +46,11 @@ variable "cloud_labels" {
 }
 
 variable "master_iam_profile" {
-  description = "Master EC2 IAM Instance (Role) Profile ARN"
+  description = "Master EC2 IAM Instance (Role) Profile"
 }
 
 variable "node_iam_profile" {
-  description = "Node EC2 IAM Instance (Role) Profile ARN"
+  description = "Node EC2 IAM Instance (Role) Profile"
 }
 
 variable "master_security_groups" {
@@ -68,6 +68,6 @@ variable "internal_apiserver_security_groups" {
   default     = []
 }
 
-variable "etcd_key_arn" {
+variable "etcd_kms_key" {
   description = "For encrypting etcd EBS volumes"
 }

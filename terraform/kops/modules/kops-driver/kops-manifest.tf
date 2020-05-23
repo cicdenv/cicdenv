@@ -11,9 +11,9 @@ module "kops_manifest" {
   network_cidr       = local.network_cidr
   private_dns_zone   = local.private_dns_zone
 
-  private_subnets    = local.private_subnets
-  public_subnets     = local.public_subnets
   availability_zones = local.availability_zones
+  public_subnets     = local.subnets["public"]
+  private_subnets    = local.subnets["private"]
 
   node_count           = local.node_count
   node_instance_type   = local.node_instance_type
@@ -24,8 +24,8 @@ module "kops_manifest" {
 
   cloud_labels = local.cloud_labels
 
-  master_iam_profile = local.master_iam_profile
-  node_iam_profile   = local.node_iam_profile
+  master_iam_profile = local.iam.master.instance_profile
+  node_iam_profile   = local.iam.node.instance_profile
 
   master_security_groups = local.master_security_groups
   node_security_groups   = local.node_security_groups
@@ -34,5 +34,5 @@ module "kops_manifest" {
 
   kops_manifest = local.kops_manifest
 
-  etcd_key_arn = local.etcd_key_arn
+  etcd_kms_key = local.etcd_kms_key
 }

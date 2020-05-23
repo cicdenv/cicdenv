@@ -32,7 +32,7 @@ resource "local_file" "authenticator_configmap" {
 }
 
 resource "aws_s3_bucket_object" "authenticator_configmap" {
-  bucket  = var.state_store
+  bucket  = var.state_store.bucket.name
   key     = "${var.cluster_id}/addons/custom.authentication.aws/k8s-110.yaml"
   content = data.template_file.authenticator_configmap.rendered
   

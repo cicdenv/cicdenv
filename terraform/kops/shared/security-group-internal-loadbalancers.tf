@@ -1,6 +1,6 @@
 resource "aws_security_group" "kops_internal_apiserver" {
   name   = "kops-internal-apiserver"
-  vpc_id = module.vpc.vpc_id
+  vpc_id = local.vpc_id
 
   description = "kops-apiserver internal load balancer"
     

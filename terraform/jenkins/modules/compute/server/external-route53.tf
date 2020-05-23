@@ -1,6 +1,6 @@
 resource "aws_route53_record" "jenkins_external_alb" {
   name    = "jenkins-${var.jenkins_instance}"
-  zone_id = local.account_hosted_zone.id
+  zone_id = local.account_hosted_zone.zone_id
   type    = "A"
 
   alias {
@@ -12,7 +12,7 @@ resource "aws_route53_record" "jenkins_external_alb" {
 
 resource "aws_route53_record" "builds_external_alb" {
   name    = "builds-${var.jenkins_instance}"
-  zone_id = local.account_hosted_zone.id
+  zone_id = local.account_hosted_zone.zone_id
   type    = "A"
 
   alias {

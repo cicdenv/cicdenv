@@ -3,7 +3,7 @@ data "template_file" "create_command" {
 
   vars = {
     kops_manifest = var.kops_manifest
-    state_store   = "s3://${var.state_store}"
+    state_store   = "s3://${var.state_store.bucket.name}"
     env_vars      = local.env_vars
   }
 }
@@ -14,7 +14,7 @@ data "template_file" "create_ca_command" {
   vars = {
     cluster_name = var.cluster_name
     pki_folder   = var.pki_folder
-    state_store  = "s3://${var.state_store}"
+    state_store  = "s3://${var.state_store.bucket.name}"
     env_vars     = local.env_vars
   }
 }
@@ -24,7 +24,7 @@ data "template_file" "edit_command" {
 
   vars = {
     cluster_name = var.cluster_name
-    state_store  = "s3://${var.state_store}"
+    state_store  = "s3://${var.state_store.bucket.name}"
     env_vars     = local.env_vars
   }
 }
@@ -34,7 +34,7 @@ data "template_file" "sshkey_command" {
 
   vars = {
     cluster_name = var.cluster_name
-    state_store  = "s3://${var.state_store}"
+    state_store  = "s3://${var.state_store.bucket.name}"
     public_key   = var.public_key
     env_vars     = local.env_vars
   }
@@ -45,7 +45,7 @@ data "template_file" "update_command" {
 
   vars = {
     cluster_name        = var.cluster_name
-    state_store         = "s3://${var.state_store}"
+    state_store         = "s3://${var.state_store.bucket.name}"
     lifecycle_overrides = "--lifecycle-overrides IAMRole=ExistsAndWarnIfChanges,IAMRolePolicy=ExistsAndWarnIfChanges,IAMInstanceProfileRole=ExistsAndWarnIfChanges"
     env_vars            = local.env_vars
   }
@@ -56,7 +56,7 @@ data "template_file" "rolling_update_command" {
 
   vars = {
     cluster_name = var.cluster_name
-    state_store  = "s3://${var.state_store}"
+    state_store  = "s3://${var.state_store.bucket.name}"
     env_vars     = local.env_vars
   }
 }
@@ -66,7 +66,7 @@ data "template_file" "replace_command" {
 
   vars = {
     kops_manifest = var.kops_manifest
-    state_store   = "s3://${var.state_store}"
+    state_store   = "s3://${var.state_store.bucket.name}"
     env_vars      = local.env_vars
   }
 }
@@ -76,7 +76,7 @@ data "template_file" "validate_command" {
 
   vars = {
     cluster_name = var.cluster_name
-    state_store  = "s3://${var.state_store}"
+    state_store  = "s3://${var.state_store.bucket.name}"
     env_vars     = local.env_vars
   }
 }
@@ -86,7 +86,7 @@ data "template_file" "delete_command" {
 
   vars = {
     cluster_name = var.cluster_name
-    state_store  = "s3://${var.state_store}"
+    state_store  = "s3://${var.state_store.bucket.name}"
     env_vars     = local.env_vars
   }
 }
@@ -96,7 +96,7 @@ data "template_file" "export_kubecfg_command" {
 
   vars = {
     cluster_name     = var.cluster_name
-    state_store      = "s3://${var.state_store}"
+    state_store      = "s3://${var.state_store.bucket.name}"
     admin_kubeconfig = var.admin_kubeconfig
     env_vars         = local.env_vars
   }

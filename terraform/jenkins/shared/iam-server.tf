@@ -20,7 +20,7 @@ resource "aws_iam_role_policy_attachment" "jenkins_server" {
 
 resource "aws_iam_role_policy_attachment" "jenkins_server_apt_repo" {
   role       = aws_iam_role.jenkins_server.name
-  policy_arn = local.apt_repo_policy_arn
+  policy_arn = local.apt_repo_policy.arn
 }
 
 resource "aws_iam_instance_profile" "jenkins_server" {

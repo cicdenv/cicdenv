@@ -22,5 +22,5 @@ ansible_ssh_common_args: >
   -o ServerAliveCountMax=120
   -i {{ lookup("env", "HOME") }}/.ssh/id_rsa
   -W %h:%p 
-  {{ lookup("env", "USER") }}@bastion-{{ lookup("env", "WORKSPACE") }}.kops.{{ lookup("env", "DOMAIN") }}
+  {{ lookup("env", "USER") }}@bastion.{{ lookup("env", "WORKSPACE") }}.{{ lookup("env", "DOMAIN") }}
   "

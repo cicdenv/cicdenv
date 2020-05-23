@@ -2,12 +2,9 @@ locals {
   domain = var.domain
   
   account_hosted_zone = data.terraform_remote_state.domains.outputs.account_public_zone
-  private_hosted_zone = {
-    id = data.terraform_remote_state.shared.outputs.private_dns_zone
-  }
+  private_hosted_zone = data.terraform_remote_state.network.outputs.private_dns_zone
   
-  public_subnets  = data.terraform_remote_state.shared.outputs.public_subnet_ids
-  private_subnets = data.terraform_remote_state.shared.outputs.private_subnet_ids
+  subnets = data.terraform_remote_state.network.outputs.subnets
 
   internal_alb_security_group = data.terraform_remote_state.jenkins_shared.outputs.internal_alb_security_group
   external_alb_security_group = data.terraform_remote_state.jenkins_shared.outputs.external_alb_security_group

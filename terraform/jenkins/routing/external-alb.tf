@@ -3,7 +3,7 @@ resource "aws_lb" "jenkins_external" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [local.external_alb_security_group.id]
-  subnets            = local.public_subnets
+  subnets            = values(local.subnets["public"]).*.id
 
   idle_timeout = 4000
   enable_http2 = false

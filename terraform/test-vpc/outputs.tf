@@ -1,33 +1,34 @@
-output "vpc_id" {
-  value = module.vpc.vpc_id
-}
-
-output "cidr_block" {
-  value = var.network_cidr
-}
-
-output "s3_vpc_endpoint_id" {
-  value = module.vpc.s3_vpc_endpoint_id
-}
-
-output "public_subnet_ids" {
-  value = module.vpc.public_subnet_ids
-}
-
-output "private_subnet_ids" {
-  value = module.vpc.private_subnet_ids
-}
-
-output "public_route_table_ids" {
-  value = module.vpc.public_route_table_ids
-}
-
-output "private_route_table_ids" {
-  value = module.vpc.private_route_table_ids
+output "vpc" {
+  value = module.test_vpc.vpc_id
 }
 
 output "private_dns_zone" {
-  value = aws_route53_zone.private.zone_id
+  value = module.test_vpc.private_dns_zone
+}
+
+output "availability_zones" {
+  value = local.availability_zones
+}
+
+output "subnets" {
+  value = module.test_vpc.subnets
+}
+
+output "route_tables" {
+  value = module.test_vpc.route_tables
+}
+
+output "nat_gateways" {
+  value = {
+    module.nat_gateways.topology
+  }
+}
+
+output "vpc_endpoints" {
+  value = {
+    s3 = module.vpc_endpoints.s3
+    ecr = module.vpc_endpoints.ecr
+  }
 }
 
 output "security_group_id" {

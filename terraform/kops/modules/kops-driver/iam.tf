@@ -3,9 +3,9 @@ data template_file master_policy {
 
   vars = {
     cluster_name  = local.cluster_name
-    state_store   = local.state_store
-    state_key_arn = local.state_key_arn
-    etcd_key_arn  = local.etcd_key_arn
+    state_store   = local.state_store.bucket.name
+    state_key_arn = local.state_store.key.arn
+    etcd_key_arn  = local.etcd_kms_key.arn
   }
 }
 
@@ -15,7 +15,7 @@ resource aws_iam_policy master_policy {
 }
 
 resource aws_iam_role_policy_attachment master_policy {
-  role       = local.masters_iam_role_name
+  role       = local.iam.master.role.name
   policy_arn = aws_iam_policy.master_policy.arn
 }
 
@@ -24,8 +24,8 @@ data template_file node_policy {
 
   vars = {
     cluster_name  = local.cluster_name
-    state_store   = local.state_store
-    state_key_arn = local.state_key_arn
+    state_store   = local.state_store.bucket.name
+    state_key_arn = local.state_store.key.arn
   }
 }
 
@@ -35,6 +35,6 @@ resource aws_iam_policy node_policy {
 }
 
 resource aws_iam_role_policy_attachment node_policy {
-  role       = local.nodes_iam_role_name
+  role       = local.iam.node.role.name
   policy_arn = aws_iam_policy.node_policy.arn
 }

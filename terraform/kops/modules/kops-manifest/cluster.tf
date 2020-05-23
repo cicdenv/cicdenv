@@ -1,39 +1,39 @@
 data "template_file" "kops_etcd_members" {
-  count = length(var.availability_zones) % 2 == 0 ? length(var.availability_zones) - 1 : length(var.availability_zones)
+  for_each = toset(local.etcd_zones)
 
   template = file("${path.module}/templates/etcd-member.tpl")
 
   vars = {
-    availability_zone = var.availability_zones[count.index]
+    availability_zone = each.key
     region            = data.aws_region.current.name
-    etcd_key_arn      = var.etcd_key_arn
+    etcd_key_arn      = var.etcd_kms_key.arn
   }
 }
 
 data "template_file" "kops_private_subnets" {
-  count = length(var.availability_zones)
+  for_each = toset(var.availability_zones)
 
   template = file("${path.module}/templates/subnet.tpl")
 
   vars = {
-    availability_zone = var.availability_zones[count.index]
-    subnet_name       = var.availability_zones[count.index]
-    subnet_id         = var.private_subnets[count.index]
-    subnet_cidr       = data.aws_subnet.private_subnets.*.cidr_block[count.index]
+    availability_zone = each.key
+    subnet_name       = "private-${each.key}"
+    subnet_id         = var.private_subnets[each.key].id
+    subnet_cidr       = var.private_subnets[each.key].cidr_block
     subnet_type       = "Private"
   }
 }
 
 data "template_file" "kops_public_subnets" {
-  count = length(var.availability_zones)
+  for_each = toset(var.availability_zones)
 
   template = file("${path.module}/templates/subnet.tpl")
 
   vars = {
-    availability_zone = var.availability_zones[count.index]
-    subnet_name       = "utility-${var.availability_zones[count.index]}"
-    subnet_id         = var.public_subnets[count.index]
-    subnet_cidr       = data.aws_subnet.public_subnets.*.cidr_block[count.index]
+    availability_zone = each.key
+    subnet_name       = "utility-${each.key}"
+    subnet_id         = var.public_subnets[each.key].id
+    subnet_cidr       = var.public_subnets[each.key].cidr_block
     subnet_type       = "Utility"
   }
 }
@@ -43,7 +43,7 @@ data "template_file" "kops_cluster_spec" {
 
   vars = {
     cluster_name = var.cluster_name
-    state_store  = var.state_store
+    state_store  = var.state_store.bucket.name
     
     kubernetes_version = var.kubernetes_version
 
@@ -52,9 +52,9 @@ data "template_file" "kops_cluster_spec" {
     networking       = var.networking
     private_dns_zone = var.private_dns_zone
 
-    etcd_members    = join("\n", data.template_file.kops_etcd_members.*.rendered)
-    private_subnets = join("\n", data.template_file.kops_private_subnets.*.rendered)
-    public_subnets  = join("\n", data.template_file.kops_public_subnets.*.rendered)
+    etcd_members    = join("\n", values(data.template_file.kops_etcd_members).*.rendered)
+    private_subnets = join("\n", values(data.template_file.kops_private_subnets).*.rendered)
+    public_subnets  = join("\n", values(data.template_file.kops_public_subnets).*.rendered)
 
     lb_security_groups = length(var.internal_apiserver_security_groups) == 0 ? "[]": "[${join(",", var.internal_apiserver_security_groups)}]"
 

@@ -23,7 +23,7 @@ data "template_file" "kops_node_instance_group" {
     min_size         = ceil(var.node_count / length(var.availability_zones))
     root_volume_size = var.node_volume_size
 
-    iam_profile_arn = "${var.node_iam_profile}"
+    iam_profile_arn = var.node_iam_profile.arn
 
     security_groups = length(var.node_security_groups) == 0 ? "[]": "[${join(",", var.node_security_groups)}]"
 

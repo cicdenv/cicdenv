@@ -1,9 +1,9 @@
-output "key_id" {
-  value = aws_kms_key.ebs.arn
-}
-
-output "key_alias" {
-  value = aws_kms_alias.ebs.arn
+output "key" {
+  value = {
+    key_id = aws_kms_key.ebs.key_id
+    arn    = aws_kms_key.ebs.arn
+    alias  = aws_kms_alias.ebs.name
+  }
 }
 
 output "allowed_account_ids" {

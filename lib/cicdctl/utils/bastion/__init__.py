@@ -1,6 +1,6 @@
 from os import path
 
-from ..terraform import parse_tfvars, domain_config
+from ..terraform import parse_tfvars, domain_config, bastion_config
 
 DEFAULT_USER_IDENTITY = path.expanduser('~/.ssh/id_rsa')
 DEFAULT_HOST_IDENTITY = path.expanduser('~/.ssh/kops_rsa')
@@ -53,7 +53,7 @@ def ssh_opts(port, identity, flags):
 
 def bastion_address(user, workspace):
     domain = parse_tfvars(domain_config)['domain']
-    address = f'{user}@bastion-{workspace}.kops.{domain}'
+    address = f'{user}@bastion.{workspace}.{domain}'
     return address
 
 

@@ -48,11 +48,11 @@ cicdenv$ . bin/activate
 ## Base AMI
 ```bash
 # Build base AMI (main account)
-cicdenv$ cicdctl terraform  apply kops/nat-gateways:main
+cicdenv$ cicdctl terraform  apply network/routing:main
 
 cicdenv$ cicdctl packer build
 
-cicdenv$ cicdctl terraform destroy kops/nat-gateways:main
+cicdenv$ cicdctl terraform destroy network/routing:main
 ```
 
 ## Setup
@@ -67,10 +67,10 @@ cicdenv$ make
 Example: `dev` account, `1-18a3` kops cluster
 ```bash
 # One time setup
-cicdenv$ cicdctl terraform apply kops/shared:dev
+cicdenv$ cicdctl terraform apply network/shared:dev
 
 # Turn on private subnet NAT gateways
-cicdenv$ cicdctl terraform apply kops/nat-gateways:dev -auto-approve
+cicdenv$ cicdctl terraform apply network/routing:dev -auto-approve
 
 # Create kubernetes cluster
 cicdenv$ cicdctl cluster create 1-18a3:dev -auto-approve
@@ -80,7 +80,7 @@ cicdenv$ cicdctl cluster validate 1-18a3:dev
 cicdenv$ cicdctl cluster destroy 1-18a3:dev -force
 
 # Turn off private subnet NAT gateways
-cicdenv$ cicdctl terraform destroy kops/nat-gateways:dev -force
+cicdenv$ cicdctl terraform destroy network/routing:dev -force
 ```
 
 ## Host Access
@@ -100,7 +100,7 @@ cicdenv$ make
 Example: `dev` account, `dist`, `test` Jenkins instances
 ```bash
 # Turn on private subnet NAT gateways
-cicdenv$ cicdctl terraform apply kops/nat-gateways:dev -auto-approve
+cicdenv$ cicdctl terraform apply network/routing:dev -auto-approve
 
 # Create Jenkins instances
 cicdenv$ cicdctl jenkins create dist:dev --type distributed -auto-approve
@@ -111,7 +111,7 @@ cicdenv$ cicdctl destroy-jenkins dist:dev --type distributed -auto-approve
 cicdenv$ cicdctl jenkins destroy test:dev --type colocated   -auto-approve
 
 # Turn off private subnet NAT gateways
-cicdenv$ cicdctl terraform destroy kops/nat-gateways:dev -force
+cicdenv$ cicdctl terraform destroy network/routing:dev -force
 ```
 
 ### Interactive

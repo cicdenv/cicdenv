@@ -7,10 +7,10 @@ resource aws_efs_file_system jenkins_persistent_config_efs {
 }
 
 resource aws_efs_mount_target jenkins_persistent_config_efs {
-  count = length(local.private_subnets)
+  for_each = local.subnets["private"]
 
   file_system_id = aws_efs_file_system.jenkins_persistent_config_efs.id
-  subnet_id      = local.private_subnets[count.index]
+  subnet_id      = each.value.id
 
   security_groups = [
     aws_security_group.jenkins_persistent_config_efs.id,

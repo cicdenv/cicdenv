@@ -8,7 +8,7 @@ data "template_file" "kube2iam_manifests" {
 }
 
 resource "aws_s3_bucket_object" "kube2iam_manifests" {
-  bucket  = var.state_store
+  bucket  = var.state_store.bucket.name
   key     = "${var.cluster_id}/addons/custom.kube2iam.aws/k8s-112.yaml"
   content = data.template_file.kube2iam_manifests.rendered
   

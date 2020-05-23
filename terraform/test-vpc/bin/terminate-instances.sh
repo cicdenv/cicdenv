@@ -7,7 +7,7 @@ workspace=${1?Usage: $0 <workspace>}
 AWS_PROFILE=admin-${workspace}
 AWS_OPTS="--profile=${AWS_PROFILE} --region=us-west-2"
 
-# Set working directory to networking/test-vpc
+# Set working directory to network/test-vpc
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 pushd "$DIR/.." >/dev/null
 

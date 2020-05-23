@@ -20,7 +20,7 @@ resource "aws_autoscaling_group" "jenkins_server" {
   
   launch_configuration = aws_launch_configuration.jenkins_server.name
   
-  vpc_zone_identifier = local.private_subnets
+  vpc_zone_identifier = values(local.subnets["private"]).*.id
 
   target_group_arns = [
     aws_lb_target_group.internal_https.arn,

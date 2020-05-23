@@ -30,7 +30,7 @@ resource "aws_security_group_rule" "jenkins_server_ssh_from_bastion" {
   to_port     = 22
 
   security_group_id        = aws_security_group.jenkins_server.id
-  source_security_group_id = local.bastion_service_security_group_id
+  source_security_group_id = local.bastion_security_group.id
 }
 
 resource "aws_security_group_rule" "jenkins_server_https_from_internal_loadbalancers" {

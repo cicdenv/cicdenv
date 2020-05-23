@@ -1,6 +1,6 @@
 resource "aws_route53_record" "external_dns" {
   name    = "jenkins"
-  zone_id = local.account_hosted_zone.id
+  zone_id = local.account_hosted_zone.zone_id
   type    = "A"
 
   alias {
