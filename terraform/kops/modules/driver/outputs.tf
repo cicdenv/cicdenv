@@ -10,8 +10,8 @@ output "cluster_fqdn" {
   value = local.cluster_fqdn
 }
 
-output "ami" {
-    value = local.ami
+output "ami_id" {
+    value = local.ami_id
 }
 
 output "export_kubecfg_command" {

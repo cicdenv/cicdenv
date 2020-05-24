@@ -1,5 +1,5 @@
 data "template_file" "admin_users" {
-  for_each = toset(local.admin_users)
+  for_each = local.admin_users
 
   template = file("${path.module}/templates/aws-iam-authenticator_admin-user.tpl")
   vars = {

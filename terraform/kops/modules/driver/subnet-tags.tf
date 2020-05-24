@@ -3,8 +3,8 @@ resource "null_resource" "subnet_tags" {
     region          = data.aws_region.current.name
     cluster_name    = local.cluster_name
     workspace       = terraform.workspace
-    public_subnets  = join(" ", values(local.subnets["public"]).*.id)
-    private_subnets = join(" ", values(local.subnets["private"]).*.id)
+    public_subnets  = join(" ", values(local.public_subnets).*.id)
+    private_subnets = join(" ", values(local.private_subnets).*.id)
   }
 
   # Add kubernetes.io/cluster/ tag needed by external/internal ELBs

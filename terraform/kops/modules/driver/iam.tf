@@ -2,7 +2,7 @@ data template_file master_policy {
   template = file("${path.module}/templates/iam/master-cluster-policy.json")
 
   vars = {
-    cluster_name  = local.cluster_name
+    cluster_fqdn  = local.cluster_fqdn
     state_store   = local.state_store.bucket.name
     state_key_arn = local.state_store.key.arn
     etcd_key_arn  = local.etcd_kms_key.arn
@@ -23,7 +23,7 @@ data template_file node_policy {
   template = file("${path.module}/templates/iam/node-cluster-policy.json")
 
   vars = {
-    cluster_name  = local.cluster_name
+    cluster_fqdn  = local.cluster_fqdn
     state_store   = local.state_store.bucket.name
     state_key_arn = local.state_store.key.arn
   }

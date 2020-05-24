@@ -1,9 +1,29 @@
 locals {
+  # network
+  availability_zones = data.terraform_remote_state.network.outputs.availability_zones
+  subnets            = data.terraform_remote_state.network.outputs.subnets
+  public_subnets     = local.subnets["public"]
+  private_subnets    = local.subnets["private"]
+
+  # kops/backend
+  state_store = data.terraform_remote_state.backend.outputs.state_store
+
+  # kops/domains
   kops_domain = data.terraform_remote_state.domains.outputs.kops_public_zone.domain
+
+  # kops/shared
+  etcd_kms_key = data.terraform_remote_state.shared.outputs.etcd_kms_key
+  iam          = data.terraform_remote_state.shared.outputs.iam
+  
+  # backend (accounts)
+  account_admin = data.terraform_remote_state.accounts.outputs.organization_accounts[terraform.workspace].role
+
+  # iam/users
+  main_admin = data.terraform_remote_state.iam_users.outputs.main_admin_role.arn
 
   cluster_name     = var.cluster_name
   cluster_instance = "${local.cluster_name}-${terraform.workspace}"
-  cluster_fqdn     = "${local.cluster_instance}.${locals.kops_domain}"
+  cluster_fqdn     = "${local.cluster_instance}.${local.kops_domain}"
   
   kubernetes_version = var.cluster_settings.kubernetes_version
 
@@ -12,7 +32,7 @@ locals {
   node_instance_type   = var.cluster_settings.node_instance_type
   node_volume_size     = var.cluster_settings.node_volume_size  
   
-  node_count = var.cluster_settings.node_count != -1 ? var.cluster_settings.node_count : length(local.availability_zones) * 1
+  nodes_per_az = var.cluster_settings.nodes_per_az
   
   ami_id = var.ami_id
 
@@ -30,9 +50,5 @@ locals {
 
   pki_folder = var.folders.pki_folder # terraform/kops/backend/pki
 
-  # kops/backend
-  state_store = data.terraform_remote_state.backend.outputs.state_store
-
-  # kops/shared
-  iam = data.terraform_remote_state.shared.outputs.iam
+  admin_roles = terraform.workspace == "main" ? [local.main_admin] : [local.account_admin]
 }

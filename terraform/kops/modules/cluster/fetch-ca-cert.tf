@@ -1,7 +1,7 @@
 resource "null_resource" "ca_cert_fetch" {
   triggers = {
     ca_cert     = local.ca_cert
-    state_store = local.state_store
+    state_store = local.state_store.bucket.name
   }
 
   provisioner "local-exec" {

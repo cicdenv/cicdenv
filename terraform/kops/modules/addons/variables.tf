@@ -11,6 +11,11 @@ variable "cluster_fqdn" {
   description = "Cluster fully qualified domain name: <cluser>-<workspace>.kops.cicdenv.com."
 }
 
+variable "admin_roles" {
+  type = list(string)
+  description = "List of admin role ARNs"
+}
+
 variable "output_files" {
   type = object({
     authenticator_config = string

@@ -19,8 +19,4 @@ module "bastion" {
 
   ssh_service_port = var.ssh_service_port
   ssh_host_port    = var.ssh_host_port
-
-  providers = {
-    aws.main = aws.main
-  }
 }

@@ -19,7 +19,7 @@ variable "cluster_settings" {
     master_volume_size   = string
     node_instance_type   = string
     node_volume_size     = string
-    node_count           = string
+    nodes_per_az         = string
   })
   description = "Overrideable cluster defaults."
 }

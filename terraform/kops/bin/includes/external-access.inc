@@ -15,9 +15,9 @@ terraform {
 }
 EOF
 
-cat <<EOF > "${cluster_config_state}/locals.tf"
+cat <<EOF > "${external_access_state}/locals.tf"
 locals {
-  cluster_name = "${cluster_name}
+  cluster_name = "${cluster_name}"
 }
 EOF
 

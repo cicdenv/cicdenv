@@ -1,10 +1,10 @@
 locals {
+  # shared:
+  state_store = data.terraform_remote_state.backend.outputs.state_store
+
   region = data.aws_region.current.name
 
   cluster_fqdn = var.cluster_fqdn
-
-  # shared:
-  state_store = data.terraform_remote_state.backend.outputs.state_store
 
   # input files
   public_key = var.input_files.public_key

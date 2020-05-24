@@ -12,12 +12,12 @@ cluster_name=${1?Usage $0 <cluster-short-name> [kube-version]}; shift
 
 # Terraform variable bindings
 declare -A tf_vars=(
-	[kubernetes_version]=1.18.2
-	[master_instance_type]=c5d.large
-	[master_volume_size]=100 # GB
-	[node_instance_type]=r5dn.xlarge
-	[node_volume_size]=100   # GB
-	[node_count]=-1
+    [kubernetes_version]=1.18.2
+    [master_instance_type]=c5d.large
+    [master_volume_size]=100 # GB
+    [node_instance_type]=r5dn.xlarge
+    [node_volume_size]=100   # GB
+    [nodes_per_az]=2
 )
 for binding in "$@"; do
     if [[ "$binding" != -* ]]; then

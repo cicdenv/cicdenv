@@ -1,6 +1,6 @@
 resource "aws_elb" "api_public_clb" {
   name     = "api-${local.cluster_name}"
-  subnets  = local.public_subnets_ids
+  subnets  = local.public_subnet_ids
   security_groups = [local.security_group.id]
 
   cross_zone_load_balancing = true

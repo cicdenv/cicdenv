@@ -18,7 +18,7 @@
       ],
       "Condition": {
         "StringEquals": {
-          "ec2:ResourceTag/KubernetesCluster": "${cluster_name}"
+          "ec2:ResourceTag/KubernetesCluster": "${cluster_fqdn}"
         }
       }
     },
@@ -34,7 +34,7 @@
       ],
       "Condition": {
         "StringEquals": {
-          "autoscaling:ResourceTag/KubernetesCluster": "${cluster_name}"
+          "autoscaling:ResourceTag/KubernetesCluster": "${cluster_fqdn}"
         }
       }
     },
@@ -54,14 +54,14 @@
       "Action": [
         "s3:Get*"
       ],
-      "Resource": "arn:aws:s3:::${state_store}/${cluster_name}/*"
+      "Resource": "arn:aws:s3:::${state_store}/${cluster_fqdn}/*"
     },
     {
       "Effect": "Allow",
       "Action": [
         "s3:Put*"
       ],
-      "Resource": "arn:aws:s3:::${state_store}/${cluster_name}/backups/*"
+      "Resource": "arn:aws:s3:::${state_store}/${cluster_fqdn}/backups/*"
     },
     {
       "Effect": "Allow",

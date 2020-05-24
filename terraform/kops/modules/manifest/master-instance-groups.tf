@@ -6,7 +6,7 @@ data "template_file" "master_instance_group" {
   vars = {
     name             = "master-${each.key}"
     role             = "Master"
-    cluster_name     = local.cluster_name
+    cluster_fqdn     = local.cluster_fqdn
     ami_id           = local.ami_id
     instance_type    = local.master_instance_type
     max_size         = "1"
@@ -17,6 +17,6 @@ data "template_file" "master_instance_group" {
 
     security_groups = "[${join(",", local.master_security_groups)}]"
 
-    subnet_name = each.key
+    subnet_name = "private-${each.key}"
   }
 }

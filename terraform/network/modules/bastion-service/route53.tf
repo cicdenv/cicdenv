@@ -1,5 +1,5 @@
 resource "aws_route53_record" "bastion" {
-  name    = "bastion-${terraform.workspace}"
+  name    = "bastion"
   zone_id = var.zone_id
   type    = "A"
 
@@ -9,6 +9,4 @@ resource "aws_route53_record" "bastion" {
 
     evaluate_target_health = true
   }
-
-  provider = aws.main
 }

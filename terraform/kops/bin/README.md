@@ -22,5 +22,5 @@ component that is hard-wired to one accounts `network/shared` VPC.
 NOTE: generally us `cicdctl cluster create ...` for creating kops clusters
 ```bash
 cicdenv$ terraform/kops/bin/generate-cluster-states.sh 1-18a3
-cicdenv$ terraform/kops/bin/generate-cluster-states.sh 1-18a3 node_instance_type=r5dn.2xlarge node_count=6
+cicdenv$ terraform/kops/bin/generate-cluster-states.sh 1-18a3 node_instance_type=r5dn.2xlarge nodes_per_az=3
 ```

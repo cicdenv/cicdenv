@@ -2,7 +2,7 @@ data "terraform_remote_state" "domains" {
   backend = "s3"
   config = {
     bucket = var.bucket
-    key    = "state/main/domains/terraform.tfstate"
+    key    = "state/${terraform.workspace}/domains/terraform.tfstate"
     region = var.region
   }
 }

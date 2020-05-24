@@ -6,9 +6,9 @@ variable "terraform_settings" {
   description = "For importing terraform states."
 }
 
-variable "cluster_name" {
+variable "cluster_fqdn" {
   type = string
-  description = "Cluster name without workspace and domain, example: '1-18a3'."
+  description = "Cluster fully qualified domain name: <cluser>-<workspace>.kops.cicdenv.com."
 }
 
 # From kops-driver
@@ -19,7 +19,7 @@ variable "cluster_settings" {
     master_volume_size   = string
     node_instance_type   = string
     node_volume_size     = string
-    node_count           = string
+    nodes_per_az         = string
   })
   description = "Overrideable cluster defaults."
 }

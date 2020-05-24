@@ -1,8 +1,8 @@
-data "terraform_remote_state" "shared" {
+data "terraform_remote_state" "backend" {
   backend = "s3"
   config = {
     bucket = var.terraform_settings.bucket
-    key    = "state/${terraform.workspace}/kops_shared/terraform.tfstate"
+    key    = "state/main/kops_backend/terraform.tfstate"
     region = var.terraform_settings.region
   }
 }

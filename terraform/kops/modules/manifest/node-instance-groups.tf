@@ -6,17 +6,17 @@ data "template_file" "node_instance_group" {
   vars = {
     name             = "nodes-${each.key}"
     role             = "Node"
-    cluster_name     = local.cluster_name
+    cluster_fqdn     = local.cluster_fqdn
     ami_id           = local.ami_id
     instance_type    = local.node_instance_type
-    max_size         = local.node_counts[each.key]
-    min_size         = local.node_counts[each.key]
+    max_size         = local.nodes_per_az * 5
+    min_size         = local.nodes_per_az
     root_volume_size = local.node_volume_size
 
     iam_profile_arn = local.iam.node.instance_profile.arn
 
     security_groups = "[${join(",", local.node_security_groups)}]"
 
-    subnet_name = each.key
+    subnet_name = "private-${each.key}"
   }
 }

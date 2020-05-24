@@ -2,10 +2,10 @@
 apiVersion: kops/v1alpha2
 kind: Cluster
 metadata:
-  name: ${cluster_name}
+  name: ${cluster_fqdn}
 spec:
   addons:
-  - manifest: s3://${state_store}/${cluster_name}/addons/custom-channel.yaml
+  - manifest: s3://${state_store}/${cluster_fqdn}/addons/custom-channel.yaml
   api:
     loadBalancer:
       type: Internal
@@ -17,7 +17,7 @@ spec:
     rbac: {}
   channel: stable
   cloudProvider: aws
-  configBase: s3://${state_store}/${cluster_name}
+  configBase: s3://${state_store}/${cluster_fqdn}
   dnsZone: ${private_dns_zone}
   etcdClusters:
   - etcdMembers:
@@ -31,13 +31,15 @@ ${etcd_members}
     legacy: false
   kubeDNS:
     provider: CoreDNS
+    nodeLocalDNS:
+      enabled: true
   kubernetesApiAccess:
   - 0.0.0.0/0
   kubelet:
     anonymousAuth: false
   kubernetesVersion: ${kubernetes_version}
-  masterInternalName: api.internal.${cluster_name}
-  masterPublicName: api.${cluster_name}
+  masterInternalName: api.internal.${cluster_fqdn}
+  masterPublicName: api.${cluster_fqdn}
   networkCIDR: ${network_cidr}
   networkID: ${vpc_id}
   networking:

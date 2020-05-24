@@ -1,7 +1,7 @@
 resource "null_resource" "kops_create" {
   triggers = {
     region       = local.region
-    state_store  = local.state_store
+    state_store  = local.state_store.bucket.name
     cluster_fqdn = local.cluster_fqdn
   }
 

@@ -42,7 +42,7 @@ data "template_file" "cluster_spec" {
   template = file("${path.module}/templates/cluster-spec.tpl")
 
   vars = {
-    cluster_name = local.cluster_name
+    cluster_fqdn = local.cluster_fqdn
     state_store  = local.state_store.bucket.name
     
     kubernetes_version = local.kubernetes_version
@@ -50,7 +50,7 @@ data "template_file" "cluster_spec" {
     vpc_id           = local.vpc_id
     network_cidr     = local.network_cidr
     networking       = local.networking
-    private_dns_zone = local.private_dns_zone
+    private_dns_zone = local.private_dns_zone.zone_id
 
     etcd_members    = join("\n", [for member in values(data.template_file.etcd_members)    : member.rendered])
     private_subnets = join("\n", [for subnet in values(data.template_file.private_subnets) : subnet.rendered])

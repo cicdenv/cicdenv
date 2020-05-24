@@ -1,4 +1,7 @@
 locals {
+  # kops/backend
+  state_store = data.terraform_remote_state.backend.outputs.state_store
+
   cluster_fqdn = var.cluster_fqdn
 
   # input files
@@ -17,8 +20,5 @@ locals {
     "IAMRolePolicy=ExistsAndWarnIfChanges",
     "IAMInstanceProfileRole=ExistsAndWarnIfChanges",
   ]
-  lifecycle_overrides = "--lifecycle-overrides ${join(",", iam_overrides)}"
-
-  # kops/backend
-  state_store = data.terraform_remote_state.backend.outputs.state_store
+  lifecycle_overrides = "--lifecycle-overrides ${join(",", local.iam_overrides)}"
 }

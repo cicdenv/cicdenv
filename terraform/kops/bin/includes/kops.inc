@@ -17,13 +17,13 @@ EOF
 
 cat <<EOF > "${kops_component}/locals.tf"
 locals {
-  cluster_name         = "${cluster_name}
+  cluster_name         = "${cluster_name}"
   kubernetes_version   = "${tf_vars[kubernetes_version]}"
   master_instance_type = "${tf_vars[master_instance_type]}"
   master_volume_size   = "${tf_vars[master_volume_size]}"
   node_instance_type   = "${tf_vars[node_instance_type]}"
   node_volume_size     = "${tf_vars[node_volume_size]}"
-  node_count           = ${tf_vars[node_count]}
+  nodes_per_az         = ${tf_vars[nodes_per_az]}
 }
 EOF
 
@@ -44,7 +44,7 @@ module "kops_driver" {
     master_volume_size   = local.master_volume_size
     node_instance_type   = local.node_instance_type
     node_volume_size     = local.node_volume_size
-    node_count           = local.node_count
+    nodes_per_az         = local.nodes_per_az
   }
 
   ami_id = var.kops_ami_id
@@ -57,16 +57,20 @@ module "kops_driver" {
 EOF
 
 cat <<'EOF' > "${kops_component}/outputs.tf"
-output "cluster_short_name" {
-  value = local.cluster_short_name
-}
-
 output "cluster_name" {
-  value = module.kops_driver.cluster_name
+  value = local.cluster_name
 }
 
-output "image_id" {
-    value = module.kops_driver.ami
+output "cluster_instance" {
+  value = module.kops_driver.cluster_instance
+}
+
+output "cluster_fqdn" {
+  value = module.kops_driver.cluster_fqdn
+}
+
+output "ami_id" {
+    value = module.kops_driver.ami_id
 }
 
 output "kops_export_kubecfg_command" {
