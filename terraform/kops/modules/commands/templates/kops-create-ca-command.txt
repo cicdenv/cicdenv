@@ -1,0 +1,7 @@
+${env_vars} \
+kops create secret \
+keypair ca \
+--cert ${pki_folder}/ca.pem \
+--key  ${pki_folder}/ca-key.pem \
+--name "${cluster_fqdn}" \
+--state=${state_store}

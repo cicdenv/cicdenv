@@ -1,0 +1,19 @@
+variable "terraform_settings" {
+  type = object({
+    region = string  # tf s3 backend region
+    bucket = string  # tf s3 backend bucket name
+  })
+  description = "For importing terraform states."
+}
+
+variable "cluster_fqdn" {
+  type = string
+  description = "Cluster fully qualified domain name: <cluser>-<workspace>.kops.cicdenv.com."
+}
+
+variable "output_files" {
+  type = object({
+    authenticator_config = string
+  })
+  description = "Output path for files generated into terraform/kops/clusters/<name>/cluster/<workspace> component."
+}

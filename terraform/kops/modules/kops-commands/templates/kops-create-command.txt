@@ -1,4 +1,0 @@
-${env_vars} \
-kops create \
--f ${kops_manifest} \
---state=${state_store}

@@ -1,0 +1,6 @@
+${env_vars} \
+kops create secret \
+--name "${cluster_fqdn}" \
+--state=${state_store} \
+sshpublickey admin \
+-i ${public_key}

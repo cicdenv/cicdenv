@@ -1,4 +1,0 @@
-${env_vars} \
-kops edit cluster \
---name=${cluster_name} \
---state=${state_store}

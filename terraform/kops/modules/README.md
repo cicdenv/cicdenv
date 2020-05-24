@@ -6,10 +6,24 @@ components generated from [terraform/kops/bin](../bin)
 
 `cicdctl cluster create ...`
 
+## Cluster ID
+```
+${name}                         =>  "cluster name"
+${name}:${workspace}            =>  "cluster instance name"
+${name}-${workspace}.${domain}  =>  "cluster instance fqdn"
+```
+
+Example:  `name=1-18a3`
+```
+1-18a3
+1-18a3:dev
+1-18a3-dev.kops.cicdenv.com
+```
+
 ## Overiview
 There are 3+ terraform components that go into a kops cluster:
-* `terraform/kops/clusters/<cluster-name>/cluster-config`
-* `terraform/kops/clusters/<cluster-name>/<workspace>/cluster`
+* `terraform/kops/clusters/<cluster-name>/kops`
+* `terraform/kops/clusters/<cluster-name>/cluster/<workspace>`
 * `terraform/kops/clusters/<cluster-name>/external-access`
 
 The middle "component" above has the `kubernetes.tf` output
@@ -21,7 +35,7 @@ on thes components.
 
 ```
 KOPS module                    Terraform component
-* driver                       <cluster-home>/cluster-config
+* driver                       <cluster-home>/kops
   * manifest
   * cluster     --> creates    <cluster-home>/<workspace>/cluster
     * commands

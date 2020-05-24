@@ -36,7 +36,7 @@ ACCESS = 2
 
 def cluster_targets(name, workspace):
     return [
-        parse_target(f'kops/clusters/{name}/cluster-config:{workspace}'),
+        parse_target(f'kops/clusters/{name}/kops:{workspace}'),
         parse_target(f'kops/clusters/{name}/cluster/{workspace}:{workspace}'),
         parse_target(f'kops/clusters/{name}/external-access:{workspace}'),
     ]

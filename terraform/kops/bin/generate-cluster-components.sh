@@ -14,7 +14,9 @@ cluster_name=${1?Usage $0 <cluster-short-name> [kube-version]}; shift
 declare -A tf_vars=(
 	[kubernetes_version]=1.18.2
 	[master_instance_type]=c5d.large
+	[master_volume_size]=100 # GB
 	[node_instance_type]=r5dn.xlarge
+	[node_volume_size]=100   # GB
 	[node_count]=-1
 )
 for binding in "$@"; do
@@ -32,11 +34,11 @@ done
 source "../bin/new-state-defaults.inc"
 
 #
-# Cluster Config state
+# Cluster Config component
 #
-source "bin/includes/cluster-config.inc"
+source "bin/includes/kops.inc"
 
 #
-# External Access state
+# External Access component
 #
 source "bin/includes/external-access.inc"

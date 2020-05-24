@@ -1,0 +1,4 @@
+${env_vars} \
+kops edit cluster \
+--name=${cluster_fqdn} \
+--state=${state_store}

@@ -5,11 +5,11 @@ For each kops cluster we generate 2 workspaced states in the
 "cluster home" folder:
 `terraform/kops/clusters/<cluster-name>`
 
-This script generates the `cluster-config` and `external-access` states:
-* `terraform/kops/clusters/<cluster-name>/cluster-config`
+This script generates the `kops` and `external-access` states:
+* `terraform/kops/clusters/<cluster-name>/kops`
 * `terraform/kops/clusters/<cluster-name>/external-access`
 
-Running the `cluster-config` state uses `kops update` terraform output to create
+Running the `kops` state uses `kops update` terraform output to create
 a `cluster` state for each workspace when applied:
 * `terraform/kops/clusters/<cluster-name>/<workspace>/cluster`
 

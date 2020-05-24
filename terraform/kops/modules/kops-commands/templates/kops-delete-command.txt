@@ -1,4 +1,0 @@
-${env_vars} \
-kops delete cluster \
---name=${cluster_name} \
---state=${state_store}

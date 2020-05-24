@@ -15,16 +15,22 @@ terraform {
 }
 EOF
 
+cat <<EOF > "${cluster_config_state}/locals.tf"
+locals {
+  cluster_name = "${cluster_name}
+}
+EOF
+
 cat <<'EOF' > "${external_access_state}/external-access.tf"
 module "kops_external_access" {
-  source = "../../../modules/kops-external-access"
+  source = "../../../modules/external-access"
 
-  region = var.region
-  bucket = var.bucket
+  terraform_settings = {
+    region = var.region
+    bucket = var.bucket
+  }
 
-  target_region = var.target_region
-
-  cluster_short_name = var.cluster_short_name
+  cluster_name = local.cluster_name
 
   providers = {
     aws.main = aws.main
@@ -33,12 +39,8 @@ module "kops_external_access" {
 EOF
 
 cat <<'EOF' > "${external_access_state}/outputs.tf"
-output "lb_dns_name" {
-  value = module.kops_external_access.lb_dns_name
-}
-
-output "lb_zone_id" {
-  value = module.kops_external_access.lb_zone_id
+output "external_lb" {
+  value = module.kops_external_access.external_lb
 }
 EOF
 
@@ -61,22 +63,14 @@ cat <<EOF > "${external_access_state}/variables.tf"
 variable "region" {} # backend-config.tfvars
 variable "bucket" {} # backend-config.tfvars
 
-variable "whitelisted_cidr_blocks" {  # whitelisted-networks.tfvars
-  type = list
-}
-
 variable "target_region" {
   default = "us-west-2"
-}
-
-variable "cluster_short_name" {
-  default = "${cluster_name}"
 }
 EOF
 
 cat <<EOF > "${external_access_state}/README.md"
 ## Purpose
-Creates external API server access for a single account (workspace) KOPS kubernetes external-access.
+Creates external API server access for a single account (workspace) KOPS kubernetes.
 
 ## Workspaces
 This state is per-account.
