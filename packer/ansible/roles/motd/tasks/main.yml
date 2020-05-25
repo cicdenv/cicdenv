@@ -1,0 +1,7 @@
+# https://eklitzke.org/disabling-ubuntu-motd-spam
+- name: disable ubuntu motd-news
+  lineinfile:
+    dest: /etc/default/motd-news
+    state: present
+    regexp: '^ENABLED='
+    line: 'ENABLED=0'

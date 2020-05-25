@@ -8,3 +8,4 @@
     - ebs-disks
     - packages
     - docker-ce
+    - motd
