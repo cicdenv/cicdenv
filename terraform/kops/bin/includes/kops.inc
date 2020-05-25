@@ -31,7 +31,7 @@ cat <<'EOF' > "${kops_component}/kops_driver.tf"
 module "kops_driver" {
   source = "../../../modules/driver"
 
-  terraform_settings = {
+  terraform_state = {
     region = var.region
     bucket = var.bucket
   }

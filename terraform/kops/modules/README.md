@@ -42,5 +42,4 @@ KOPS module                    Terraform component
     * user kubeconfig
   * addons
 * external-access              <cluster-home>/external-access
-  * apiserver external-access
 ```

@@ -1,7 +1,7 @@
 module "kops_commands" {
   source = "../commands"
 
-  terraform_settings = var.terraform_settings
+  terraform_state = var.terraform_state
 
   cluster_fqdn = local.cluster_fqdn
 

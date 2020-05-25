@@ -25,7 +25,7 @@ cat <<'EOF' > "${external_access_state}/external-access.tf"
 module "kops_external_access" {
   source = "../../../modules/external-access"
 
-  terraform_settings = {
+  terraform_state = {
     region = var.region
     bucket = var.bucket
   }
