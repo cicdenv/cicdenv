@@ -32,7 +32,7 @@ data "template_file" "jenkins_server_service" {
     
     github_oauth_redirect_uri = local.github_oauth_redirect_uri
 
-    aws_region = var.region
+    aws_region = data.aws_region.current.name
     
     aws_main_account_id = local.main_account.id
     

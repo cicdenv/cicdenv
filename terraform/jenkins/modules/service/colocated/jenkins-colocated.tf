@@ -1,8 +1,10 @@
 module "cloudinit" {
   source = "../../user-data/colocated"
 
-  region = var.region
-  bucket = var.bucket
+  terraform_state = {
+    region = var.terraform_state.region
+    bucket = var.terraform_state.bucket
+  }
   
   jenkins_instance = var.name
   executors        = var.executors
@@ -11,8 +13,10 @@ module "cloudinit" {
 module "colocated" {
   source = "../../compute/server"
 
-  region = var.region
-  bucket = var.bucket
+  terraform_state = {
+    region = var.terraform_state.region
+    bucket = var.terraform_state.bucket
+  }
   
   jenkins_instance = var.name
   instance_type    = var.instance_type

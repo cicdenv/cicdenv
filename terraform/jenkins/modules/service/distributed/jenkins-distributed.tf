@@ -1,8 +1,10 @@
 module "server_cloudinit" {
   source = "../../user-data/server"
 
-  region = var.region
-  bucket = var.bucket
+  terraform_state = {
+    region = var.terraform_state.region
+    bucket = var.terraform_state.bucket
+  }
   
   jenkins_instance = var.name
 }
@@ -10,8 +12,10 @@ module "server_cloudinit" {
 module "agent_cloudinit" {
   source = "../../user-data/agent"
 
-  region = var.region
-  bucket = var.bucket
+  terraform_state = {
+    region = var.terraform_state.region
+    bucket = var.terraform_state.bucket
+  }
 
   jenkins_instance = var.name
   executors        = var.executors
@@ -20,8 +24,11 @@ module "agent_cloudinit" {
 module "server" {
   source = "../../compute/server"
 
-  region = var.region
-  bucket = var.bucket
+  terraform_state = {
+    region = var.terraform_state.region
+    bucket = var.terraform_state.bucket
+  }
+
   ami_id = var.ami_id
 
   jenkins_instance = var.name
@@ -36,8 +43,11 @@ module "server" {
 module "agents" {
   source = "../../compute/agents"
 
-  region = var.region
-  bucket = var.bucket
+  terraform_state = {
+    region = var.terraform_state.region
+    bucket = var.terraform_state.bucket
+  }
+  
   ami_id = var.ami_id
   
   jenkins_instance = var.name

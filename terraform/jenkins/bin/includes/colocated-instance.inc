@@ -14,8 +14,11 @@ cat <<EOF > "instances/${name}/jenkins.tf"
 module "jenkins_instance" {
   source = "../../modules/service/colocated"
 
-  region = var.region
-  bucket = var.bucket
+  terraform_state = {
+    region = var.region
+    bucket = var.bucket
+  }
+  
   ami_id = local.ami_id
   
   name = "${name}"
