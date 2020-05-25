@@ -1,6 +1,6 @@
 resource "aws_security_group" "test" {
   name   = "manual-test"
-  vpc_id = module.vpc.vpc_id
+  vpc_id = module.test_vpc.vpc.id
 
   description = "manual testing"
 }

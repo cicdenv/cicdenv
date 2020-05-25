@@ -21,9 +21,8 @@ pushd "$DIR/.." >/dev/null
 
 export AWS_PROFILE=admin-${workspace}
 AWS_OPTS="--profile=${AWS_PROFILE} --region=us-west-2"
-
 account_id=$(aws --profile=admin-main sts get-caller-identity | jq -r '.Account')
-subnet_id=$(terraform output -json public_subnet_ids | jq -r '.public | ..id | .[0]')
+subnet_id=$(terraform output -json subnets | jq -r '.public | .[].id')
 security_group_id=$(terraform output -json security_group_id | jq -r)
 
 instance_profile="$(terraform output -json instance_profile_arn | jq -r )"

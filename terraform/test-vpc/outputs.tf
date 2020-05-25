@@ -1,5 +1,5 @@
 output "vpc" {
-  value = module.test_vpc.vpc_id
+  value = module.test_vpc.vpc
 }
 
 output "private_dns_zone" {
@@ -19,9 +19,7 @@ output "route_tables" {
 }
 
 output "nat_gateways" {
-  value = {
-    module.nat_gateways.topology
-  }
+  value = module.nat_gateways.topology
 }
 
 output "vpc_endpoints" {

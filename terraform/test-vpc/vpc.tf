@@ -3,6 +3,8 @@ module "test_vpc" {
 
   name = "test"
 
+  domain = var.domain
+
   vpc_cidr_block = var.network_cidr
 
   availability_zones = local.availability_zones
@@ -23,7 +25,7 @@ module "vpc_endpoints" {
 
   name = "test"
 
-  vpc_id = module.test_vpc.id
+  vpc_id = module.test_vpc.vpc.id
 
   public_route_tables  = module.test_vpc.route_tables["public"]
   private_route_tables = values(module.test_vpc.route_tables["private"]).*.id
