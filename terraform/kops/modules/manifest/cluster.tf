@@ -31,10 +31,10 @@ data "template_file" "public_subnets" {
 
   vars = {
     availability_zone = each.key
-    subnet_name       = "utility-${each.key}"
+    subnet_name       = "public-${each.key}"
     subnet_id         = local.public_subnets[each.key].id
     subnet_cidr       = local.public_subnets[each.key].cidr_block
-    subnet_type       = "Utility"
+    subnet_type       = "Public"
   }
 }
 

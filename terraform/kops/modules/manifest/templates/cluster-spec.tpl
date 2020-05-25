@@ -9,6 +9,7 @@ spec:
   api:
     loadBalancer:
       type: Internal
+      useApiInternal: true
       additionalSecurityGroups: ${lb_security_groups}
   authentication:
     aws:
@@ -38,7 +39,7 @@ ${etcd_members}
   kubelet:
     anonymousAuth: false
   kubernetesVersion: ${kubernetes_version}
-  masterInternalName: api.internal.${cluster_fqdn}
+  masterInternalName: api.${cluster_fqdn}
   masterPublicName: api.${cluster_fqdn}
   networkCIDR: ${network_cidr}
   networkID: ${vpc_id}
