@@ -26,6 +26,7 @@ module "server" {
 
   jenkins_instance = var.name
   instance_type    = var.server_instance_type
+  ami_id           = var.ami_id
 
   user_data = module.server_cloudinit.user_data
 
@@ -41,6 +42,7 @@ module "agents" {
   
   jenkins_instance = var.name
   instance_type    = var.agent_instance_type
+  ami_id           = var.ami_id
 
   user_data = module.agent_cloudinit.user_data
 }

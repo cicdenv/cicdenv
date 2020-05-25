@@ -16,6 +16,7 @@ module "colocated" {
   
   jenkins_instance = var.name
   instance_type    = var.instance_type
+  ami_id           = var.ami_id
 
   user_data = module.cloudinit.user_data
 
