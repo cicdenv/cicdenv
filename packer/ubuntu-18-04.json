@@ -4,7 +4,7 @@
     "vpc_id": null,
     "subnet_id": null,
     "key_id": null,
-    "accounts": null,
+    "account_ids": null,
     "apt_repo_bucket": null
   },
   "builders": [
@@ -29,8 +29,8 @@
       "ssh_timeout": "2m",
       "ami_name": "base/hvm-ssd/ubuntu-bionic-18.04-amd64-server-{{ isotime | clean_resource_name }}",
       "ami_description": "https://github.com/vogtech/cicdenv/terraform/packer/ubuntu-18.04.json",
-      "snapshot_users": "{{user `accounts`}}",
-      "ami_users": "{{user `accounts`}}",
+      "snapshot_users": "{{user `account_ids`}}",
+      "ami_users": "{{user `account_ids`}}",
       "ami_block_device_mappings": [
         {
           "device_name": "/dev/sda1",
