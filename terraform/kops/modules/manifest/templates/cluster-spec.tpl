@@ -10,6 +10,7 @@ spec:
     loadBalancer:
       type: Internal
       useApiInternal: true
+      crossZoneLoadBalancing: true
       additionalSecurityGroups: ${lb_security_groups}
   authentication:
     aws:
