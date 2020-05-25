@@ -56,10 +56,12 @@ def bastion_address(user, workspace):
     address = f'{user}@bastion.{workspace}.{domain}'
     return address
 
-
 def ssh_cmd(cmd, user, port, identity, jump, workspace, flags):
-    address = bastion_address(user, workspace)
+    _bastion = bastion_address(user, workspace)
     if jump:
-        return [cmd] + ssh_opts(port, identity, flags) + ['-J', address, jump]
+        address = f'ubuntu@{jump}'
+        proxy_opts = f'ProxyCommand=ssh {" ".join(ssh_opts(port, DEFAULT_USER_IDENTITY, flags))} -W %h:%p {_bastion}'
+        return [cmd] + ssh_opts(port, DEFAULT_HOST_IDENTITY, flags) + ['-o', proxy_opts, address]
     else:
+        address = _bastion
         return [cmd] + ssh_opts(port, identity, flags) + [address]
