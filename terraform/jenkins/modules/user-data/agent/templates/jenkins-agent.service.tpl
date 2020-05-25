@@ -2,10 +2,13 @@
 Description=Jenkins Agent
 Requires=docker.service jenkins-agent-disks.service jenkins-network.service
 After=docker.service jenkins-agent-disks.service jenkins-network.service
+StartLimitIntervalSec=10
+StartLimitBurst=2
 
 [Service]
 TimeoutStartSec=0
 Restart=always
+RestartSec=1
 EnvironmentFile=/etc/systemd/system/jenkins-agent.env
 ExecStartPre=/usr/bin/docker pull ${ecr_url}:$${TAG}
 ExecStartPre=/usr/bin/docker tag ${ecr_url}:$${TAG} ${image}:$${TAG}

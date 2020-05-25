@@ -2,10 +2,13 @@
 Description=Jenkins Server
 Requires=docker.service jenkins-server-disks.service jenkins-network.service
 After=docker.service jenkins-server-disks.service jenkins-network.service
+StartLimitIntervalSec=10
+StartLimitBurst=2
 
 [Service]
 TimeoutStartSec=0
 Restart=always
+RestartSec=1
 Environment=IIDENC_FILE=/var/jenkins_home/identity.key.enc
 Environment=SECKEY_FILE=/var/jenkins_home/secret.key
 Environment=NSSKEY_FILE=/var/jenkins_home/secret.key.not-so-secret
