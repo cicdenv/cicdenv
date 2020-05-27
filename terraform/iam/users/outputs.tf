@@ -10,10 +10,14 @@ output "credentials" {
   }}
 }
 
-output "main_admin_role" {
+output "iam" {
   value = {
-    name = aws_iam_role.main_admin.name
-    arn  = aws_iam_role.main_admin.arn
-    path = aws_iam_role.main_admin.path
+    main_admin = {
+      role = {
+        name = aws_iam_role.main_admin.name
+        arn  = aws_iam_role.main_admin.arn
+        path = aws_iam_role.main_admin.path
+      }
+    }
   }
 }

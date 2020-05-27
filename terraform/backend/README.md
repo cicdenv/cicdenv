@@ -55,3 +55,53 @@ cicdenv$ console
 ${USER}:~/cicdenv$ aws --profile=admin-main --region=us-east-1 ...
 ${USER}:~/cicdenv$ exit
 ```
+
+## Importing
+```hcl
+data "terraform_remote_state" "accounts" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/backend/terraform.tfstate"
+    region = var.region
+  }
+}
+```
+
+## Outputs
+```hcl
+all_roots = [
+  "arn:aws:iam::<main-acct-id>:root",
+  "arn:aws:iam::<account-id>:root",
+  ...
+]
+console_urls = [
+  "https://<main-acct-id>.signin.aws.amazon.com/console/",
+  "https://<alias>.signin.aws.amazon.com/console/",
+]
+main_account = {
+  "alias" = "<alias>"
+  "id" = "<main-acct-id>"
+  "root" = "arn:aws:iam::<main-acct-id>:root"
+}
+org_roots = [
+  "arn:aws:iam::<account-id>:root",
+  ...
+]
+organization = {
+  "id" = "o-<[a-z0-9]*10>"
+}
+organization_accounts = {
+  "<account-name>" = {
+    "id" = "<account-id>"
+    "ou" = "<organizational-unit>"
+    "role" = "arn:aws:iam::<account-id>:role/<account-name>-admin"
+    "root" = "arn:aws:iam::<account-id>:root"
+  }
+  ...
+}
+vpc_endpoints_dynamodb_table = {
+  "hash_key" = "VPCeID"
+  "name" = "vpc-endpoints"
+}
+```

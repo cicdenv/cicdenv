@@ -12,6 +12,29 @@ N/A.
 cicdenv$ cicdctl terraform <init|plan|apply|destroy> iam/events:main
 ...
 ```
+## Importing
+```hcl
+data "terraform_remote_state" "iam_events" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/iam_events/terraform.tfstate"
+    region = var.region
+  }
+}
+```
+
+## Outputs
+```hcl
+sns = {
+  "topics" = {
+    "iam_user_updates" = {
+      "arn" = "arn:aws:sns:us-east-1:<main-acct-id>:iam-user-updates"
+      "name" = "iam-user-updates"
+    }
+  }
+}
+```
 
 ## Samples
 ```json

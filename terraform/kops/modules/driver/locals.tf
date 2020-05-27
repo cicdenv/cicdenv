@@ -19,7 +19,7 @@ locals {
   account_admin = data.terraform_remote_state.accounts.outputs.organization_accounts[terraform.workspace].role
 
   # iam/users
-  main_admin = data.terraform_remote_state.iam_users.outputs.main_admin_role.arn
+  main_admin = data.terraform_remote_state.iam_users.outputs.iam.main_admin.role.arn
 
   cluster_name     = var.cluster_name
   cluster_instance = "${local.cluster_name}-${terraform.workspace}"

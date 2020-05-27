@@ -10,6 +10,33 @@ cicdenv$ cicdctl terraform <init|plan|apply|destroy> packer:main
 ...
 ```
 
+## Importing
+N/A.
+
+## Outputs
+```hcl
+allowed_account_ids = <account-id>,...
+iam = {
+  "instance_profile" = {
+    "arn" = "arn:aws:iam::<main-acct-id>:instance-profile/packer-build"
+  }
+  "policy" = {
+    "arn" = "arn:aws:iam::<main-acct-id>:policy/PackerBuild"
+    "name" = "PackerBuild"
+    "path" = "/"
+  }
+  "role" = {
+    "arn" = "arn:aws:iam::<main-acct-id>:role/packer-build"
+    "name" = "packer-build"
+  }
+}
+key = {
+  "alias" = "alias/ebs"
+  "arn" = "arn:aws:kms:<region>:<main-acct-id>:key/<guid>"
+  "key_id" = "<guid>"
+}
+```
+
 ## Encrypted Boot Volumes
 For now not supported correctly by current packer versions.
 * https://github.com/hashicorp/packer/issues/6212

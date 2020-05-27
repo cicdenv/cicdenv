@@ -18,3 +18,18 @@ cicdenv$ cicdctl terraform apply iam/organization-account:${WORKSPACE}
 cicdenv$ cicdctl terraform <init|plan|apply|destroy> iam/organization-account:${WORKSPACE}
 ...
 ```
+
+## Importing
+N/A.
+
+## Outputs
+```hcl
+console_url = https://<account-id>.signin.aws.amazon.com/console/
+switch_role_url = https://signin.aws.amazon.com/switchrole?roleName=<account-name>-admin&account=<account-id>
+iam = {
+  "role" = {
+    "arn" = "arn:aws:iam::<account-id>:role/<account-name>-admin"
+    "name" = "<account-name>-admin"
+  }
+}
+```

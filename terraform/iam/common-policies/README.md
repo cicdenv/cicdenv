@@ -11,3 +11,28 @@ This state is per-account.
 cicdenv$ cicdctl terraform <init|plan|apply|destroy> iam/common-policies:${WORKSPACE}
 ...
 ```
+
+## Importing
+```hcl
+data "terraform_remote_state" "iam_common_policies" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/${terraform.workspace}/iam_common-policies/terraform.tfstate"
+    region = var.region
+  }
+}
+```
+
+## Outputs
+```hcl
+iam = {
+  "apt_repo" = {
+    "policy" = {
+      "arn" = "arn:aws:iam::<account-id>:policy/S3AptRepositoryReadOnly"
+      "name" = "S3AptRepositoryReadOnly"
+      "path" = "/"
+    }
+  }
+}
+```

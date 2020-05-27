@@ -36,3 +36,16 @@ ${USER}:~/cicdenv$ exit
 cicdenv$ cicdctl terraform <init|plan|apply|destroy> backend/state-locking:${WORKSPACE}
 ...
 ```
+
+## Importing
+```hcl
+N/A.
+```
+
+## Outputs
+```hcl
+terraform_lock_dynamodb_table = {
+  "hash_key" = "LockID"
+  "name" = "terraform-state-lock"
+}
+```

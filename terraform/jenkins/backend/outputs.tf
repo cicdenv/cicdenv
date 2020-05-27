@@ -1,8 +1,8 @@
 output "jenkins_key" {
   value = {
-    id = aws_kms_key.jenkins.key_id
-    arn = aws_kms_key.jenkins.arn
-    alias = aws_kms_alias.jenkins.name
+    key_id = aws_kms_key.jenkins.key_id
+    alias  = aws_kms_alias.jenkins.name
+    arn    = aws_kms_key.jenkins.arn
   }
 }
 

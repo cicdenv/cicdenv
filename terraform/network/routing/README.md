@@ -15,3 +15,41 @@ This state is per-account.
 cicdenv$ cicdctl terraform <init|plan|apply|destroy> network/routing:${WORKSPACE}
 ...
 ```
+
+## Importing
+```hcl
+data "terraform_remote_state" "network" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/${terraform.workspace}/network_shared/terraform.tfstate"
+    region = var.region
+  }
+}
+```
+
+## Outputs
+```hcl
+nat_gateways = {
+  "<region>a" = {
+    "id" = "nat-<0x*17>"
+    "ip" = "<ipv4-public-ip>"
+  }
+  "<region>b" = {
+    "id" = "nat-<0x*17>"
+    "ip" = "<ipv4-public-ip>"
+  }
+  "<region>c" = {
+    "id" = "nat-<0x*17>"
+    "ip" = "<ipv4-public-ip>"
+  }
+}
+vpc_endpoints = {
+  "ecr" = {
+    "id" = "vpce-<0x*17>"
+  }
+  "s3" = {
+    "id" = "vpce-<0x*17>"
+  }
+}
+```

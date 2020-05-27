@@ -29,7 +29,7 @@ resource "aws_lambda_permission" "allow_bucket" {
 }
 
 resource "aws_s3_bucket_notification" "bucket_notification" {
-  bucket = local.apt_repo_bucket
+  bucket = local.apt_repo_bucket.id
 
   lambda_function {
     lambda_function_arn = aws_lambda_function.s3apt.arn

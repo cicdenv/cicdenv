@@ -4,8 +4,8 @@ locals {
 
   host_name = "jenkins-server-${var.jenkins_instance}-${terraform.workspace}"
   
-  jenkins_server_image = data.terraform_remote_state.ecr_jenkins.outputs.jenkins_server_image_repo
-  jenkins_agent_image  = data.terraform_remote_state.ecr_jenkins.outputs.jenkins_agent_image_repo
+  jenkins_server_image = data.terraform_remote_state.ecr_jenkins.outputs.ecr.jenkins_server
+  jenkins_agent_image  = data.terraform_remote_state.ecr_jenkins.outputs.ecr.jenkins_agent
 
   persistent_config_efs = data.terraform_remote_state.jenkins_shared.outputs.persistent_config_efs
   

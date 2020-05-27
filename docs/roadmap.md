@@ -2,7 +2,6 @@
 - [ ] writeup cloud-init debugging instructions
 
 ## External Access
-- [ ] IAM user removed lambda - close active bastion ssh session
 - [ ] sshd-worker image build w/secrets
 - [ ] wiregaurd or OpenVPN to replace whitelisted external networks
 
@@ -10,10 +9,6 @@
 - [ ] Jenkins SecretsManager credentials plugin
 - [ ] golang 3rd party libs s3/host/workspace caching service
 - [ ] run cicdctl from ec2 w/IAM role
-
-## Terraform 0.12+
-- [ ] Refactor count(list) to for_each set/map
-- [ ] Refactor to structured outputs
 
 ## Packer
 - [ ] 1.5.0+ config json to hcl
@@ -32,21 +27,12 @@
 - [ ] kube2iam alternatives
   https://aws.amazon.com/about-aws/whats-new/2019/09/amazon-eks-adds-support-to-assign-iam-permissions-to-kubernetes-service-accounts/
 
-## KOPS
-- [ ] {kops, kubernetes, instance-type} setable from cicdctl
-
 ## Apt Repo
 - [ ] py3.8 lambda layer with gnupg
 
 ## cicdctl CLI
-- [ ] consistent output {default, verbose, silent, dry-run (print commands)}
-  `-v --verbose, -s --silent, -dr --dry-run`
-- [ ] Print custom env vars along with commands being run
 - [ ] shell completion
   - [ ] enable in `bin/activate`
-- [ ] refactor ArgParse to click
-- [ ] terraform fmt
-- [ ] automatic background AWS credential refreshing (on/off)
 - [ ] normalize `-auto-approve|-force`
 - [ ] support generating plans ?
 - [ ] update deps for new shared main account components

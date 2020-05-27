@@ -15,6 +15,41 @@ The first time you run this you'll be using the root account keys.
 See below about disabling them.
 ```
 
+## Importing
+```hcl
+data "terraform_remote_state" "iam_users" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/iam_users/terraform.tfstate"
+    region = var.region
+  }
+}
+```
+
+## Outputs
+```hcl
+admins = {
+  "$USER" = "arn:aws:iam::<main-acct-id>:user/users/$USER"
+}
+credentials = {
+  "fvogt" = {
+    "access_key" = "<[A-Z0-9]*20>"
+    "password" = "<gpg-encrypted>"
+    "secret_key" = "<gpg-encrypted>"
+  }
+}
+iam = {
+  "main_admin" = {
+    "role" = {
+      "arn" = "arn:aws:iam::<main-acct-id>:role/users/main-admin"
+      "name" = "main-admin"
+      "path" = "/users/"
+    }
+  }
+}
+```
+
 ## Billing Access
 This must be enabled by the root account.
 

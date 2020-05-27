@@ -29,10 +29,20 @@ output "vpc_endpoints" {
   }
 }
 
-output "security_group_id" {
-  value = aws_security_group.test.id
+output "security_group" {
+  value = {
+    id = aws_security_group.test.id
+  }
 }
 
-output "instance_profile_arn" {
-  value = aws_iam_instance_profile.test.arn
+output "iam" {
+  value = {
+    role = {
+      name = aws_iam_role.test.name
+      arn  = aws_iam_role.test.arn
+    }
+    instance_profile = {
+      arn = aws_iam_instance_profile.test.arn
+    }
+  }
 }

@@ -12,6 +12,26 @@ cicdenv$ cicdctl terraform <init|plan|apply|destroy> shared/apt-repo:main
 ...
 ```
 
+## Importing
+```hcl
+data "terraform_remote_state" "apt_repo" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/shared_apt-repo/terraform.tfstate"
+    region = var.region
+  }
+}
+```
+
+## Outputs
+```hcl
+apt_repo_bucket = {
+  "arn" = "arn:aws:s3:::apt-repo-<domain->"
+  "id" = "apt-repo-<domain->"
+}
+```
+
 ## Manual Install
 ```bash
 cp <apt-transport-s3.py> /usr/lib/apt/methods/s3

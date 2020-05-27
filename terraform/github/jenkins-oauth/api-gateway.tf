@@ -122,5 +122,5 @@ resource "aws_api_gateway_integration" "jenkins_github_oauth_callbacks" {
 
   type = "AWS_PROXY"
 
-  uri = aws_lambda_function.global_github_oauth_callback.invoke_arn
+  uri = aws_lambda_function.github_oauth_callback.invoke_arn
 }

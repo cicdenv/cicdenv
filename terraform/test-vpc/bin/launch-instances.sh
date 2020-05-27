@@ -23,9 +23,9 @@ export AWS_PROFILE=admin-${workspace}
 AWS_OPTS="--profile=${AWS_PROFILE} --region=us-west-2"
 account_id=$(aws --profile=admin-main sts get-caller-identity | jq -r '.Account')
 subnet_id=$(terraform output -json subnets | jq -r '.public | .[].id')
-security_group_id=$(terraform output -json security_group_id | jq -r)
+security_group_id=$(terraform output -json security_group | jq -r '.id')
 
-instance_profile="$(terraform output -json instance_profile_arn | jq -r )"
+instance_profile="$(terraform output -json iam | jq -r '.instance_profile | .arn')"
 
 ami_name_pattern='base/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*'
 image_id=$(aws ${AWS_OPTS}                            \

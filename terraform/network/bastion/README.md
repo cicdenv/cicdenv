@@ -32,3 +32,74 @@ libnss-iam$ for item in iam libnss_iam.so.2 libnss-iam-0.1.deb; do
 done
 libnss-iam$ 
 ```
+
+## Importing
+N/A.
+
+## Outputs
+```hcl
+autoscaling_group = {
+  "arn" = "arn:aws:autoscaling:<region>:<account-id>:autoScalingGroup:<guid>:autoScalingGroupName/bastion-service"
+  "id" = "bastion-service"
+  "name" = "bastion-service"
+}
+cloudwatch_log_groups = {
+  "iam_user_event_subscriber" = {
+    "arn" = "arn:aws:logs:<region>:<account-id>:log-group:/aws/lambda/event-subscriber-bastion-service:*"
+    "name" = "/aws/lambda/event-subscriber-bastion-service"
+  }
+}
+dns = bastion.dev.cicdenv.com
+iam = {
+  "bastion_service" = {
+    "instance_profile" = {
+      "arn" = "arn:aws:iam::<account-id>:instance-profile/bastion"
+    }
+    "policy" = {
+      "arn" = "arn:aws:iam::<account-id>:policy/BastionService"
+      "name" = "BastionService"
+      "path" = "/"
+    }
+    "role" = {
+      "arn" = "arn:aws:iam::<account-id>:role/bastion"
+      "name" = "bastion"
+    }
+  }
+  "iam_user_event_subscriber" = {
+    "policy" = {
+      "arn" = "arn:aws:iam::<account-id>:policy/iam-user-event-subscriber"
+      "name" = "iam-user-event-subscriber"
+      "path" = "/"
+    }
+    "role" = {
+      "arn" = "arn:aws:iam::<account-id>:role/iam-user-event-subscriber"
+      "name" = "iam-user-event-subscriber"
+    }
+  }
+}
+lambdas = {
+  "iam_user_event_subscriber" = {
+    "function_name" = "event-subscriber-bastion-service"
+    "handler" = "lambda.lambda_handler"
+    "runtime" = "python3.7"
+    "vpc_config" = [
+      {
+        "security_group_ids" = [
+          "sg-<0x*17>",
+        ]
+        "subnet_ids" = [
+          "subnet-<0x*17>",
+          "subnet-<0x*17>",
+          "subnet-<0x*17>",
+        ]
+        "vpc_id" = "vpc-<0x*17>"
+      },
+    ]
+  }
+}
+nlb = {
+  "arn" = "arn:aws:elasticloadbalancing:<region>:<account-id>:loadbalancer/net/bastion-nlb/<0x*16>"
+  "dns_name" = "bastion-nlb-<0x*16>.elb.<region>.amazonaws.com"
+  "zone_id" = "<elb.amazonaws.com-zone-id>"
+}
+```

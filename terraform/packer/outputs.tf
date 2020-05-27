@@ -9,3 +9,20 @@ output "key" {
 output "allowed_account_ids" {
   value = join(",", local.allowed_account_ids)
 }
+
+output "iam" {
+  value = {
+    role = {
+      name = aws_iam_role.packer_build.name
+      arn  = aws_iam_role.packer_build.arn
+    }
+    policy = {
+      name = aws_iam_policy.packer_build.name
+      path = aws_iam_policy.packer_build.path
+      arn  = aws_iam_policy.packer_build.arn
+    }
+    instance_profile = {
+      arn = aws_iam_instance_profile.packer_build.arn
+    }
+  }
+}

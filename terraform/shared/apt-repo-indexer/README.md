@@ -10,6 +10,45 @@ cicdenv$ cicdctl terraform <init|plan|apply|destroy> shared/apt-repo-lambda:main
 ...
 ```
 
+## Importing
+N/A.
+
+## Outputs
+```hcl
+cloudwatch_log_groups = {
+  "s3apt" = {
+    "arn" = "arn:aws:logs:<region>:<main-acct-id>:log-group:/aws/lambda/s3apt:*"
+    "name" = "/aws/lambda/s3apt"
+  }
+}
+iam = {
+  "s3apt" = {
+    "policy" = {
+      "arn" = "arn:aws:iam::<main-acct-id>:policy/s3apt"
+      "name" = "s3apt"
+      "path" = "/"
+    }
+    "role" = {
+      "arn" = "arn:aws:iam::<main-acct-id>:role/s3apt"
+      "name" = "s3apt"
+    }
+  }
+}
+lambdas = {
+  "s3apt" = {
+    "function_name" = "s3apt"
+    "handler" = "s3apt.lambda_handler"
+    "runtime" = "python3.7"
+  }
+}
+secrets = {
+  "s3apt" = {
+    "arn" = "arn:aws:secretsmanager:<region>:<main-acct-id>:secret:apt-repo-indexer-KoMFvc"
+    "name" = "apt-repo-indexer"
+  }
+}
+```
+
 ## Testing
 Local:
 ```bash
@@ -64,7 +103,7 @@ Index-File:true
 EOF
 
 # Verify host has s3 access
-$ aws --region=us-west-2 s3 ls s3://apt-repo-cicdenv-com/repo/dists/
+$ aws --region=<region> s3 ls s3://apt-repo-cicdenv-com/repo/dists/
 
 # Install a package
 $ sudo apt update && sudo apt install libnss-iam

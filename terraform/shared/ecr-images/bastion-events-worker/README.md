@@ -26,8 +26,8 @@ cicdenv$ cicdctl terraform <init|plan|apply|destroy> shared/ecr-images/bastion-s
 ## Testing from bastion hosts
 ```bash
 # Pull changes
-root@bastion-dev:~# docker pull 014719181291.dkr.ecr.us-west-2.amazonaws.com/bastion-events-worker
-root@bastion-dev:~# docker tag  014719181291.dkr.ecr.us-west-2.amazonaws.com/bastion-events-worker events-worker
+root@bastion-dev:~# docker pull '<main-acct-id>.dkr.ecr.<region>.amazonaws.com/bastion-events-worker'
+root@bastion-dev:~# docker tag  '<main-acct-id>.dkr.ecr.<region>.amazonaws.com/bastion-events-worker events-worker'
 ```
 
 ## Connect a Session
@@ -44,6 +44,31 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 
 root@bastion-dev:~# docker exec -it <container-id> bash -c 'ls /home'
 $USER
+```
+
+## Importing
+```hcl
+data "terraform_remote_state" "ecr_bastion_events_worker" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/shared_ecr-images_bastion-events-worker/terraform.tfstate"
+    region = var.region
+  }
+}
+```
+
+## Outputs
+```hcl
+ecr = {
+  "bastion_events_worker" = {
+    "arn" = "arn:aws:ecr:<region>:<main-acct-id>:repository/bastion-events-worker"
+    "id" = "bastion-events-worker"
+    "name" = "bastion-events-worker"
+    "registry_id" = "<main-acct-id>"
+    "repository_url" = "<main-acct-id>.dkr.ecr.<region>.amazonaws.com/bastion-events-worker"
+  }
+}
 ```
 
 ## Links

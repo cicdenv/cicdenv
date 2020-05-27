@@ -1,3 +1,10 @@
+output "dns" {
+  value = {
+    external = "${aws_route53_record.external_dns.name}.${local.account_hosted_zone.domain}"
+    internal = "${aws_route53_record.internal_dns.name}.${local.private_hosted_zone.domain}"
+  }
+}
+
 output "internal_alb" {
   value = {
     arn = aws_lb.jenkins_internal.arn

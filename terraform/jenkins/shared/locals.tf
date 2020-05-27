@@ -5,11 +5,11 @@ locals {
 
   subnets = data.terraform_remote_state.network.outputs.subnets
   
-  apt_repo_policy = data.terraform_remote_state.iam_common_policies.outputs.apt_repo_policy
+  apt_repo_policy = data.terraform_remote_state.iam_common_policies.outputs.iam.apt_repo.policy
 
-  ecr_jenkins_server = data.terraform_remote_state.ecr_jenkins.outputs.jenkins_server_image_repo
-  ecr_jenkins_agent  = data.terraform_remote_state.ecr_jenkins.outputs.jenkins_agent_image_repo
-  ecr_ci_builds      = data.terraform_remote_state.ecr_jenkins.outputs.ci_builds_image_repo
+  ecr_jenkins_server = data.terraform_remote_state.ecr_jenkins.outputs.ecr.jenkins_server
+  ecr_jenkins_agent  = data.terraform_remote_state.ecr_jenkins.outputs.ecr.jenkins_agent
+  ecr_ci_builds      = data.terraform_remote_state.ecr_jenkins.outputs.ecr.ci_builds
 
   jenkins_key            = data.terraform_remote_state.jenkins_backend.outputs.jenkins_key
   jenkins_env_secrets    = data.terraform_remote_state.jenkins_backend.outputs.jenkins_env_secrets
