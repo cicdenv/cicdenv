@@ -6,37 +6,29 @@ output "jenkins_key" {
   }
 }
 
-output "jenkins_env_secrets" {
+output "secrets" {
   value = {
-    name = aws_secretsmanager_secret.jenkins_env.name
-    arn  = aws_secretsmanager_secret.jenkins_env.arn
-  }
-}
-
-output "jenkins_agent_secrets" {
-  value = {
-    name = aws_secretsmanager_secret.jenkins_agent.name
-    arn  = aws_secretsmanager_secret.jenkins_agent.arn
-  }
-}
-
-output "jenkins_server_secrets" {
-  value = {
-    name = aws_secretsmanager_secret.jenkins_server.name
-    arn  = aws_secretsmanager_secret.jenkins_server.arn
-  }
-}
-
-output "jenkins_github_secrets" {
-  value = {
-    name = aws_secretsmanager_secret.jenkins_github.name
-    arn  = aws_secretsmanager_secret.jenkins_github.arn
-  }
-}
-
-output "jenkins_github_localhost_secrets" {
-  value = {
-    name = aws_secretsmanager_secret.jenkins_github_localhost.name
-    arn  = aws_secretsmanager_secret.jenkins_github_localhost.arn
+    env = {
+      name = aws_secretsmanager_secret.jenkins_env.name
+      arn  = aws_secretsmanager_secret.jenkins_env.arn
+    }
+    agent = {
+      name = aws_secretsmanager_secret.jenkins_agent.name
+      arn  = aws_secretsmanager_secret.jenkins_agent.arn
+    }
+    server = {
+      name = aws_secretsmanager_secret.jenkins_server.name
+      arn  = aws_secretsmanager_secret.jenkins_server.arn
+    }
+    github = {
+      ec2 = {
+        name = aws_secretsmanager_secret.jenkins_github.name
+        arn  = aws_secretsmanager_secret.jenkins_github.arn
+      }
+      localhost = {
+        name = aws_secretsmanager_secret.jenkins_github_localhost.name
+        arn  = aws_secretsmanager_secret.jenkins_github_localhost.arn
+      }
+    }
   }
 }

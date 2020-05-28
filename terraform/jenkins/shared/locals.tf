@@ -12,12 +12,12 @@ locals {
   ecr_ci_builds      = data.terraform_remote_state.ecr_jenkins.outputs.ecr.ci_builds
 
   jenkins_key            = data.terraform_remote_state.jenkins_backend.outputs.jenkins_key
-  jenkins_env_secrets    = data.terraform_remote_state.jenkins_backend.outputs.jenkins_env_secrets
-  jenkins_agent_secrets  = data.terraform_remote_state.jenkins_backend.outputs.jenkins_agent_secrets
-  jenkins_server_secrets = data.terraform_remote_state.jenkins_backend.outputs.jenkins_server_secrets
+  jenkins_env_secrets    = data.terraform_remote_state.jenkins_backend.outputs.secrets.env
+  jenkins_agent_secrets  = data.terraform_remote_state.jenkins_backend.outputs.secrets.agent
+  jenkins_server_secrets = data.terraform_remote_state.jenkins_backend.outputs.secrets.server
 
-  jenkins_github_secrets           = data.terraform_remote_state.jenkins_backend.outputs.jenkins_github_secrets
-  jenkins_github_localhost_secrets = data.terraform_remote_state.jenkins_backend.outputs.jenkins_github_localhost_secrets
+  jenkins_github_secrets           = data.terraform_remote_state.jenkins_backend.outputs.secrets.github.ec2
+  jenkins_github_localhost_secrets = data.terraform_remote_state.jenkins_backend.outputs.secrets.github.localhost
 
   vpc_id = data.terraform_remote_state.network.outputs.vpc.id
 

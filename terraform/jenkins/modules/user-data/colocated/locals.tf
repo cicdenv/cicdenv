@@ -9,10 +9,10 @@ locals {
 
   persistent_config_efs = data.terraform_remote_state.jenkins_shared.outputs.persistent_config_efs
   
-  jenkins_env_secrets    = data.terraform_remote_state.jenkins_backend.outputs.jenkins_env_secrets
-  jenkins_server_secrets = data.terraform_remote_state.jenkins_backend.outputs.jenkins_server_secrets
-  jenkins_agent_secrets = data.terraform_remote_state.jenkins_backend.outputs.jenkins_agent_secrets
-  jenkins_github_secrets = data.terraform_remote_state.jenkins_backend.outputs.jenkins_github_secrets
+  jenkins_env_secrets    = data.terraform_remote_state.jenkins_backend.outputs.secrets.env
+  jenkins_server_secrets = data.terraform_remote_state.jenkins_backend.outputs.secrets.server
+  jenkins_agent_secrets  = data.terraform_remote_state.jenkins_backend.outputs.secrets.agent
+  jenkins_github_secrets = data.terraform_remote_state.jenkins_backend.outputs.secrets.github.ec2
 
   server_url  = "https://jenkins-${var.jenkins_instance}.${local.account_hosted_zone.domain}"
   content_url = "https://builds-${var.jenkins_instance}.${local.account_hosted_zone.domain}"

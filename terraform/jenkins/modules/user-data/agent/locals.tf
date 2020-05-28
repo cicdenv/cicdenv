@@ -5,8 +5,8 @@ locals {
   
   jenkins_agent_image  = data.terraform_remote_state.ecr_jenkins.outputs.ecr.jenkins_agent
   
-  jenkins_env_secrets = data.terraform_remote_state.jenkins_backend.outputs.jenkins_env_secrets
-  jenkins_agent_secrets = data.terraform_remote_state.jenkins_backend.outputs.jenkins_agent_secrets
+  jenkins_env_secrets   = data.terraform_remote_state.jenkins_backend.outputs.secrets.env
+  jenkins_agent_secrets = data.terraform_remote_state.jenkins_backend.outputs.secrets.agent
 
   server_url = "https://jenkins-${var.jenkins_instance}.${local.account_hosted_zone.domain}"
 }
