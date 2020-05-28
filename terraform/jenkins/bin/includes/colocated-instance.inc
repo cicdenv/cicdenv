@@ -37,4 +37,10 @@ output "type" {
 output "autoscaling_groups" {
   value = module.jenkins_instance.autoscaling_groups
 }
+
+output "ami" {
+  value = {
+    id = local.ami_id
+  }
+}
 EOF

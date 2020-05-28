@@ -69,8 +69,8 @@ output "cluster_fqdn" {
   value = module.kops_driver.cluster_fqdn
 }
 
-output "ami_id" {
-    value = module.kops_driver.ami_id
+output "ami" {
+  value = module.kops_driver.ami
 }
 
 output "kops_export_kubecfg_command" {

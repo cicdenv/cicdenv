@@ -46,3 +46,9 @@ output "dns" {
 output "nlb" {
   value = module.bastion.nlb
 }
+
+output "ami" {
+  value = {
+    id = local.ami_id
+  }
+}
