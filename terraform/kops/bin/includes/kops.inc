@@ -47,7 +47,7 @@ module "kops_driver" {
     nodes_per_az         = local.nodes_per_az
   }
 
-  ami_id = var.kops_ami_id
+  ami_id = var.base_ami_id
 
   folders = {
     home_folder = "${path.module}/.."
@@ -110,7 +110,7 @@ cat <<'EOF' > "${kops_component}/variables.tf"
 variable "region"      {} # backend-config.tfvars
 variable "bucket"      {} # backend-config.tfvars
 variable "domain"      {} # domain.tfvars
-variable "kops_ami_id" {} # amis.tfvars
+variable "base_ami_id" {} # amis.tfvars
 
 variable "target_region" {
   default = "us-west-2"

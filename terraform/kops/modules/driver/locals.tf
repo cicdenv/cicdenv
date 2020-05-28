@@ -34,7 +34,7 @@ locals {
   
   nodes_per_az = var.cluster_settings.nodes_per_az
   
-  ami_id = var.ami_id
+  ami_id = var.ami_id != "" ? var.ami_id : data.terraform_remote_state.amis.outputs.base_ami.id
 
   public_key = "~/.ssh/kops_rsa.pub"
 
