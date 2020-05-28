@@ -11,12 +11,15 @@ resource "aws_iam_role" "main_admin" {
 
 data "aws_iam_policy_document" "main_admin_assume_role_policy" {
   statement {
-    actions = ["sts:AssumeRole"]
-
     principals {
-      type        = "AWS"
+      type = "AWS"
+      
       identifiers = [for iam_user in aws_iam_user.admin : iam_user.arn]
     }
+
+    actions = [
+      "sts:AssumeRole",
+    ]
   }
 }
 

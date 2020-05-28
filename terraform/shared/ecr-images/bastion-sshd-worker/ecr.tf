@@ -3,35 +3,32 @@ resource "aws_ecr_repository" "bastion_sshd_worker" {
   image_tag_mutability = "MUTABLE"
 }
 
+data "aws_iam_policy_document" "bastion_sshd_worker" {
+  statement {
+    principals {
+      type = "AWS"
+      identifiers = local.all_account_roots
+    }
+
+    # arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+    actions = [
+      "ecr:GetAuthorizationToken",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:GetRepositoryPolicy",
+      "ecr:DescribeRepositories",
+      "ecr:ListImages",
+      "ecr:DescribeImages",
+      "ecr:BatchGetImage",
+      "ecr:GetLifecyclePolicy",
+      "ecr:GetLifecyclePolicyPreview",
+      "ecr:ListTagsForResource",
+      "ecr:DescribeImageScanFindings",
+    ]
+  }
+}
+
 resource "aws_ecr_repository_policy" "bastion_sshd_worker" {
   repository = aws_ecr_repository.bastion_sshd_worker.name
-
-  # arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ecr:GetAuthorizationToken",
-        "ecr:BatchCheckLayerAvailability",
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:GetRepositoryPolicy",
-        "ecr:DescribeRepositories",
-        "ecr:ListImages",
-        "ecr:DescribeImages",
-        "ecr:BatchGetImage",
-        "ecr:GetLifecyclePolicy",
-        "ecr:GetLifecyclePolicyPreview",
-        "ecr:ListTagsForResource",
-        "ecr:DescribeImageScanFindings"
-      ],
-      "Principal": {
-        "AWS": ${jsonencode(local.org_account_roots)}
-      }
-    }
-  ]
-}
-EOF
+  policy     = data.aws_iam_policy_document.bastion_sshd_worker.json
 }

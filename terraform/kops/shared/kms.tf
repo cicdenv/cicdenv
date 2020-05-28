@@ -1,20 +1,26 @@
+data "aws_iam_policy_document" "kops_etcd" {
+  statement {
+    principals {
+      type = "AWS"
+
+      identifiers = [
+        local.account["root"],
+      ]
+    }
+
+    actions = [
+      "kms:*",
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
+}
+
 resource "aws_kms_key" "kops_etcd" {
   description = "Used for for encrypting etcd EBS volumes"
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "${local.account["root"]}"
-      },
-      "Action": "kms:*",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
+  policy      = data.aws_iam_policy_document.kops_etcd.json
 }
 
 resource "aws_kms_alias" "kops_etcd" {

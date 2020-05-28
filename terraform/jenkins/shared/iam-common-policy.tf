@@ -1,9 +1,5 @@
 data "aws_iam_policy_document" "jenkins_trust" {
   statement {
-    actions = [
-      "sts:AssumeRole",
-    ]
-
     principals {
       type = "Service"
 
@@ -12,13 +8,9 @@ data "aws_iam_policy_document" "jenkins_trust" {
       ]
     }
 
-    principals {
-      type = "AWS"
-
-      identifiers = [
-        local.main_account.root,
-      ]
-    }
+    actions = [
+      "sts:AssumeRole",
+    ]
   }
 }
 
@@ -30,8 +22,6 @@ resource "aws_iam_policy" "jenkins_common" {
 data "aws_iam_policy_document" "jenkins_common" {
   # ecr login
   statement {
-    effect = "Allow"
-
     actions = [
       "ecr:GetAuthorizationToken",
     ]
@@ -43,8 +33,6 @@ data "aws_iam_policy_document" "jenkins_common" {
 
   # secrets manager
   statement {
-    effect = "Allow"
-
     actions = [
       "secretsmanager:GetSecretValue",
     ]
@@ -56,8 +44,6 @@ data "aws_iam_policy_document" "jenkins_common" {
 
   # kms
   statement {
-    effect = "Allow"
-
     actions = [
       "kms:Decrypt",
     ]

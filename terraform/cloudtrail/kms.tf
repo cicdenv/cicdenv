@@ -3,59 +3,53 @@ data "aws_iam_policy_document" "cloudtrail_kms" {
   statement {
     sid = "Enable IAM User Permissions"
 
-    effect = "Allow"
+    principals {
+      type = "AWS"
+
+      identifiers = [
+        "arn:${local.main_account.partition}:iam::${local.main_account.id}:root",
+      ]
+    }
 
     actions = [
       "kms:*",
     ]
 
-    principals {
-      type = "AWS"
-
-      identifiers = [
-        "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root",
-      ]
-    }
-
-    resources = ["*"]
+    resources = [
+      "*",
+    ]
   }
 
   statement {
     sid = "Allow CloudTrail to encrypt logs"
 
-    effect = "Allow"
+    principals {
+      type = "Service"
+
+      identifiers = [
+        "cloudtrail.amazonaws.com",
+      ]
+    }
 
     actions = [
       "kms:GenerateDataKey*",
     ]
 
-    principals {
-      type = "Service"
-
-      identifiers = [
-        "cloudtrail.amazonaws.com",
-      ]
-    }
+    resources = [
+      "*",
+    ]
 
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:cloudtrail:arn"
       values   = [
-        "arn:${data.aws_partition.current.partition}:cloudtrail:*:${data.aws_caller_identity.current.account_id}:trail/*",
+        "arn:${local.main_account.partition}:cloudtrail:*:${local.main_account.id}:trail/*",
       ]
     }
-
-    resources = ["*"]
   }
 
   statement {
     sid = "Allow CloudTrail to describe key"
-    
-    effect = "Allow"
-    
-    actions = [
-      "kms:DescribeKey",
-    ]
 
     principals {
       type = "Service"
@@ -65,19 +59,18 @@ data "aws_iam_policy_document" "cloudtrail_kms" {
       ]
     }
 
-    resources = ["*"]
+    actions = [
+      "kms:DescribeKey",
+    ]
+
+    resources = [
+      "*",
+    ]
   }
 
   statement {
     sid = "Allow principals in the account to decrypt log files"
 
-    effect = "Allow"
-
-    actions = [
-      "kms:Decrypt",
-      "kms:ReEncryptFrom",
-    ]
-
     principals {
       type = "AWS"
 
@@ -86,11 +79,20 @@ data "aws_iam_policy_document" "cloudtrail_kms" {
       ]
     }
 
+    actions = [
+      "kms:Decrypt",
+      "kms:ReEncryptFrom",
+    ]
+
+    resources = [
+      "*",
+    ]
+
     condition {
       test     = "StringEquals"
       variable = "kms:CallerAccount"
       values   = [
-        data.aws_caller_identity.current.account_id,
+        local.main_account.id,
       ]
     }
 
@@ -98,21 +100,13 @@ data "aws_iam_policy_document" "cloudtrail_kms" {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:cloudtrail:arn"
       values   = [
-        "arn:${data.aws_partition.current.partition}:cloudtrail:*:${data.aws_caller_identity.current.account_id}:trail/*",
+        "arn:${local.main_account.partition}:cloudtrail:*:${local.main_account.id}:trail/*",
       ]
     }
-
-    resources = ["*"]
   }
 
   statement {
     sid = "Allow alias creation during setup"
-
-    effect = "Allow"
-    
-    actions = [
-      "kms:CreateAlias",
-    ]
 
     principals {
       type = "AWS"
@@ -121,42 +115,54 @@ data "aws_iam_policy_document" "cloudtrail_kms" {
         "*",
       ]
     }
+    
+    actions = [
+      "kms:CreateAlias",
+    ]
+
+    resources = [
+      "*",
+    ]
 
     condition {
       test     = "StringEquals"
       variable = "kms:ViaService"
-      values   = ["ec2.${data.aws_region.current.name}.amazonaws.com"]
+      values   = [
+        "ec2.${data.aws_region.current.name}.amazonaws.com",
+      ]
     }
 
     condition {
       test     = "StringEquals"
       variable = "kms:CallerAccount"
-      values   = [data.aws_caller_identity.current.account_id]
+      values   = [
+        local.main_account.id,
+      ]
     }
-
-    resources = ["*"]
   }
 
   statement {
     sid = "Enable cross account log decryption"
-
-    effect = "Allow"
-
-    actions = [
-      "kms:Decrypt",
-      "kms:ReEncryptFrom",
-    ]
 
     principals {
       type        = "AWS"
       identifiers = ["*"]
     }
 
+    actions = [
+      "kms:Decrypt",
+      "kms:ReEncryptFrom",
+    ]
+
+    resources = [
+      "*",
+    ]
+
     condition {
       test     = "StringEquals"
       variable = "kms:CallerAccount"
       values   = [
-        data.aws_caller_identity.current.account_id,
+        local.main_account.id,
       ]
     }
 
@@ -164,11 +170,9 @@ data "aws_iam_policy_document" "cloudtrail_kms" {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:cloudtrail:arn"
       values   = [
-        "arn:${data.aws_partition.current.partition}:cloudtrail:*:${data.aws_caller_identity.current.account_id}:trail/*",
+        "arn:${local.main_account.partition}:cloudtrail:*:${local.main_account.id}:trail/*",
       ]
     }
-
-    resources = ["*"]
   }
 }
 

@@ -1,10 +1,5 @@
 data "aws_iam_policy_document" "cloudtrail_trust" {
   statement {
-    effect  = "Allow"
-    actions = [
-      "sts:AssumeRole",
-    ]
-
     principals {
       type = "Service"
 
@@ -12,23 +7,23 @@ data "aws_iam_policy_document" "cloudtrail_trust" {
         "cloudtrail.amazonaws.com",
       ]
     }
+
+    actions = [
+      "sts:AssumeRole",
+    ]
   }
 }
 
 data "aws_iam_policy_document" "cloudtrail_cloudwatch_logs" {
   statement {
-    sid = "WriteCloudWatchLogs"
-
-    effect = "Allow"
-
     actions = [
       "logs:CreateLogStream",
       "logs:PutLogEvents",
     ]
 
     resources = [
-      "arn:${data.aws_partition.current.partition}:logs:us-east-1:${data.aws_caller_identity.current.account_id}:log-group:cloudtrail-events:*",
-      "arn:${data.aws_partition.current.partition}:logs:us-west-2:${data.aws_caller_identity.current.account_id}:log-group:cloudtrail-events:*",
+      "arn:${local.main_account.partition}:logs:us-east-1:${local.main_account.id}:log-group:cloudtrail-events:*",
+      "arn:${local.main_account.partition}:logs:us-west-2:${local.main_account.id}:log-group:cloudtrail-events:*",
     ]
   }
 }

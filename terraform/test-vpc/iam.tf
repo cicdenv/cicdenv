@@ -6,10 +6,6 @@ resource "aws_iam_role" "test" {
 
 data "aws_iam_policy_document" "test_trust" {
   statement {
-    actions = [
-      "sts:AssumeRole",
-    ]
-
     principals {
       type = "Service"
 
@@ -17,13 +13,15 @@ data "aws_iam_policy_document" "test_trust" {
         "ec2.amazonaws.com",
       ]
     }
+
+    actions = [
+      "sts:AssumeRole",
+    ]
   }
 }
 
 data "aws_iam_policy_document" "test" {
   statement {
-    effect = "Allow"
-
     actions = [
       "sts:AssumeRole",
     ]

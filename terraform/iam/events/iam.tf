@@ -2,6 +2,14 @@ data "aws_iam_policy_document" "iam_user_updates" {
   statement {
     sid = "owner"
 
+    principals {
+      type = "AWS"
+
+      identifiers = [
+        "*",
+      ]
+    }
+
     actions = [
       "SNS:GetTopicAttributes",
       "SNS:SetTopicAttributes",
@@ -11,7 +19,11 @@ data "aws_iam_policy_document" "iam_user_updates" {
       "SNS:Subscribe",
       "SNS:ListSubscriptionsByTopic",
       "SNS:Publish",
-      "SNS:Receive"
+      "SNS:Receive",
+    ]
+
+    resources = [
+      aws_sns_topic.iam_user_updates.arn
     ]
 
     condition {
@@ -22,32 +34,22 @@ data "aws_iam_policy_document" "iam_user_updates" {
         data.aws_caller_identity.current.account_id
       ]
     }
-
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-
-    resources = [
-      aws_sns_topic.iam_user_updates.arn
-    ]
   }
   
   statement {
     sid = "aws"
 
+    principals {
+      type = "Service"
+
+      identifiers = [
+        "events.amazonaws.com",
+      ]
+    }
+
     actions = [
       "sns:Publish"
     ]
-
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["events.amazonaws.com"]
-    }
 
     resources = [
       aws_sns_topic.iam_user_updates.arn
@@ -57,16 +59,15 @@ data "aws_iam_policy_document" "iam_user_updates" {
   statement {
     sid = "subacct"
 
+    principals {
+      type = "AWS"
+      
+      identifiers = local.all_account_roots
+    }
+
     actions = [
       "SNS:Subscribe",
     ]
-
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = local.all_account_roots
-    }
 
     resources = [
       aws_sns_topic.iam_user_updates.arn

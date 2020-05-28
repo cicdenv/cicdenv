@@ -6,12 +6,10 @@ resource "aws_iam_policy" "jenkins_agent" {
 data "aws_iam_policy_document" "jenkins_agent" {
   # ecr - jenkins agent image
   statement {
-    effect = "Allow"
-
     actions = [
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage",
-      "ecr:BatchCheckLayerAvailability"
+      "ecr:BatchCheckLayerAvailability",
     ]
 
     resources = [
@@ -21,8 +19,6 @@ data "aws_iam_policy_document" "jenkins_agent" {
   
   # ecr - ci builds image
   statement {
-    effect = "Allow"
-
     actions = [
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage",
@@ -40,8 +36,6 @@ data "aws_iam_policy_document" "jenkins_agent" {
 
   # secrets manager
   statement {
-    effect = "Allow"
-
     actions = [
       "secretsmanager:GetSecretValue",
     ]
@@ -53,8 +47,6 @@ data "aws_iam_policy_document" "jenkins_agent" {
 
   # s3 cache bucket
   statement {
-    effect = "Allow"
-    
     actions = [
       "s3:Head*",
       "s3:List*",
@@ -69,8 +61,6 @@ data "aws_iam_policy_document" "jenkins_agent" {
 
   # s3 cache objects
   statement {
-    effect = "Allow"
-    
     actions = [
       "s3:*"
     ]

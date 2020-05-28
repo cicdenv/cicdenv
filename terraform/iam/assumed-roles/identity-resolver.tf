@@ -6,22 +6,20 @@ resource "aws_iam_role" "identity_resolver" {
 
 data "aws_iam_policy_document" "identity_resolver_trust" {
   statement {
-    actions = [
-      "sts:AssumeRole",
-    ]
-
     principals {
       type = "AWS"
 
       identifiers = local.all_account_roots
     }
+
+    actions = [
+      "sts:AssumeRole",
+    ]
   }
 }
 
 data "aws_iam_policy_document" "iam_ssh_authorized_keys" {
   statement {
-    effect = "Allow"
-
     actions = [
       "iam:ListUsers",
       "iam:GetGroup",

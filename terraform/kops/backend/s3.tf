@@ -17,43 +17,50 @@ resource "aws_s3_bucket" "kops_state" {
   }
 }
 
+data "aws_iam_policy_document" "kops_state_s3" {
+  statement {
+    principals {
+      type = "AWS"
+
+      identifiers = local.org_account_roots
+    }
+
+    actions = [
+      "s3:*",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.kops_state.bucket}",
+      "arn:aws:s3:::${aws_s3_bucket.kops_state.bucket}/*",
+    ]
+  }
+
+  statement {
+    principals {
+      type = "AWS"
+
+      identifiers = local.org_account_roots
+    }
+
+    actions = [
+      "s3:PutObject",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.kops_state.bucket}/*",
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-acl"
+      values   = [
+        "bucket-owner-full-control",
+      ]
+    }
+  }
+}
+
 resource "aws_s3_bucket_policy" "kops_state" {
   bucket = aws_s3_bucket.kops_state.bucket
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "s3:*",
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::${aws_s3_bucket.kops_state.bucket}",
-        "arn:aws:s3:::${aws_s3_bucket.kops_state.bucket}/*"
-      ],
-      "Principal": {
-        "AWS": ${jsonencode(local.org_account_roots)}
-      }
-    },
-    {
-      "Action": [
-        "s3:PutObject"
-      ],
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": ${jsonencode(local.org_account_roots)}
-      },
-      "Resource": [
-        "arn:aws:s3:::${aws_s3_bucket.kops_state.bucket}/*"
-      ],
-      "Condition": {
-        "StringEquals": {
-          "s3:x-amz-acl": [
-            "bucket-owner-full-control"
-          ]
-        }
-      }
-    }
-  ]
-}
-EOF
+  policy = data.aws_iam_policy_document.kops_state_s3.json
 }

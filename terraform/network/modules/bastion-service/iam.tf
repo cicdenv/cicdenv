@@ -8,10 +8,6 @@ resource "aws_iam_role" "bastion" {
 
 data "aws_iam_policy_document" "bastion_trust" {
   statement {
-    actions = [
-      "sts:AssumeRole",
-    ]
-
     principals {
       type = "Service"
 
@@ -19,13 +15,15 @@ data "aws_iam_policy_document" "bastion_trust" {
         "ec2.amazonaws.com",
       ]
     }
+
+    actions = [
+      "sts:AssumeRole",
+    ]
   }
 }
 
 data "aws_iam_policy_document" "bastion" {
   statement {
-    effect = "Allow"
-
     actions = [
       "sts:AssumeRole",
     ]
@@ -36,8 +34,6 @@ data "aws_iam_policy_document" "bastion" {
   }
 
   statement {
-    effect = "Allow"
-
     actions = [
       "ecr:GetAuthorizationToken",
     ]
@@ -48,8 +44,6 @@ data "aws_iam_policy_document" "bastion" {
   }
 
   statement {
-    effect = "Allow"
-
     actions = [
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage",

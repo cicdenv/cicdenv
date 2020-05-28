@@ -4,41 +4,38 @@ resource "aws_iam_role" "kops_node" {
   assume_role_policy = data.aws_iam_policy_document.instance_assume_role_policy.json
 }
 
-resource aws_iam_policy kops_node {
-  name = "KopsNode"
+data "aws_iam_policy_document" "kops_node" {
+  statement {
+    actions = [
+      "ec2:DescribeInstances",
+      "ec2:DescribeRegions",
+    ]
 
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:DescribeInstances",
-        "ec2:DescribeRegions"
-      ],
-      "Resource": [
-        "*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ecr:GetAuthorizationToken",
-        "ecr:BatchCheckLayerAvailability",
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:GetRepositoryPolicy",
-        "ecr:DescribeRepositories",
-        "ecr:ListImages",
-        "ecr:BatchGetImage"
-      ],
-      "Resource": [
-        "*"
-      ]
-    }
-  ]
+    resources = [
+      "*",
+    ]
+  }
+
+  statement {
+    actions = [
+      "ecr:GetAuthorizationToken",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:GetRepositoryPolicy",
+      "ecr:DescribeRepositories",
+      "ecr:ListImages",
+      "ecr:BatchGetImage",
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
 }
-EOF
+
+resource "aws_iam_policy" "kops_node" {
+  name   = "KopsNode"
+  policy = data.aws_iam_policy_document.kops_node.json
 }
 
 resource "aws_iam_role_policy_attachment" "kops_node" {

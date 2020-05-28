@@ -7,45 +7,52 @@ resource "aws_s3_bucket" "apt_repo" {
   }
 }
 
+data "aws_iam_policy_document" "apt_repo" {
+  statement {
+    principals {
+      type = "AWS"
+
+      identifiers = local.org_account_roots
+    }
+
+    actions = [
+      "s3:List*",
+      "s3:Get*",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.apt_repo.id}",
+      "arn:aws:s3:::${aws_s3_bucket.apt_repo.id}/*",
+    ]
+  }
+
+  statement {
+    principals {
+      type = "AWS"
+
+      identifiers = local.org_account_roots
+    }
+
+    actions = [
+      "s3:List*",
+      "s3:Get*",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.apt_repo.id}",
+      "arn:aws:s3:::${aws_s3_bucket.apt_repo.id}/*",
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:sourceVpce"
+      values   = local.vpc_endpoints
+    }
+  }
+}
+
 resource "aws_s3_bucket_policy" "apt_repo" {
   bucket = aws_s3_bucket.apt_repo.id
 
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": ${jsonencode(local.org_account_roots)}
-      },
-      "Action": [
-        "s3:List*",
-        "s3:Get*"
-      ],
-      "Resource": [
-        "arn:aws:s3:::${aws_s3_bucket.apt_repo.id}",
-        "arn:aws:s3:::${aws_s3_bucket.apt_repo.id}/*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Principal": "*",
-      "Action": [
-        "s3:List*",
-        "s3:Get*"
-      ],
-      "Resource": [
-        "arn:aws:s3:::${aws_s3_bucket.apt_repo.id}",
-        "arn:aws:s3:::${aws_s3_bucket.apt_repo.id}/*"
-      ],
-      "Condition": {
-        "StringEquals": {
-          "aws:sourceVpce": ${jsonencode(local.vpc_endpoints)}
-        }
-      }
-    }
-  ]
-}
-EOF
+  policy = data.aws_iam_policy_document.apt_repo.json
 }

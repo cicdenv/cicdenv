@@ -1,20 +1,24 @@
+data "aws_iam_policy_document" "kops_state_key" {
+  statement {
+    principals {
+      type = "AWS"
+
+      identifiers = local.all_account_roots
+    }
+
+    actions = [
+      "kms:*",
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
+}
+
 resource "aws_kms_key" "kops_state" {
   description = "Used for kops state store s3 objects"
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": ${jsonencode(local.all_account_roots)}
-      },
-      "Action": "kms:*",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
+  policy = data.aws_iam_policy_document.kops_state_key.json
 }
 
 resource "aws_kms_alias" "kops_state" {

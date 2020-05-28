@@ -11,8 +11,6 @@ resource "aws_iam_role" "assumed_admin" {
 
 data "aws_iam_policy_document" "assumed_admin_assume_role_policy" {
   statement {
-    actions = ["sts:AssumeRole"]
-
     principals {
       type = "AWS"
       
@@ -20,6 +18,10 @@ data "aws_iam_policy_document" "assumed_admin_assume_role_policy" {
         local.main_account.root,
       ]
     }
+
+    actions = [
+      "sts:AssumeRole",
+    ]
   }
 }
 

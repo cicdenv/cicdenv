@@ -1,9 +1,5 @@
 data "aws_iam_policy_document" "s3apt_trust" {
   statement {
-    actions = [
-      "sts:AssumeRole",
-    ]
-
     principals {
       type = "Service"
 
@@ -11,6 +7,10 @@ data "aws_iam_policy_document" "s3apt_trust" {
         "lambda.amazonaws.com",
       ]
     }
+
+    actions = [
+      "sts:AssumeRole",
+    ]
   }
 }
 

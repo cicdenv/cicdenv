@@ -11,8 +11,6 @@ resource "aws_s3_bucket" "jenkins_builds" {
 data "aws_iam_policy_document" "jenkins_builds" {
   # Administrators
   statement {
-    effect = "Allow"
-
     principals {
       type = "AWS"
 
@@ -32,8 +30,6 @@ data "aws_iam_policy_document" "jenkins_builds" {
 
   # AWSLogs from ALBs
   statement {
-    effect = "Allow"
-
     principals {
       type = "AWS"
 

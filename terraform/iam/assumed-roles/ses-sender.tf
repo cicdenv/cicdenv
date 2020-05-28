@@ -6,22 +6,20 @@ resource "aws_iam_role" "ses_sender" {
 
 data "aws_iam_policy_document" "ses_sender_trust" {
   statement {
-    actions = [
-      "sts:AssumeRole",
-    ]
-
     principals {
       type = "AWS"
 
       identifiers = local.all_account_roots
     }
+
+    actions = [
+      "sts:AssumeRole",
+    ]
   }
 }
 
 data "aws_iam_policy_document" "send_email" {
   statement {
-    effect = "Allow"
-
     actions = [
       "SES:SendEmail",
       "SES:SendRawEmail",
