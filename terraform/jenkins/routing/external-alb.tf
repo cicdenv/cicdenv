@@ -2,7 +2,7 @@ resource "aws_lb" "jenkins_external" {
   name               = "jenkins-external"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [local.external_alb_security_group.id]
+  security_groups    = [local.security_groups["external_alb"].id]
   subnets            = values(local.subnets["public"]).*.id
 
   idle_timeout = 4000

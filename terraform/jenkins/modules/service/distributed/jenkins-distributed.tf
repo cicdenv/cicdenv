@@ -9,18 +9,6 @@ module "server_cloudinit" {
   jenkins_instance = var.name
 }
 
-module "agent_cloudinit" {
-  source = "../../user-data/agent"
-
-  terraform_state = {
-    region = var.terraform_state.region
-    bucket = var.terraform_state.bucket
-  }
-
-  jenkins_instance = var.name
-  executors        = var.executors
-}
-
 module "server" {
   source = "../../compute/server"
 
@@ -37,7 +25,20 @@ module "server" {
 
   user_data = module.server_cloudinit.user_data
 
-  instance_profile_arn = local.instance_profile.arn
+  instance_profile = local.server_instance_profile
+  security_groups  = local.server_security_groups
+}
+
+module "agent_cloudinit" {
+  source = "../../user-data/agent"
+
+  terraform_state = {
+    region = var.terraform_state.region
+    bucket = var.terraform_state.bucket
+  }
+
+  jenkins_instance = var.name
+  executors        = var.executors
 }
 
 module "agents" {

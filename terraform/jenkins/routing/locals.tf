@@ -6,8 +6,7 @@ locals {
   
   subnets = data.terraform_remote_state.network.outputs.subnets
 
-  internal_alb_security_group = data.terraform_remote_state.jenkins_shared.outputs.internal_alb_security_group
-  external_alb_security_group = data.terraform_remote_state.jenkins_shared.outputs.external_alb_security_group
+  security_groups = data.terraform_remote_state.jenkins_shared.outputs.security_groups
 
   acm_certificate = data.terraform_remote_state.jenkins_shared.outputs.acm_certificate
 

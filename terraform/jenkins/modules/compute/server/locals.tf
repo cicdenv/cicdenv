@@ -8,8 +8,6 @@ locals {
 
   key_pair = data.terraform_remote_state.jenkins_shared.outputs.jenkins_key_pair
 
-  security_group = data.terraform_remote_state.jenkins_shared.outputs.server_security_group
-
   internal_alb = data.terraform_remote_state.jenkins_routing.outputs.internal_alb
   external_alb = data.terraform_remote_state.jenkins_routing.outputs.external_alb
 }

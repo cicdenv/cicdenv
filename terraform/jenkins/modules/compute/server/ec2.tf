@@ -3,7 +3,7 @@ resource "aws_launch_configuration" "jenkins_server" {
   image_id             = var.ami_id
   instance_type        = var.instance_type
   iam_instance_profile = var.instance_profile_arn
-  security_groups      = [local.security_group.id]
+  security_groups      = var.security_groups
   user_data            = var.user_data
   key_name             = local.key_pair.key_name
 

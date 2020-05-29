@@ -27,6 +27,10 @@ variable "user_data" {
   type = string
 }
 
-variable "instance_profile_arn" {
-  type = string
+variable "instance_profile" {
+  type = object({arn=string})
+}
+
+variable "security_groups" {
+  type = list(object({id=string}))
 }

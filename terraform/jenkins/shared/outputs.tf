@@ -11,54 +11,47 @@ output "jenkins_key_pair" {
   }
 }
 
-output "server_instance_profile" {
+output "iam" {
   value = {
-    name = aws_iam_instance_profile.jenkins_server.name
-    arn  = aws_iam_instance_profile.jenkins_server.arn
-    role = aws_iam_instance_profile.jenkins_server.role
-    path = aws_iam_instance_profile.jenkins_server.path
+    server = {
+      instance_profile = {
+        name = aws_iam_instance_profile.jenkins_server.name
+        arn  = aws_iam_instance_profile.jenkins_server.arn
+        role = aws_iam_instance_profile.jenkins_server.role
+        path = aws_iam_instance_profile.jenkins_server.path
+      }
+    }
+    agent = {
+      name = aws_iam_instance_profile.jenkins_agent.name
+      arn  = aws_iam_instance_profile.jenkins_agent.arn
+      role = aws_iam_instance_profile.jenkins_agent.role
+      path = aws_iam_instance_profile.jenkins_agent.path
+    }
+    colocated = {
+      instance_profile = {
+        name = aws_iam_instance_profile.jenkins_colo.name
+        arn  = aws_iam_instance_profile.jenkins_colo.arn
+        role = aws_iam_instance_profile.jenkins_colo.role
+        path = aws_iam_instance_profile.jenkins_colo.path
+      }
+    }
   }
 }
 
-output "colocated_instance_profile" {
+output "security_groups" {
   value = {
-    name = aws_iam_instance_profile.jenkins_colo.name
-    arn  = aws_iam_instance_profile.jenkins_colo.arn
-    role = aws_iam_instance_profile.jenkins_colo.role
-    path = aws_iam_instance_profile.jenkins_colo.path
-  }
-}
-
-output "agent_instance_profile" {
-  value = {
-    name = aws_iam_instance_profile.jenkins_agent.name
-    arn  = aws_iam_instance_profile.jenkins_agent.arn
-    role = aws_iam_instance_profile.jenkins_agent.role
-    path = aws_iam_instance_profile.jenkins_agent.path
-  }
-}
-
-output "server_security_group" {
-  value = {
-    id = aws_security_group.jenkins_server.id
-  }
-}
-
-output "agent_security_group" {
-  value = {
-    id = aws_security_group.jenkins_agent.id
-  }
-}
-
-output "internal_alb_security_group" {
-  value = {
-    id = aws_security_group.jenkins_server_internal_alb.id
-  }
-}
-
-output "external_alb_security_group" {
-  value = {
-    id = aws_security_group.jenkins_server_external_alb.id
+    server = {
+      id = aws_security_group.jenkins_server.id
+    }
+    agent = {
+      id = aws_security_group.jenkins_agent.id
+    }
+    internal_alb = {
+      id = aws_security_group.jenkins_server_internal_alb.id
+    }
+    external_alb = {
+      id = aws_security_group.jenkins_server_external_alb.id
+    }
   }
 }
 

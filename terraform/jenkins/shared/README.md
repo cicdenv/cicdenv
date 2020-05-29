@@ -37,26 +37,31 @@ data "terraform_remote_state" "shared" {
 acm_certificate = {
   "arn" = "arn:aws:acm:<region>:<acct-id>:certificate/<guid>"
 }
-agent_instance_profile = {
-  "arn" = "arn:aws:iam::<acct-id>:instance-profile/jenkins-agent"
-  "name" = "jenkins-agent"
-  "path" = "/"
-  "role" = "jenkins-agent"
-}
-agent_security_group = {
-  "id" = "sg-<0x*17>"
-}
-colocated_instance_profile = {
-  "arn" = "arn:aws:iam::<acct-id>:instance-profile/jenkins-colo"
-  "name" = "jenkins-colo"
-  "path" = "/"
-  "role" = "jenkins-colo"
-}
-external_alb_security_group = {
-  "id" = "sg-<0x*17>"
-}
-internal_alb_security_group = {
-  "id" = "sg-<0x*17>"
+iam = {
+  "agent" = {
+    "instance_profile" = {
+      "arn" = "arn:aws:iam::<acct-id>:instance-profile/jenkins-agent"
+      "name" = "jenkins-agent"
+      "path" = "/"
+      "role" = "jenkins-agent"
+    }
+  }
+  "colocated" = {
+    "instance_profile" = {
+      "arn" = "arn:aws:iam::<acct-id>:instance-profile/jenkins-colo"
+      "name" = "jenkins-colo"
+      "path" = "/"
+      "role" = "jenkins-colo"
+    }
+  }
+  "server" = {
+    "instance_profile" = {
+      "arn" = "arn:aws:iam::<acct-id>:instance-profile/jenkins-server"
+      "name" = "jenkins-server"
+      "path" = "/"
+      "role" = "jenkins-server"
+    }
+  }
 }
 jenkins_builds_s3_bucket = {
   "arn" = "arn:aws:s3:::jenkins-builds-dev-<domain->"
@@ -70,13 +75,18 @@ persistent_config_efs = {
   "dns_name" = "fs-<0x*8>.efs.<region>.amazonaws.com"
   "id" = "fs-<0x*8>"
 }
-server_instance_profile = {
-  "arn" = "arn:aws:iam::<acct-id>:instance-profile/jenkins-server"
-  "name" = "jenkins-server"
-  "path" = "/"
-  "role" = "jenkins-server"
-}
-server_security_group = {
+security_groups = {
+  "agent" = {
   "id" = "sg-<0x*17>"
+  }
+  "external_alb" = {
+  "id" = "sg-<0x*17>"
+  }
+  "internal_alb" = {
+  "id" = "sg-<0x*17>"
+  }
+  "server" = {
+  "id" = "sg-<0x*17>"
+  }
 }
 ```
