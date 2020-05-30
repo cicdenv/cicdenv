@@ -87,7 +87,7 @@ cicdenv$ cicdctl terraform destroy network/routing:dev -force
 Example: `dev` account
 ```bash
 # Inspect with bastion service
-cicdenv$ cicdctl apply kops/bastion:dev -auto-approve
+cicdenv$ cicdctl apply network/bastion:dev -auto-approve
 # Linux
 cicdenv$ cicdctl bastion ssh dev
 # Mac

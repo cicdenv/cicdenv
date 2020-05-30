@@ -6,7 +6,7 @@ This state is per-account.
 
 ## Usage
 ```bash
-cicdenv$ cicdctl terraform <init|plan|apply|destroy|output> kops/bastion:${WORKSPACE}
+cicdenv$ cicdctl terraform <init|plan|apply|destroy|output> network/bastion:${WORKSPACE}
 ...
 ```
 
