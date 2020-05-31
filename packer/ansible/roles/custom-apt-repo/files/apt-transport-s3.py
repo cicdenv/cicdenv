@@ -32,6 +32,7 @@ import xml.etree.ElementTree as ET
 import socket
 import ssl
 from configobj import ConfigObj
+import signal
 
 RETRIES = 5
 
@@ -43,6 +44,11 @@ SPECIAL_REGION_ENDPOINTS = {
 TOKEN_TTL_SECONDS = 21600
 TOKEN_HEADER = "X-aws-ec2-metadata-token"
 TOKEN_HEADER_TTL = "X-aws-ec2-metadata-token-ttl-seconds"
+
+
+def _sig_handler(sig, frame):
+    sys.exit(0)
+signal.signal(signal.SIGINT, _sig_handler)
 
 
 def wait_time(c):
