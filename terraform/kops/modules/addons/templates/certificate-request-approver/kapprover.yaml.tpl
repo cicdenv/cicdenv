@@ -1,0 +1,8 @@
+---
+${rbac}
+---
+${sa}
+---
+${deployment}
+---
+${service}

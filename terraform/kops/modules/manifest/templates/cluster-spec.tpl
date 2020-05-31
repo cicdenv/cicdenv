@@ -56,12 +56,14 @@ ${public_subnets}
     masters: private
     nodes: private
   fileAssets:
+  ${irsa_file_assets}
   - name: kubernetes-audit
     path: /srv/kubernetes/audit.yaml
     roles: [Master]
     content: |
       ${audit_policy}
   kubeAPIServer:
+    ${irsa_kube_api_args}
     auditLogPath:       /var/log/kube-apiserver-audit.log
     auditPolicyFile:    /srv/kubernetes/audit.yaml
     auditLogMaxAge:       10 # Days

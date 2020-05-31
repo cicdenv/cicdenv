@@ -1,0 +1,8 @@
+---
+${auth}
+---
+${demonset}
+---
+${service}
+---
+${admission}

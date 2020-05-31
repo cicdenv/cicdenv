@@ -9,25 +9,25 @@ N/A.
 
 ## Usage
 ```bash
-cicdenv$ cicdctl terraform <init|plan|apply|destroy> shared/ecr-images/bastion-sns-subscriber:main
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> shared/ecr-images/bastion-events-worker:main
 ...
 ```
 
-## Created
+## Image Build
 ```bash
-📦 $USER:~/cicdenv/shared/ecr-images/bastion-sns-subscriber$ make
+cicdenv$ (cd terraform/shared/ecr-images/bastion-events-worker/; make build)
 ```
 
-## Push Changes
+## Update ECR
 ```bash
-📦 $USER:~/cicdenv$ (cd terraform/shared/ecr-images/bastion-events-worker; make build push)
+📦 $USER:~/cicdenv$ (cd terraform/shared/ecr-images/bastion-events-worker; make push)
 ```
 
 ## Testing from bastion hosts
 ```bash
 # Pull changes
 root@bastion-dev:~# docker pull '<main-acct-id>.dkr.ecr.<region>.amazonaws.com/bastion-events-worker'
-root@bastion-dev:~# docker tag  '<main-acct-id>.dkr.ecr.<region>.amazonaws.com/bastion-events-worker events-worker'
+root@bastion-dev:~# docker tag  '<main-acct-id>.dkr.ecr.<region>.amazonaws.com/bastion-events-worker' events-worker
 ```
 
 ## Connect a Session

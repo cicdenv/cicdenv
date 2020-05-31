@@ -1,7 +1,7 @@
 data "template_file" "admin_users" {
   for_each = local.admin_users
 
-  template = file("${path.module}/templates/aws-iam-authenticator_admin-user.tpl")
+  template = file("${path.module}/templates/aws-iam-authenticator/admin-user.tpl")
   vars = {
     username = each.key
     arn      = each.value
@@ -11,14 +11,14 @@ data "template_file" "admin_users" {
 data "template_file" "admin_roles" {
   for_each = toset(local.admin_roles)
 
-  template = file("${path.module}/templates/aws-iam-authenticator_admin-role.tpl")
+  template = file("${path.module}/templates/aws-iam-authenticator/admin-role.tpl")
   vars = {
     arn = each.key
   }
 }
 
 data "template_file" "authenticator_configmap" {
-  template = file("${path.module}/templates/aws-iam-authenticator_configmap.yaml.tpl")
+  template = file("${path.module}/templates/aws-iam-authenticator/configmap.yaml.tpl")
   vars = {
     cluster_id  = local.cluster_fqdn
     admin_users = join("\n", [for admin_user in data.template_file.admin_users : admin_user.rendered])
@@ -39,4 +39,6 @@ resource "aws_s3_bucket_object" "authenticator_configmap" {
   server_side_encryption = "aws:kms"
   
   kms_key_id = local.state_store.key.arn
+
+  acl = "bucket-owner-full-control"
 }

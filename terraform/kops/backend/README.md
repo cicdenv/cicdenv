@@ -7,7 +7,7 @@ N/A.  All accounts store kops state in the same bucket in main-acct/us-west-2.
 ## Init
 Create KOPS CA.
 ```
-cicdenv$ terraform/kops/backend/bin/create-ca.sh
+cicdenv$ terraform/kops/backend/bin/ca-create.sh
 ...
 2019/06/25 12:09:55 [INFO] signed certificate with serial number ....
 ```
@@ -37,43 +37,42 @@ data "terraform_remote_state" "backend" {
 
 ## Outputs
 ```hcl
-etcd_kms_key = {
-  "arn" = "arn:aws:kms:us-west-2:<account-id>:key/<guid>"
-  "key_id" = "<guid>"
-  "name" = "alias/kops-etcd"
+irsa = {
+  "cluster_spec" = {
+    "fileAssets" = "content: ...\n  isBase64: true\n  name: service-account-signing-key-file\n  path: /srv/kubernetes/assets/service-account-signing-key\n- content: ...\n  isBase64: true\n  name: service-account-key-file\n  path: /srv/kubernetes/assets/service-account-key\n"
+    "kubeAPIServer" = "apiAudiences:\n- sts.amazonaws.com\nserviceAccountIssuer: https://oidc-irsa-cicdenv-com.s3.amazonaws.com\nserviceAccountKeyFile:\n- /srv/kubernetes/server.key\n- /srv/kubernetes/assets/service-account-key\nserviceAccountSigningKeyFile: /srv/kubernetes/assets/service-account-signing-key\n"
+  }
+  "oidc" = {
+    "iam" = {
+      "oidc_provider" = {
+        "arn" = "arn:aws:iam::<main-acct-id>:oidc-provider/oidc-irsa-cicdenv-com.s3.amazonaws.com"
+        "client_id_list" = [
+          "sts.amazonaws.com",
+        ]
+        "thumbprint_list" = [
+          "3fe05b486e3f0987130ba1d4ea0f299539a58243",
+        ]
+        "url" = "oidc-irsa-cicdenv-com.s3.amazonaws.com"
+      }
+    }
+    "s3" = {
+      "oidc_issuer" = {
+        "bucket_domain_name" = "oidc-irsa-cicdenv-com.s3.amazonaws.com"
+        "bucket_name" = "oidc-irsa-cicdenv-com"
+      }
+    }
+  }
 }
-iam = {
-  "master" = {
-    "instance_profile" = {
-      "arn" = "arn:aws:iam::<account-id>:instance-profile/kops-master"
-    }
-    "role" = {
-      "arn" = "arn:aws:iam::<account-id>:role/system/kops-master"
-      "name" = "kops-master"
-    }
+state_store = {
+  "bucket" = {
+    "arn" = "arn:aws:s3:::kops.cicdenv.com"
+    "id" = "kops.cicdenv.com"
+    "name" = "kops.cicdenv.com"
   }
-  "node" = {
-    "instance_profile" = {
-      "arn" = "arn:aws:iam::<account-id>:instance-profile/kops-node"
-    }
-    "role" = {
-      "arn" = "arn:aws:iam::<account-id>:role/system/kops-node"
-      "name" = "kops-node"
-    }
-  }
-}
-security_groups = {
-  "external_apiserver" = {
-    "id" = "sg-<0x*17>"
-  }
-  "internal_apiserver" = {
-    "id" = "sg-<0x*17>"
-  }
-  "master" = {
-    "id" = "sg-<0x*17>"
-  }
-  "node" = {
-    "id" = "sg-<0x*17>"
+  "key" = {
+    "alias" = "alias/kops-state"
+    "arn" = "arn:aws:kms:<region>:<main-acct-id>:key/<guid>"
+    "key_id" = "<guid>"
   }
 }
 ```

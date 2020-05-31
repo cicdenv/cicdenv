@@ -6,4 +6,6 @@ resource "aws_s3_bucket_object" "addon_manifest" {
   server_side_encryption = "aws:kms"
 
   kms_key_id = local.state_store.key.arn
+  
+  acl = "bucket-owner-full-control"
 }

@@ -59,5 +59,8 @@ data "template_file" "cluster_spec" {
     lb_security_groups = "[${join(",", local.api_security_groups)}]"
 
     audit_policy = indent(6, file("${path.module}/files/audit-policy.yaml"))
+
+    irsa_file_assets   = indent(2, local.irsa_file_assets)
+    irsa_kube_api_args = indent(4, local.irsa_kube_api_args)
   }
 }

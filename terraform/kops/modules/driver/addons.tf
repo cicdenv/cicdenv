@@ -7,6 +7,10 @@ module "addons" {
   
   admin_roles = local.admin_roles
   
+  input_files = {
+    ca_cert = module.cluster.ca_cert
+  }
+
   output_files = {
     authenticator_config = local.authenticator_config
   }

@@ -16,6 +16,13 @@ variable "admin_roles" {
   description = "List of admin role ARNs"
 }
 
+variable "input_files" {
+  type = object({
+    ca_cert = string
+  })
+  description = "Existing files."
+}
+
 variable "output_files" {
   type = object({
     authenticator_config = string

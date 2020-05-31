@@ -10,8 +10,13 @@ spec:
     selector:
       role.kubernetes.io/authentication: "1"
     version: 1.0.0
-  - id: "k8s-112"
-    name: custom.kube2iam.aws
-    manifest: custom.kube2iam.aws/k8s-112.yaml
-    kubernetesVersion: '>=1.12.0'
+  - id: "k8s-116"
+    name: custom.irsa.aws
+    manifest: custom.irsa.aws/k8s-116.yaml
+    kubernetesVersion: '>=1.16.0'
+    version: 1.0.0
+  - id: "k8s-118"
+    name: custom.kapprover.csr
+    manifest: custom.kapprover.csr/k8s-118.yaml
+    kubernetesVersion: '>=1.18.0'
     version: 1.0.0
