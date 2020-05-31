@@ -13,7 +13,10 @@
 # - Agent WebSocket $SERVER_URL 
 #
 
-AGENT_NAME=${AGENT_NAME:-$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)}
+if [[ -z "$AGENT_NAME" ]]; then  # Assume EC2 instance with IMDSv2
+    IMDSv2_TOKEN=$(curl -X PUT -H "X-aws-ec2-metadata-token-ttl-seconds: 30" -sL "http://169.254.169.254/latest/api/token")
+    AGENT_NAME=$(curl -H "X-aws-ec2-metadata-token:$IMDSv2_TOKEN" -sL http://169.254.169.254/latest/meta-data/local-ipv4)
+fi
 EXECUTORS=${EXECUTORS:-1}
 CLI_JAR=${CLI_JAR:-/usr/share/jenkins/jenkins-cli.jar}
 

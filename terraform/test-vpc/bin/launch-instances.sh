@@ -38,17 +38,19 @@ image_id=$(aws ${AWS_OPTS}                            \
 )
 
 for instance_type in $instance_types; do
-    instance_id=$(aws ${AWS_OPTS}                                   \
-        ec2 run-instances                                           \
-        --image-id=${image_id}                                      \
-        --instance-type=${instance_type}                            \
-        --key-name=manual-testing                                   \
-        --subnet-id=${subnet_id}                                    \
-        --security-group-ids=${security_group_id}                   \
-        --associate-public-ip-addres                                \
-        --iam-instance-profile Name=${instance_profile##*/}         \
-        --tag-specifications                                        \
-          'ResourceType=instance,Tags=[{Key=Name,Value=test-vpc}]'  \
+    instance_id=$(aws ${AWS_OPTS}                                                \
+        ec2 run-instances                                                        \
+        --image-id=${image_id}                                                   \
+        --instance-type=${instance_type}                                         \
+        --key-name=manual-testing                                                \
+        --subnet-id=${subnet_id}                                                 \
+        --security-group-ids=${security_group_id}                                \
+        --associate-public-ip-addres                                             \
+        --iam-instance-profile Name=${instance_profile##*/}                      \
+        --tag-specifications                                                     \
+          'ResourceType=instance,Tags=[{Key=Name,Value=test-vpc}]'               \
+        --metadata-options                                                       \
+          'HttpEndpoint=enabled,HttpTokens=required,HttpPutResponseHopLimit=64'  \
         | jq -r '.Instances[0].InstanceId'
     )
     sleep 5

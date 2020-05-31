@@ -1,11 +1,23 @@
-resource "aws_launch_configuration" "jenkins_server" {
-  name_prefix          = "jenkins-server-${var.jenkins_instance}-"
-  image_id             = var.ami_id
-  instance_type        = var.instance_type
-  iam_instance_profile = var.instance_profile_arn
-  security_groups      = var.security_groups
-  user_data            = var.user_data
-  key_name             = local.key_pair.key_name
+resource "aws_launch_template" "jenkins_server" {
+  name_prefix   = "jenkins-server-${var.jenkins_instance}-"
+  image_id      = var.ami_id
+  instance_type = var.instance_type
+  user_data     = var.user_data
+  key_name      = local.key_pair.key_name
+
+  iam_instance_profile   = var.instance_profile_arn
+  vpc_security_group_ids = var.security_groups
+
+  # IMDSv2 - instance metadata service session tokens
+  metadata_options {
+    http_tokens = "required"
+
+    http_put_response_hop_limit = 64
+  }
+  
+  monitoring {
+    enabled = true
+  }
 
   lifecycle {
     create_before_destroy = true
@@ -18,7 +30,7 @@ resource "aws_autoscaling_group" "jenkins_server" {
   min_size             = 1
   desired_capacity     = 1
   
-  launch_configuration = aws_launch_configuration.jenkins_server.name
+  launch_configuration = aws_launch_template.jenkins_server.name
   
   vpc_zone_identifier = values(local.subnets["private"]).*.id
 
