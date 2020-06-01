@@ -1,5 +1,6 @@
 data "template_cloudinit_config" "config" {
-  gzip = true
+  gzip          = true
+  base64_encode = true
 
   # systemd units and host sshd configuration
   part {

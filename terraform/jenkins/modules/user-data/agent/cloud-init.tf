@@ -1,5 +1,6 @@
 data "template_cloudinit_config" "config" {
-  gzip = true
+  gzip          = true
+  base64_encode = true
 
   part {
     merge_type   = "list(append)+dict(recurse_array)+str()"

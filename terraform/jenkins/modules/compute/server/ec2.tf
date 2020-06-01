@@ -5,13 +5,16 @@ resource "aws_launch_template" "jenkins_server" {
   user_data     = var.user_data
   key_name      = local.key_pair.key_name
 
-  iam_instance_profile   = var.instance_profile_arn
+  iam_instance_profile {
+    arn = var.instance_profile_arn
+  }
   vpc_security_group_ids = var.security_groups
 
   # IMDSv2 - instance metadata service session tokens
   metadata_options {
-    http_tokens = "required"
-
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+    
     http_put_response_hop_limit = 64
   }
   
@@ -30,7 +33,9 @@ resource "aws_autoscaling_group" "jenkins_server" {
   min_size             = 1
   desired_capacity     = 1
   
-  launch_configuration = aws_launch_template.jenkins_server.name
+  launch_template {
+    name = aws_launch_template.jenkins_server.name
+  }
   
   vpc_zone_identifier = values(local.subnets["private"]).*.id
 

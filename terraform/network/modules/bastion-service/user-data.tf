@@ -16,8 +16,8 @@ data "template_file" "ssh_worker_service" {
 }
 
 data "template_cloudinit_config" "config" {
-  gzip          = false
-  base64_encode = false
+  gzip          = true
+  base64_encode = true
 
   # systemd units and host sshd configuration
   part {
