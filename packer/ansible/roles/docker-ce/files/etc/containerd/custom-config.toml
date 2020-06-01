@@ -1,2 +1,0 @@
-# /etc/containerd/config-kops.toml
-disabled_plugins = ["cri"]

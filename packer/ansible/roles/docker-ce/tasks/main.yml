@@ -39,38 +39,3 @@
   copy:
     src: files/config.json
     dest: /root/.docker/config.json
-
-- name: Sysconfig folder
-  file:
-    path: /etc/sysconfig
-    state: directory
-    mode: 0755
-
-- name: Sysconfig containerd env file
-  copy:
-    src: files/etc/sysconfig/containerd
-    dest: /etc/sysconfig/containerd
-
-- name: Custom containerd conf file
-  copy:
-    src: files/etc/containerd/custom-config.toml
-    dest: /etc/containerd/custom-config.toml
-
-- name: Custom containerd service unit
-  copy:
-    src: files/lib/systemd/system/containerd.service
-    dest: /lib/systemd/system/containerd.service
-  notify:
-    - restart containerd
-
-- name: Sysconfig docker env file
-  copy:
-    src: files/etc/sysconfig/docker
-    dest: /etc/sysconfig/docker
-
-- name: Custom docker service unit
-  copy:
-    src: files/lib/systemd/system/docker.service
-    dest: /lib/systemd/system/docker.service
-  notify:
-    - restart docker

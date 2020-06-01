@@ -1,2 +1,0 @@
-DOCKER_OPTS=--ip-masq=false --iptables=false --log-driver=json-file --log-level=warn --log-opt=max-file=5 --log-opt=max-size=10m --storage-driver=overlay2
-DOCKER_NOFILE=1000000
