@@ -215,14 +215,14 @@ def rebuild_package_index(prefix):
     package_index_obj = s3.Object(bucket_name=os.environ['bucket'], key=prefix + "/Packages")
     print("Writing package index: %s" % (str(package_index_obj)))
     package_index = "\n".join(sorted(pkginfos))
-    package_index_obj.put(Body=package_index, Metadata={'packages-hash': calcd_pkghash})
+    package_index_bytes = package_index.encode('utf-8')
+    package_index_obj.put(Body=package_index_bytes, Metadata={'packages-hash': calcd_pkghash})
     print("DONE REBUILDING PACKAGE INDEX")
 
     print("REBUILDING RELEASE FILE: %s/Release" % (prefix))
     release_file_obj = s3.Object(bucket_name=os.environ['bucket'], key=prefix + "/Release")
 
     print("Writing release file: %s" % (str(release_file_obj)))
-    package_index_bytes = package_index.encode('utf-8')
     md5, sha1, sha256 = content_checksums(package_index_bytes)
     size = len(package_index_bytes)
     tstamp = subprocess.check_output(['date', '-R', '-u']).decode().rstrip()  # Sat, 08 Feb 2020 22:07:37 UTC
@@ -258,7 +258,7 @@ SHA256:
     key_data = f'{public_key}\n{private_key}'
 
     gpg_home = '/tmp/.gnupg'
-    os.makedirs(gpg_home, mode=0o700)
+    os.makedirs(gpg_home, mode=0o700, exist_ok=True)
 
     # Allow for pipe passphrase delivery
     with open(f'{gpg_home}/gpg-agent.conf', 'w') as agent_config:

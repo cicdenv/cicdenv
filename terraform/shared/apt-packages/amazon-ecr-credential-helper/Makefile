@@ -10,17 +10,20 @@ domain=$(shell grep 'domain ' "$(domain_config)" | awk -F= '{print $$2}' | sed '
 s3_bucket=apt-repo-$(domain)
 
 DPKG_NAME=amazon-ecr-credential-helper
-DPKG_VERSION=0.4.0
+DPKG_VERSION=0.4.1
 DPKG_ROOT=$(DPKG_NAME)-$(DPKG_VERSION)
 
+# Official builds
+# - https://github.com/awslabs/amazon-ecr-credential-helper/issues/215
 EXECUTABLE=docker-credential-ecr-login
-DOWNLOAD_URL=https://$(DPKG_NAME)-releases.s3.$(AWS_REGION).amazonaws.com/$(DPKG_VERSION)/linux-amd64/$(EXECUTABLE)
-SHA256=2c8fc418fe1b5195388608c1cfb99ba008645f3f1beb312772c9490c39aa5904  docker-credential-ecr-login
+#DOWNLOAD_URL=https://$(DPKG_NAME)-releases.s3.$(AWS_REGION).amazonaws.com/$(DPKG_VERSION)/linux-amd64/$(EXECUTABLE)
+#SHA256=2c8fc418fe1b5195388608c1cfb99ba008645f3f1beb312772c9490c39aa5904  docker-credential-ecr-login
+DOWNLOAD_URL=https://github.com/fred-vogt/amazon-ecr-credential-helper/releases/download/v0.4.1/docker-credential-ecr-login
 PREFIX=$(DPKG_ROOT)/usr/bin
 deb:
 	mkdir -p "$(DPKG_ROOT)/DEBIAN"
 	
-	echo \
+	echo -e \
 Package: $(DPKG_NAME)                                                          \\n\
 Version: $(DPKG_VERSION)                                                       \\n\
 Architecture: amd64                                                            \\n\
@@ -37,6 +40,7 @@ Description: Automatically gets credentials for Amazon ECR on docker push/pull \
 	if [ ! -f $(EXECUTABLE) ]; then                   \
 	    curl -sL -o $(EXECUTABLE) "$(DOWNLOAD_URL)";  \
 	fi
+
 	cp "$(EXECUTABLE)" "$(PREFIX)"
 	chmod 755 "$(PREFIX)/$(EXECUTABLE)"
 
