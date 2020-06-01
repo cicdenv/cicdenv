@@ -34,7 +34,8 @@ resource "aws_autoscaling_group" "jenkins_agents" {
   desired_capacity     = 1
   
   launch_template {
-    name = aws_launch_template.jenkins_agent.name
+    name    = aws_launch_template.jenkins_agent.name
+    version = "$Latest"
   }
   
   vpc_zone_identifier = values(local.subnets["private"]).*.id

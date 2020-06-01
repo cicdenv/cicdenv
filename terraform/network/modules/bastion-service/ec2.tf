@@ -39,7 +39,8 @@ resource "aws_autoscaling_group" "bastion" {
   desired_capacity     = 1
   
   launch_template {
-    name = aws_launch_template.bastion.name
+    name    = aws_launch_template.bastion.name
+    version = "$Latest"
   }
   
   vpc_zone_identifier  = var.private_subnets

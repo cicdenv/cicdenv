@@ -34,7 +34,8 @@ resource "aws_autoscaling_group" "jenkins_server" {
   desired_capacity     = 1
   
   launch_template {
-    name = aws_launch_template.jenkins_server.name
+    name    = aws_launch_template.jenkins_server.name
+    version = "$Latest"
   }
   
   vpc_zone_identifier = values(local.subnets["private"]).*.id
