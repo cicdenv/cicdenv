@@ -24,6 +24,6 @@ module "colocated" {
 
   user_data = module.cloudinit.user_data
 
-  instance_profile = local.server_instance_profile
-  security_groups  = local.server_security_groups
+  instance_profile = local.instance_profile
+  security_groups  = local.security_groups
 }

@@ -17,8 +17,6 @@ module "server" {
     bucket = var.terraform_state.bucket
   }
 
-  ami_id = var.ami_id
-
   jenkins_instance = var.name
   instance_type    = var.server_instance_type
   ami_id           = var.ami_id
@@ -48,9 +46,7 @@ module "agents" {
     region = var.terraform_state.region
     bucket = var.terraform_state.bucket
   }
-  
-  ami_id = var.ami_id
-  
+    
   jenkins_instance = var.name
   instance_type    = var.agent_instance_type
   ami_id           = var.ami_id

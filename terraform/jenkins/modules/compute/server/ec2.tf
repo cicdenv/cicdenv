@@ -6,9 +6,9 @@ resource "aws_launch_template" "jenkins_server" {
   key_name      = local.key_pair.key_name
 
   iam_instance_profile {
-    arn = var.instance_profile_arn
+    arn = var.instance_profile.arn
   }
-  vpc_security_group_ids = var.security_groups
+  vpc_security_group_ids = var.security_groups.*.id
 
   # IMDSv2 - instance metadata service session tokens
   metadata_options {

@@ -22,10 +22,12 @@ output "iam" {
       }
     }
     agent = {
-      name = aws_iam_instance_profile.jenkins_agent.name
-      arn  = aws_iam_instance_profile.jenkins_agent.arn
-      role = aws_iam_instance_profile.jenkins_agent.role
-      path = aws_iam_instance_profile.jenkins_agent.path
+        instance_profile = {
+        name = aws_iam_instance_profile.jenkins_agent.name
+        arn  = aws_iam_instance_profile.jenkins_agent.arn
+        role = aws_iam_instance_profile.jenkins_agent.role
+        path = aws_iam_instance_profile.jenkins_agent.path
+      }
     }
     colocated = {
       instance_profile = {
