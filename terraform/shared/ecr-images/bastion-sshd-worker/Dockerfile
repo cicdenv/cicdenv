@@ -7,23 +7,29 @@ RUN apt-get update      \
  && apt-get install -y  \
       openssh-server    \
       sudo              \
-      awscli            \
       curl              \
       git               \
       jq                \
-      vim
+      vim               \
+ && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get install -y        \
+RUN apt-get update            \
+ && apt-get install -y        \
       build-essential         \
       zlib1g                  \
       libssl1.0-dev           \
       libcurl3                \
-      libcurl-openssl1.0-dev
+      libcurl-openssl1.0-dev  \
+ && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get install -y  \
+RUN apt-get update      \
+ && apt-get install -y  \
       python-minimal    \
       python-configobj  \
-      ca-certificates
+      ca-certificates   \
+      python3-pip       \
+ && rm -rf /var/lib/apt/lists/*
+RUN pip3 install --no-cache-dir awscli
 
 COPY ./files/libnss-iam.deb /tmp/
 RUN dpkg -i /tmp/libnss-iam.deb
