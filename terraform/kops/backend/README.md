@@ -76,3 +76,11 @@ state_store = {
   }
 }
 ```
+
+## Testing
+CA Cert fingerprint:
+```
+echo '{"uri": "oidc-irsa-cicdenv-com.s3.amazonaws.com"}' | python terraform/kops/backend/bin/ca_sha1.py
+3fe05b486e3f0987130ba1d4ea0f299539a58243
+```
+* https://github.com/hashicorp/terraform-provider-tls/issues/52
