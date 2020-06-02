@@ -16,6 +16,8 @@ from datetime import datetime, timedelta
 from pytz import timezone
 from tzlocal import get_localzone
 
+import oathtool
+
 from . import config_profile
 from ..terraform.driver import TerraformDriver
 from ...commands.types.target import parse_target
@@ -65,7 +67,7 @@ class MfaCodeGenerator(object):
     def _run_oathtool(self):
         secret = self._decrypt_totp_config()
 
-        totp = self.runner.output_string(['oathtool', '--base32', '--totp', secret])
+        totp = oathtool.generate_otp(secret)  # self.runner.output_string(['oathtool', '--base32', '--totp', secret])
         hashed_totp = sha256(totp.encode()).hexdigest()
         
         return totp, hashed_totp

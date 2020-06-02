@@ -11,3 +11,4 @@ ansible
 terraform_external_data
 python-jenkins
 jenkinsapi
+oathtool

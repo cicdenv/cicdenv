@@ -29,4 +29,4 @@ def aws_mfa(settings, workspaces):
 @click.pass_obj
 def mfa_code(settings):
     if settings.creds:
-        print(MfaCodeGenerator().next())
+        print(MfaCodeGenerator(settings).next())
