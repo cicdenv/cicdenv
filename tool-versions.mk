@@ -18,8 +18,9 @@ TERRAFORM_SHA256   = 607bc802b1c6c2a5e62cc48640f38aaa64bef1501b46f0ae4829feb5159
 TERRAFORM_RELEASES = https://releases.hashicorp.com/terraform
 
 # https://github.com/kubernetes/kops/releases
-KOPS_VERSION   = 1.18.0-beta.1
-KOPS_SHA256    = 41d95b43f55dbf503683283fd6343637efd9b4a0fa1d31c5ffe2788cd3f5337b
+# NOTE: node local dns is broken in '1.18.0-beta.1', so avoid
+KOPS_VERSION   = 1.18.0-alpha.3
+KOPS_SHA256    = 6f20fa215aae11517a2804a788f967c09a1868d9259fd00e39ca850867f6917b
 KOPS_DOWNLOADS = https://github.com/kubernetes/kops/releases/download
 
 # https://www.packer.io/downloads.html
