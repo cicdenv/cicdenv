@@ -13,9 +13,6 @@
 ## Packer
 - [ ] 1.5.0+ config json to hcl
 
-## AWS
-- [ ] enable instance metadata service v2
-
 ## Workloads
 - [ ] jupyter notebook server
 
@@ -24,8 +21,6 @@
    https://github.com/kilna/kopsenv
 - [ ] per component terraform version
   https://github.com/tfutils/tfenv
-- [ ] kube2iam alternatives
-  https://aws.amazon.com/about-aws/whats-new/2019/09/amazon-eks-adds-support-to-assign-iam-permissions-to-kubernetes-service-accounts/
 
 ## Apt Repo
 - [ ] py3.8 lambda layer with gnupg
