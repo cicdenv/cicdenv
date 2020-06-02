@@ -39,3 +39,30 @@ ecr = {
   }
 }
 ```
+
+## Testing Workflow
+Build and push image changes:
+```
+cicdenv$ (cd terraform/shared/ecr-images/bastion-sshd-worker; make build)
+📦 $USER:~/cicdenv$ (cd terraform/shared/ecr-images/bastion-sshd-worker; make push)
+```
+
+Bastion host - get update image:
+```
+docker pull "<main-acct-id>.dkr.ecr.<region>.amazonaws.com/bastion-sshd-worker" \
+&& docker tag "<main-acct-id>.dkr.ecr.<region>.amazonaws.com/bastion-sshd-worker" "sshd-worker"
+```
+
+Test sshd-worker scripts:
+```
+docker run --rm -it sshd-worker bash
+
+# edit /opt/bin/sshd-entrypoint.sh - remove sshd launch
+container> vim /opt/bin/sshd-entrypoint.sh
+
+# login
+container>  IAM_ROLE=arn:aws:iam::<main-acct-id>:role/identity-resolver /opt/bin/sshd-entrypoint.sh
+
+# Test authorized keys script
+container> /opt/bin/authorized-keys-command.sh <iam-user>
+```
