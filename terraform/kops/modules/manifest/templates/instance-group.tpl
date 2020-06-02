@@ -17,6 +17,8 @@ spec:
   iam:
     profile: ${iam_profile_arn}
   additionalSecurityGroups: ${security_groups}
+  additionalUserData:
+${addition_user_data}
   subnets:
     - ${subnet_name}
   detailedInstanceMonitoring: true

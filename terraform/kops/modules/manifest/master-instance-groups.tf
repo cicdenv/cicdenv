@@ -18,5 +18,12 @@ data "template_file" "master_instance_group" {
     security_groups = "[${join(",", local.master_security_groups)}]"
 
     subnet_name = "private-${each.key}"
+    
+    addition_user_data = <<EOF
+  - name: configure-container-runtime.sh
+    type: text/x-shellscript
+    content: |
+      ${indent(6, file("${path.module}/files/configure-container-runtime.sh"))}
+EOF
   }
 }
