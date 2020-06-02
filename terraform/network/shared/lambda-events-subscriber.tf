@@ -8,8 +8,8 @@ resource "aws_lambda_function" "iam_user_event_subscriber" {
   source_code_hash = filebase64sha256("event-subscriber/lambda.zip")
 
   vpc_config {
-    subnet_ids         = values(local.subnets["private"]).*.id
-    security_group_ids = [local.security_groups.events.id]
+    subnet_ids         = values(module.shared_vpc.subnets["private"]).*.id
+    security_group_ids = [aws_security_group.events.id]
   }
 
   depends_on = [

@@ -41,6 +41,59 @@ bastion_service = {
     "id" = "sg-<0x*17>"
   }
 }
+cloudwatch_log_groups = {
+  "iam_user_event_subscriber" = {
+    "arn" = "arn:aws:logs:<region>:<account-id>:log-group:/aws/lambda/event-subscriber-bastion-service:*"
+    "name" = "/aws/lambda/event-subscriber-bastion-service"
+  }
+}
+iam = {
+  "bastion_service" = {
+    "instance_profile" = {
+      "arn" = "arn:aws:iam::<account-id>:instance-profile/bastion"
+    }
+    "policy" = {
+      "arn" = "arn:aws:iam::<account-id>:policy/BastionService"
+      "name" = "BastionService"
+      "path" = "/"
+    }
+    "role" = {
+      "arn" = "arn:aws:iam::<account-id>:role/bastion"
+      "name" = "bastion"
+    }
+  }
+  "iam_user_event_subscriber" = {
+    "policy" = {
+      "arn" = "arn:aws:iam::<account-id>:policy/iam-user-event-subscriber"
+      "name" = "iam-user-event-subscriber"
+      "path" = "/"
+    }
+    "role" = {
+      "arn" = "arn:aws:iam::<account-id>:role/iam-user-event-subscriber"
+      "name" = "iam-user-event-subscriber"
+    }
+  }
+}
+lambdas = {
+  "iam_user_event_subscriber" = {
+    "function_name" = "event-subscriber-bastion-service"
+    "handler" = "lambda.lambda_handler"
+    "runtime" = "python3.7"
+    "vpc_config" = [
+      {
+        "security_group_ids" = [
+          "sg-<0x*17>",
+        ]
+        "subnet_ids" = [
+          "subnet-<0x*17>",
+          "subnet-<0x*17>",
+          "subnet-<0x*17>",
+        ]
+        "vpc_id" = "vpc-<0x*17>"
+      },
+    ]
+  }
+}
 private_dns_zone = {
   "domain" = "<domain>"
   "name" = "<domain>."

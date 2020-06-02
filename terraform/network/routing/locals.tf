@@ -5,4 +5,6 @@ locals {
   
   subnets      = data.terraform_remote_state.shared.outputs.subnets
   route_tables = data.terraform_remote_state.shared.outputs.route_tables
+  
+  account_hosted_zone = data.terraform_remote_state.domains.outputs.account_public_zone
 }

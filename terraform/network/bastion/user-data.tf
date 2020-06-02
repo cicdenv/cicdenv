@@ -11,7 +11,7 @@ data "template_file" "ssh_worker_service" {
 
   vars = {
     host_name       = local.host_name
-    assume_role_arn = var.assume_role.arn
+    assume_role_arn = local.assume_role.arn
   }
 }
 

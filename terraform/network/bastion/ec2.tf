@@ -1,19 +1,19 @@
 resource "aws_key_pair" "bastion" {
   key_name   = "bastion-service"
-  public_key = file(pathexpand(var.ssh_key))
+  public_key = file(pathexpand(local.ssh_key))
 }
 
 resource "aws_launch_template" "bastion" {
   name_prefix   = "bastion-service-lt-"
-  image_id      = var.ami_id
-  instance_type = var.instance_type
+  image_id      = local.ami_id
+  instance_type = local.instance_type
   user_data     = data.template_cloudinit_config.config.rendered
   key_name      = aws_key_pair.bastion.key_name
 
   iam_instance_profile {
-    arn = aws_iam_instance_profile.bastion.arn
+    arn = local.instance_profile.arn
   }
-  vpc_security_group_ids = [var.security_group.id]
+  vpc_security_group_ids = local.security_groups.*.id
 
   # IMDSv2 - instance metadata service session tokens
   metadata_options {
@@ -43,12 +43,9 @@ resource "aws_autoscaling_group" "bastion" {
     version = "$Latest"
   }
   
-  vpc_zone_identifier  = var.private_subnets
+  vpc_zone_identifier  = values(local.subnets["private"]).*.id
 
-  target_group_arns    = [
-    aws_lb_target_group.bastion_service.arn,
-    aws_lb_target_group.bastion_host.arn,
-  ]
+  target_group_arns = local.target_group_arns
   
   tags = [
     {

@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "bastion" {
     ]
 
     resources = [
-      var.assume_role.arn,
+      local.assume_role.arn,
     ]
   }
 

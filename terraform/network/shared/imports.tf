@@ -7,6 +7,24 @@ data "terraform_remote_state" "iam_common_policies" {
   }
 }
 
+data "terraform_remote_state" "iam_assumed_roles" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/iam_assumed-roles/terraform.tfstate"
+    region = var.region
+  }
+}
+
+data "terraform_remote_state" "iam_events" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/iam_events/terraform.tfstate"
+    region = var.region
+  }
+}
+
 data "terraform_remote_state" "ecr_bastion_sshd_worker" {
   backend = "s3"
   config = {

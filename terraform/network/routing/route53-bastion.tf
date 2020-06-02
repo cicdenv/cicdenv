@@ -1,6 +1,6 @@
 resource "aws_route53_record" "bastion" {
   name    = "bastion"
-  zone_id = var.zone_id
+  zone_id = local.account_hosted_zone.zone_id
   type    = "A"
 
   alias {
