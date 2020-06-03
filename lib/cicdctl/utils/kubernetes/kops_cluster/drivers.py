@@ -120,4 +120,4 @@ class ClusterDriver(object):
 
     def stop(self):
         # cluster must exist
-        self._run([stop_cluster_script, self.cluster])
+        self._run([stop_cluster_script, str(self.cluster)])

@@ -14,6 +14,7 @@ from ...commands.types.instance import Instance
 class JenkinsDriver(object):
     def __init__(self, settings, instance, flags=[], type=None):
         self.settings = settings
+        self.instance = instance
         self.name = instance.name
         self.workspace = instance.workspace
         self.tf_flags = [flag for flag in flags if flag.startswith('-') and flag[1] != '-']
@@ -58,7 +59,7 @@ class JenkinsDriver(object):
         self._terraform('apply')
 
     def stop(self):
-        self.run([stop_instance_script, self.target_arg])
+        self._run([stop_instance_script, str(self.instance)])
 
     def deploy(self):
         private_ips = self._output_list([list_ips_script, self.target_arg])
