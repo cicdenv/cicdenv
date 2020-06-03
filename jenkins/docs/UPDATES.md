@@ -13,8 +13,8 @@ Take note of `version` and `release` date.
 ```bash
 # Update version vars
 cicdenv/jenkins$ vim vars.make
-JENKINS_VERSION=2.234
-RELEASE_DATE=2020-04-27
+JENKINS_VERSION=2.238
+RELEASE_DATE=2020-05-25
 JETTY_VERSION=9.4.26.v20200117
 REMOTING_VERSION=4.3
 IMAGE_REVISION=01
@@ -22,9 +22,9 @@ IMAGE_REVISION=01
 # Update checksum
 cicdenv/jenkins$ make checksum
 cicdenv/jenkins$ git diff
-+JENKINS_VERSION=2.234
-+RELEASE_DATE=2020-04-27
-+JENKINS_SHA=481ecc74bd6e5df1f32fe6acac59b0cf5e49790c3c2c48ee124ce469d133f4c0
++JENKINS_VERSION=2.238
++RELEASE_DATE=2020-05-25
++JENKINS_SHA=a4407b10158acbf2be13a55ef6b4ca0e894c3628e0adc1464088768b5615f7b5
 +REMOTING_VERSION=4.3
 
 # Create new docker images
@@ -66,5 +66,5 @@ cicdenv/jenkins$ make push
 
 # Release
 cicdenv/jenkins$ make update-default-tags
-cicdenv$ cicdctl apply shared/ecr-images/jenkins:main
+cicdenv$ cicdctl terraform apply shared/ecr-images/jenkins:main
 ```
