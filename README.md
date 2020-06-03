@@ -87,7 +87,7 @@ cicdenv$ cicdctl terraform destroy network/routing:dev -force
 Example: `dev` account
 ```bash
 # Inspect with bastion service
-cicdenv$ cicdctl apply network/bastion:dev -auto-approve
+cicdenv$ cicdctl terraform apply network/bastion:dev -auto-approve
 # Linux
 cicdenv$ cicdctl bastion ssh dev
 # Mac
@@ -107,7 +107,7 @@ cicdenv$ cicdctl jenkins create dist:dev --type distributed -auto-approve
 cicdenv$ cicdctl jenkins create test:dev --type colocated   -auto-approve
 
 # Cleanup
-cicdenv$ cicdctl destroy-jenkins dist:dev --type distributed -auto-approve
+cicdenv$ cicdctl jenkins destroy dist:dev --type distributed -auto-approve
 cicdenv$ cicdctl jenkins destroy test:dev --type colocated   -auto-approve
 
 # Turn off private subnet NAT gateways

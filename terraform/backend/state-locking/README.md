@@ -17,7 +17,7 @@ ${USER}:~/cicdenv$ exit
 
 # Intialize terraform
 cicdenv$ for acct in main $(grep 'name' terraform/accounts.tfvars | awk -F= '{print $2}' | sed 's/"//g'); do
-    cicdctl init backend/state-locking:${acct}
+    cicdctl terraform init backend/state-locking:${acct}
 done
 
 # Interactive shell

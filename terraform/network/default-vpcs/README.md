@@ -17,7 +17,7 @@ One time only per workspace.
 cicdenv$ terraform/network/default-vpcs/bin/populate-vpcs-vars.sh ${WORKSPACE}
 
 # Intialize terraform
-cicdenv$ cicdctl init network/default-vpcs:${WORKSPACE}
+cicdenv$ cicdctl terraform init network/default-vpcs:${WORKSPACE}
 
 # Import default resources
 cicdenv$ terraform/network/default-vpcs/bin/import-resources.sh ${WORKSPACE}

@@ -17,7 +17,7 @@ cicdenv$ cicdctl console
 
 # Teardown
 📦 $USER:~/cicdenv$ terraform/test-vpc/bin/terminate-instances.sh ${WORKSPACE}
-📦 $USER:~/cicdenv$ cicdctl destroy test-vpc:${WORKSPACE}
+📦 $USER:~/cicdenv$ cicdctl terraform destroy test-vpc:${WORKSPACE}
 ```
 
 ## Releases

@@ -4,7 +4,7 @@
 - upload/terraform, re-upload `*.deb(s)`
   ```
   $ cicdctl console
-  📦 $USER:~/cicdenv/terraform/shared/apt-repo-indexer/s3apt$ make publish && cicdctl apply shared/apt-repo-indexer
+  📦 $USER:~/cicdenv/terraform/shared/apt-repo-indexer/s3apt$ make publish && cicdctl terraform apply shared/apt-repo-indexer
   📦 $USER:~/cicdenv/terraform/shared/apt-repo-indexer/s3apt$ make upload
   ```
 

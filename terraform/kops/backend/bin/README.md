@@ -15,7 +15,7 @@ We need to store the key in version control hence the need to use
 aws cli `kms` to encrypt / decrypt.
 
 ## Usage
-This is automatic if using `cicdctl apply-cluster ...`.
+This is automatic if using `cicdctl cluster create ...`.
 
 ## Resetting
 ```bash
