@@ -7,6 +7,7 @@ data "aws_iam_policy_document" "repo" {
   statement {
     principals {
       type = "AWS"
+      
       identifiers = local.all_account_roots
     }
 
