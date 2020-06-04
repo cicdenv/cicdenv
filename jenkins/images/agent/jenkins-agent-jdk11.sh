@@ -13,7 +13,7 @@
 # - Agent WebSocket $SERVER_URL 
 #
 
-if [[ -z "$AGENT_NAME" ]]; then  # Assume EC2 instance with IMDSv2
+if [[ ( -v "$AGENT_NAME" ) || ( -z "$AGENT_NAME" ) ]]; then  # Assume EC2 instance with IMDSv2
     IMDSv2_TOKEN=$(curl -X PUT -H "X-aws-ec2-metadata-token-ttl-seconds: 30" -sL "http://169.254.169.254/latest/api/token")
     AGENT_NAME=$(curl -H "X-aws-ec2-metadata-token:$IMDSv2_TOKEN" -sL http://169.254.169.254/latest/meta-data/local-ipv4)
 fi

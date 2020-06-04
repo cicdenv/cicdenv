@@ -12,7 +12,7 @@ RestartSec=1
 EnvironmentFile=/etc/systemd/system/jenkins-agent.env
 ExecStartPre=/usr/bin/docker pull ${ecr_url}:$${TAG}
 ExecStartPre=/usr/bin/docker tag ${ecr_url}:$${TAG} ${image}:$${TAG}
-ExecStartPre=/bin/bash -c "/bin/systemctl set-environment NODE_ID=`ec2metadata --instance-id`-`ec2metadata --local-ipv4`"
+ExecStartPre=/bin/bash -c "/bin/systemctl set-environment NODE_ID=`/usr/local/bin/ec2-metadata --instance-id | awk '{print $$2}'`-`/usr/local/bin/ec2-metadata --local-ipv4 | awk '{print $$2}'`"
 ExecStart=/usr/bin/docker run --rm                                  \
     --name jenkins-agent                                            \
     --network jenkins                                               \

@@ -28,8 +28,8 @@
     state: absent
 
 - name: install ec2-metadata tool
-  get_url:
-    url: http://s3.amazonaws.com/ec2metadata/ec2-metadata
+  copy:
+    src: files/usr/local/bin/ec2-metadata.sh
     dest: /usr/local/bin/ec2-metadata
     mode: 0755
 
