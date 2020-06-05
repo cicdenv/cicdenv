@@ -38,8 +38,8 @@ resource "aws_security_group_rule" "bastion_service_healthcheck" {
 
   type      = "ingress"
   protocol  = "tcp"
-  from_port = var.ssh_service_port
-  to_port   = var.ssh_service_port
+  from_port = var.ssh_service_port + 1
+  to_port   = var.ssh_service_port + 1
 
   security_group_id = aws_security_group.bastion.id
   cidr_blocks       = [module.shared_vpc.vpc.cidr_block]

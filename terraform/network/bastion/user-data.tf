@@ -15,6 +15,15 @@ data "template_file" "ssh_worker_service" {
   }
 }
 
+data "template_file" "ssh_healthcheck_service" {
+  template = file("${path.module}/templates/sshd-healthcheck.service.tpl")
+
+  vars = {
+    healthcheck_port = var.ssh_service_port + 1
+    assume_role_arn  = local.assume_role.arn
+  }
+}
+
 data "template_cloudinit_config" "config" {
   gzip          = true
   base64_encode = true
@@ -32,6 +41,9 @@ write_files:
 - path: "/etc/systemd/system/sshd-worker@.service"
   content: |
     ${indent(4, "${data.template_file.ssh_worker_service.rendered}")}
+- path: "/etc/systemd/system/sshd-healthcheck.service"
+  content: |
+    ${indent(4, "${data.template_file.ssh_healthcheck_service.rendered}")}
 - path: "/etc/systemd/system/events-worker.service"
   content: |
     ${indent(4, file("${path.module}/files/events-worker.service"))}
@@ -61,10 +73,8 @@ docker tag "${local.ecr_bastion_events_worker.repository_url}" events-worker
 sed -i 's/^#Port 22/Port ${var.ssh_host_port}/' /etc/ssh/sshd_config
 systemctl restart sshd.service
 systemctl daemon-reload
-systemctl enable sshd-worker.socket
-systemctl start sshd-worker.socket
-systemctl enable events-worker.service
-systemctl start events-worker.service
+systemctl enable sshd-worker.socket sshd-healthcheck.service events-worker.service
+systemctl start  sshd-worker.socket sshd-healthcheck.service events-worker.service
 
 # Set 'host' hostname to match dns
 hostnamectl set-hostname ${local.host_name}

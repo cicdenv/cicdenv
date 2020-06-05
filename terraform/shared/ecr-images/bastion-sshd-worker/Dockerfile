@@ -36,10 +36,9 @@ RUN dpkg -i /tmp/libnss-iam.deb
 
 RUN mkdir /var/run/sshd
 
-COPY ./files/sshd_config                 /etc/ssh/sshd_config
-COPY ./files/nsswitch.conf               /etc/nsswitch.conf
-COPY ./files/sshd-entrypoint.sh          /opt/bin/sshd-entrypoint.sh
-COPY ./files/authorized-keys-command.sh  /opt/bin/authorized-keys-command.sh
+COPY ./files/sshd_config    /etc/ssh/sshd_config
+COPY ./files/nsswitch.conf  /etc/nsswitch.conf
+COPY ./files/*.sh           /opt/bin/
 
 EXPOSE 22
 

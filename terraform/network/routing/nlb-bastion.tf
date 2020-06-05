@@ -28,7 +28,7 @@ resource "aws_lb_target_group" "bastion_service" {
     unhealthy_threshold = 2
     interval            = 10
     protocol            = "TCP"
-    port                = var.ssh_host_port  # use non doceker sshd
+    port                = var.ssh_service_port + 1
   }
 
   lifecycle {
