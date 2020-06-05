@@ -35,19 +35,6 @@ base_ami_id = "..."
 cicdenv$ cicdctl jenkins create <instance>:<workspace>
 ```
 
-### KOPS
-kops masters/nodes require a supported [docker version](https://github.com/kubernetes/kops/blob/master/nodeup/pkg/model/docker.go).
-
-The version installed in the AMI must be a supported version.
-For example `19.03.8`.
-
-The version present in the AMI should be specified in the KOPS cluster spec:
-* [terraform/kops/modules/kops-manifest/templates/cluster-spec.tpl](https://github.com/vogtech/cicdenv/blob/master/terraform/kops/modules/kops-manifest/templates/cluster-spec.tpl):
-```yaml
-docker:
-  version: "19.03.8"
-```
-
 ## Cleanup
 ```
 # Interactive shell
@@ -60,16 +47,6 @@ ${USER}:~/cicdenv$ packer/bin/remove-old.sh 'base/hvm-ssd/ubuntu-bionic-18.04-am
 # Removal all AMIs
 ${USER}:~/cicdenv$ packer/bin/remove-all.sh
 ${USER}:~/cicdenv$ exit
-```
-
-## KOPS Images
-kope.io (owner: 383156758163) images:
-* https://github.com/kubernetes/kops/blob/master/docs/images.md
-* https://github.com/kubernetes/kube-deploy/blob/master/imagebuilder/aws-1.11-stretch.yaml
-* https://github.com/kubernetes/kube-deploy/blob/master/imagebuilder/templates/1.11-stretch.yml
-
-```
-k8s-1.11-debian-stretch-amd64-hvm-ebs-2018-05-27
 ```
 
 ## NVMe Instance Stores
