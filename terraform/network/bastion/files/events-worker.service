@@ -1,14 +1,17 @@
 [Unit]
 Description=IAM User events agents for closing ssh sessions
+After=redis-server.service
 
 [Service]
-Type=simple
-ExecStart=/usr/bin/docker run --rm -i                                       \
-                              -p 5000:5000                                  \
-                              -v /var/run/docker.sock:/var/run/docker.sock  \
-                              events-worker                                 \
-                              --host 0.0.0.0                                \
-                              --port 5000
+ExecStart=/usr/bin/docker run --rm                \
+    --name events-worker                          \
+    -p 5000:5000                                  \
+    -v /var/run/docker.sock:/var/run/docker.sock  \
+    -v /var/run/redis/sock:/var/run/redis/sock    \
+    events-worker                                 \
+    --host 0.0.0.0                                \
+    --port 5000
+Restart=always
 
 [Install]
 WantedBy=multi-user.target

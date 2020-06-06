@@ -1,0 +1,42 @@
+[Unit]
+Description=Redis 6 at /var/run/redis/sock
+After=docker.service
+
+[Service]
+ExecStart=/usr/bin/docker run --rm              \
+    --name redis-server                         \
+    -v /var/run/redis:/var/run/redis            \
+    --entrypoint /usr/local/bin/redis-server    \
+    redis                                       \
+    --port 0                                    \
+    --bind 127.0.0.1                            \
+    --unixsocket /var/run/redis/sock            \
+    --unixsocketperm 777
+ExecStartPost=/bin/bash -c 'while [[ ! -S /var/run/redis/sock ]]; do sleep 1; done'
+ExecStartPost=/usr/bin/docker run --rm          \
+    -v /var/run/redis/sock:/var/run/redis/sock  \
+    --entrypoint /usr/local/bin/redis-cli       \
+    redis                                       \
+    -s /var/run/redis/sock                      \
+    acl setuser sshd-worker on >sshd-worker nocommands +setnx allkeys
+ExecStartPost=/usr/bin/docker run --rm          \
+    -v /var/run/redis/sock:/var/run/redis/sock  \
+    --entrypoint /usr/local/bin/redis-cli       \
+    redis                                       \
+    -s /var/run/redis/sock                      \
+    acl setuser events-worker on >events-worker nocommands +get +del allkeys
+ExecStartPost=/usr/bin/docker run --rm          \
+    -v /var/run/redis/sock:/var/run/redis/sock  \
+    --entrypoint /usr/local/bin/redis-cli       \
+    redis                                       \
+    -s /var/run/redis/sock                      \
+    acl setuser default off
+ExecStop=/usr/bin/docker run --rm               \
+    -v /var/run/redis/sock:/var/run/redis/sock  \
+    --entrypoint /usr/local/bin/redis-cli       \
+    redis                                       \
+    -s /var/run/redis/sock shutdown
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

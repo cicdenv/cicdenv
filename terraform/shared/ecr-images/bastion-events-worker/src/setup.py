@@ -9,6 +9,7 @@ setup(
     install_requires=[
         'Flask',
         'docker',
+        'redis',
     ],
     entry_points='''
         [console_scripts]

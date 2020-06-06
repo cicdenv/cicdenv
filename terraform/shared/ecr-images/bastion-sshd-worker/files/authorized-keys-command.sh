@@ -39,7 +39,7 @@ if ! grep "$ssh_key" "/home/${username}/.ssh/authorized_keys" &>/dev/null; then
     echo "$ssh_key" >> "/home/${username}/.ssh/authorized_keys"
 fi
 
-cat <<'EOFF' > "/home/${username}/.ssh/config"
+cat <<'EOF' > "/home/${username}/.ssh/config"
 StrictHostKeyChecking no
 UserKnownHostsFile=/dev/null
 
@@ -47,12 +47,18 @@ Host *
 ServerAliveInterval 120
 ServerAliveCountMax 5040
 ConnectTimeout 5
-EOFF
+EOF
 chmod 0600 "/home/${username}/.ssh/config"
 
 chown -R "${username}:${username}" "/home/${username}"
 chmod 700 "/home/${username}/.ssh"
 chmod 0600 "/home/${username}/.ssh/authorized_keys"
+
+CONTAINER_ID=$(cat "/proc/self/cgroup" | grep 'name' | awk -F/ '{print $NF}')
+redis-cli -s /var/run/redis/sock \
+    --user sshd-worker --pass sshd-worker \
+    --no-auth-warning \
+    SETNX "$CONTAINER_ID" "$username"
 ) > >(tee -a /var/log/sshd-service-out.log) 2> >(tee -a /var/log/sshd-service-err.log >&2)
 
 cat "/home/${username}/.ssh/authorized_keys"

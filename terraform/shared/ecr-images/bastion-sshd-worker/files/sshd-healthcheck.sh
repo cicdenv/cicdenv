@@ -4,8 +4,12 @@ set -eu -o pipefail
 
 function _sts_creds()
 {
-    sts_creds=$(aws sts assume-role --role-arn "${IAM_ROLE}" --role-session-name=bastion-service-$(hostname))
+    if [[ -f "/root/.aws/credentials" ]]; then
+        rm "/root/.aws/credentials"
+    fi
 
+    sts_creds=$(aws sts assume-role --role-arn "${IAM_ROLE}" --role-session-name=bastion-$RANDOM)
+     
     mkdir -p "/root/.aws"
     cat <<EOFF > "/root/.aws/credentials"
 [default]
@@ -16,9 +20,11 @@ expiration            = $(echo "$sts_creds" | jq -r '.Credentials.Expiration')
 EOFF
 }
 
-while true; do 
-    _sts_creds
-    sleep 55m
-done &
+_sts_creds
 
-/usr/sbin/sshd -D
+/usr/sbin/sshd -D &
+
+while true; do
+    sleep 55m
+    _sts_creds
+done

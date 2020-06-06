@@ -1,7 +1,7 @@
 import subprocess
 
 import docker
-
+import redis
 
 # [
 #   '014719181291.dkr.ecr.us-west-2.amazonaws.com/bastion-sshd-worker:latest', 
@@ -14,11 +14,13 @@ def _image_name(tag):
 
 
 def _get_session_user(container):
-    try:
-        return subprocess.check_output(['docker', 'exec', '-i', f'{container.id}', 'bash', '-c', 'ls /home'], text=True).strip()
-    except subprocess.CalledProcessError as cpe:
-        print(cpe)
-        return None
+    _key = f'{container.id}'
+
+    r = redis.Redis(unix_socket_path='/var/run/redis/sock', username='events-worker', password='events-worker')
+    session_user = r.get(_key)
+    if session_user:
+        r.delete(_key)
+    return session_user.decode()
 
 
 def stop_workers(username):

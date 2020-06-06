@@ -47,6 +47,9 @@ write_files:
 - path: "/etc/systemd/system/events-worker.service"
   content: |
     ${indent(4, file("${path.module}/files/events-worker.service"))}
+- path: "/etc/systemd/system/redis-server.service"
+  content: |
+    ${indent(4, file("${path.module}/files/redis-server.service"))}
 EOF
   }
 
@@ -69,10 +72,20 @@ docker tag "${local.ecr_bastion_sshd_worker.repository_url}" sshd-worker
 docker pull "${local.ecr_bastion_events_worker.repository_url}"
 docker tag "${local.ecr_bastion_events_worker.repository_url}" events-worker
 
+# Redis 6
+docker pull redis
+mkdir -p /var/run/redis/
+
+# AWS Shared Credentials
+mkdir -p /root/.aws/sts
+touch /root/.aws/sts/credentials
+
 # Configure host sshd to run on port a non-standard port
 sed -i 's/^#Port 22/Port ${var.ssh_host_port}/' /etc/ssh/sshd_config
 systemctl restart sshd.service
 systemctl daemon-reload
+systemctl enable redis-server.service
+systemctl start  redis-server.service
 systemctl enable sshd-worker.socket sshd-healthcheck.service events-worker.service
 systemctl start  sshd-worker.socket sshd-healthcheck.service events-worker.service
 
