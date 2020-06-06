@@ -11,13 +11,12 @@
 #affiliates.                                                            #
 #########################################################################
 
-function print_help()
-{
+function print_help() {
 echo "modified ec2-metadata v0.1.1 - https://s3.console.aws.amazon.com/s3/buckets/ec2metadata
 Use to retrieve EC2 instance metadata from within a running EC2 instance. 
 e.g. to retrieve instance id: ec2-metadata -i
-		 to retrieve ami id: ec2-metadata -a
-		 to get help: ec2-metadata --help
+         to retrieve ami id: ec2-metadata -a
+         to get help: ec2-metadata --help
 For more information on Amazon EC2 instance meta-data, refer to the documentation at
 http://docs.amazonwebservices.com/AWSEC2/2008-05-05/DeveloperGuide/AESDG-chapter-instancedata.html
 
@@ -46,123 +45,125 @@ Options:
 }
 
 #check some basic configurations before running the code
-function chk_config()
-{
-	#check if run inside an ec2-instance
-	x=$(curl -s http://169.254.169.254/)
-	if [ $? -gt 0 ]; then
-		echo '[ERROR] Command not valid outside EC2 instance. Please run this command within a running EC2 instance.'
-		exit 1
-	fi
+function chk_config() {
+    #check if run inside an ec2-instance
+    x=$(curl -s http://169.254.169.254/)
+    if [ $? -gt 0 ]; then
+        echo '[ERROR] Command not valid outside EC2 instance. Please run this command within a running EC2 instance.'
+        exit 1
+    fi
 }
 
 #get an http session token - IMDSv2 only
-function session_token()
-{
-	if curl -s http://169.254.169.254/latest/api/token; then
+function session_token() {
+    if curl -s http://169.254.169.254/latest/api/token; then
         export IMDSv2_TOKEN=$(curl -X PUT -H "X-aws-ec2-metadata-token-ttl-seconds: 30" -sL "http://169.254.169.254/latest/api/token")
         export IMDSv2_HEADER="-H X-aws-ec2-metadata-token:${IMDSv2_TOKEN}"
     else
-    	export IMDSv2_TOKEN=
-    	export IMDSv2_HEADER=
+        export IMDSv2_TOKEN=
+        export IMDSv2_HEADER=
     fi
 }
 
 #print standard value
 function print_value() {
-	value_path=$2
-	echo -n $1": "
-	RESPONSE=$(curl -fs $IMDSv2_HEADER http://169.254.169.254/latest/${value_path}/)
-	if [ $? == 0 ]; then
-		echo $RESPONSE
-	else
-		echo not available
-	fi
+    RESPONSE=$(curl -fs $IMDSv2_HEADER http://169.254.169.254/latest/meta-data/${1}/)
+    if [ $? == 0 ]; then
+        echo $RESPONSE
+    else
+        echo not available
+    fi
 }
 
 #print value that might be gzipped, base64 encoded
 function print_userdata() {
-	echo "user-data: "
-	maybe_gzipped=$(mktemp /tmp/ec2-metadata-userdata.XXXX)
-	trap "{ rm -f '$maybe_gzipped'; }" EXIT
-	curl -fs $IMDSv2_HEADER http://169.254.169.254/latest/user-data/ > "$maybe_gzipped"
-	if [ $? == 0 ]; then
-		## GZipped ?
-		if (file "$maybe_gzipped" | grep -q 'compressed') ; then
-			maybe_base64=$(mktemp /tmp/ec2-metadata-userdata.XXXX)
-			trap "{ rm -f '$maybe_gzipped' '$maybe_base64'; }" EXIT
-			gzip --decompress < "$maybe_gzipped" > "$maybe_base64"
-			## base64 encoded ?
-			if base64 --decode "$maybe_base64" &> /dev/null; then
-				base64 --decode "$maybe_base64"
-			else
-				cat "$maybe_base64"
-			fi
-		else
-			cat < "$tmp_file1"
-		fi
-	else
-		echo not available
-	fi
+    maybe_gzipped=$(mktemp /tmp/ec2-metadata-userdata.XXXX)
+    trap "{ rm -f '$maybe_gzipped'; }" EXIT
+    curl -fs $IMDSv2_HEADER http://169.254.169.254/latest/user-data/ > "$maybe_gzipped"
+    if [ $? == 0 ]; then
+        ## GZipped ?
+        if (file "$maybe_gzipped" | grep -q 'compressed') ; then
+            maybe_base64=$(mktemp /tmp/ec2-metadata-userdata.XXXX)
+            trap "{ rm -f '$maybe_gzipped' '$maybe_base64'; }" EXIT
+            gzip --decompress < "$maybe_gzipped" > "$maybe_base64"
+            ## base64 encoded ?
+            if base64 --decode "$maybe_base64" &> /dev/null; then
+                base64 --decode "$maybe_base64"
+            else
+                cat "$maybe_base64"
+            fi
+        else
+            cat < "$tmp_file1"
+        fi
+    else
+        echo not available
+    fi
 }
 
 #print block-device-mapping
-function print_block-device-mapping()
-{
-echo 'block-device-mapping: '
-x=$(curl -fs $IMDSv2_HEADER http://169.254.169.254/latest/meta-data/block-device-mapping/)
-if [ $? -eq 0 ]; then
-	for i in $x; do
-		echo -e '\t' $i: $(curl -s http://169.254.169.254/latest/meta-data/block-device-mapping/$i)
-	done
-else
-	echo not available
-fi
+function print_block-device-mapping() {
+    x=$(curl -fs $IMDSv2_HEADER http://169.254.169.254/latest/meta-data/block-device-mapping/)
+    if [ $? -eq 0 ]; then
+        for i in $x; do
+            echo -e '\t' $i: $(curl -s http://169.254.169.254/latest/meta-data/block-device-mapping/$i)
+        done
+    else
+        echo not available
+    fi
 }
 
 #print public-keys
-function print_public-keys()
-{
-	echo 'public-keys: '
-	x=$(curl -fs $IMDSv2_HEADER http://169.254.169.254/latest/meta-data/public-keys/)
-	if [ $? -eq 0 ]; then
-		for i in $x; do
-			index=$(echo $i|cut -d = -f 1)
-			keyname=$(echo $i|cut -d = -f 2)
-			echo keyname:$keyname
-			echo index:$index
-			format=$(curl -s $IMDSv2_HEADER http://169.254.169.254/latest/meta-data/public-keys/$index/)
-			echo format:$format
-			echo 'key:(begins from next line)'
-			echo $(curl -s $IMDSv2_HEADER http://169.254.169.254/latest/meta-data/public-keys/$index/$format)
-		done
-	else
-		echo not available
-	fi
+function print_public-keys() {
+    x=$(curl -fs $IMDSv2_HEADER http://169.254.169.254/latest/meta-data/public-keys/)
+    if [ $? -eq 0 ]; then
+        for i in $x; do
+            index=$(echo $i|cut -d = -f 1)
+            keyname=$(echo $i|cut -d = -f 2)
+            echo keyname:$keyname
+            echo index:$index
+            format=$(curl -s $IMDSv2_HEADER http://169.254.169.254/latest/meta-data/public-keys/$index/)
+            echo format:$format
+            echo 'key:(begins from next line)'
+            echo $(curl -s $IMDSv2_HEADER http://169.254.169.254/latest/meta-data/public-keys/$index/$format)
+        done
+    else
+        echo not available
+    fi
 }
 
+function print_with_header() {
+    echo -n "$1: "
+    print_value "$1"
+}
 
-function print_all()
-{
-	print_value ami-id meta-data/ami-id
-	print_value ami-launch-index meta-data/ami-launch-index
-	print_value ami-manifest-path meta-data/ami-manifest-path
-	print_value ancestor-ami-ids meta-data/ancestor-ami-ids
-	print_block-device-mapping
-	print_value instance-id meta-data/instance-id
-	print_value instance-type meta-data/instance-type
-	print_value local-hostname meta-data/local-hostname
-	print_value local-ipv4 meta-data/local-ipv4
-	print_value kernel-id meta-data/kernel-id
-	print_value placement meta-data/placement/availability-zone
-	print_value product-codes meta-data/product-codes
-	print_value public-hostname meta-data/public-hostname
-	print_value public-ipv4 meta-data/public-ipv4
-	print_public-keys
-	print_value ramdisk-id /meta-data/ramdisk-id
-	print_value reservation-id /meta-data/reservation-id
-	print_value security-groups meta-data/security-groups
-	print_userdata
+function print_all() {
+    print_with_header ami-id
+    print_with_header ami-launch-index
+    print_with_header ami-manifest-path
+    print_with_header ancestor-ami-ids
+
+    echo 'block-device-mapping: '
+    print_block-device-mapping
+    
+    print_with_header instance-id
+    print_with_header instance-type
+    print_with_header local-hostname
+    print_with_header local-ipv4
+    print_with_header kernel-id
+    print_with_header placement/availability-zone
+    print_with_header product-codes
+    print_with_header public-hostname
+    print_with_header public-ipv4
+    
+    echo 'public-keys: '
+    print_public-keys
+
+    print_with_header ramdisk-id
+    print_with_header reservation-id
+    print_with_header security-groups
+
+    echo 'user-data: '
+    print_userdata
 }
 
 #check if run inside an EC2 instance
@@ -171,58 +172,58 @@ session_token
 
 #command called in default mode
 if [ "$#" -eq 0 ]; then
-	print_all
+    print_all
 fi
 
 #start processing command line arguments
 while [ "$1" != "" ]; do
-	case $1 in
-	-a | --ami-id )                print_value ami-id meta-data/ami-id
-																 ;;
-	-l | --ami-launch-index )      print_value ami-launch-index meta-data/ami-launch-index
-																 ;;
-	-m | --ami-manifest-path )     print_value ami-manifest-path meta-data/ami-manifest-path
-																 ;;
-	-n | --ancestor-ami-ids )      print_value ancestor-ami-ids meta-data/ancestor-ami-ids
-																 ;;
-	-b | --block-device-mapping )  print_block-device-mapping
-																 ;;
-	-i | --instance-id )           print_value instance-id meta-data/instance-id
-																 ;;
-	-t | --instance-type )         print_value instance-type meta-data/instance-type
-																 ;;
-	-h | --local-hostname )        print_value local-hostname meta-data/local-hostname
-																 ;;
-	-o | --local-ipv4 )            print_value local-ipv4 meta-data/local-ipv4
-																 ;;
-	-k | --kernel-id )             print_value kernel-id meta-data/kernel-id
-																 ;;
-	-z | --availability-zone )     print_value placement meta-data/placement/availability-zone
-																 ;;
-	-c | --product-codes )         print_value product-codes meta-data/product-codes
-																 ;;
-	-p | --public-hostname )       print_value public-hostname meta-data/public-hostname
-																 ;;
-	-v | --public-ipv4 )           print_value public-ipv4 meta-data/public-ipv4
-																 ;;
-	-u | --public-keys )           print_public-keys
-																 ;;
-	-r | --ramdisk-id )            print_value ramdisk-id /meta-data/ramdisk-id
-																 ;;
-	-e | --reservation-id )        print_value reservation-id /meta-data/reservation-id
-																 ;;
-	-s | --security-groups )       print_value security-groups meta-data/security-groups
-																 ;;
-	-d | --user-data )             print_userdata
-																 ;;
-	-h | --help )                  print_help
-								 exit
-																 ;;
-	--all )                        print_all
-								 exit 
-																 ;;
-	* )                            print_help
-								 exit 1
-	esac
-	shift
+    case $1 in
+    -a | --ami-id )                print_value ami-id meta-data/ami-id
+                                                                 ;;
+    -l | --ami-launch-index )      print_value ami-launch-index meta-data/ami-launch-index
+                                                                 ;;
+    -m | --ami-manifest-path )     print_value ami-manifest-path meta-data/ami-manifest-path
+                                                                 ;;
+    -n | --ancestor-ami-ids )      print_value ancestor-ami-ids meta-data/ancestor-ami-ids
+                                                                 ;;
+    -b | --block-device-mapping )  print_block-device-mapping
+                                                                 ;;
+    -i | --instance-id )           print_value instance-id meta-data/instance-id
+                                                                 ;;
+    -t | --instance-type )         print_value instance-type meta-data/instance-type
+                                                                 ;;
+    -h | --local-hostname )        print_value local-hostname meta-data/local-hostname
+                                                                 ;;
+    -o | --local-ipv4 )            print_value local-ipv4 meta-data/local-ipv4
+                                                                 ;;
+    -k | --kernel-id )             print_value kernel-id meta-data/kernel-id
+                                                                 ;;
+    -z | --availability-zone )     print_value placement meta-data/placement/availability-zone
+                                                                 ;;
+    -c | --product-codes )         print_value product-codes meta-data/product-codes
+                                                                 ;;
+    -p | --public-hostname )       print_value public-hostname meta-data/public-hostname
+                                                                 ;;
+    -v | --public-ipv4 )           print_value public-ipv4 meta-data/public-ipv4
+                                                                 ;;
+    -u | --public-keys )           print_public-keys
+                                                                 ;;
+    -r | --ramdisk-id )            print_value ramdisk-id /meta-data/ramdisk-id
+                                                                 ;;
+    -e | --reservation-id )        print_value reservation-id /meta-data/reservation-id
+                                                                 ;;
+    -s | --security-groups )       print_value security-groups meta-data/security-groups
+                                                                 ;;
+    -d | --user-data )             print_userdata
+                                                                 ;;
+    -h | --help )                  print_help
+                                 exit
+                                                                 ;;
+    --all )                        print_all
+                                 exit 
+                                                                 ;;
+    * )                            print_help
+                                 exit 1
+    esac
+    shift
 done
