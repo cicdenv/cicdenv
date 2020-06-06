@@ -33,3 +33,5 @@ def cli(context, verbose, quiet, no_creds, dry_run):
     context.obj = RuntimeSettings(verbose, quiet, creds, dry_run, runner)
 
     logging.basicConfig(format='%(message)s', level=logging.INFO, stream=stdout)
+    for logger in ['boto3', 'botocore', 's3transfer', 'urllib3']:
+        logging.getLogger(logger).setLevel(logging.INFO if verbose else logging.CRITICAL)
