@@ -44,3 +44,15 @@ resource "aws_security_group_rule" "jenkins_alb_external_https" {
   security_group_id = aws_security_group.jenkins_server_external_alb.id
   cidr_blocks       = var.whitelisted_cidr_blocks
 }
+
+resource "aws_security_group_rule" "jenkins_alb_external_github_hooks" {
+  description = "jenkins server external https github webhooks"
+
+  type        = "ingress"
+  protocol    = "tcp"
+  from_port   = 443
+  to_port     = 443
+
+  security_group_id = aws_security_group.jenkins_server_external_alb.id
+  cidr_blocks       = var.github_hooks_cidr_blocks
+}

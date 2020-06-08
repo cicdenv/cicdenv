@@ -90,9 +90,13 @@ RUN mkdir -p "${HOME}/cache" \
 VOLUME "${HOME}/cache"
 
 # Install AWS ECR credential helper
-ARG ECR_CREDS_VERSION=0.4.0
+# https://github.com/awslabs/amazon-ecr-credential-helper/issues/215
+# ARG ECR_CREDS_VERSION=0.4.0
+# RUN curl --create-dirs -sSLo /usr/bin/docker-credential-ecr-login \
+#  https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/${ECR_CREDS_VERSION}/linux-amd64/docker-credential-ecr-login \
+#  && chmod +x /usr/bin/docker-credential-ecr-login
 RUN curl --create-dirs -sSLo /usr/bin/docker-credential-ecr-login \
- https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/${ECR_CREDS_VERSION}/linux-amd64/docker-credential-ecr-login \
+  https://github.com/fred-vogt/amazon-ecr-credential-helper/releases/download/v0.4.1/docker-credential-ecr-login \
  && chmod +x /usr/bin/docker-credential-ecr-login
 
 #
