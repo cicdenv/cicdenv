@@ -1,5 +1,6 @@
 from os import path
 import subprocess
+import json
 
 from ..aws import DEFAULT_REGION
 from . import (varfile_dir, terraform_config, backend_config, ami_config, bastion_config,
@@ -32,7 +33,10 @@ def resolve_variable_opts(component_dir, workspace):
             var_opts.append(f'{name}={dynamodb.get_items(source, workspace, DEFAULT_REGION)}')
         elif source in values:  # Individual bindings
             var_opts.append('-var')
-            var_opts.append(f'{name}={values[source][name]}')
+            if isinstance(values[source][name], list):
+                var_opts.append(f'{name}={json.dumps(values[source][name])}')
+            else:
+                var_opts.append(f'{name}={values[source][name]}')
         else:  # Other global variables should be single value for file bindings
             var_opts.append('-var-file')
             var_opts.append(path.join(varfile_dir, source))
