@@ -50,6 +50,11 @@ COMMANDS = {
         'build',
         'console',
     ],
+    'redis': [
+        'init',
+        'create',
+        'destroy',
+    ],
     'terraform': [
         'fmt',
         'validate',

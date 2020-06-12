@@ -198,7 +198,7 @@ while [ "$1" != "" ]; do
                                                                  ;;
     -k | --kernel-id )             print_value kernel-id meta-data/kernel-id
                                                                  ;;
-    -z | --availability-zone )     print_value placement meta-data/placement/availability-zone
+    -z | --availability-zone )     print_value placement/availability-zone meta-data/placement/availability-zone
                                                                  ;;
     -c | --product-codes )         print_value product-codes meta-data/product-codes
                                                                  ;;

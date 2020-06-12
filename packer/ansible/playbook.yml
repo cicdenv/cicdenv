@@ -9,3 +9,4 @@
     - packages
     - docker-ce
     - motd
+    - scripts

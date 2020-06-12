@@ -1,0 +1,33 @@
+[Unit]
+Description=Redis data structure server - %i
+Documentation=https://redis.io/documentation
+AssertPathExists=/var/lib/redis/%i
+After=docker.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/docker run --rm            \
+    --name redis-%i                           \
+    --volume /etc/redis:/etc/redis:ro         \
+    --network host                            \
+    --entrypoint /usr/local/bin/redis-server  \
+    redis                                     \
+    /etc/redis/%i.conf \
+    --port %i
+ExecStartPost=/usr/bin/timeout 5s /bin/bash -c 'while ! /bin/nc -z localhost %i; do sleep .25s; done'
+ExecStop=/usr/bin/docker run --rm          \
+    --network host                         \
+    --entrypoint /usr/local/bin/redis-cli  \
+    redis                                  \
+    --port %i shutdown
+LimitNOFILE=10032
+NoNewPrivileges=yes
+OOMScoreAdjust=-900
+PrivateTmp=yes
+TimeoutStartSec=infinity
+TimeoutStopSec=infinity
+UMask=0077
+WorkingDirectory=/var/lib/redis/%i
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,14 @@
+- name: install ec2-metadata tool
+  copy:
+    src: files/usr/local/bin/ec2-metadata.sh
+    dest: /usr/local/bin/ec2-metadata
+    mode: 0755
+
+- name: install hyperthread controls
+  copy:
+    src: files/usr/local/bin/{{ item }}.sh
+    dest: /usr/local/bin/{{ item }}
+    mode: 0755
+  loop:
+     - disable-hyperthreads
+     - enable-hyperthreads

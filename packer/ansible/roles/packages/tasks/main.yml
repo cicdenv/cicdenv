@@ -27,12 +27,6 @@
     name: amazon-ssm-agent
     state: absent
 
-- name: install ec2-metadata tool
-  copy:
-    src: files/usr/local/bin/ec2-metadata.sh
-    dest: /usr/local/bin/ec2-metadata
-    mode: 0755
-
 - name: install latest aws cli bundle
   shell: |
     set -e
