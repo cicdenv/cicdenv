@@ -28,10 +28,10 @@ resource "aws_launch_template" "jenkins_server" {
 }
 
 resource "aws_autoscaling_group" "jenkins_server" {
-  name                 = "jenkins-server-${var.jenkins_instance}"
-  max_size             = 1
-  min_size             = 1
-  desired_capacity     = 1
+  name             = "jenkins-server-${var.jenkins_instance}"
+  max_size         = 1
+  min_size         = 1
+  desired_capacity = 1
   
   launch_template {
     name    = aws_launch_template.jenkins_server.name

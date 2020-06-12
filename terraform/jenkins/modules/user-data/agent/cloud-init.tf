@@ -120,7 +120,7 @@ hostnamectl set-hostname ${local.host_name}
 #
 # kernel settings
 #
-service procps start
+service procps restart
 
 chmod +x "/usr/local/bin/jenkins-agent-disks.sh"
 
