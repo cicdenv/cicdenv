@@ -13,8 +13,8 @@ Take note of `version` and `release` date.
 ```bash
 # Update version vars
 cicdenv/jenkins$ vim vars.make
-JENKINS_VERSION=2.238
-RELEASE_DATE=2020-05-25
+JENKINS_VERSION=2.241
+RELEASE_DATE=2020-06-16
 JETTY_VERSION=9.4.26.v20200117
 REMOTING_VERSION=4.3
 IMAGE_REVISION=01
@@ -22,9 +22,9 @@ IMAGE_REVISION=01
 # Update checksum
 cicdenv/jenkins$ make checksum
 cicdenv/jenkins$ git diff
-+JENKINS_VERSION=2.238
-+RELEASE_DATE=2020-05-25
-+JENKINS_SHA=a4407b10158acbf2be13a55ef6b4ca0e894c3628e0adc1464088768b5615f7b5
++JENKINS_VERSION=2.241
++RELEASE_DATE=2020-06-16
++JENKINS_SHA=c30dde89abc48a5d05aabdba1259b76979573ec7b146ae8449e84dd44017c182
 +REMOTING_VERSION=4.3
 
 # Create new docker images
