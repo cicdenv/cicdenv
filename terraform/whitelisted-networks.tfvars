@@ -7,6 +7,7 @@ whitelisted_cidr_blocks = [
   "198.27.223.50/32",
   "198.27.223.45/32",
   "67.180.81.198/32",
+  "198.27.234.99/32",
 ]
 
 # https://api.github.com/meta | .hooks
