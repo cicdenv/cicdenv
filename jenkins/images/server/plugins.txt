@@ -20,6 +20,7 @@ configuration-as-code-groovy
 console-column-plugin
 copyartifact
 credentials-binding
+dark-theme
 disable-github-multibranch-status
 docker-workflow
 embeddable-build-status
@@ -59,6 +60,7 @@ saml
 ssh
 startup-trigger-plugin
 strict-crumb-issuer
+theme-manager
 throttle-concurrents
 timestamper
 update-sites-manager

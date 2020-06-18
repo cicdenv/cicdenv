@@ -59,11 +59,6 @@ RUN mkdir -p /var/jenkins_home/secrets;                                         
 # Modified launcher
 COPY jenkins-jdk11.sh /usr/local/bin/jenkins.sh
 
-# Download third-party theme files
-RUN mkdir -p /usr/share/jenkins/ref/custom-css                               \
- && curl -o /usr/share/jenkins/ref/custom-css/neo-light.css                  \
-         -fsSL https://tobix.github.io/jenkins-neo2-theme/dist/neo-light.css
-
 # Configuration as Code yaml file(s)
 COPY files/jenkins.yaml /usr/share/jenkins/ref/
 

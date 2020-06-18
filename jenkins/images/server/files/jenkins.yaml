@@ -46,3 +46,6 @@ unclassified:
       name: "Public GitHub API"
   globalDefaultFlowDurabilityLevel:
     durabilityHint: PERFORMANCE_OPTIMIZED
+  themeManager:
+    disableUserThemes: true
+    theme: dark
