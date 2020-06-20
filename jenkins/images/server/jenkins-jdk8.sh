@@ -42,6 +42,10 @@ JAVA_OPTS="\
 -Dhttps.proxyPort=${PROXY_PORT-}          \
 -Dhttp.nonProxyHosts=${NON_PROXY_HOSTS-}  \
 \
+-Dorg.eclipse.jetty.server.Request.maxFormContentSize=1000000 \
+-DexecutableWar.jetty.disableCustomSessionIdCookieName=true \
+-DexecutableWar.jetty.sessionIdCookieName=${JENKINS_INSTANCE-$(hexdump -n 4 -e '"%0X"' /dev/random)} \
+\
 -Dhudson.DNSMultiCast.disabled=true                                     \
 -Dhudson.model.UsageStatistics.disabled=true                            \
 -Djenkins.model.Jenkins.logStartupPerformance=true                      \
