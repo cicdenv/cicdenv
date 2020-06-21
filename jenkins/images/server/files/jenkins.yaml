@@ -18,6 +18,8 @@ jenkins:
         value: "${AWS_MAIN_ACCOUNT_ID}"
       - key: "AWS_ACCOUNT_NAME"
         value: "${AWS_ACCOUNT_NAME}"
+      - key: "AWS_ECR"
+        value: "${AWS_MAIN_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
   remotingSecurity:
     enabled: true
   crumbIssuer:
