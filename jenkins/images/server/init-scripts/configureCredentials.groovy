@@ -8,7 +8,6 @@ import com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl
 import com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey
 import org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl
 
-import com.amazonaws.regions.Regions
 import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder
 import com.amazonaws.services.secretsmanager.AWSSecretsManager
 import com.amazonaws.services.secretsmanager.model.GetSecretValueRequest
