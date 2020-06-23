@@ -52,6 +52,7 @@ COPY plugins/github-oauth-plugin/target/github-oauth.hpi  /usr/share/jenkins/ref
 # Config Files
 COPY files/logging.properties /usr/share/jenkins/ref/logging.properties
 COPY files/.gitconfig         /usr/share/jenkins/ref/.gitconfig
+COPY files/scriptler          /usr/share/jenkins/ref/scriptler
 
 # Config Scripts
 COPY init-scripts/*.groovy /usr/share/jenkins/ref/init.groovy.d/

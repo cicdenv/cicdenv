@@ -9,32 +9,30 @@ import org.jenkinsci.plugins.scriptsecurity.scripts.languages.GroovyLanguage
 
 import org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval
 
+import static groovy.io.FileType.FILES
+
 // Configuration Handle
 def config = ScriptlerConfiguration.getConfiguration()
 config.setDisbableRemoteCatalog(true)
 config.setAllowRunScriptPermission(false)
 config.setAllowRunScriptEdit(false)
 
-// Purge Agent Script
-def scriptName = 'purgeAgents.groovy'
-Script purgeAgents = new Script(scriptName,                      // id
-                                'Purge-Disconnected-Agents',     // name
-                                'Remove aged out build agents',  // comment
-                                false,                           // nonAdministerUsing
-                                [] as Parameter[],               // parameters
-                                false)                           // onlyMaster
-purgeAgents.script = '''
-import jenkins.model.Jenkins
+// Load scripts in $JENKINS_HOME/scriptler/*.groovy
+def scriptlerDir = new File(Jenkins.instance.root, 'scriptler');
+scriptlerDir.eachFileMatch(FILES, ~/.*\.groovy/) { file ->
+    String scriptId    = file.name
+    String displayName = file.name.split('\\.groovy')[0].replaceAll(/([a-z])([A-Z])/, '$1-$2').toLowerCase()
+    String comment     = file.name.split('\\.groovy')[0].replaceAll(/([a-z])([A-Z])/, '$1 $2').capitalize()
 
-Jenkins.instance.nodes.each { node ->
-    if (node.getComputer().isOffline()) {
-        println "Deleting ${node.name}"
-
-        node.getComputer().doDoDelete()
-    }
+    Script s = new Script(scriptId,           // id
+                          displayName,        // name
+                          comment,            // comment
+                          false,              // nonAdministerUsing
+                          [] as Parameter[],  // parameters
+                          false)              // onlyMaster
+    s.script = file.text
+    config.addOrReplace(s)
 }
-'''
-config.addOrReplace(purgeAgents)
 config.save()
 
 // Approve it
