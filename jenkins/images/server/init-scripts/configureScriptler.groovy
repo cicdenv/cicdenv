@@ -32,23 +32,10 @@ scriptlerDir.eachFileMatch(FILES, ~/.*\.groovy/) { file ->
                           false)              // onlyMaster
     s.script = file.text
     config.addOrReplace(s)
+
+    // Approve it
+    def scriptApproval = ScriptApproval.get()
+    scriptApproval.preapprove(s.script, Jenkins.instance.getExtensionList(Language.class).get(GroovyLanguage.class))
+    scriptApproval.save()
 }
 config.save()
-
-// Approve it
-def scriptApproval = ScriptApproval.get()
-scriptApproval.preapprove(purgeAgents.script, Jenkins.instance.getExtensionList(Language.class).get(GroovyLanguage.class))
-scriptApproval.save()
-
-// Persist to disk
-File scriptlerHomeDirectory = new File(Jenkins.instance.getRootDir(), "scriptler")
-File scriptsDirectory = new File(scriptlerHomeDirectory, "scripts")
-File scriptFile = new File(scriptsDirectory, scriptName)
-println "Script File: ${scriptFile}"
-Writer writer = new FileWriter(scriptFile)
-try {
-    writer.write(purgeAgents.script)
-} finally {
-    writer.close()
-}
-println 'Done.'
