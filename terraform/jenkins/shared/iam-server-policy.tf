@@ -54,4 +54,15 @@ data "aws_iam_policy_document" "jenkins_server" {
       "${aws_s3_bucket.jenkins_builds.arn}/shared/*",
     ]
   }
+
+  # Describe agent EC2 instances
+  statement {
+    actions = [
+      "ec2:DescribeInstances"
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
 }
