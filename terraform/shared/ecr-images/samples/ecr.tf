@@ -7,4 +7,6 @@ module "ecr_repo" {
     region = var.region
     bucket = var.bucket
   }
+
+  subaccount_permissions = "rw"
 }

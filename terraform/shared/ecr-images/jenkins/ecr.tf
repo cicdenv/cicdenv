@@ -1,29 +1,34 @@
-resource "aws_ecr_repository" "jenkins_server" {
+module "ecr_jenkins_server" {
+  source = "../modules/ecr-repo"
+
   name = "jenkins-server"
+
+  terraform_state = {
+    region = var.region
+    bucket = var.bucket
+  }
 }
 
-resource "aws_ecr_repository_policy" "jenkins_server" {
-  repository = aws_ecr_repository.jenkins_server.name
+module "ecr_jenkins_agent" {
+  source = "../modules/ecr-repo"
 
-  policy = data.aws_iam_policy_document.multi_account_read_access.json
-}
-
-resource "aws_ecr_repository" "jenkins_agent" {
   name = "jenkins-agent"
+
+  terraform_state = {
+    region = var.region
+    bucket = var.bucket
+  }
 }
 
-resource "aws_ecr_repository_policy" "jenkins_agent" {
-  repository = aws_ecr_repository.jenkins_agent.name
+module "ecr_ci_builds" {
+  source = "../modules/ecr-repo"
 
-  policy = data.aws_iam_policy_document.multi_account_read_access.json
-}
-
-resource "aws_ecr_repository" "ci_builds" {
   name = "ci-builds"
-}
 
-resource "aws_ecr_repository_policy" "ci_builds" {
-  repository = aws_ecr_repository.ci_builds.name
+  terraform_state = {
+    region = var.region
+    bucket = var.bucket
+  }
 
-  policy = data.aws_iam_policy_document.multi_account_readwrite_access.json
+  subaccount_permissions = "rw"
 }

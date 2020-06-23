@@ -9,3 +9,8 @@ variable "terraform_state" {
   })
   description = "For importing terraform states."
 }
+
+variable "subaccount_permissions" {
+  default = "r"
+  description = "Organization Account access: r|rw"
+}

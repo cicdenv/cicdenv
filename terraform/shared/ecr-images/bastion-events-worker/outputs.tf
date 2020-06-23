@@ -1,11 +1,11 @@
 output "ecr" {
   value = {
     bastion_events_worker = {
-      id             = aws_ecr_repository.bastion_events_worker.id
-      name           = aws_ecr_repository.bastion_events_worker.name
-      arn            = aws_ecr_repository.bastion_events_worker.arn
-      registry_id    = aws_ecr_repository.bastion_events_worker.registry_id
-      repository_url = aws_ecr_repository.bastion_events_worker.repository_url
+      id             = module.ecr_repo.id
+      name           = module.ecr_repo.name
+      arn            = module.ecr_repo.arn
+      registry_id    = module.ecr_repo.registry_id
+      repository_url = module.ecr_repo.repository_url
     }
   }
 }
