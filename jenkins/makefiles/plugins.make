@@ -1,5 +1,4 @@
-build-plugins: build-scriptler-plugin \
-               build-github-oauth-plugin
+build-plugins: build-github-oauth-plugin
 
 local-plugin-builder:
 	printf "\
@@ -11,23 +10,6 @@ local-plugin-builder:
 
 m2:
 	if [[ ! -d "$(CURDIR)/.m2" ]]; then mkdir -p "$(CURDIR)/.m2"; fi
-
-build-scriptler-plugin: local-plugin-builder m2
-	if [[ ! -d images/server/plugins/scriptler-plugin ]]; then \
-	    git clone --depth 1 \
-	        git@github.com:jenkinsci/scriptler-plugin.git \
-	        --branch master images/server/plugins/scriptler-plugin; \
-	else \
-		(cd images/server/plugins/scriptler-plugin; git pull origin master); \
-	fi
-	(cd images/server/plugins/scriptler-plugin; \
-	 time docker run -it --rm \
-	     -v "$(CURDIR)/.m2:/home/$(user_name)/.m2" \
-	     -v "$$(pwd):/project" \
-	     -w /project \
-	     -u $(user_name) \
-	      $(PLUGIN_BUILD_IMAGE)-local \
-	      mvn package)
 
 build-github-oauth-plugin: local-plugin-builder m2
 	if [[ ! -d images/server/plugins/github-oauth-plugin ]]; then \

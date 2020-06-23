@@ -2,5 +2,4 @@ jenkins-ci.docker
 
 # https://github.com/moby/moby/issues/30018
 plugins
-!plugins/scriptler-plugin/target/*.hpi
 !plugins/github-oauth-plugin/target/*.hpi

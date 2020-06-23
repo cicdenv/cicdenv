@@ -52,6 +52,7 @@ run-selector
 saferestart
 schedule-build
 scm-filter-branch-pr
+scriptler
 show-build-parameters
 simple-theme-plugin
 slack
