@@ -62,7 +62,7 @@ cicdenv/jenkins$ git status
 ...
 
 # Upload to AWS ECR
-cicdenv/jenkins$ make push
+📦 $USER:~/cicdenv$ make push
 
 # Release
 cicdenv/jenkins$ make update-default-tags

@@ -18,7 +18,7 @@ config.setAllowRunScriptPermission(false)
 config.setAllowRunScriptEdit(false)
 
 // Load scripts in $JENKINS_HOME/scriptler/*.groovy
-def scriptlerDir = new File(Jenkins.instance.root, 'scriptler');
+def scriptlerDir = new File(Jenkins.instance.rootDir, 'scriptler')
 scriptlerDir.eachFileMatch(FILES, ~/.*\.groovy/) { file ->
     String scriptId    = file.name
     String displayName = file.name.split('\\.groovy')[0].replaceAll(/([a-z])([A-Z])/, '$1-$2').toLowerCase()
