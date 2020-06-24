@@ -20,6 +20,7 @@ executors:
 
 server_instance_type:
 agent_instance_type:
+agent_count:
 executors:
 "
 
@@ -39,6 +40,7 @@ distributed)
     declare -A tf_vars=(
         [server_instance_type]=m5dn.large
         [agent_instance_type]=z1d.large
+        [agent_count]=3
         [executors]=2
     )
     ;;

@@ -23,6 +23,12 @@ variable "instance_type" {
   type = string
 }
 
+variable "agent_count" {
+  description = "ASG desired instances."
+
+  type = number
+}
+
 variable "user_data" {
   type = string
 }

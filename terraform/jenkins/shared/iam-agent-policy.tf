@@ -33,6 +33,24 @@ data "aws_iam_policy_document" "jenkins_agent" {
       local.ecr_ci_builds.arn,
     ]
   }
+  
+  # ecr - pull/push
+  statement {
+    actions = [
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:InitiateLayerUpload",
+      "ecr:UploadLayerPart",
+      "ecr:CompleteLayerUpload",
+      "ecr:PutImage",
+    ]
+
+    resources = [
+      "arn:aws:ecr:${var.target_region}:${local.main_account.id}:repository/*",
+      "arn:aws:ecr:${var.target_region}:${local.this_account.id}:repository/*",
+    ]
+  }
 
   # secrets manager
   statement {

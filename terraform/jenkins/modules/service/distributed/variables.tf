@@ -29,6 +29,12 @@ variable "agent_instance_type" {
   type = string
 }
 
+variable "agent_count" {
+  description = "Number of agent EC2 instances"
+
+  type = number
+}
+
 variable "executors" {
   description = "Conccurrent build job slots."
 

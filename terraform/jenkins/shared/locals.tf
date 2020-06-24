@@ -26,4 +26,7 @@ locals {
   bastion_security_group = data.terraform_remote_state.network.outputs.bastion_service.security_group
 
   main_account = data.terraform_remote_state.accounts.outputs.main_account
+  this_account = {
+    id = data.aws_caller_identity.current.account_id
+  }
 }

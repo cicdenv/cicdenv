@@ -8,6 +8,9 @@ variable "server_instance_type" {
 variable "agent_instance_type" {
   default = "${tf_vars[agent_instance_type]}"
 }
+variable "agent_count" {
+  default = ${tf_vars[agent_count]}
+}
 variable "executors" {
   default = ${tf_vars[executors]}
 }
@@ -28,7 +31,8 @@ module "jenkins_instance" {
 
   server_instance_type = var.server_instance_type
   agent_instance_type  = var.agent_instance_type
-  
+  agent_count          = var.agent_count
+
   executors = var.executors
 }
 EOF

@@ -49,6 +49,7 @@ module "agents" {
     
   jenkins_instance = var.name
   instance_type    = var.agent_instance_type
+  agent_count      = var.agent_count
   ami_id           = var.ami_id
 
   user_data = module.agent_cloudinit.user_data

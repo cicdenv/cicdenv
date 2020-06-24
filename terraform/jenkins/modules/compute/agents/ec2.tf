@@ -29,9 +29,9 @@ resource "aws_launch_template" "jenkins_agent" {
 
 resource "aws_autoscaling_group" "jenkins_agents" {
   name             = "jenkins-agents-${var.jenkins_instance}"
-  max_size         = 1
+  max_size         = var.agent_count * 2
   min_size         = 1
-  desired_capacity = 1
+  desired_capacity = var.agent_count
   
   launch_template {
     name    = aws_launch_template.jenkins_agent.name
