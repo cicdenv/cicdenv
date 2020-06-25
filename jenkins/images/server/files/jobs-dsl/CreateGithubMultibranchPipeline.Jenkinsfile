@@ -18,29 +18,29 @@ def repoDescription(params) {
                                       usernameVariable: 'username', 
                                       passwordVariable: 'GITHUB_ACCESS_TOKEN')]) {
         // -sSfL
-        def response = readJSON(sh(script: """
-curl --silent --show-error --fail                          \
-    --request POST                                         \
-    --header 'Authorization: token ${GITHUB_ACCESS_TOKEN}' \
-    --data -                                               \
-    --output                                  \
-    'https://api.github.com/graphql' <<EOF
+        def response = readJSON(text: sh(script: """
+curl --silent --show-error --fail                           \
+     --request POST 'https://api.github.com/graphql'        \
+     --header 'Authorization: token ${GITHUB_ACCESS_TOKEN}' \
+     --data-binary @- <<'EOF'
 {
   "variables": {
-    "org": "${params.org}",
-    "repo": "${params.repo}"
+    "parent": "${params.parent}",
+    "repo":   "${params.repo}"
    },
-  "query": "query (\$org:String!, \$repo:String!) { organization(login: \$org) { repository(name: \$repo) { description } } }"
+  "query": "query (\$parent:String!, \$repo:String!) { ${params.parentType}(login: \$parent) { repository(name: \$repo) { description } } }"
 }
 EOF
 """, returnStdout: true))
-        return response["data"]["organization"]["repository"].description
+        return response["data"][params.parentType]["repository"]?.description ?: ''
     }
 }
 
 pipeline {
     parameters {
-        string(name: 'org',  description: '(Required) - github organization')
+        string(name: 'parent',  description: '(Required) - github user|organization')
+        choice(name: 'parentType', choices: ['organization', 'user'], 
+            description: 'Github top-level parent (organiztion|user).')
         string(name: 'repo', description: '(Required) - github repository')
         string(name: 'name',     defaultValue: '',            description: '(Optional) - defaults to {repo} name')
         string(name: 'script',   defaultValue: 'Jenkinsfile', description: 'Relative path to Jenkins pipeline definition')
@@ -57,8 +57,8 @@ pipeline {
         stage('multibranch Pipeline Job') {
             when { 
                 allOf {
-                    expression { params.org  != null }
-                    expression { params.repo != null }
+                    expression { params.parent != null }
+                    expression { params.repo   != null }
                 }
             }
             steps {
@@ -68,13 +68,13 @@ pipeline {
                     }
                     jobDescription = repoDescription(params)
 
-                    uuid = UUID.nameUUIDFromBytes("${params.org}/${jobName}/${params.script}".getBytes()).toString()
+                    uuid = UUID.nameUUIDFromBytes("${params.parent}/${jobName}/${params.script}".getBytes()).toString()
                 }
                 jobDsl(sandbox: true, scriptText: """
-folder("${params.org}") {
-    description('Folder containing "https://github/${params.org}" multibranch pipeline jobs')
+folder("${params.parent}") {
+    description('Folder containing "https://github/${params.parent}" multibranch pipeline jobs')
 }
-multibranchPipelineJob(""${params.org}"/${jobName}") {
+multibranchPipelineJob("${params.parent}/${jobName}") {
     description("${jobDescription}")
 
     configure { job ->
@@ -82,9 +82,9 @@ multibranchPipelineJob(""${params.org}"/${jobName}") {
             delegate.source(class: 'org.jenkinsci.plugins.github_branch_source.GitHubSCMSource') {
                 id("${uuid}")
                 credentialsId('github-jenkins-token')
-                repoOwner("${params.org}")
+                repoOwner("${params.parent}")
                 repository("${params.repo}")
-                repositoryUrl("https://github.com/${params.org}/${params.repo}.git")
+                repositoryUrl("https://github.com/${params.parent}/${params.repo}.git")
                 traits {
                     'org.jenkinsci.plugins.github__branch__source.BranchDiscoveryTrait' {
                         strategyId(${OriginPullRequestDiscoveryTraits['Exclude branches that are also filed as PRs']})
@@ -112,12 +112,12 @@ multibranchPipelineJob(""${params.org}"/${jobName}") {
         stage('scan') {
             when { 
                 allOf {
-                    expression { params.org  != null }
-                    expression { params.repo != null }
+                    expression { params.parent != null }
+                    expression { params.repo   != null }
                 }
             }
             steps {
-                build job: "${params.org}/${jobName}", wait: false
+                build job: "${params.parent}/${jobName}", wait: false
             }
         }
     }

@@ -171,6 +171,7 @@ chown -R jenkins:jenkins "/var/lib/jenkins/tls"
 #
 # Required packages
 #
+apt-get update
 apt-get install nfs-common -y
 
 chmod +x "/usr/local/bin/jenkins-server-disks.sh"

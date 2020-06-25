@@ -4,11 +4,11 @@ folder('github') {
     description('Folder containing helper jobs')
 }
 
-pipelineJob("github/multibranch-pipeline") {
+pipelineJob("github/create-multibranch-pipeline") {
     description('Creates multibranch pipeline jobs')
     definition {
         cps {
-            script(new File(Jenkins.instance.rootDir, 'jobs-dsl/GithubMultibranchPipeline.Jenkinsfile').text)
+            script(new File(Jenkins.instance.rootDir, 'jobs-dsl/CreateGithubMultibranchPipeline.Jenkinsfile').text)
             sandbox()
         }
     }
