@@ -42,7 +42,7 @@ cicdenv$ make
 
 # Remove all but the most recent kops custom AMIs
 ${USER}:~/cicdenv$ packer/bin/remove-old.sh
-${USER}:~/cicdenv$ packer/bin/remove-old.sh 'base/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*'
+${USER}:~/cicdenv$ packer/bin/remove-old.sh 'base/hvm-ssd/ubuntu-focal-20.04-amd64-server-*'
 
 # Removal all AMIs
 ${USER}:~/cicdenv$ packer/bin/remove-all.sh

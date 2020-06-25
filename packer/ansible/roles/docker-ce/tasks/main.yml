@@ -16,7 +16,7 @@
 
 - name: Add Docker CE APT repository
   apt_repository:
-    #     deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+    #     deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
     repo: deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_apt_channel }}
 
 - name: Install Docker CE

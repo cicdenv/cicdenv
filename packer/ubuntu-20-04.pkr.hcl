@@ -21,7 +21,7 @@ source "amazon-ebs" "builder" {
   
   source_ami_filter {
     filters = {
-      name = "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"
+      name = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
 
       virtualization-type = "hvm"
       root-device-type    = "ebs"
@@ -38,8 +38,8 @@ source "amazon-ebs" "builder" {
   ssh_interface = "public_ip"
   ssh_timeout   = "2m"
 
-  ami_name        = "base/hvm-ssd/ubuntu-bionic-18.04-amd64-server-{{ isotime | clean_resource_name }}"
-  ami_description = "https://github.com/vogtech/cicdenv/terraform/packer/ubuntu-18.04.pkr.hcl"
+  ami_name        = "base/hvm-ssd/ubuntu-focal-20.04-amd64-server-{{ isotime | clean_resource_name }}"
+  ami_description = "https://github.com/vogtech/cicdenv/terraform/packer/ubuntu-20.04.pkr.hcl"
   snapshot_users  = var.account_ids
   ami_users       = var.account_ids
 
