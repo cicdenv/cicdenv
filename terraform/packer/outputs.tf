@@ -7,7 +7,7 @@ output "key" {
 }
 
 output "allowed_account_ids" {
-  value = join(",", local.allowed_account_ids)
+  value = local.allowed_account_ids
 }
 
 output "iam" {

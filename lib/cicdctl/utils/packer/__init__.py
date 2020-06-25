@@ -8,7 +8,7 @@ workspace = 'main'
 # Use packer/ as the current working directory
 packer_dir = path.join(getcwd(), 'packer')
 
-packer_template = 'ubuntu-18-04.json'
+packer_template = 'ubuntu-18-04.pkr.hcl'
 
 
 def env():

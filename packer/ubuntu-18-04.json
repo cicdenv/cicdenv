@@ -4,8 +4,7 @@
     "vpc_id": null,
     "subnet_id": null,
     "key_id": null,
-    "account_ids": null,
-    "apt_repo_bucket": null
+    "account_ids": null
   },
   "builders": [
     {

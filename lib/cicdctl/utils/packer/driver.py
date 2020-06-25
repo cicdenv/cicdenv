@@ -27,13 +27,11 @@ class PackerDriver(object):
     def _get_variables(self):
         (vpc, subnets)     = self._tf_outputs('network/shared',  ('vpc', 'subnets'))
         (key, account_ids) = self._tf_outputs('packer',          ('key', 'allowed_account_ids'))
-        (apt_repo_bucket,) = self._tf_outputs('shared/apt-repo', ('apt_repo_bucket', ))
         return [
             '-var', f'vpc_id={vpc["id"]}',
             '-var', f'subnet_id={list(subnets["public"].values())[0]["id"]}',
             '-var', f'key_id={key["key_id"]}',
-            '-var', f'account_ids={account_ids}',
-            '-var', f'apt_repo_bucket={apt_repo_bucket["id"]}',
+            '-var', f'account_ids={json.dumps(account_ids)}',
         ]
 
     def _run_packer(self, command):
