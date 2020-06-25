@@ -13,8 +13,7 @@ KEYBASE_BUILD =  $(shell echo "$(_KEYBASE_FULL_VERSION)" | awk -F- '{print $$2}'
 HCLQ_TAG = 0.5.3
 
 # https://www.terraform.io/downloads.html
-TERRAFORM_VERSION  = 0.12.26
-TERRAFORM_SHA256   = 607bc802b1c6c2a5e62cc48640f38aaa64bef1501b46f0ae4829feb51594b257
+TERRAFORM_VERSION  = 0.12.28
 TERRAFORM_RELEASES = https://releases.hashicorp.com/terraform
 
 # https://github.com/kubernetes/kops/releases
@@ -24,8 +23,7 @@ KOPS_SHA256    = 6f20fa215aae11517a2804a788f967c09a1868d9259fd00e39ca850867f6917
 KOPS_DOWNLOADS = https://github.com/kubernetes/kops/releases/download
 
 # https://www.packer.io/downloads.html
-PACKER_VERSION  = 1.5.6
-PACKER_SHA256   = 2abb95dc3a5fcfb9bf10ced8e0dd51d2a9e6582a1de1cab8ccec650101c1f9df
+PACKER_VERSION  = 1.6.0
 PACKER_RELEASES = https://releases.hashicorp.com/packer
 
 # https://github.com/kubernetes/kubernetes/releases

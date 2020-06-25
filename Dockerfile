@@ -123,9 +123,9 @@ RUN for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                   
         file="terraform_${terraform_version}_${item}";                                                    \
         curl -o "${file}" -sL "${terraform_releases}/${terraform_version}/${file}";                       \
     done                                                                                                  \
-&&  echo "${terraform_sha256}  terraform_${terraform_version}_linux_amd64.zip" | sha256sum -c -           \
 &&  gpg --verify terraform_${terraform_version}_SHA256SUMS.sig terraform_${terraform_version}_SHA256SUMS  \
-&&  unzip terraform_${terraform_version}_linux_amd64.zip -d /bin                                          \
+&&  grep "terraform_${terraform_version}_linux_amd64.zip" "terraform_${terraform_version}_SHA256SUMS" | sha256sum -c - \
+&&  unzip "terraform_${terraform_version}_linux_amd64.zip" -d /bin                                          \
 &&  for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                                             \
         file="terraform_${terraform_version}_${item}";                                                    \
         rm -f "${file}";  \
@@ -139,9 +139,9 @@ RUN for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                   
         file="packer_${packer_version}_${item}";                                              \
         curl -o "${file}" -sL "${packer_releases}/${packer_version}/${file}";                 \
     done                                                                                      \
-&&  echo "${packer_sha256}  packer_${packer_version}_linux_amd64.zip" | sha256sum -c -        \
-&&  gpg --verify packer_${packer_version}_SHA256SUMS.sig packer_${packer_version}_SHA256SUMS  \
-&&  unzip packer_${packer_version}_linux_amd64.zip -d /bin                                    \
+&&  gpg --verify "packer_${packer_version}_SHA256SUMS.sig" "packer_${packer_version}_SHA256SUMS"  \
+&&  grep "packer_${packer_version}_linux_amd64.zip" "packer_${packer_version}_SHA256SUMS" | sha256sum -c - \
+&&  unzip "packer_${packer_version}_linux_amd64.zip" -d /bin                                    \
 &&  for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                                 \
         file="packer_${packer_version}_${item}";                                              \
         rm -f "${file}";                                                                      \
@@ -152,7 +152,7 @@ ARG kops_version
 ARG kops_sha256
 ARG kops_releases
 RUN curl -o /bin/kops -sL ${kops_releases}/v${kops_version}/kops-linux-amd64  \
- && echo "${kops_sha256}  /bin/kops" | sha256sum -c -                        \
+ && echo "${kops_sha256}  /bin/kops" | sha256sum -c -                         \
  && chmod +x /bin/kops
 
 # Kubectl
