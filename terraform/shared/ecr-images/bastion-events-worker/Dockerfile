@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 # $(pyenv init -)
 ENV LANG="C.UTF-8" \
@@ -65,7 +65,7 @@ RUN pyenv install "$(cat .python-version)" \
  && pyenv global "$(pyenv versions --bare)"
 
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
- && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" \
+ && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2) stable" \
  && apt-get update \
  && apt-get install -y --no-install-recommends docker-ce-cli \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

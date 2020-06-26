@@ -200,9 +200,6 @@ def rebuild_package_index(prefix):
     metadata_pkghash = get_package_index_hash(filter_prefix)
     calcd_pkghash = calc_package_index_hash(deb_names)
     print("calcd_pkghash=%s, metadata_pkghash=%s" % (calcd_pkghash, metadata_pkghash))
-    if metadata_pkghash == calcd_pkghash:
-        print("PACKAGE INDEX ALREADY UP TO DATE")
-        return
 
     pkginfos = []
     for obj in deb_objs:
@@ -230,10 +227,10 @@ def rebuild_package_index(prefix):
     release = f"""\
 Origin: Ubuntu
 Label: Ubuntu
-Version: 18.04
+Version: 20.04
 Codename: repo/dists/
 Date: {tstamp}
-Description: Ubuntu Bionic 18.04 cicdenv
+Description: Ubuntu 20.04 LTS (Focal Fossa) cicdenv
 MD5Sum:
  {md5} {size} Packages
 SHA1:

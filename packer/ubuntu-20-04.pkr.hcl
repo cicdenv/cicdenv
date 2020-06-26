@@ -78,4 +78,22 @@ build {
       "ANSIBLE_SSH_ARGS='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o AddKeysToAgent=no -o IdentitiesOnly=yes'",
     ]
   }
+
+  provisioner "file" {
+    source      = "./scripts/info.sh"
+    destination = "/tmp/info.sh"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "sudo chmod +x /tmp/info.sh",
+      "sudo /tmp/info.sh > /tmp/info.txt"
+    ]
+  }
+
+  provisioner "file" {
+    source      = "/tmp/info.txt"
+    destination = "./ami-info/ubuntu-20.04-{{ isotime \"2006-01-02T15-04-05Z07\" }}.txt"
+    direction   = "download"
+  }
 }

@@ -105,7 +105,7 @@ chown -R jenkins:jenkins "/var/lib/jenkins/.docker"
 
 ## Kernel Settings
 `/etc/sysctl.d/NN-*.conf` =&gt; `service procps start` to make effective
-* http://manpages.ubuntu.com/manpages/bionic/man8/sysctl.8.html
+* http://manpages.ubuntu.com/manpages/focal/man8/sysctl.8.html
 * https://superuser.com/questions/625840/how-do-i-reload-sysctl-from-sysctl-d-directory
 
 `sysctl` values to handle large numbers of containers: (setting, tuned, default)

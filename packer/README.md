@@ -50,7 +50,7 @@ ${USER}:~/cicdenv$ exit
 ```
 
 ## NVMe Instance Stores
-TL;DR - with ubuntu 18.04 the root `ebs` volume might be 
+TL;DR - with ubuntu 18.04+ the root `ebs` volume might be 
 `/dev/nvme0n1*` or `/dev/nvme1n1` or the last listed nvme device 
 (when 2 or more are present).
 

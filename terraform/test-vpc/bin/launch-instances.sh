@@ -27,7 +27,7 @@ security_group_id=$(terraform output -json security_group | jq -r '.id')
 
 instance_profile="$(terraform output -json iam | jq -r '.instance_profile | .arn')"
 
-ami_name_pattern='base/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*'
+ami_name_pattern='base/hvm-ssd/ubuntu-focal-20.04-amd64-server-*'
 image_id=$(aws ${AWS_OPTS}                            \
     ec2 describe-images                               \
     --owners "${account_id}"                          \

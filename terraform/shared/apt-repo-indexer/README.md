@@ -73,12 +73,6 @@ SHA1: 60718fd8c158c945e5b59ce7f133bf0860770e67
 SHA256: 2af37af1a8fd243f2cfb28e57ed9f6f5d549a7c5c8bef5a46567c6bc2f091e4d
 ```
 
-Uploading .deb(s):
-```bash
-# Uploads any debs in the s3apt/ folder
-${USER}:~/cicdenv/terraform/shared/apt-repo-indexer/s3apt$ make upload
-```
-
 Lambda updates:
 ```bash
 # Upload new code to S3
@@ -103,7 +97,7 @@ Index-File:true
 EOF
 
 # Verify host has s3 access
-$ aws --region=<region> s3 ls s3://apt-repo-cicdenv-com/repo/dists/
+$ aws --region=us-west-2 s3 ls s3://apt-repo-cicdenv-com/repo/dists/
 
 # Install a package
 $ sudo apt update && sudo apt install libnss-iam
@@ -124,8 +118,8 @@ $ sudo apt update && sudo apt install libnss-iam
 * https://github.com/google/apt-golang-s3
 * http://www.fifi.org/doc/libapt-pkg-doc/method.html/ch2.html
 * https://wiki.debian.org/RepositoryFormat
-* http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/bionic/
-* http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/bionic/InRelease
-* http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/bionic/main/binary-amd64/Packages
-* http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/bionic/main/binary-amd64/
+* http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/focal/
+* http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/focal/InRelease
+* http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/focal/main/binary-amd64/Packages
+* http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/focal/main/binary-amd64/
 * https://www.gnupg.org/documentation/manuals/gnupg/GPG-Configuration-Options.html

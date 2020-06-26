@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 as redis
+FROM ubuntu:20.04 as redis
 
 ENV REDIS_VERSION 6.0.4
 ENV REDIS_DOWNLOAD_URL http://download.redis.io/releases/redis-6.0.4.tar.gz
@@ -30,7 +30,7 @@ RUN   export BUILD_TLS=yes; \
 
 RUN redis-cli --version; which redis-cli
 
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
@@ -50,26 +50,18 @@ RUN apt-get update            \
  && apt-get install -y        \
       build-essential         \
       zlib1g                  \
-      libssl1.0-dev           \
-      libcurl3                \
-      libcurl-openssl1.0-dev  \
+      libssl-dev              \
+      libcurl4-openssl-dev    \
  && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update      \
  && apt-get install -y  \
-      python-minimal    \
-      python-configobj  \
+      python3-minimal   \
+      python3-configobj \
       ca-certificates   \
       python3-pip       \
  && rm -rf /var/lib/apt/lists/*
 RUN pip3 install --no-cache-dir awscli
-
-RUN add-apt-repository ppa:xapienz/curl34  \
- && apt-get update                         \
- && apt-get install -y                     \
-      curl                                 \
-      libcurl4                             \
- && rm -rf /var/lib/apt/lists/*
 
 COPY --from=redis /usr/local/bin/redis-cli /usr/local/bin/
 RUN redis-cli --version

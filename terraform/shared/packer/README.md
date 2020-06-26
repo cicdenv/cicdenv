@@ -40,12 +40,12 @@ locals {
 base_ami = {
   "architecture" = "x86_64"
   "creation_date" = "2020-05-26T22:18:32.000Z"
-  "description" = "<github-repo>/terraform/packer/ubuntu-18.04.json"
+  "description" = "<github-repo>/terraform/packer/ubuntu-20.04.pkr.hcl"
   "hypervisor" = "xen"
   "id" = "ami-<0x*17>"
-  "image_location" = "<account-id>/base/hvm-ssd/ubuntu-bionic-18.04-amd64-server-<yyyy-mm-ddTHH-MM-SSZ>"
+  "image_location" = "<account-id>/base/hvm-ssd/ubuntu-focal-20.04-amd64-server-<yyyy-mm-ddTHH-MM-SSZ>"
   "most_recent" = true
-  "name" = "base/hvm-ssd/ubuntu-bionic-18.04-amd64-server-<yyyy-mm-ddTHH-MM-SSZ>"
+  "name" = "base/hvm-ssd/ubuntu-focal-20.04-amd64-server-<yyyy-mm-ddTHH-MM-SSZ>"
   "owner_id" = "<account-id>"
   "root_snapshot_id" = "snap-<0x*17>"
 }
