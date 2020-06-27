@@ -1,3 +1,13 @@
+output "builds" {
+  value = {
+    bucket = {
+      id   = aws_s3_bucket.kops_builds.id
+      name = aws_s3_bucket.kops_builds.bucket
+      arn  = aws_s3_bucket.kops_builds.arn
+    }
+  }
+}
+
 output "state_store" {
   value = {
     bucket = {
@@ -29,7 +39,7 @@ output "irsa" {
       s3 = {
         oidc_issuer = {
           # Domain name of the S3 bucket (*.s3.amazonaws.com)
-          bucket_name = aws_s3_bucket.oidc.id
+          bucket_name        = aws_s3_bucket.oidc.id
           bucket_domain_name = aws_s3_bucket.oidc.bucket_domain_name
         }
       }

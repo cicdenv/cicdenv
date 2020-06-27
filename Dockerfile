@@ -119,15 +119,15 @@ RUN curl -sl https://keybase.io/hashicorp/pgp_keys.asc | gpg --import
 ARG terraform_version
 ARG terraform_sha256
 ARG terraform_releases
-RUN for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                                             \
-        file="terraform_${terraform_version}_${item}";                                                    \
-        curl -o "${file}" -sL "${terraform_releases}/${terraform_version}/${file}";                       \
-    done                                                                                                  \
-&&  gpg --verify terraform_${terraform_version}_SHA256SUMS.sig terraform_${terraform_version}_SHA256SUMS  \
+RUN for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                        \
+        file="terraform_${terraform_version}_${item}";                               \
+        curl -o "${file}" -sL "${terraform_releases}/${terraform_version}/${file}";  \
+    done                                                                             \
+&&  gpg --verify terraform_${terraform_version}_SHA256SUMS.sig terraform_${terraform_version}_SHA256SUMS               \
 &&  grep "terraform_${terraform_version}_linux_amd64.zip" "terraform_${terraform_version}_SHA256SUMS" | sha256sum -c - \
-&&  unzip "terraform_${terraform_version}_linux_amd64.zip" -d /bin                                          \
-&&  for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                                             \
-        file="terraform_${terraform_version}_${item}";                                                    \
+&&  unzip "terraform_${terraform_version}_linux_amd64.zip" -d /bin  \
+&&  for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do       \
+        file="terraform_${terraform_version}_${item}";              \
         rm -f "${file}";  \
     done
 
@@ -135,24 +135,24 @@ RUN for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                   
 ARG packer_version
 ARG packer_sha256
 ARG packer_releases
-RUN for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                                 \
-        file="packer_${packer_version}_${item}";                                              \
-        curl -o "${file}" -sL "${packer_releases}/${packer_version}/${file}";                 \
-    done                                                                                      \
-&&  gpg --verify "packer_${packer_version}_SHA256SUMS.sig" "packer_${packer_version}_SHA256SUMS"  \
+RUN for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                  \
+        file="packer_${packer_version}_${item}";                               \
+        curl -o "${file}" -sL "${packer_releases}/${packer_version}/${file}";  \
+    done                                                                       \
+&&  gpg --verify "packer_${packer_version}_SHA256SUMS.sig" "packer_${packer_version}_SHA256SUMS"           \
 &&  grep "packer_${packer_version}_linux_amd64.zip" "packer_${packer_version}_SHA256SUMS" | sha256sum -c - \
-&&  unzip "packer_${packer_version}_linux_amd64.zip" -d /bin                                    \
-&&  for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                                 \
-        file="packer_${packer_version}_${item}";                                              \
-        rm -f "${file}";                                                                      \
+&&  unzip "packer_${packer_version}_linux_amd64.zip" -d /bin   \
+&&  for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do  \
+        file="packer_${packer_version}_${item}";               \
+        rm -f "${file}";                                       \
     done
 
 # Kops cli
 ARG kops_version
 ARG kops_sha256
 ARG kops_releases
-RUN curl -o /bin/kops -sL ${kops_releases}/v${kops_version}/kops-linux-amd64  \
- && echo "${kops_sha256}  /bin/kops" | sha256sum -c -                         \
+RUN curl -o /bin/kops -sL "${kops_releases}/v$(python -c 'import urllib.parse; print(urllib.parse.quote("'${kops_version}'"))')/kops-linux-amd64"  \
+ && echo "${kops_sha256}  /bin/kops" | sha256sum -c - \
  && chmod +x /bin/kops
 
 # Kubectl

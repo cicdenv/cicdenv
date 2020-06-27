@@ -26,7 +26,7 @@ def cluster_fqdn(name, workspace):
 
 def state_store():
     domain = parse_tfvars(domain_config)['domain']
-    return f'kops.{domain}'
+    return f'kops-state-{domain.replace(".", "-")}'
 
 
 CONFIG = 0

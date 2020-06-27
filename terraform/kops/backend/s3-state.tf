@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "kops_state" {
-  bucket = "kops.${var.domain}"
-  acl    = "private"
+  bucket = "kops-state-${replace(var.domain, ".", "-")}"
+
   versioning {
     enabled    = true
     mfa_delete = false
@@ -56,6 +56,30 @@ data "aws_iam_policy_document" "kops_state_s3" {
       values   = [
         "bucket-owner-full-control",
       ]
+    }
+  }
+
+  statement {
+    principals {
+      type = "AWS"
+
+      identifiers = local.org_account_roots
+    }
+
+    actions = [
+      "s3:List*",
+      "s3:Get*",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.kops_state.bucket}",
+      "arn:aws:s3:::${aws_s3_bucket.kops_state.bucket}/kops/*",
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:sourceVpce"
+      values   = local.vpc_endpoints
     }
   }
 }

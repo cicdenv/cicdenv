@@ -63,11 +63,18 @@ irsa = {
     }
   }
 }
+builds = {
+  "bucket" = {
+    "arn" = "arn:aws:s3:::kops-builds-cicdenv-com"
+    "id" = "kops-builds-cicdenv-com"
+    "name" = "kops-builds-cicdenv-com"
+  }
+}
 state_store = {
   "bucket" = {
-    "arn" = "arn:aws:s3:::kops.cicdenv.com"
-    "id" = "kops.cicdenv.com"
-    "name" = "kops.cicdenv.com"
+    "arn" = "arn:aws:s3:::kops-state-cicdenv-com"
+    "id" = "kops-state-cicdenv-com"
+    "name" = "kops-state-cicdenv-com"
   }
   "key" = {
     "alias" = "alias/kops-state"
