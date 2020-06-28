@@ -28,8 +28,9 @@ PACKER_VERSION  = 1.6.0
 PACKER_RELEASES = https://releases.hashicorp.com/packer
 
 # https://github.com/kubernetes/kubernetes/releases
-KUBE_VERSION   = 1.18.3
-KUBE_SHA512    = cfcb89a706eb8ddc7aa8225e3f0eb76a0d973faa1c82b1bec0a457cd8b44b7bd5c154b7ed1f7cdabfdee84af8a33fd7fff83970a6ee5a97d661a806b69da968b
+# https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-<version>.md (checksums)
+KUBE_VERSION   = 1.18.5
+KUBE_SHA512    = 01e9c71d65c4513c03b22b2b036c3e92875fa4ebdb43b4909a6b21608093d280d9f71953f9656b3728019bdc8cb6bbf864de3c6a3eb94d807ec0330dbccfa005
 KUBE_DOWNLOADS = https://dl.k8s.io
 
 # https://github.com/kubernetes-sigs/aws-iam-authenticator/releases
