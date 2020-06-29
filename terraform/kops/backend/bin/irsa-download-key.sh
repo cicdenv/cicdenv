@@ -14,6 +14,7 @@ AWS_OPTS="--profile=${AWS_PROFILE} --region=us-west-2"
 aws $AWS_OPTS                                   \
     secretsmanager get-secret-value             \
     --secret-id 'kops-service-accounts'         \
+    --version-stage 'AWSCURRENT'                \
     --query  'SecretString'                     \
     | jq -r 'fromjson | ."account-signing-key"' \
     | base64 -d

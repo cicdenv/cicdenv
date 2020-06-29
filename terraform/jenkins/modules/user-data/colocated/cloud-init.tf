@@ -81,7 +81,8 @@ chmod 0600 "/var/lib/jenkins/.ssh/config"
 
 aws secretsmanager get-secret-value                 \
     --secret-id "${local.jenkins_env_secrets.arn}"  \
-| jq -r '.SecretString'                             \
+    --version-stage 'AWSCURRENT'                    \
+    --query  'SecretString'                         \
 | jq -r '.["id_rsa"]'                               \
 | base64 -di                                        \
 > "/var/lib/jenkins/.ssh/id_rsa"
@@ -89,7 +90,8 @@ chmod 0600 "/var/lib/jenkins/.ssh/id_rsa"
 
 aws secretsmanager get-secret-value                 \
     --secret-id "${local.jenkins_env_secrets.arn}"  \
-| jq -r '.SecretString'                             \
+    --version-stage 'AWSCURRENT'                    \
+    --query  'SecretString'                         \
 | jq -r '.["id_rsa.pub"]'                           \
 | base64 -di                                        \
 > "/var/lib/jenkins/.ssh/id_rsa.pub"
@@ -150,7 +152,8 @@ for secret in               \
 ; do
     aws secretsmanager get-secret-value                    \
         --secret-id "${local.jenkins_server_secrets.arn}"  \
-    | jq -r '.SecretString'                                \
+        --version-stage 'AWSCURRENT'                       \
+        --query  'SecretString'                            \
     | jq -r ".[\"$${secret}\"]"                            \
     | base64 -di                                           \
     > "/var/jenkins_home/$${secret}"
@@ -170,7 +173,8 @@ for secret in                                                                \
 ; do
     aws secretsmanager get-secret-value                    \
         --secret-id "${local.jenkins_server_secrets.arn}"  \
-    | jq -r '.SecretString'                                \
+        --version-stage 'AWSCURRENT'                       \
+        --query  'SecretString'                            \
     | jq -r ".[\"$${secret}\"]"                            \
     | base64 -di                                           \
     > "/var/jenkins_home/$${secret}"

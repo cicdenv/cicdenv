@@ -38,6 +38,7 @@ data "template_file" "master_instance_group" {
       
       aws secretsmanager get-secret-value                      \
           --secret-id "${local.secrets.service_accounts.arn}"  \
+          --version-stage 'AWSCURRENT'                         \
           --query  'SecretString'                              \
       | jq -r 'fromjson | .["account-signing-key"]'            \
       | base64 -di                                             \
