@@ -29,6 +29,20 @@ variable "ami_id" {
   description = "AWS EC2 Machine Image (AMI) id."
 }
 
+variable "iam" {
+  type = object({
+    master = object({
+      instance_profile = object({
+        arn = string
+      })
+    })
+    node = object({
+      instance_profile = object({
+        arn = string
+      })
+    })
+  })
+}
 variable "output_files" {
   type = object({
     manifest = string

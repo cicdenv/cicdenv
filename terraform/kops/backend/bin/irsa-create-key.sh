@@ -2,7 +2,7 @@
 
 set -eu -o pipefail
 
-# Set working directory to terraform/kops/backend/pki
+# Set working directory to terraform/kops/backend/irsa
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 pushd "$DIR/../irsa" >/dev/null
 

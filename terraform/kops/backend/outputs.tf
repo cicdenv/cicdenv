@@ -23,6 +23,20 @@ output "state_store" {
   }
 }
 
+output "secrets" {
+  value = {
+    service_accounts = {
+      name = aws_secretsmanager_secret.kops_service_accounts.name
+      arn  = aws_secretsmanager_secret.kops_service_accounts.arn
+    }
+    key = {
+      key_id = aws_kms_key.kops_secrets.key_id
+      alias  = aws_kms_alias.kops_secrets.name
+      arn    = aws_kms_key.kops_secrets.arn
+    }
+  }
+}
+
 # IAM Roles for (Kubernetes) Service Accounts (IRSA)
 output "irsa" {
   value = {
@@ -46,11 +60,6 @@ output "irsa" {
     }
     cluster_spec = {
       fileAssets = <<-EOF
-- name: service-account-signing-key-file
-  path: /srv/kubernetes/assets/service-account-signing-key
-  roles: [Master]
-  content: ${replace(filebase64("${path.module}/irsa/irsa-key"), "/=+/", "")}
-  isBase64: true
 - name: service-account-public-key-file
   path: /srv/kubernetes/assets/service-account-key
   roles: [Master]

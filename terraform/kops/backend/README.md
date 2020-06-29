@@ -4,14 +4,6 @@ Common state-store for all KOPS kubernetes clusters in all regions/accounts.
 ## Workspaces
 N/A.  All accounts store kops state in the same bucket in main-acct/us-west-2.
 
-## Init
-Create KOPS CA.
-```
-cicdenv$ terraform/kops/backend/bin/ca-create.sh
-...
-2019/06/25 12:09:55 [INFO] signed certificate with serial number ....
-```
-
 ## Usage
 ```bash
 cicdenv$ cicdctl terraform <init|plan|apply|output> kops/backend:main
@@ -82,12 +74,15 @@ state_store = {
     "key_id" = "<guid>"
   }
 }
+secrets = {
+  "service_accounts" = {
+    "arn" = "arn:aws:secretsmanager:<region>:<main-acct-id>:secret:kops-service-accounts-<[a-z0-9]*6>"
+    "name" = "kops-service-accounts"
+  }
+  "key" = {
+    "alias" = "alias/kops-secrets"
+    "arn" = "arn:aws:kms:<region>:<main-acct-id>:key/<guid>"
+    "key_id" = "<guid>"
+  }
+}
 ```
-
-## Testing
-CA Cert fingerprint:
-```
-echo '{"uri": "oidc-irsa-cicdenv-com.s3.amazonaws.com"}' | python terraform/kops/backend/bin/ca_sha1.py
-3fe05b486e3f0987130ba1d4ea0f299539a58243
-```
-* https://github.com/hashicorp/terraform-provider-tls/issues/52

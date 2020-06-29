@@ -15,29 +15,6 @@ output "security_groups" {
   }
 }
 
-output "iam" {
-  value = {
-    master = {
-      role = {
-        name = aws_iam_role.kops_master.name
-        arn  = aws_iam_role.kops_master.arn
-      }
-      instance_profile = {
-        arn = aws_iam_instance_profile.kops_master.arn
-      }
-    }
-    node = {
-      role = {
-        name = aws_iam_role.kops_node.name
-        arn  = aws_iam_role.kops_node.arn
-      }
-      instance_profile = {
-        arn = aws_iam_instance_profile.kops_node.arn
-      }
-    }
-  }
-}
-
 output "etcd_kms_key" {
   value = {
     name   = aws_kms_alias.kops_etcd.name

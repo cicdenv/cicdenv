@@ -2,9 +2,6 @@ locals {
   # kops/backend
   state_store = data.terraform_remote_state.backend.outputs.state_store
 
-  # kops/shared
-  iam = data.terraform_remote_state.shared.outputs.iam
-
   # iam/users
   admin_users = data.terraform_remote_state.iam_users.outputs.admins
   

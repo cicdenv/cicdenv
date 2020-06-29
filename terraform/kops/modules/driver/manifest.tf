@@ -8,6 +8,19 @@ module "manifest" {
   
   cluster_fqdn       = local.cluster_fqdn
 
+  iam = {
+    master = {
+      instance_profile = {
+        arn = aws_iam_instance_profile.kops_master.arn
+      }
+    }
+    node = {
+      instance_profile = {
+        arn = aws_iam_instance_profile.kops_node.arn
+      }
+    }
+  }
+
   output_files = {
     manifest = local.manifest
   }

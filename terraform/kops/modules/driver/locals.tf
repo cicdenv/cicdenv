@@ -4,16 +4,20 @@ locals {
   subnets            = data.terraform_remote_state.network.outputs.subnets
   public_subnets     = local.subnets["public"]
   private_subnets    = local.subnets["private"]
+  private_dns_zone  = data.terraform_remote_state.network.outputs.private_dns_zone
+
+  # iam/common-policies
+  apt_repo_policy = data.terraform_remote_state.iam_common_policies.outputs.iam.apt_repo.policy
 
   # kops/backend
   state_store = data.terraform_remote_state.backend.outputs.state_store
+  secrets     = data.terraform_remote_state.backend.outputs.secrets
 
   # kops/domains
   kops_domain = data.terraform_remote_state.domains.outputs.kops_public_zone.domain
 
   # kops/shared
   etcd_kms_key = data.terraform_remote_state.shared.outputs.etcd_kms_key
-  iam          = data.terraform_remote_state.shared.outputs.iam
   
   # backend (accounts)
   account_admin = data.terraform_remote_state.accounts.outputs.organization_accounts[terraform.workspace].role

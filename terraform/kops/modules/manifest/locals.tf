@@ -10,6 +10,7 @@ locals {
 
   # kops/backend:
   state_store = data.terraform_remote_state.backend.outputs.state_store
+  secrets     = data.terraform_remote_state.backend.outputs.secrets
 
   irsa_file_assets   = trimspace(data.terraform_remote_state.backend.outputs.irsa.cluster_spec["fileAssets"])
   irsa_kube_api_args = trimspace(data.terraform_remote_state.backend.outputs.irsa.cluster_spec["kubeAPIServer"])
@@ -19,7 +20,6 @@ locals {
   master_security_groups = [data.terraform_remote_state.shared.outputs.security_groups.master.id]
   node_security_groups   = [data.terraform_remote_state.shared.outputs.security_groups.node.id]
   api_security_groups    = [data.terraform_remote_state.shared.outputs.security_groups.internal_apiserver.id]
-  iam                    = data.terraform_remote_state.shared.outputs.iam
 
   region = data.aws_region.current.name
 
@@ -39,8 +39,9 @@ locals {
 
   ami_id = var.ami_id
   
+  iam = var.iam
+  
   manifest = var.output_files.manifest
 
-  # Must match kops/modules/kops-addons/kube2iam::host_interface
   networking = "canal"
 }

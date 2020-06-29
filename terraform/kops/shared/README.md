@@ -29,26 +29,6 @@ etcd_kms_key = {
   "key_id" = "<guid>"
   "name" = "alias/kops-etcd"
 }
-iam = {
-  "master" = {
-    "instance_profile" = {
-      "arn" = "arn:aws:iam::<account-id>:instance-profile/kops-master"
-    }
-    "role" = {
-      "arn" = "arn:aws:iam::<account-id>:role/system/kops-master"
-      "name" = "kops-master"
-    }
-  }
-  "node" = {
-    "instance_profile" = {
-      "arn" = "arn:aws:iam::<account-id>:instance-profile/kops-node"
-    }
-    "role" = {
-      "arn" = "arn:aws:iam::<account-id>:role/system/kops-node"
-      "name" = "kops-node"
-    }
-  }
-}
 security_groups = {
   "external_apiserver" = {
     "id" = "sg-<0x*17>"

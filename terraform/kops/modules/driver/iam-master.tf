@@ -137,10 +137,127 @@ data "aws_iam_policy_document" "kops_master" {
       "*",
     ]
   }
+
+  statement {
+    actions = [
+      "ec2:AttachVolume",
+      "ec2:AuthorizeSecurityGroupIngress",
+      "ec2:CreateRoute",
+      "ec2:DeleteRoute",
+      "ec2:DeleteSecurityGroup",
+      "ec2:DeleteVolume",
+      "ec2:DetachVolume",
+      "ec2:RevokeSecurityGroupIngress",
+    ]
+
+    resources = [
+      "*",
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "ec2:ResourceTag/KubernetesCluster"
+      values   = [
+        local.cluster_fqdn,
+      ]
+    }
+  }
+
+  statement {
+    actions = [
+      "autoscaling:SetDesiredCapacity",
+      "autoscaling:TerminateInstanceInAutoScalingGroup",
+      "autoscaling:UpdateAutoScalingGroup",
+    ]
+
+    resources = [
+      "*",
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "ec2:ResourceTag/KubernetesCluster"
+      values   = [
+        local.cluster_fqdn,
+      ]
+    }
+  }
+
+  statement {
+    actions = [
+      "s3:GetBucketLocation",
+      "s3:GetEncryptionConfiguration",
+      "s3:ListBucket",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${local.state_store.bucket.name}",
+    ]
+  }
+
+  statement {
+    actions = [
+      "s3:Get*",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${local.state_store.bucket.name}/${local.cluster_fqdn}/*",
+    ]
+  }
+
+  statement {
+    actions = [
+      "s3:Put*",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${local.state_store.bucket.name}/${local.cluster_fqdn}/backups/*",
+    ]
+  }
+
+  statement {
+    actions = [
+      "kms:*",
+    ]
+
+    resources = [
+      local.state_store.key.arn,
+    ]
+  }
+
+  statement {
+    actions = [
+      "kms:*",
+    ]
+
+    resources = [
+      local.etcd_kms_key.arn,
+    ]
+  }
+
+  statement {
+    actions = [
+      "secretsmanager:GetSecretValue",
+    ]
+
+    resources = [
+      local.secrets.service_accounts.arn,
+    ]
+  }
+  
+  statement {
+    actions = [
+      "kms:Decrypt",
+    ]
+
+    resources = [
+      local.secrets.key.arn,
+    ]
+  }
 }
 
 resource "aws_iam_policy" "kops_master" {
-  name = "KopsMaster"
+  name = "Kops-${local.cluster_name}-Master"
 
   policy = data.aws_iam_policy_document.kops_master.json
 }
@@ -156,6 +273,6 @@ resource "aws_iam_role_policy_attachment" "kops_master_apt_repo" {
 }
 
 resource "aws_iam_instance_profile" "kops_master" {
-  name = "kops-master"
+  name = "kops-${local.cluster_name}-master"
   role = aws_iam_role.kops_master.name
 }
