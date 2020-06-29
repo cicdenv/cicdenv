@@ -20,6 +20,8 @@ locals {
   kops_version = data.external.kops_version.result["output"]
 
   kops_vars = {
+    KOPS_FEATURE_FLAGS = "EnableLaunchTemplates"
+    
     KOPS_STATE_S3_ACL = "bucket-owner-full-control"
 
     # KOPS_BASE_URL   = "https://kubeupv2.s3.amazonaws.com/kops/"
