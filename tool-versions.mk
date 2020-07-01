@@ -34,8 +34,8 @@ KUBE_SHA512    = 01e9c71d65c4513c03b22b2b036c3e92875fa4ebdb43b4909a6b21608093d28
 KUBE_DOWNLOADS = https://dl.k8s.io
 
 # https://github.com/kubernetes-sigs/aws-iam-authenticator/releases
-AUTHENTICATOR_VERSION = 0.5.0
-AUTHENTICATOR_SHA256  = 4ccb4788d60ed76e3e6a161b56e1e7d91da1fcd82c98f935ca74c0c2fa81b7a6
+AUTHENTICATOR_VERSION = 0.5.1
+AUTHENTICATOR_SHA256  = afb16f35071c977554f1097cbb84ca4f38f9ce42142c8a0612716ae66bb9fdb9
 AUTHENTICATOR_PROJECT = https://github.com/kubernetes-sigs/aws-iam-authenticator
 
 # https://pkg.cfssl.org/
