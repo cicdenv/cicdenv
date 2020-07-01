@@ -1,7 +1,7 @@
 from os import path, getcwd
 
-from . import (env, new_cluster_script, stop_cluster_script, 
-    cluster_dir, kubeconfig, cluster_fqdn, state_store,
+from . import (env, new_cluster_script, stop_cluster_script, download_ca_script,
+    cluster_dir, pki_dir, kubeconfig, cluster_fqdn, state_store,
 	cluster_targets, CONFIG, CLUSTER, ACCESS)
 from ...aws import config_profile
 
@@ -84,6 +84,12 @@ class ClusterDriver(object):
         cluster_folder = cluster_dir(self.name)
         if not path.isdir(cluster_folder):
             self._run([new_cluster_script, self.name] + self.tf_vars)
+        pki_folder = pki_dir(self.workspace)
+        if (
+           not path.exists(path.join(cluster_folder, 'ca-key.pem')) or
+           not path.exists(path.join(cluster_folder, 'ca.pem'))
+        ):
+            self._run([download_ca_script, self.workspace])
         self._terraform('apply', CONFIG, ['-auto-approve'])
 
     def _terraform(self, op, idx, flags=[]):

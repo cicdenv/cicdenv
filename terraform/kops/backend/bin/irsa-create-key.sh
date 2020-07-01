@@ -23,8 +23,6 @@ if [[ ! -f irsa-key.pub || -f irsa-key ]]; then
             go run /main.go -key /irsa-pkcs8.pub'       \
         | jq '.keys += [.keys[0]] | .keys[1].kid = ""'  \
         > jwks.json
-    
-    rm -f irsa-key.enc
 fi
 
 popd >/dev/null

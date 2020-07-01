@@ -14,6 +14,7 @@ crash.log
 .venv
 
 ca-key.pem
+ca.pem
 irsa-key
 kops-admin.kubeconfig
 

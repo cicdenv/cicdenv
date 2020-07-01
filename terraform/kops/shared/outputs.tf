@@ -22,3 +22,12 @@ output "etcd_kms_key" {
     arn    = aws_kms_key.kops_etcd.arn
   }
 }
+
+output "secrets" {
+  value = {
+    service_accounts = {
+      name = aws_secretsmanager_secret.kops_ca.name
+      arn  = aws_secretsmanager_secret.kops_ca.arn
+    }
+  }
+}

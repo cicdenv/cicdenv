@@ -51,7 +51,7 @@ module "kops_driver" {
 
   folders = {
     home_folder = "${path.module}/.."
-    pki_folder  = "${path.module}/../../../backend/pki"
+    pki_folder  = "${path.module}/../../../backend/pki/${terraform.workspace}"
   }
 }
 EOF

@@ -8,11 +8,15 @@ from ...terraform import parse_tfvars, domain_config
 
 new_cluster_script = 'terraform/kops/bin/generate-cluster-components.sh'
 stop_cluster_script = 'terraform/kops/clusters/bin/stop-cluster.sh'
+download_ca_script = 'terraform/kops/backend/bin/kops-ca-download.sh'
 
 
 def cluster_dir(name):
-    dir =  path.join(getcwd(), f'terraform/kops/clusters/{name}')
-    return dir
+    return path.join(getcwd(), f'terraform/kops/clusters/{name}')
+
+
+def pki_dir(workspace):
+    return path.join(getcwd(), f'terraform/kops/backend/pki/{workspace}')
 
 
 def kubeconfig(name, workspace, perms):

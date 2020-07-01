@@ -32,7 +32,7 @@ variable "ami_id" {
 variable "folders" {
   type = object({
     home_folder = string  # terraform/kops/clusters/<cluster>/
-    pki_folder  = string  # terraform/kops/backend/pki
+    pki_folder  = string  # terraform/kops/backend/pki/<workspace>/
   })
   description = "Relative to terraform/kops/clusters/<cluster>/kops"
 }

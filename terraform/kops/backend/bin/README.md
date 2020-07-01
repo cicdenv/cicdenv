@@ -1,23 +1,26 @@
 ## Purpose
-NOTE:
-```
-CA per workspace isn't implemented yet.
-```
-
 The scripts in `bin/` maintain the common kubernetes cluster identities.
 
-Our approach here is that all clusters in the same account have the same identity.
+### Kubernetes Certificate Authority
+Clusters in the same account have the same identity.
 
-This is accomplished by pre-creating the kubernetes PKI (CA key/cert),
-injecting into the kops create/update workflow.
+This is accomplished by pre-creating the kubernetes internal PKI (CA key/cert)
+in AWS secrets manager.
+Then injecting it into the kops create/update workflow.
 
-We need to store the key in version control hence the need to use 
-aws cli `kms` to encrypt / decrypt.
+### Kubernetes IAM Roles for Service Accounts
+There is a single OpenID Connect Identity Provider for all
+clusters in all accounts.
 
-## Usage
-This is automatic if using `cicdctl cluster create ...`.
+### IRSA Setup
+The oidc Idp account signing key should be created (once) and uploaded to AWS secrets manager.
 
-## Resetting
 ```bash
-cicdenv$ rm -rf terraform/kops/backend/pki/*/ca*
+📦 $USER:~/cicdenv$ terraform/kops/backend/bin/irsa-create-key.sh
+📦 $USER:~/cicdenv$ terraform/kops/backend/bin/irsa-upload-key.sh
+```
+
+To setup a local environment:
+```bash
+📦 $USER:~/cicdenv$ terraform/kops/backend/bin/irsa-download-key.sh
 ```
