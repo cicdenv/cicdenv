@@ -1,3 +1,6 @@
+## Purpose
+Per account lambda TLS key secret creator/rotator.
+
 ## archive
 ```
 cicdenv$ (cd terraform/nginx/shared/tls-function; make)

@@ -1,8 +1,18 @@
 ## Purpose
-...
+Main account nginx ACME account registration.
 
 ## Workspaces
 N/A.
+
+## Secrets
+```bash
+# Create / Rotate
+📦 $USER:~/cicdenv$ terraform/nginx/backend/bin/create-acme-key.sh
+📦 $USER:~/cicdenv$ terraform/nginx/backend/bin/secrets-upload.sh
+
+# Fetch into local checkout
+📦 $USER:~/cicdenv$ terraform/nginx/backend/bin/secrets-download.sh
+```
 
 ## Usage
 ```bash
@@ -10,29 +20,34 @@ cicdenv$ cicdctl terraform <init|plan|apply|destroy> nginx/backend:main
 ...
 ```
 
-## Secrets
-```bash
-📦 $USER:~/cicdenv$ terraform/nginx/backend/bin/secrets-upload.sh
-
-📦 $USER:~/cicdenv$ terraform/nginx/backend/bin/secrets-download.sh
+## Importing
+```hcl
+data "terraform_remote_state" "nginx_backend" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/nginx_backend/terraform.tfstate"
+    region = var.region
+  }
+}
 ```
 
 ## Outputs
 ```
 acme = {
   "registration" = {
-    "id" = "https://acme-v02.api.letsencrypt.org/acme/acct/90372376"
-    "registration_url" = "https://acme-v02.api.letsencrypt.org/acme/acct/90372376"
+    "id" = "https://acme-v02.api.letsencrypt.org/acme/acct/<[a-z0-9]*8>"
+    "registration_url" = "https://acme-v02.api.letsencrypt.org/acme/acct/<[a-z0-9]*8>"
   }
 }
 secrets = {
   "key" = {
     "alias" = "alias/nginx-secrets"
-    "arn" = "arn:aws:kms:us-west-2:014719181291:key/6d404c00-25d2-4789-b768-2c85c710ba4c"
-    "key_id" = "6d404c00-25d2-4789-b768-2c85c710ba4c"
+    "arn" = "arn:aws:kms:<region>:<main-acct-id>:key/<guid>"
+    "key_id" = "<guid>"
   }
   "nginx" = {
-    "arn" = "arn:aws:secretsmanager:us-west-2:014719181291:secret:nginx-4PCFVB"
+    "arn" = "arn:aws:secretsmanager:<region>:<main-acct-id>:secret:nginx-<[a-z0-9]*6>"
     "name" = "nginx"
   }
 }
