@@ -8,9 +8,6 @@ AWS_REGION=us-west-2
 IMAGE_NAME=pod-identity-webhook
 IMAGE_VERSION=latest
 
-domain_config=$(CURDIR)/../../../domain.tfvars
-domain=$(shell grep 'domain ' "$(domain_config)" | awk -F= '{print $$2}' | sed 's/[" ]//g' | sed 's/\./-/g')
-
 github_repo=https://github.com/aws/amazon-eks-pod-identity-webhook.git
 github_branch=master
 

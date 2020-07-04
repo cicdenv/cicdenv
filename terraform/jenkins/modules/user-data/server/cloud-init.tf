@@ -105,7 +105,7 @@ hostnamectl set-hostname ${local.host_name}
 #
 # kernel settings
 #
-service procps reload
+service procps force-reload
 
 #
 # Jenkins id, crypto files

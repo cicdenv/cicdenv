@@ -35,6 +35,3 @@ jenkins-agents-
 jenkins-ext-
 jenkins-int-
 ```
-
-## Links
-* https://docs.aws.amazon.com/cli/latest/reference/ecr/describe-images.html

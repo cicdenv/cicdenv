@@ -4,7 +4,7 @@ set -eu -o pipefail
 
 workspace=${1?Usage: $0 <workspace>}
 
-# Set working directory to terraform/kops/backend/irsa
+# Set working directory to terraform/kops/backend/pki/<workspace>
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 mkdir -p "$DIR/../pki/${workspace}"
 pushd "$DIR/../pki/${workspace}" >/dev/null

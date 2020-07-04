@@ -10,9 +10,6 @@
 - [ ] golang 3rd party libs s3/host/workspace caching service
 - [ ] run cicdctl from ec2 w/IAM role
 
-## Packer
-- [ ] 1.5.0+ config json to hcl
-
 ## Workloads
 - [ ] jupyter notebook server
 

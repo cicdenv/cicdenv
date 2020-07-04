@@ -1,5 +1,5 @@
 [Unit]
-Description=Ensure jenkins server folders are accessing the PCIe SSD/NVMe, EBS, and EFS disk
+Description=Ensure jenkins server folders are accessing the PCIe SSD/NVMe, EBS, and EFS disks
 Before=jenkins-server.service
 
 [Service]
