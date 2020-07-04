@@ -45,6 +45,11 @@ COMMANDS = {
     ],
     'new-component': [
     ],
+    'nginx': [
+        'init',
+        'create',
+        'destroy',
+    ],
     'packer': [
         'validate',
         'build',

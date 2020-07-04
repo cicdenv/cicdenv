@@ -10,7 +10,14 @@ from .dependencies import get_cascades
 
 from ...commands.types.target import parse_target
 
-commands_no_vars = ['output', 'fmt', 'validate', 'state']
+commands_no_vars = [
+    'output', 
+    'fmt', 
+    'validate', 
+    'state',
+    'taint',
+    'untaint',
+]
 commands_with_vars = [
     'plan',
     'show',
@@ -18,8 +25,6 @@ commands_with_vars = [
     'destroy',
     'refresh',
     'import',
-    'taint',
-    'untaint',
     'console',
 ]
 unlock_script = 'terraform/bin/clear-state-lock.sh'
