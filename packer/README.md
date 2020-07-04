@@ -3,8 +3,15 @@ Custom ubuntu AMIs.
 
 ## Usage
 ### Building
-```
+```bash
+# Turn on private subnet NAT gateways
+cicdenv$ cicdctl terraform apply network/routing:main
+
+# Create a new base AMI
 cicdenv$ cicdctl packer build
+
+# Turn off private subnet NAT gateways
+cicdenv$ cicdctl terraform destroy network/routing:main
 ```
 
 ### Testing
