@@ -1,0 +1,11 @@
+[Unit]
+Description=Ensure NGINX folders are accessing the PCIe SSD/NVMe, EBS disks
+Before=nginx.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/nginx-disks.sh
+
+[Install]
+WantedBy=multi-user.target
+RequiredBy=nginx.service

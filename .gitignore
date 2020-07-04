@@ -39,3 +39,9 @@ jenkins/cli-cookies.txt
 terraform/shared/ecr-images/pod-identity-webhook/amazon-eks-pod-identity-webhook
 terraform/shared/ecr-images/certificate-init-container/certificate-init-container
 terraform/shared/ecr-images/certificate-request-approver/kapprover
+
+nginx-repo.crt
+nginx-repo.key
+geoipupdate.conf
+nginx-key
+key.pem
