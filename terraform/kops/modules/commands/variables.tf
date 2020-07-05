@@ -14,7 +14,7 @@ variable "cluster_fqdn" {
 variable "files" {
   type = object({
     manifest         = string
-    public_key       = string
+    ssh_key          = string
     admin_kubeconfig = string
   })
   description = "File locations."

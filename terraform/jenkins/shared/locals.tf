@@ -21,8 +21,6 @@ locals {
 
   vpc_id = data.terraform_remote_state.network.outputs.vpc.id
 
-  ssh_key = "~/.ssh/kops_rsa.pub"
-
   bastion_security_group = data.terraform_remote_state.network.outputs.bastion_service.security_group
 
   main_account = data.terraform_remote_state.accounts.outputs.main_account

@@ -34,13 +34,6 @@ iam = {
     }
   }
 }
-key_pairs = {
-  "redis_node" = {
-    "fingerprint" = "<xx>.*16"
-    "key_name" = "redis-cluster-node"
-    "key_pair_id" = "key-<0x*17>"
-  }
-}
 security_groups = {
   "redis_node" = {
     "id" = "sg-<0x*17>"

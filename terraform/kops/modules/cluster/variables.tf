@@ -21,8 +21,8 @@ variable "folders" {
 
 variable "input_files" {
   type = object({
-    manifest   = string
-    public_key = string
+    manifest = string
+    ssh_key  = string
   })
   description = "Existing files."
 }

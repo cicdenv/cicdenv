@@ -7,7 +7,7 @@ module "kops_commands" {
 
   files = {
     manifest         = local.manifest
-    public_key       = local.public_key
+    ssh_key          = local.ssh_key
     admin_kubeconfig = local.admin_kubeconfig
   }
 

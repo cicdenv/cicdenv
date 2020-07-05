@@ -3,7 +3,7 @@ resource "aws_launch_template" "nginx_server" {
   image_id      = var.ami_id
   instance_type = var.instance_type
   user_data     = data.template_cloudinit_config.config.rendered
-  key_name      = local.key_pair.key_name
+  key_name      = "shared"
 
   iam_instance_profile {
     arn = local.instance_profile.arn

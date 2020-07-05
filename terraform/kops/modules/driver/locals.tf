@@ -40,7 +40,7 @@ locals {
   
   ami_id = var.ami_id != "" ? var.ami_id : data.terraform_remote_state.amis.outputs.base_ami.id
 
-  public_key = "~/.ssh/kops_rsa.pub"
+  ssh_key = "~/.ssh/kops_rsa.pub"
 
   home_folder = var.folders.home_folder  # For a single cluster-name:workspace (cluser-instance)
   # output files

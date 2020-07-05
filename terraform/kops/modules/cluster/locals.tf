@@ -7,8 +7,8 @@ locals {
   cluster_fqdn = var.cluster_fqdn
 
   # input files
-  public_key = var.input_files.public_key
-  manifest   = var.input_files.manifest
+  ssh_key  = var.input_files.ssh_key
+  manifest = var.input_files.manifest
 
   # output files
   ca_cert = var.output_files.ca_cert

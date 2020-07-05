@@ -6,8 +6,6 @@ locals {
   
   subnets = data.terraform_remote_state.network.outputs.subnets
 
-  key_pair = data.terraform_remote_state.jenkins_shared.outputs.jenkins_key_pair
-
   internal_alb = data.terraform_remote_state.jenkins_routing.outputs.internal_alb
   external_alb = data.terraform_remote_state.jenkins_routing.outputs.external_alb
 }

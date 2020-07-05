@@ -172,4 +172,11 @@ vpc = {
   "cidr_block" = "10.16.0.0/16"
   "id" = "vpc-<0x*17>"
 }
+key_pairs = {
+  "shared" = {
+    "fingerprint" = "<xx>.*16"
+    "key_name" = "shared"
+    "key_pair_id" = "key-<0x*17>"
+  }
+}
 ```

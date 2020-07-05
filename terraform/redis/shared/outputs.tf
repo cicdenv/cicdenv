@@ -1,13 +1,3 @@
-output "key_pairs" {
-  value = {
-    redis_node = {
-      key_name    = aws_key_pair.redis_node.key_name
-      key_pair_id = aws_key_pair.redis_node.key_pair_id
-      fingerprint = aws_key_pair.redis_node.fingerprint
-    }
-  }
-}
-
 output "iam" {
   value = {
     redis_node = {

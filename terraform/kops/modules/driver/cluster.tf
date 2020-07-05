@@ -11,8 +11,8 @@ module "cluster" {
   }
 
   input_files = {
-    manifest   = module.manifest.manifest
-    public_key = local.public_key
+    manifest = module.manifest.manifest
+    ssh_key  = local.ssh_key
   }
   
   output_files = {

@@ -1,14 +1,9 @@
-resource "aws_key_pair" "bastion" {
-  key_name   = "bastion-service"
-  public_key = file(pathexpand(local.ssh_key))
-}
-
 resource "aws_launch_template" "bastion" {
   name_prefix   = "bastion-service-lt-"
   image_id      = local.ami_id
   instance_type = local.instance_type
   user_data     = data.template_cloudinit_config.config.rendered
-  key_name      = aws_key_pair.bastion.key_name
+  key_name      = "shared"
 
   iam_instance_profile {
     arn = local.instance_profile.arn

@@ -8,7 +8,6 @@ locals {
 
   instance_profile = data.terraform_remote_state.nginx_shared.outputs.iam.server.instance_profile
   security_groups  = values(data.terraform_remote_state.nginx_shared.outputs.security_groups)
-  key_pair         = data.terraform_remote_state.nginx_shared.outputs.ssh_key_pair
   tls_secrets      = data.terraform_remote_state.nginx_shared.outputs.secrets.nginx_tls
 
   cert_bundle = data.terraform_remote_state.nginx_shared_tls.outputs.acme.certificate.bundle

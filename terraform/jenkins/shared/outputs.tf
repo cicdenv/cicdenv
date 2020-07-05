@@ -5,12 +5,6 @@ output "jenkins_builds_s3_bucket" {
   }
 }
 
-output "jenkins_key_pair" {
-  value = {
-    key_name = aws_key_pair.jenkins.key_name
-  }
-}
-
 output "iam" {
   value = {
     server = {

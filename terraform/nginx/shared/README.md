@@ -45,7 +45,4 @@ security_groups = {
     "id" = "sg-<0x*17>"
   }
 }
-ssh_key_pair = {
-  "key_name" = "nginx-cluster-node"
-}
 ```

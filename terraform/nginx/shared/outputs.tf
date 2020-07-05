@@ -1,9 +1,3 @@
-output "ssh_key_pair" {
-  value = {
-    key_name = aws_key_pair.nginx_node.key_name
-  }
-}
-
 output "iam" {
   value = {
     server = {

@@ -3,7 +3,7 @@ resource "aws_launch_template" "jenkins_server" {
   image_id      = var.ami_id
   instance_type = var.instance_type
   user_data     = var.user_data
-  key_name      = local.key_pair.key_name
+  key_name      = "shared"
 
   iam_instance_profile {
     arn = var.instance_profile.arn

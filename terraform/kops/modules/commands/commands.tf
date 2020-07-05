@@ -35,7 +35,7 @@ data "template_file" "sshkey_command" {
   vars = {
     cluster_fqdn = local.cluster_fqdn
     state_store  = "s3://${local.state_store.bucket.name}"
-    public_key   = local.public_key
+    ssh_key      = local.ssh_key
     env_vars     = local.env_vars
   }
 }

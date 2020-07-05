@@ -67,9 +67,6 @@ jenkins_builds_s3_bucket = {
   "arn" = "arn:aws:s3:::jenkins-builds-dev-<domain->"
   "id" = "jenkins-builds-dev-<domain->"
 }
-jenkins_key_pair = {
-  "key_name" = "jenkins"
-}
 persistent_config_efs = {
   "arn" = "arn:aws:elasticfilesystem:<region>:<acct-id>:file-system/fs-<0x*8>"
   "dns_name" = "fs-<0x*8>.efs.<region>.amazonaws.com"

@@ -11,7 +11,7 @@ locals {
 
   # input files
   manifest         = var.files.manifest
-  public_key       = var.files.public_key
+  ssh_key          = var.files.ssh_key
   admin_kubeconfig = var.files.admin_kubeconfig
 
   # folders

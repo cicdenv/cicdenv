@@ -23,7 +23,7 @@ for item in terraform.tfstate terraform.tfstate-md5; do
     key=$(cat <<EOF
 {
   "LockID": {
-  	"S": "${state_bucket}/state/${workspace}/${state//\//-}/${item}"
+  	"S": "${state_bucket}/state/${workspace}/${state//\//_}/${item}"
   }
 }
 EOF
