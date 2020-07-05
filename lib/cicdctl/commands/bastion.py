@@ -25,12 +25,12 @@ for command in commands(__file__):
         @click.argument('workspace', type=WorkspaceParamType())
         @click.option('--user')
         @click.option('--host', is_flag=True, default=False)
-        @click.option('--jump')
+        @click.option('--ip')
         @click.argument('flags', nargs=-1, type=FlagParamType())
-        def command_func(settings, workspace, user, host, jump, flags):
+        def command_func(settings, workspace, user, host, ip, flags):
             if user == None:
                 user = iam.get_username()
-            driver_method = getattr(BastionDriver(settings, workspace, user, host, jump, flags), command)
+            driver_method = getattr(BastionDriver(settings, workspace, user, host, ip, flags), command)
             driver_method()
         command_func.__name__ = command
     

@@ -29,4 +29,5 @@ locals {
   iam_user_updates_sns_topic = data.terraform_remote_state.iam_events.outputs.sns.topics.iam_user_updates
   
   event_subscriber_function_name = "event-subscriber-bastion-service"
+  ssh_keys_function_name         = "shared-ec2-keypair-generator"
 }

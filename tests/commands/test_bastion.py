@@ -6,8 +6,7 @@ from cicdctl import cli
 
 
 from cicdctl.utils.bastion import (ssh_opts, bastion_address,
-    DEFAULT_USER_IDENTITY,
-    DEFAULT_HOST_IDENTITY)
+    DEFAULT_USER_IDENTITY)
 
 user = getpass.getuser()
 workspace =  'dev'

@@ -4,7 +4,8 @@ locals {
   subnets            = data.terraform_remote_state.network.outputs.subnets
   public_subnets     = local.subnets["public"]
   private_subnets    = local.subnets["private"]
-  private_dns_zone  = data.terraform_remote_state.network.outputs.private_dns_zone
+  private_dns_zone   = data.terraform_remote_state.network.outputs.private_dns_zone
+  shared_key_pair    = data.terraform_remote_state.network.outputs.key_pairs.shared
 
   # iam/common-policies
   apt_repo_policy = data.terraform_remote_state.iam_common_policies.outputs.iam.apt_repo.policy
@@ -40,7 +41,7 @@ locals {
   
   ami_id = var.ami_id != "" ? var.ami_id : data.terraform_remote_state.amis.outputs.base_ami.id
 
-  ssh_key = "~/.ssh/kops_rsa.pub"
+  ssh_key = "~/.ssh/id-shared-ec2-${terraform.workspace}.pub"
 
   home_folder = var.folders.home_folder  # For a single cluster-name:workspace (cluser-instance)
   # output files

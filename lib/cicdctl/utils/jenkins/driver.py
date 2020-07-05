@@ -5,6 +5,7 @@ from . import (env,
     stop_instance_script,
     list_ips_script) 
 from .ansible import ansible_dir, playbook_actions
+from ..ssh import add_ssh_secret
 
 from ..terraform.driver import TerraformDriver
 from ...commands.types.target import parse_target
@@ -74,6 +75,8 @@ class JenkinsDriver(object):
             agent_image_tag = ecr_outputs['jenkins_agent_image_repo']['value']['latest']
         self.type = self._tf_outputs(self.component, self.workspace)['type']
         
+        add_ssh_secret(self.workspace)
+
         for action in playbook_actions(self.type, private_ips, server_image_tag, agent_image_tag):
             playbook = action['playbook']
             inventory_list = ','.join(action['hosts']) + ','

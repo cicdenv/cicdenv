@@ -2,8 +2,9 @@ from os import path
 
 from ..terraform import parse_tfvars, domain_config, bastion_config
 
+from ..ssh import default_ssh_key
+
 DEFAULT_USER_IDENTITY = path.expanduser('~/.ssh/id_rsa')
-DEFAULT_HOST_IDENTITY = path.expanduser('~/.ssh/kops_rsa')
 
 # TODO - load from file ?
 # TODO - source local files ?
@@ -56,12 +57,12 @@ def bastion_address(user, workspace):
     address = f'{user}@bastion.{workspace}.{domain}'
     return address
 
-def ssh_cmd(cmd, user, port, identity, jump, workspace, flags):
+def ssh_cmd(cmd, user, port, identity, ip, workspace, flags):
     _bastion = bastion_address(user, workspace)
-    if jump:
-        address = f'ubuntu@{jump}'
+    if ip:
+        address = f'ubuntu@{ip}'
         proxy_opts = f'ProxyCommand=ssh {" ".join(ssh_opts(port, DEFAULT_USER_IDENTITY, flags))} -W %h:%p {_bastion}'
-        return [cmd] + ssh_opts(port, DEFAULT_HOST_IDENTITY, flags) + ['-o', proxy_opts, address]
+        return [cmd] + ssh_opts(port, default_ssh_key(workspace), flags) + ['-o', proxy_opts, address]
     else:
         address = _bastion
         return [cmd] + ssh_opts(port, identity, flags) + [address]

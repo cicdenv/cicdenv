@@ -4,22 +4,6 @@ resource "aws_iam_role" "iam_user_event_subscriber" {
   assume_role_policy = data.aws_iam_policy_document.lambda_trust.json
 }
 
-data "aws_iam_policy_document" "lambda_trust" {
-  statement {
-    principals {
-      type = "Service"
-
-      identifiers = [
-        "lambda.amazonaws.com",
-      ]
-    }
-
-    actions = [
-      "sts:AssumeRole",
-    ]
-  }
-}
-
 data "aws_iam_policy_document" "iam_user_event_subscriber" {
   statement {
     actions = [

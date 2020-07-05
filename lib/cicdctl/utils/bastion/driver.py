@@ -2,9 +2,10 @@ from os import path
 import json
 
 from . import (ssh_cmd, 
-    DEFAULT_USER_IDENTITY,
-    DEFAULT_HOST_IDENTITY)
+    DEFAULT_USER_IDENTITY)
 from ..terraform import parse_tfvars, bastion_config
+
+from ..ssh import add_ssh_secret, default_ssh_key
 
 # Supported bastion sub-commands
 bastion_commands = [
@@ -13,11 +14,11 @@ bastion_commands = [
 
 
 class BastionDriver(object):
-    def __init__(self, settings, workspace, user, host, jump, flags=[]):
+    def __init__(self, settings, workspace, user, host, ip, flags=[]):
         self.workspace = workspace
         self.user = user
         self.host = host
-        self.jump = jump
+        self.ip = ip
         self.flags = flags
 
         self._run = settings.runner().run
@@ -26,12 +27,13 @@ class BastionDriver(object):
         if self.host:  # Accesing bastion host for debugging
             user = 'ubuntu'
             port = parse_tfvars(bastion_config)['ssh_host_port']
-            identity = DEFAULT_HOST_IDENTITY
+            identity = default_ssh_key(self.workspace)
         else:  # Accessing bastion service - normal case
+            add_ssh_secret(self.workspace)
             user = self.user
             port = parse_tfvars(bastion_config)['ssh_service_port']
             identity = DEFAULT_USER_IDENTITY
-        self._run(ssh_cmd(command, user, port, identity, self.jump, self.workspace, self.flags))
+        self._run(ssh_cmd(command, user, port, identity, self.ip, self.workspace, self.flags))
 
     def __getattr__(self, name):
         if name in bastion_commands:

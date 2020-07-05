@@ -66,15 +66,11 @@ cicdenv$ cicdctl terraform destroy network/routing:dev -force
 ## Host Access
 Example: debug ec2 instance in the `dev` account
 ```bash
-# Active the account local bastion service if non are running
+# Activate the target account bastion service
 cicdenv$ cicdctl terraform apply network/bastion:dev -auto-approve
 
-# Linux
-cicdenv$ cicdctl bastion ssh dev --jump <target host private-ip>
-# Mac
-cicdenv$ make
-📦 $USER:~/cicdenv$ eval "$(ssh-agent)"; ssh-add ~/.ssh/kops_rsa
-📦 $USER:~/cicdenv$ cicdctl bastion ssh dev --jump <target host private-ip>
+# Hop thru the bastion service to get ssh access to the target instance
+cicdenv$ cicdctl bastion ssh dev --ip <target host private-ip>
 ```
 
 ## Interactive Sessions
