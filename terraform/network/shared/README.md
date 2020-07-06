@@ -172,11 +172,10 @@ vpc = {
   "cidr_block" = "10.16.0.0/16"
   "id" = "vpc-<0x*17>"
 }
-key_pairs = {
-  "shared" = {
-    "fingerprint" = "<xx>.*16"
-    "key_name" = "shared"
-    "key_pair_id" = "key-<0x*17>"
+secrets = {
+  "shared_ec2_keypair" = {
+    "arn" = "arn:aws:secretsmanager:<region>:<main-acct-id>:secret:shared-ec2-keypair-<[a-z0-9]*6>"
+    "name" = "shared-ec2-keypair"
   }
 }
 ```

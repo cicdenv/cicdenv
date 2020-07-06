@@ -7,6 +7,15 @@ data "terraform_remote_state" "network" {
   }
 }
 
+data "terraform_remote_state" "ssh" {
+  backend = "s3"
+  config = {
+    bucket = var.terraform_state.bucket
+    key    = "state/${terraform.workspace}/network_shared_ssh/terraform.tfstate"
+    region = var.terraform_state.region
+  }
+}
+
 data "terraform_remote_state" "backend" {
   backend = "s3"
   config = {

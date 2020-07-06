@@ -1,4 +1,4 @@
-resource "local_file" "user_kubeconfig" {
-  content  = jsondecode(data.aws_secretsmanager_secret_version.shared_ssh_key.secret_string)["public-key"]
+resource "local_file" "ssh_key" {
+  content  = local.shared_ssh_key
   filename = pathexpand(local.ssh_key)
 }

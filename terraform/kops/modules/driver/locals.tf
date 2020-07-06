@@ -5,7 +5,9 @@ locals {
   public_subnets     = local.subnets["public"]
   private_subnets    = local.subnets["private"]
   private_dns_zone   = data.terraform_remote_state.network.outputs.private_dns_zone
-  shared_key_pair    = data.terraform_remote_state.network.outputs.key_pairs.shared
+
+  # ssh
+  shared_ssh_key = data.terraform_remote_state.ssh.outputs.key_pairs.shared.public_key
 
   # iam/common-policies
   apt_repo_policy = data.terraform_remote_state.iam_common_policies.outputs.iam.apt_repo.policy

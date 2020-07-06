@@ -91,12 +91,11 @@ output "lambdas" {
   }
 }
 
-output "key_pairs" {
+output "secrets" {
   value = {
-    shared = {
-      key_name    = aws_key_pair.shared.key_name
-      key_pair_id = aws_key_pair.shared.key_pair_id
-      fingerprint = aws_key_pair.shared.fingerprint
+    shared_ec2_keypair = {
+      name = aws_secretsmanager_secret.ssh_keys.name
+      arn  = aws_secretsmanager_secret.ssh_keys.arn
     }
   }
 }

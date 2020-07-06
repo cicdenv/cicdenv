@@ -6,8 +6,6 @@ locals {
   ]
 
   ami_id = var.base_ami_id != "" ? var.base_ami_id : data.terraform_remote_state.amis.outputs.base_ami.id
-
-  ssh_key = "~/.ssh/kops_rsa.pub"
   
   instance_type = "c5d.large"
 

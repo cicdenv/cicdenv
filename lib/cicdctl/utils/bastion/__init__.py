@@ -1,5 +1,6 @@
-from os import path
+from os import path, environ
 
+from ..runners import EnvironmentContext
 from ..terraform import parse_tfvars, domain_config, bastion_config
 
 from ..ssh import default_ssh_key
@@ -57,6 +58,7 @@ def bastion_address(user, workspace):
     address = f'{user}@bastion.{workspace}.{domain}'
     return address
 
+
 def ssh_cmd(cmd, user, port, identity, ip, workspace, flags):
     _bastion = bastion_address(user, workspace)
     if ip:
@@ -66,3 +68,9 @@ def ssh_cmd(cmd, user, port, identity, ip, workspace, flags):
     else:
         address = _bastion
         return [cmd] + ssh_opts(port, identity, flags) + [address]
+
+def env():
+    environment=environ.copy()  # Inherits cicdctl's environment by default
+
+    logged_keys = ['SSH_AUTH_SOCK']
+    return EnvironmentContext(environment, logged_keys)
