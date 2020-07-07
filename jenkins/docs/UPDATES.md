@@ -1,4 +1,4 @@
-# Jenkins Updates
+## Jenkins Updates
 
 Check for core / remoting / jetty releases:
 * https://github.com/jenkinsci/jenkins/releases
@@ -7,9 +7,7 @@ Check for core / remoting / jetty releases:
   * [winstone/jetty-version =%gt; pom.xml/properties/jetty.version](https://github.com/jenkinsci/winstone/blob/master/pom.xml#L22)
 * https://github.com/jenkinsci/remoting/releases
 
-Take note of `version` and `release` date.
-
-[vogtech/cicdenv/jenkins](https://github.com/vogtech/cicdenv/blob/master/jenkins/):
+## Steps
 ```bash
 # Update version vars
 cicdenv/jenkins$ vim vars.make
