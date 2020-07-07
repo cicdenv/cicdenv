@@ -1,5 +1,5 @@
 resource "aws_iam_role" "kops_master" {
-  name               = "kops-master"
+  name               = "kops-master-${local.cluster_name}"
   path               = "/system/"
   assume_role_policy = data.aws_iam_policy_document.instance_assume_role_policy.json
 }
@@ -257,7 +257,7 @@ data "aws_iam_policy_document" "kops_master" {
 }
 
 resource "aws_iam_policy" "kops_master" {
-  name = "Kops-${local.cluster_name}-Master"
+  name = "Kops-Master-${local.cluster_name}"
 
   policy = data.aws_iam_policy_document.kops_master.json
 }
@@ -273,6 +273,6 @@ resource "aws_iam_role_policy_attachment" "kops_master_apt_repo" {
 }
 
 resource "aws_iam_instance_profile" "kops_master" {
-  name = "kops-${local.cluster_name}-master"
+  name = "kops-master-${local.cluster_name}"
   role = aws_iam_role.kops_master.name
 }

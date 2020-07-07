@@ -1,5 +1,5 @@
 resource "aws_iam_role" "kops_node" {
-  name               = "kops-node"
+  name               = "kops-node-${local.cluster_name}"
   path               = "/system/"
   assume_role_policy = data.aws_iam_policy_document.instance_assume_role_policy.json
 }
@@ -74,7 +74,7 @@ data "aws_iam_policy_document" "kops_node" {
 }
 
 resource "aws_iam_policy" "kops_node" {
-  name   = "Kops-${local.cluster_name}-Node"
+  name   = "Kops-Node-${local.cluster_name}"
   policy = data.aws_iam_policy_document.kops_node.json
 }
 
@@ -89,6 +89,6 @@ resource "aws_iam_role_policy_attachment" "kops_node_apt_repo" {
 }
 
 resource "aws_iam_instance_profile" "kops_node" {
-  name = "kops-${local.cluster_name}-node"
+  name = "kops-node-${local.cluster_name}"
   role = aws_iam_role.kops_node.name
 }
