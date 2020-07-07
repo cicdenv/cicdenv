@@ -158,14 +158,10 @@ class StsAssumeRoleCredentials(object):
 
     def _get_assume_role(self, workspace):
         outputs = TerraformDriver(self.settings, parse_target(f'backend:main')).outputs()
-        print(outputs)
         return outputs['organization_accounts']['value'][workspace]['role']
 
     def _ensure_profile_prototype(self, profile):
         workspace = profile.replace('admin-', '')
-        if workspace == 'main':  # Special case - we must have this or can't source sub-account ids
-            return
-
         credentials = self._load_credentials()
         if not f'{profile}-long-term' in credentials.sections():
             # Use 'default-long-term' to determine: key id, secret, mfa arn
@@ -178,8 +174,9 @@ class StsAssumeRoleCredentials(object):
                 'aws_secret_access_key': defaults['aws_secret_access_key'],
                 'aws_access_key_id': defaults['aws_access_key_id'],
                 'aws_mfa_device': defaults['aws_mfa_device'],
-                'assume_role': self._get_assume_role(workspace),
             }
+            if workspace != 'main':
+                prototype['assume_role'] = self._get_assume_role(workspace)
             credentials[f'{profile}-long-term'] = prototype
 
             with open(self.credentials_file, 'w') as f:

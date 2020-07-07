@@ -43,12 +43,22 @@ aws (cli)              --> 1.18.71
 
 ## AWS Access
 `cicdctl` CLI automatically refreshes the 12-hour session tokens with 
-[aws-mfa](https://github.com/dcoker/awsmfa/) as needed.
+[aws-mfa](https://github.com/dcoker/awsmfa/) as needed
+(main / org accounts).
 
 An [IAM User](terraform/iam-users.tfvars) must exist in the [main account](terraform/iam/users).
 
-A users MFA totp secret is [stored gpg encrypted](mfa-virtual-devices).
-The client system must have the corresponding gpg key loaded in keybase.
+A users MFA totp secret is [stored gpg encrypted](mfa-virtual-devices/) and
+their [gpg key](terraform/iam-users.tfvars) must be imported into their keybase client.
+
+`~/.aws/credentials` required setup (values from - AWS IAM/users console):
+* `https://console.aws.amazon.com/iam/home#/users/${IAM_USER}?section=security_credentials`:
+```
+[default-long-term]
+aws_secret_access_key = ...
+aws_access_key_id     = ...
+aws_mfa_device        = ...
+```
 
 ## Usage
 Sample session in the `dev` account:
