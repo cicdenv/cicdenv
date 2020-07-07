@@ -29,8 +29,8 @@ ami_config = path.join(varfile_dir, 'amis.tfvars')
 # bastion tcp ports
 bastion_config = path.join(varfile_dir, 'bastion.tfvars')
 
-# whitelisted network cidrs
-whitelisted_networks = path.join(varfile_dir, 'whitelisted-networks.tfvars')
+# allowed network cidrs
+allowed_networks = path.join(varfile_dir, 'allowed-networks.tfvars')
 
 # Example: variable "bucket" {} # backend-config.tfvars
 var_tf_pattern = re.compile(r'variable\s+"(?P<name>[^"]+)"\s+{}?\s+#\s+(?P<file>.+)')
@@ -123,7 +123,7 @@ Sample:
     'target_region': {
       'default': 'us-west-2'
     },
-    'whitelisted_cidr_blocks': {
+    'allowed_cidr_blocks': {
       'type': 'list'
     }
   }
@@ -142,7 +142,7 @@ def parse_variables_tf(variables_tf):
 """
 Sample:
 {
-  'whitelisted_cidr_blocks': [
+  'allowed_cidr_blocks': [
     '198.27.234.114/32'
   ]
 }

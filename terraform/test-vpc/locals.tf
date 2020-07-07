@@ -1,7 +1,7 @@
 locals {
   domain = var.domain
 
-  cidr_blocks = var.whitelisted_cidr_blocks
+  cidr_blocks = var.allowed_cidr_blocks
 
   availability_zones = [data.aws_availability_zones.azs.names[0]]  # Stick to one AZ 
 

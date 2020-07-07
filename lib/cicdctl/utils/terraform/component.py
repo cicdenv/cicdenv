@@ -4,7 +4,7 @@ import json
 
 from ..aws import DEFAULT_REGION
 from . import (varfile_dir, terraform_config, backend_config, ami_config, bastion_config,
-    parse_variable_comments_tf, parse_tfvars, variables_config, whitelisted_networks)
+    parse_variable_comments_tf, parse_tfvars, variables_config, allowed_networks)
 from . import dynamodb
 
 def is_workspaced(component_dir):
@@ -26,7 +26,7 @@ def resolve_variable_opts(component_dir, workspace):
     values[path.basename(backend_config)] = parse_tfvars(backend_config)
     values[path.basename(ami_config)] = parse_tfvars(ami_config)
     values[path.basename(bastion_config)] = parse_tfvars(bastion_config)
-    values[path.basename(whitelisted_networks)] = parse_tfvars(whitelisted_networks)
+    values[path.basename(allowed_networks)] = parse_tfvars(allowed_networks)
     for name, source in vars.items():
         if source.startswith('dynamodb['):  # DynamoDB item scan: `dynamodb[<table>][<field>]`
             var_opts.append('-var')

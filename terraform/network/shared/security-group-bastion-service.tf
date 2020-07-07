@@ -30,7 +30,7 @@ resource "aws_security_group_rule" "bastion_service_in" {
   to_port   = var.ssh_service_port
 
   security_group_id = aws_security_group.bastion.id
-  cidr_blocks       = var.whitelisted_cidr_blocks
+  cidr_blocks       = var.allowed_cidr_blocks
 }
 
 resource "aws_security_group_rule" "bastion_service_healthcheck" {
@@ -54,7 +54,7 @@ resource "aws_security_group_rule" "bastion_host_in" {
   to_port   = var.ssh_host_port
 
   security_group_id = aws_security_group.bastion.id
-  cidr_blocks       = var.whitelisted_cidr_blocks
+  cidr_blocks       = var.allowed_cidr_blocks
 }
 
 resource "aws_security_group_rule" "bastion_host_healthcheck" {

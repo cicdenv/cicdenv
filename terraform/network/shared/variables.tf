@@ -11,7 +11,7 @@ variable "cluster_names" { # dynamodb[kops-clusters][FQDN]
   default = []
 }
 
-variable "whitelisted_cidr_blocks" {  # whitelisted-networks.tfvars
+variable "allowed_cidr_blocks" {  # allowed-networks.tfvars
   type = list
 }
 

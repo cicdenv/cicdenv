@@ -94,7 +94,7 @@ data "aws_iam_policy_document" "kops_builds_s3" {
     condition {
       test     = "IpAddress"
       variable = "aws:SourceIp"
-      values   = var.whitelisted_cidr_blocks
+      values   = var.allowed_cidr_blocks
     }
   }
 }

@@ -79,7 +79,7 @@ COMMANDS = {
     ],
     'test': [
     ],
-    'whitelist': [
+    'allowed-networks': [
         'list',
         'add',
         'remove',

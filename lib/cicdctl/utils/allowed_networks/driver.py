@@ -1,10 +1,10 @@
-from . import (load_whitelisted_networks, normalize_cidr, update_whitelisted_networks)
+from . import (load_allowed_networks, normalize_cidr, update_allowed_networks)
 
 
-class WhitelistDriver(object):
+class AllowedNetworksDriver(object):
     def __init__(self, settings):
         self.settings = settings
-        self.cidrs = load_whitelisted_networks()
+        self.cidrs = load_allowed_networks()
 
     def list(self):
         print('\n'.join(self.cidrs))
@@ -13,10 +13,10 @@ class WhitelistDriver(object):
         if cidr not in self.cidrs:
             self.cidrs.append(cidr)
             if not self.settings.dry_run:
-                update_whitelisted_networks(self.cidrs)
+                update_allowed_networks(self.cidrs)
 
     def remove(self, cidr):
         if cidr in self.cidrs:
             self.cidrs.remove(cidr)
             if not self.settings.dry_run:
-                update_whitelisted_networks(self.cidrs)
+                update_allowed_networks(self.cidrs)

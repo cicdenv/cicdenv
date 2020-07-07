@@ -1,6 +1,6 @@
-variable "region"                  {} # backend-config.tfvars
-variable "bucket"                  {} # backend-config.tfvars
-variable "whitelisted_cidr_blocks" {  # whitelisted-networks.tfvars
+variable "region"              {} # backend-config.tfvars
+variable "bucket"              {} # backend-config.tfvars
+variable "allowed_cidr_blocks" {  # allowed-networks.tfvars
   type = list
 }
 

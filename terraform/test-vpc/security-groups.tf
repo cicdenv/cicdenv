@@ -18,7 +18,7 @@ resource "aws_security_group_rule" "test_egress" {
 }
 
 resource "aws_security_group_rule" "ssh_in" {
-  description = "ssh access from whitelisted cidr blocks"
+  description = "ssh access from allowed cidr blocks"
 
   protocol  = "tcp"
   type      = "ingress"

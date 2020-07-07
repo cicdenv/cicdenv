@@ -30,7 +30,7 @@ resource "aws_security_group_rule" "jenkins_alb_external_http" {
   to_port     = 80
 
   security_group_id = aws_security_group.jenkins_server_external_alb.id
-  cidr_blocks       = var.whitelisted_cidr_blocks
+  cidr_blocks       = var.allowed_cidr_blocks
 }
 
 resource "aws_security_group_rule" "jenkins_alb_external_https" {
@@ -42,7 +42,7 @@ resource "aws_security_group_rule" "jenkins_alb_external_https" {
   to_port     = 443
 
   security_group_id = aws_security_group.jenkins_server_external_alb.id
-  cidr_blocks       = var.whitelisted_cidr_blocks
+  cidr_blocks       = var.allowed_cidr_blocks
 }
 
 resource "aws_security_group_rule" "jenkins_alb_external_github_hooks" {

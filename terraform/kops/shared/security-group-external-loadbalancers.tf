@@ -22,7 +22,7 @@ resource "aws_security_group_rule" "kops_external_apiserver_out" {
 }
 
 resource "aws_security_group_rule" "kops_external_apiserver_https" {
-  count = length(var.whitelisted_cidr_blocks) > 0 ? 1 : 0
+  count = length(var.allowed_cidr_blocks) > 0 ? 1 : 0
   
   description = "kops-apiserver external load balancer"
 
@@ -32,5 +32,5 @@ resource "aws_security_group_rule" "kops_external_apiserver_https" {
   to_port   = 443
 
   security_group_id = aws_security_group.kops_external_apiserver.id
-  cidr_blocks       = var.whitelisted_cidr_blocks
+  cidr_blocks       = var.allowed_cidr_blocks
 }
