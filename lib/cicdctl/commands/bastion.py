@@ -28,6 +28,9 @@ for command in commands(__file__):
         @click.option('--ip')
         @click.argument('flags', nargs=-1, type=FlagParamType())
         def command_func(settings, workspace, user, host, ip, flags):
+            if settings.creds:
+                sts = StsAssumeRoleCredentials(settings)
+                sts.refresh(workspace)
             if user == None:
                 user = iam.get_username()
             driver_method = getattr(BastionDriver(settings, workspace, user, host, ip, flags), command)
