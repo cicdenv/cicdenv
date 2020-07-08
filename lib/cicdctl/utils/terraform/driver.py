@@ -90,6 +90,10 @@ class TerraformDriver(object):
         return self.outputs()[key]['value']
 
     def has_resources(self):
+        if not path.exists(self.component_dir):
+            return False
+        if not path.exists(path.join(self.component_dir, 'terraform.tf')):
+            return False
         self._state_prep()  # "state prep" the state first, then proceed
         return len(self._output_list(['terraform', 'state', 'list'])) != 0
 

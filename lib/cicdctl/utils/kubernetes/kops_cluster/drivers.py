@@ -110,7 +110,7 @@ class ClusterDriver(object):
         self._terraform('apply', ACCESS,  self.tf_flags)
 
     def destroy(self):
-        if self._has_resources(ACCESS):
+        if self._has_resources(CLUSTER) and self._has_resources(ACCESS):
             self._terraform('destroy', ACCESS,  self.tf_flags)
         if self._has_resources(CLUSTER):
             self._terraform('destroy', CLUSTER, self.tf_flags)
