@@ -100,6 +100,3 @@ docker-build:
 	    --build-arg         cfssl_downloads=$(CFSSL_DOWNLOADS)        \
 	    .
 	docker tag "$(image_name):$(image_tag)" "$(image_name):latest"
-
-kubectl-sha512:
-	curl -sL $(KUBE_DOWNLOADS)/v$(KUBE_VERSION)/kubernetes-client-linux-amd64.tar.gz | sha512sum
