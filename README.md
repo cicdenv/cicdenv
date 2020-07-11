@@ -2,19 +2,27 @@
 Terraformed, multi-acct AWS, kubernetes, CI/CD, infrastructure sample w/tooling.
 (3rd Generation)
 
-## Local Install
-`cicdctl` is the entrypoint for the tooling layer.
+* [Current Documentation](https://github.com/cicdenv/cicdenv/wiki)
+  * [Overview Slides](https://docs.google.com/presentation/d/1zqD1LQgQZK1_uJGTdZ64SRYV2dtpdqbiJrH-Ekr7JKs/)
+  * [Account Architecture](https://github.com/cicdenv/cicdenv/wiki#accounts)
+  * [Terraform Architecture](https://github.com/cicdenv/cicdenv/wiki#terraform)
+  * [AWS - EC2 Resource Data/Cost](https://docs.google.com/spreadsheets/d/1D9WSyOVBW8kTfA97Ucx4X4G8q0j2lJbTjKL6Uzu8brg/)
+  * [AWS - Sample Cost Models](https://docs.google.com/spreadsheets/d/1f5KpwT0FVM6el1KJLpqSFVZLV-587K36JfXiOzzx0z0/)
+  * [Repo Stats](https://github.com/cicdenv/cicdenv/wiki/cloc-output#2020-07)
+  * [Private Backlog](https://github.com/vogtech/cicdenv/issues)
+
+## Getting Started
+[cicdctl](bin/cicdctl) is the entrypoint for the tooling layer.
+
+The tooling layer automatically manages its own container on launch.
+
+`cicdctl` prereqs:
+* [make](https://www.gnu.org/software/make/manual/make.html), [jq](https://stedolan.github.io/jq/), [keybase](https://keybase.io/), [docker](https://docs.docker.com/reference/)
+
 
 Add `cicdctl` to your current shell search path:
 ```bash
 cicdenv$ . bin/activate
-```
-
-Running this will build or update the container for the tooling layer automatically.
-
-Prereqs:
-```bash
-make, jq, keybase, docker
 ```
 
 Explicit Setup and test
@@ -61,26 +69,176 @@ aws_mfa_device        = ...
 ```
 
 ## Usage
-Sample session in the `dev` account:
+<details>
+  <summary>Basics</summary>
+
+Sample session in the `dev` account  
 ```bash
 # Turn on private subnet NAT gateways
-cicdenv$ cicdctl terraform apply network/routing:dev -auto-approve
+$ cicdctl terraform apply network/routing:dev -auto-approve
 
-# Do stuff
-cicdenv$ cicdctl ...
+# Bring up services
+$ cicdctl <terraform|cluster|redis|nginx|jenkins|...> <apply|create> ...
+
+# Turn down services
+$ cicdctl <terraform|cluster|redis|nginx|jenkins|...> <destroy> ...
 
 # Turn off private subnet NAT gateways
-cicdenv$ cicdctl terraform destroy network/routing:dev -force
+$ cicdctl terraform destroy network/routing:dev -force
 ```
+
+</details>
+
+<details>
+  <summary>Self Hosted Kubernetes Clusters (KOPS)</summary>
+
+* [Kubernetes as a Service Overview](https://docs.google.com/presentation/d/12OyOXtvkYO4D6Y85AVPfGZQY1yVOoho8xhEFiDBino4/)
+
+Example: KOPS 1.18.0-beta.2 cluster in the `dev` account with default settings
+```bash
+# Create a new v1.18.0-beta2 kops kubernetes cluster
+$ cicdctl cluster create 1-18b2:dev -auto-approve
+$ cicdctl cluster validate 1-18b2:dev
+$ cicdctl kubectl 1-18b2:dev ...
+
+# Dispose of the new kops kubernetes cluster 
+$ cicdctl cluster destroy 1-18b2:dev -force
+```
+
+Example: Large cluster - 18 node, 1000GB+ mem, 144 vCPUs, 90TB storage
+```bash
+# Create the kubernetes cluster
+$ cicdctl cluster create 1-18b2-large:dev -auto-approve  \
+    master_instance_type=c5d.xlarge                      \
+    node_instance_type=i3en.2xlarge                      \
+    nodes_per_az=6
+$ cicdctl cluster validate 1-18b2-large:dev
+...
+
+INSTANCE GROUPS
+NAME      ROLE  MACHINETYPE MIN MAX SUBNETS
+master-us-west-2a Master  c5d.xlarge  1  1  private-us-west-2a
+master-us-west-2b Master  c5d.xlarge  1  1  private-us-west-2b
+master-us-west-2c Master  c5d.xlarge  1  1  private-us-west-2c
+nodes-us-west-2a  Node  i3en.2xlarge  6 30  private-us-west-2a
+nodes-us-west-2b  Node  i3en.2xlarge  6 30  private-us-west-2b
+nodes-us-west-2c  Node  i3en.2xlarge  6 30  private-us-west-2c
+
+NODE STATUS
+NAME            ROLE  READY
+ip-... node    True
+ip-... node    True
+ip-... node    True
+ip-... master  True
+ip-... node    True
+ip-... node    True
+ip-... node    True
+ip-... node    True
+ip-... node    True
+ip-... node    True
+ip-... node    True
+ip-... master  True
+ip-... node    True
+ip-... node    True
+ip-... node    True
+ip-... master  True
+ip-... node    True
+ip-... node    True
+ip-... node    True
+ip-... node    True
+ip-... node    True
+
+Your cluster 1-18b2-large-dev.kops.cicdenv.com is ready
+
+$ cicdctl kubectl 1-18b2-large:dev ...
+
+# Dispose
+$ cicdctl cluster destroy 1-18b2-large:dev -force
+```
+
+</details>
+
+<details>
+  <summary>Clustered Redis 6</summary>
+
+* [Redis as a Service Overview](https://docs.google.com/presentation/d/1ToFI-Ooa2M4Ap1eKzkM2Ts2ERLhgaQN_S7JoG_Kog4o/)
+
+
+Example: `cache` cluster in `dev` account  
+```bash
+# Bring up 'm5dn.4xlarge' mutli-zone cluster
+$ cicdctl redis create cache:dev -auto-approve instance_type=m5dn.4xlarge
+
+# Turn off cluster
+$ cicdctl redis destroy cache:dev -force
+```
+
+</details>
+
+<details>
+  <summary>NGINX Plus Clusters</summary>
+
+* [NGINX Plus as a Service Overview](https://docs.google.com/presentation/d/1wMTN74nX_8IqR3Q4_dVD31QKlsjrdL4FswWry0ZHz9k/)
+
+Example: `web` cluster in `dev` account  
+```bash
+# Bring up 'm5dn.2xlarge' mutli-zone cluster
+$ cicdctl nginx create web:dev -auto-approve instance_type=m5dn.2xlarge
+
+# Turn off cluster
+$ cicdctl nginx destroy web:dev -force
+```
+
+</details>
+
+<details>
+  <summary>Dedicated Jenkins instances</summary>
+  
+* [Jenkins as a Service Overview](https://docs.google.com/presentation/d/1OjWUfC8R4ty7fspi5A1BPYFhTqreb2EsLAo85lRw3os/)
+
+Example: `dev` account, `dist`, `test` Jenkins instances:
+```bash
+# Turn on private subnet NAT gateways
+$ cicdctl terraform apply network/routing:dev -auto-approve
+
+# Create Jenkins instances
+$ cicdctl jenkins create dist:dev --type distributed -auto-approve
+$ cicdctl jenkins create test:dev --type colocated   -auto-approve
+
+# Cleanup
+$ cicdctl jenkins destroy dist:dev --type distributed -auto-approve
+$ cicdctl jenkins destroy test:dev --type colocated   -auto-approve
+
+# Turn off private subnet NAT gateways
+$ cicdctl terraform destroy network/routing:dev -force
+```
+
+</details>
+
+<details>
+  <summary>Enable Host SSH Access</summary>
+
+* [Bastion Service Overview](https://docs.google.com/presentation/d/19ytRvaBg0QrlciX1pEgoqATQSfBkOHdcAI-9S9lG_Kg/)
+
+Example: `dev` account  
+```bash
+# Bring up bastion cluster
+$ cicdctl terraform apply network/bastion:dev -auto-approve
+
+# Turn off bastion cluster
+$ cicdctl terraform destroy network/bastion:dev -force
+```
+
+</details>
 
 ## Host Access
 Example: debug ec2 instance in the `dev` account
 ```bash
 # Activate the target account bastion service
-cicdenv$ cicdctl terraform apply network/bastion:dev -auto-approve
+$ cicdctl terraform apply network/bastion:dev -auto-approve
 
 # Hop thru the bastion service to get ssh access to the target instance
-cicdenv$ cicdctl bastion ssh dev --ip <target host private-ip>
+$ cicdctl bastion ssh dev --ip <target host private-ip>
 ```
 
 ## Interactive Sessions
