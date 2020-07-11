@@ -45,3 +45,6 @@ nginx-repo.key
 geoipupdate.conf
 nginx-key
 key.pem
+
+*.ipynb*
+
