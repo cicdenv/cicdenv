@@ -5,9 +5,17 @@ from ..aws import DEFAULT_REGION, config_profile
 from ..terraform import parse_tfvars, domain_config
 from ..aws import iam
 
+from ...commands.types.target import parse_target
+
 new_instance_script  = 'terraform/jenkins/bin/generate-instance.sh'
 stop_instance_script = 'terraform/jenkins/instances/bin/stop-instance.sh'
 list_ips_script      = 'terraform/jenkins/instances/bin/list-instances.sh'
+
+
+# Workspaced ingresses
+def routing_target(workspace):
+    return parse_target(f'jenkins/routing:{workspace}')
+
 
 def env(name, workspace):
     environment=environ.copy()  # Inherits cicdctl's environment by default

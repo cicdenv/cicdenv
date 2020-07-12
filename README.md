@@ -72,16 +72,16 @@ aws_mfa_device        = ...
 <details>
   <summary>Basics</summary>
 
-Sample session in the `dev` account  
+Sample terraform only session in the `dev` account  
 ```bash
 # Turn on private subnet NAT gateways
 $ cicdctl terraform apply network/routing:dev -auto-approve
 
 # Bring up services
-$ cicdctl <terraform|cluster|redis|nginx|jenkins|...> <apply|create> ...
+$ cicdctl terraform <apply|create|...> <component>:<account>
 
 # Turn down services
-$ cicdctl <terraform|cluster|redis|nginx|jenkins|...> <destroy> ...
+$ cicdctl terraform <destroy> <component>:<account>
 
 # Turn off private subnet NAT gateways
 $ cicdctl terraform destroy network/routing:dev -force
@@ -90,7 +90,7 @@ $ cicdctl terraform destroy network/routing:dev -force
 </details>
 
 <details>
-  <summary>Self Hosted Kubernetes Clusters (KOPS)</summary>
+  <summary>Kubernetes Clusters (KOPS)</summary>
 
 * [Kubernetes as a Service Overview](https://docs.google.com/presentation/d/12OyOXtvkYO4D6Y85AVPfGZQY1yVOoho8xhEFiDBino4/)
 
@@ -154,6 +154,9 @@ $ cicdctl kubectl 1-18b2-large:dev ...
 
 # Dispose
 $ cicdctl cluster destroy 1-18b2-large:dev -force
+
+# Turn off private subnet NAT gateways
+$ cicdctl terraform destroy network/routing:dev -force
 ```
 
 </details>
@@ -171,6 +174,9 @@ $ cicdctl redis create cache:dev -auto-approve instance_type=m5dn.4xlarge
 
 # Turn off cluster
 $ cicdctl redis destroy cache:dev -force
+
+# Turn off private subnet NAT gateways
+$ cicdctl terraform destroy network/routing:dev -force
 ```
 
 </details>
@@ -187,6 +193,9 @@ $ cicdctl nginx create web:dev -auto-approve instance_type=m5dn.2xlarge
 
 # Turn off cluster
 $ cicdctl nginx destroy web:dev -force
+
+# Turn off private subnet NAT gateways
+$ cicdctl terraform destroy network/routing:dev -force
 ```
 
 </details>
@@ -198,16 +207,16 @@ $ cicdctl nginx destroy web:dev -force
 
 Example: `dev` account, `dist`, `test` Jenkins instances:
 ```bash
-# Turn on private subnet NAT gateways
-$ cicdctl terraform apply network/routing:dev -auto-approve
-
 # Create Jenkins instances
 $ cicdctl jenkins create dist:dev --type distributed -auto-approve
 $ cicdctl jenkins create test:dev --type colocated   -auto-approve
 
 # Cleanup
-$ cicdctl jenkins destroy dist:dev --type distributed -auto-approve
-$ cicdctl jenkins destroy test:dev --type colocated   -auto-approve
+$ cicdctl jenkins destroy dist:dev --type distributed -force
+$ cicdctl jenkins destroy test:dev --type colocated   -force
+
+# Turn off jenkins ingresses
+$ cicdctl terraform destroy jenkins/routing:dev -force
 
 # Turn off private subnet NAT gateways
 $ cicdctl terraform destroy network/routing:dev -force
@@ -216,7 +225,7 @@ $ cicdctl terraform destroy network/routing:dev -force
 </details>
 
 <details>
-  <summary>Enable Host SSH Access</summary>
+  <summary>Bastion Services</summary>
 
 * [Bastion Service Overview](https://docs.google.com/presentation/d/19ytRvaBg0QrlciX1pEgoqATQSfBkOHdcAI-9S9lG_Kg/)
 
@@ -234,9 +243,6 @@ $ cicdctl terraform destroy network/bastion:dev -force
 ## Host Access
 Example: debug ec2 instance in the `dev` account
 ```bash
-# Activate the target account bastion service
-$ cicdctl terraform apply network/bastion:dev -auto-approve
-
 # Hop thru the bastion service to get ssh access to the target instance
 $ cicdctl bastion ssh dev --ip <target host private-ip>
 ```

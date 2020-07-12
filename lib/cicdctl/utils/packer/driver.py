@@ -1,8 +1,11 @@
 import json
 
 from . import env, packer_dir, packer_template, workspace
-from ..terraform.driver import TerraformDriver
+
 from ...commands.types.target import Target
+
+from ..terraform.driver import TerraformDriver
+from ..terraform.routing import routing_target
 
 # Supported packer sub-commands
 packer_commands = [
@@ -18,6 +21,11 @@ class PackerDriver(object):
         self.flags = flags
 
         self._run = self.settings.runner(cwd=packer_dir, env_ctx=env()).run
+
+    def _ensure_routing(self):
+        _network_routing = routing_target('main')
+        if not TerraformDriver(self.settings, _network_routing).has_resources():
+            TerraformDriver(self.settings, _network_routing, ['-auto-approve']).apply()
 
     def _tf_outputs(self, component, keys):
         target = Target(component, 'main')
@@ -36,6 +44,7 @@ class PackerDriver(object):
 
     def _run_packer(self, command):
         vars = self._get_variables()
+        self._ensure_routing()
         self._run(['packer', command] + vars + [packer_template])
 
     def __getattr__(self, name):

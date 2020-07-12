@@ -4,6 +4,8 @@ from . import (env,
     new_instance_script)
 
 from ..terraform.driver import TerraformDriver
+from ..terraform.routing import routing_target
+
 from ...commands.types.target import parse_target
 from ...commands.types.instance import Instance
 
@@ -37,6 +39,11 @@ class NGinxDriver(object):
         if not path.isdir(path.join(getcwd(), f'terraform/{self.component}')):
             self._run([new_instance_script, self.name, *self.tf_vars])
 
+    def _ensure_routing(self):
+        network_routing = routing_target(self.workspace)
+        if not TerraformDriver(self.settings, network_routing).has_resources():
+            TerraformDriver(self.settings, network_routing, ['-auto-approve']).apply()
+
     def _tf_outputs(self, component, workspace, keys):
         target = Target(component, workspace)
         return TerraformDriver(self.settings, target).outputs()
@@ -47,6 +54,7 @@ class NGinxDriver(object):
 
     def create(self):
         self._ensure_component()
+        self._ensure_routing()
         self._terraform('apply')
 
     def destroy(self):
