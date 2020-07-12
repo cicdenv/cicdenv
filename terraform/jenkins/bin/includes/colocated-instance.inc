@@ -43,4 +43,8 @@ output "ami" {
     id = local.ami_id
   }
 }
+
+output "url" {
+  value = "https://\${module.jenkins_instance.dns.external_name}"
+}
 EOF

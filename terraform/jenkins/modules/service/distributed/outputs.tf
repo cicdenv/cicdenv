@@ -14,3 +14,7 @@ output "autoscaling_groups" {
     },
   ]
 }
+
+output "dns" {
+  value = module.server.dns
+}

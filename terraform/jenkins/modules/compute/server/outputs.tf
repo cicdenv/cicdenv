@@ -10,3 +10,9 @@ output "ami_id" {
   value = var.ami_id
 }
 
+output "dns" {
+  value = {
+    external_name = "${aws_route53_record.jenkins_external_alb.name}.${local.account_hosted_zone.domain}"
+    internal_name = "${aws_route53_record.jenkins_internal_alb.name}.${local.private_hosted_zone.domain}"
+  }
+}

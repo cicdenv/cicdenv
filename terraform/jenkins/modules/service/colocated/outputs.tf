@@ -8,3 +8,7 @@ output "autoscaling_groups" {
     },
   ]
 }
+
+output "dns" {
+  value = module.colocated.dns
+}
