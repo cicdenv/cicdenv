@@ -73,6 +73,7 @@ RUN apk --no-cache --update add  \
     netcat-openbsd               \
     openssh                      \
     openssl                      \
+    socat                        \
     sudo                         \
     tzdata                       \
     vim                          \
