@@ -22,13 +22,13 @@
       secretsmanager get-secret-value \
       --secret-id "jenkins-env" \
       --query  'SecretString' \
-  | jq -r '.id_rsa' \
+  | jq -r 'fromjson | .["id_rsa"]' \
   | base64 -d
   aws --profile=admin-main --region=us-west-2 \
       secretsmanager get-secret-value \
       --secret-id "jenkins-env" \
       --query  'SecretString' \
-  | jq -r '.["id_rsa"]' \
+  | jq -r 'fromjson | .["id_rsa"]' \
   | base64 -d
   ```
 * files
@@ -77,7 +77,7 @@ aws secretsmanager get-secret-value \
     --secret-id 'jenkins-env' \
     --version-stage 'AWSCURRENT' \
     --query  'SecretString' \
-| jq -r '.id_rsa' \
+| jq -r 'fromjson | .["id_rsa"]' \
 | base64 -d \
 > "/var/lib/jenkins/.ssh/id_rsa"
 chmod 0600 "/var/lib/jenkins/.ssh/id_rsa"
@@ -86,7 +86,7 @@ aws secretsmanager get-secret-value \
     --secret-id 'jenkins-env' \
     --version-stage 'AWSCURRENT' \
     --query  'SecretString' \
-| jq -r '.["id_rsa.pub"]' \
+| jq -r 'fromjson | .["id_rsa.pub"]' \
 | base64 -d \
 > "/var/lib/jenkins/.ssh/id_rsa.pub"
 chmod 0600 "/var/lib/jenkins/.ssh/id_rsa.pub"
