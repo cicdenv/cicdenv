@@ -1,12 +1,14 @@
 # Purpose
-Docker images for dedicated Jenkins weekly release(s) jdk-11 server, agent(s).
+Docker images for dedicated Jenkins weekly release(s) jdk-8/jdk-11 server, agent(s).
 
 Routine actions are defined as Makefile targets:
 * Version updates & plugin version recording
 * Plugin/Image builds uploads to AWS
 
 ## Updates
-See [docs/UPDATES.md]
+See [docs/UPDATES.md](docs/UPDATES.md)
+
+* https://www.jenkins.io/project/roadmap/
 
 ## Usage
 ```bash
