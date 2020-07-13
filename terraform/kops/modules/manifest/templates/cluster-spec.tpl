@@ -13,8 +13,7 @@ spec:
       crossZoneLoadBalancing: true
       additionalSecurityGroups: ${lb_security_groups}
   authentication:
-    aws:
-      image: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-iam-authenticator:v0.5.1-scratch
+    aws: {}
   authorization:
     rbac: {}
   channel: stable
