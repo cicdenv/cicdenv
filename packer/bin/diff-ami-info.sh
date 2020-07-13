@@ -27,7 +27,10 @@ if [[ "$#" -lt 2 ]]; then
             | sort | tail -n $((2 - ${#_infos[@]})) | awk '{print $2}') || true
 fi
 diff_cmd=$(echo diff ${_infos[*]-} ${_latest[*]-})
+diff_count=$(($($diff_cmd | grep -v '\-\-\-' | sed -e 's/^[^<>].*//' | sed -r '/^$/d' | wc -l) / 2))
 echo $diff_cmd
+echo "diff count: ${diff_count}"
 
 # Output wihtout line numbers and groups removed
+echo
 $diff_cmd | grep -v '\-\-\-' | sed -e 's/^[^<>].*//'

@@ -4,9 +4,6 @@ Custom ubuntu AMIs.
 ## Usage
 ### Building
 ```bash
-# Turn on private subnet NAT gateways
-cicdenv$ cicdctl terraform apply network/routing:main
-
 # Create a new base AMI
 cicdenv$ cicdctl packer build
 
@@ -15,7 +12,7 @@ cicdenv$ cicdctl terraform destroy network/routing:main
 ```
 
 ### Testing
-```
+```bash
 # Launch an instance using the latest base AMI
 cicdenv$ cicdctl console
 📦 $USER:~/cicdenv$ cicdctl terraform apply test-vpc:${WORKSPACE}
@@ -30,8 +27,13 @@ cicdenv$ cicdctl console
 ## Releases
 ### Base
 To make the lastest base AMI the default:
-```
+```bash
 cicdenv$ cicdctl terraform apply shared/packer:main
+```
+
+Take diffs:
+```bash
+cicdenv$ packer/bin/diff-ami-info.sh
 ```
 
 To test with an unreleased lastest AMI (for example bastion, jenkins):
@@ -43,7 +45,7 @@ cicdenv$ cicdctl jenkins create <instance>:<workspace>
 ```
 
 ## Cleanup
-```
+```bash
 # Interactive shell
 cicdenv$ make
 
@@ -94,7 +96,7 @@ root@ip-10-16-60-230:~# echo $?
 ## Debugging
 * https://packer.io/docs/provisioners/ansible.html#debugging
 
-```
+```bash
 ssh -i packer/ec2_amazon-ebs.pem ubuntu@<public-ip>
 ```
 
