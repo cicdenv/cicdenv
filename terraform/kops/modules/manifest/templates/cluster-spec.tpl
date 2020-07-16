@@ -5,6 +5,7 @@ metadata:
   name: ${cluster_fqdn}
 spec:
   addons:
+  - manifest: metrics-server
   - manifest: s3://${state_store}/${cluster_fqdn}/addons/custom-channel.yaml
   api:
     loadBalancer:
@@ -38,6 +39,8 @@ ${etcd_members}
   - 0.0.0.0/0
   kubelet:
     anonymousAuth: false
+    authorizationMode: Webhook
+    authenticationTokenWebhook: true
   kubernetesVersion: ${kubernetes_version}
   masterInternalName: api.${cluster_fqdn}
   masterPublicName: api.${cluster_fqdn}
