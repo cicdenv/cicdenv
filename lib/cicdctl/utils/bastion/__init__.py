@@ -1,4 +1,5 @@
 from os import path, environ
+import re
 
 from ..runners import EnvironmentContext
 from ..terraform import parse_tfvars, domain_config, bastion_config
@@ -7,8 +8,6 @@ from ..ssh import default_ssh_key
 
 DEFAULT_USER_IDENTITY = path.expanduser('~/.ssh/id_rsa')
 
-# TODO - load from file ?
-# TODO - source local files ?
 _ssh_opts = {
     'StrictHostKeyChecking': 'no',
     'UserKnownHostsFile': '/dev/null',
@@ -19,6 +18,9 @@ _ssh_opts = {
     'ServerAliveInterval': '60',
     'ServerAliveCountMax': '120',
 }
+
+# ip-10-16-111-42.us-west-2.compute.internal
+_aws_hostname_pattern = re.compile(r'ip-(\d+)-(\d+)-(\d+)-(\d+).\w+-\w+-\d+.compute.internal')
 
 
 def ssh_opts(port, identity, flags):
@@ -62,7 +64,11 @@ def bastion_address(user, workspace):
 def ssh_cmd(cmd, user, port, identity, ip, workspace, flags):
     _bastion = bastion_address(user, workspace)
     if ip:
-        address = f'ubuntu@{ip}'
+        _aws_hostnam_matched = _aws_hostname_pattern.match(ip)
+        if _aws_hostnam_matched:  # handle aws default private hostnames
+            address = f'ubuntu@{".".join(_aws_hostnam_matched.groups())}'
+        else:
+            address = f'ubuntu@{ip}'
         proxy_opts = f'ProxyCommand=ssh {" ".join(ssh_opts(port, DEFAULT_USER_IDENTITY, flags))} -W %h:%p {_bastion}'
         return [cmd] + ssh_opts(port, default_ssh_key(workspace), flags) + ['-o', proxy_opts, address]
     else:

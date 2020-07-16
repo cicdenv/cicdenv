@@ -24,6 +24,7 @@ class BastionDriver(object):
 
     def _run_bastion(self, command):
         if self.host:  # Accesing bastion host for debugging
+            add_ssh_secret(self.workspace)
             user = 'ubuntu'
             port = parse_tfvars(bastion_config)['ssh_host_port']
             identity = default_ssh_key(self.workspace)
