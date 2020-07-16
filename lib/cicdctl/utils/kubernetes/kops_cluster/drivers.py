@@ -90,8 +90,8 @@ class ClusterDriver(object):
         # Download the kubernetes Certificate Authority for the target account
         pki_folder = pki_dir(self.workspace)
         if (
-           not path.exists(path.join(cluster_folder, 'ca-key.pem')) or
-           not path.exists(path.join(cluster_folder, 'ca.pem'))
+           not path.exists(path.join(pki_folder, 'ca-key.pem')) or
+           not path.exists(path.join(pki_folder, 'ca.pem'))
         ):
             self._run([download_ca_script, self.workspace])
 
