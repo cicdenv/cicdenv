@@ -8,5 +8,6 @@
     - ebs-disks
     - packages
     - docker-ce
+    - cadvisor
     - motd
     - scripts

@@ -1,0 +1,15 @@
+- name: cadvisor service unit file
+  copy:
+    src: etc/systemd/system/cadvisor.service
+    dest: /etc/systemd/system/cadvisor.service
+    mode: 0644
+    owner: root
+    group: root
+
+- name: cadvisor service env file
+  template: 
+    src: etc/systemd/system/cadvisor.env.j2 
+    dest: /etc/systemd/system/cadvisor.env
+    mode: 0644 
+    owner: root 
+    group: root

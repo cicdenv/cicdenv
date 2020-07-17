@@ -1,0 +1,5 @@
+---
+# https://github.com/google/cadvisor/releases
+#   https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/cadvisor
+cadvisor_version: "v0.36.0"
+cadvisor_host_port: "3546"

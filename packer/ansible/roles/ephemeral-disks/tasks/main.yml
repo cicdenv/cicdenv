@@ -15,7 +15,7 @@
 
 - name: init-ephemeral-disks service unit
   copy:
-    src: "{{ role_path }}/files//etc/systemd/system/init-ephemeral-disks.service"
+    src: "{{ role_path }}/files/etc/systemd/system/init-ephemeral-disks.service"
     dest: /etc/systemd/system/init-ephemeral-disks.service
     mode: 0644
     owner: root
