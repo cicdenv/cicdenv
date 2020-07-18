@@ -21,7 +21,10 @@ cicdenv$ cicdctl terraform apply test-vpc:main
 ssh -i ~/.ssh/manual-testing.pem -o IdentitiesOnly=yes ubuntu@52.32.128.106
 
 # SSH session with tunneling
-$ ssh -i ~/.ssh/manual-testing.pem -o IdentitiesOnly=yes -4 -L localhost:8080:localhost:3546 ubuntu@52.32.128.106
+ssh -i ~/.ssh/manual-testing.pem -o IdentitiesOnly=yes -4 -L localhost:8080:localhost:3546 ubuntu@52.32.128.106
+
+# Access over tunnel
+http://localhost:8080/containers/
 ```
 
 ## Images
