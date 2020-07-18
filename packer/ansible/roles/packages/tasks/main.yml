@@ -18,6 +18,7 @@
       - multitail
       - netcat
       - nethogs
+      - net-tools
       - nicstat
       - sysstat
       - unzip
