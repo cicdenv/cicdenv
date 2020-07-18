@@ -1,0 +1,23 @@
+[Unit]
+Description=Prometheus Node Exporter
+Documentation=https://github.com/prometheus/node_exporter/
+Requires=docker.service
+After=docker.service
+
+[Service]
+EnvironmentFile=/etc/systemd/system/%p.env
+ExecStartPre=-/usr/bin/env
+ExecStartPre=-/usr/bin/docker stop "%p"
+ExecStartPre=-/usr/bin/docker rm "%p"
+ExecStartPre=/usr/bin/docker pull prom/node-exporter:${TAG}
+ExecStartPre=/usr/bin/docker tag  prom/node-exporter:${TAG} node-exporter:${TAG}
+ExecStart=/usr/bin/docker run --rm  \
+    --net="host"                    \
+    --pid="host"                    \
+    --volume "/:/rootfs:ro,rslave"  \
+    --name "%p"                     \
+    'node-exporter:${TAG}'          \
+    --path.rootfs=/rootfs
+
+[Install]
+WantedBy=multi-user.target

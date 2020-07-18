@@ -9,5 +9,6 @@
     - packages
     - docker-ce
     - cadvisor
+    - node_exporter
     - motd
     - scripts
