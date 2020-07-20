@@ -86,7 +86,7 @@ service procps force-reload
 chmod +x /usr/local/bin/nginx-*.sh
 
 #
-# Start jenkins server
+# Start nginx server
 #
 systemctl daemon-reload
 systemctl enable nginx

@@ -1,7 +1,7 @@
 resource "aws_lb" "nginx_internal" {
   name               = "nginx-int-${var.name}"
   load_balancer_type = "network"
-  subnets            = values(local.subnets["public"]).*.id
+  subnets            = values(local.subnets["private"]).*.id
 
   internal = true
 

@@ -10,7 +10,7 @@ usage_message="
 
 Usage $0 <name> [terraform variable bindings]
 
-Terraform variable bindings:  <var>:<value>
+Terraform variable bindings:  <var>=<value>
 instance_type:
 "
 

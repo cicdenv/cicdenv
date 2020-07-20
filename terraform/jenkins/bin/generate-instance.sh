@@ -14,7 +14,7 @@ Supported <type> values:
 colocated
 distributed
 
-Terraform variable bindings:  <var>:<value>
+Terraform variable bindings:  <var>=<value>
 instance_type:
 executors:
 
