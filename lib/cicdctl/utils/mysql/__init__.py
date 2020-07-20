@@ -3,7 +3,12 @@ from os import path, environ
 from ..runners import EnvironmentContext
 from ..aws import DEFAULT_REGION, config_profile
 
-new_instance_script = 'terraform/nginx/bin/generate-cluster.sh'
+new_group_script = 'terraform/mysql/bin/generate-group.sh'
+new_instance_script = 'terraform/mysql/bin/generate-instance.sh'
+
+get_tls_script = 'terraform/mysql/groups/tls/bin/mysql-tls-download.sh'
+
+TLS_KEYS_DIR = 'terraform/mysql/groups/tls/keys'
 
 
 def env(name, workspace):

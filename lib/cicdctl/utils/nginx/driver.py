@@ -11,7 +11,7 @@ from ...commands.types.instance import Instance
 
 
 class NGinxDriver(object):
-    def __init__(self, settings, instance, flags=[], type=None):
+    def __init__(self, settings, instance, flags=[]):
         self.settings = settings
         self.instance = instance
         self.name = instance.name
@@ -19,7 +19,6 @@ class NGinxDriver(object):
         self.tf_flags = [flag for flag in flags if flag.startswith('-') and flag[1] != '-']
         self.tf_vars = [flag for flag in flags if not flag.startswith('-')]
         self.flags = [flag for flag in flags if flag.startswith('--')]
-        self.type = type
         
         self.component = f'nginx/clusters/{self.name}'
         self.target_arg = f'{self.component}:{self.workspace}'
@@ -43,10 +42,6 @@ class NGinxDriver(object):
         network_routing = routing_target(self.workspace)
         if not TerraformDriver(self.settings, network_routing).has_resources():
             TerraformDriver(self.settings, network_routing, ['-auto-approve']).apply()
-
-    def _tf_outputs(self, component, workspace, keys):
-        target = Target(component, workspace)
-        return TerraformDriver(self.settings, target).outputs()
 
     def init(self):
         self._ensure_component()

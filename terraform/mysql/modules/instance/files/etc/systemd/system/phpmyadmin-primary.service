@@ -1,0 +1,15 @@
+[Unit]
+Description=phpMyAdmin Primary
+After=mysql-primary.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run --rm  \
+    --name myadmin-primary          \
+    --network mysql                 \
+    -p 8090:80                      \
+    -e PMA_HOST=mysql-primary       \
+    phpmyadmin/phpmyadmin
+
+[Install]
+WantedBy=multi-user.target

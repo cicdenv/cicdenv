@@ -1,0 +1,15 @@
+[Unit]
+Description=phpMyAdmin Replica
+After=mysql-replica.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run --rm  \
+    --name myadmin-replica          \
+    --network mysql                 \
+    -p 8091:80                      \
+    -e PMA_HOST=mysql-replica       \
+    phpmyadmin/phpmyadmin
+
+[Install]
+WantedBy=multi-user.target

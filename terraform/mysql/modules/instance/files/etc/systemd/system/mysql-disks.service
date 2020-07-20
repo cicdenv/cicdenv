@@ -1,0 +1,11 @@
+[Unit]
+Description=Ensure MySQL primary, replica are accessing the PCIe SSD/NVMe / EBS disks
+Before=mysql-primary.service mysql-replica.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/mysql-disks.sh
+
+[Install]
+WantedBy=multi-user.target
+RequiredBy=mysql-primary.service mysql-replica.service

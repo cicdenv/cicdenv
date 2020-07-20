@@ -1,0 +1,19 @@
+[Unit]
+Description=Perform replica sourced, consistent MySQL physical backups
+After=mysql-replica.service
+Conflicts=mysql-replica-dump.timer
+OnFailure=mysql-replica-snapshot-failed.service
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/timeout  \
+    --foreground 500           \
+    /bin/bash -c               \
+        'until [[ "$(/bin/systemctl is-active mysql-replica-dump.service)" == "inactive" ]]; do sleep 1; done'
+ExecStartPre=/bin/systemctl stop mysql-replica.service
+ExecStartPre=/bin/sync
+ExecStart=/bin/bash -c \
+    '/usr/local/bin/create-replica-snapshot.sh || (/bin/systemctl start mysql-replica.service && false)'
+ExecStopPost=/bin/systemctl start mysql-replica.service
+ExecStopPost=/usr/local/bin/wait-for-mysql.sh replica
+ExecStopPost=/bin/systemctl start mysql-replica-dump.timer

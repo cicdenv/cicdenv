@@ -48,3 +48,6 @@ key.pem
 
 *.ipynb*
 
+mysql-key
+client-key.pem
+server-key.pem

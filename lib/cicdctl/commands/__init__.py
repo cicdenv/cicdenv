@@ -45,6 +45,11 @@ COMMANDS = {
     ],
     'new-component': [
     ],
+    'mysql': [
+        'init',
+        'create',
+        'destroy',
+    ],
     'nginx': [
         'init',
         'create',
