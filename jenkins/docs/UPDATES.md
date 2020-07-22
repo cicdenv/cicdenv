@@ -11,19 +11,19 @@ Check for core / remoting / jetty releases:
 ```bash
 # Update version vars
 cicdenv/jenkins$ vim vars.make
-JENKINS_VERSION=2.241
-RELEASE_DATE=2020-06-16
-JETTY_VERSION=9.4.26.v20200117
-REMOTING_VERSION=4.3
++JENKINS_VERSION=2.248
++RELEASE_DATE=2020-07-21
+JETTY_VERSION=9.4.30.v20200611
+REMOTING_VERSION=4.5
 IMAGE_REVISION=01
 
 # Update checksum
 cicdenv/jenkins$ make checksum
 cicdenv/jenkins$ git diff
-+JENKINS_VERSION=2.241
-+RELEASE_DATE=2020-06-16
++JENKINS_VERSION=2.248
++RELEASE_DATE=2020-07-21
 +JENKINS_SHA=c30dde89abc48a5d05aabdba1259b76979573ec7b146ae8449e84dd44017c182
-+REMOTING_VERSION=4.3
++REMOTING_VERSION=4.5
 
 # Create new docker images
 cicdenv/jenkins$ make
