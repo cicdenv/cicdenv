@@ -4,15 +4,18 @@
 #
 # https://github.com/hashicorp/terraform-provider-tls/issues/52
 # https://www.terraform.io/docs/providers/external/data_source.html
-# https://www.solrac.nl/retrieve-thumbprint-ssltls-python/
-# 
+#
 
 from sys import stdin
 import json
+from contextlib import closing
 
 import ssl
 import socket
 import hashlib
+
+from OpenSSL import SSL
+from OpenSSL.crypto import load_certificate, dump_certificate, FILETYPE_ASN1, FILETYPE_PEM
 
 query = json.load(stdin)
 address = query["uri"]
@@ -20,15 +23,20 @@ address = query["uri"]
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.settimeout(1)
 
-with ssl.wrap_socket(sock) as ssl_sock:
-    ssl_sock.connect((address, 443))
-    der_cert_bin = ssl_sock.getpeercert(True)
-    pem_cert = ssl.DER_cert_to_PEM_cert(ssl_sock.getpeercert(True))
+with closing(SSL.Connection(SSL.Context(method=SSL.TLSv1_METHOD), socket=sock)) as conn:
+    conn.connect((address, 443))
+    conn.setblocking(1)
+    conn.do_handshake()
 
-    # SHA1 Thumbprint
-    thumb_sha1 = hashlib.sha1(der_cert_bin).hexdigest()
+    root_CN = conn.get_peer_cert_chain()[-1].get_issuer().CN
+    with open(f'/etc/ssl/certs/ca-cert-{root_CN.replace(" ", "_")}.pem') as f:
+        root_cert = load_certificate(FILETYPE_PEM, f.read())
+        root_cert_enc = dump_certificate(FILETYPE_ASN1, root_cert)
 
-    result = {
-      "sha1": thumb_sha1,
-    }
-    print(json.dumps(result))
+        # SHA1 Thumbprint
+        thumb_sha1 = hashlib.sha1(root_cert_enc).hexdigest()
+
+        result = {
+          "sha1": thumb_sha1,
+        }
+        print(json.dumps(result))
