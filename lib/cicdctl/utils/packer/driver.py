@@ -1,6 +1,6 @@
 import json
 
-from . import env, packer_dir, packer_template, workspace
+from . import env, packer_dir, packer_templates, workspace
 
 from ...commands.types.target import Target
 
@@ -16,8 +16,9 @@ packer_commands = [
 
 
 class PackerDriver(object):
-    def __init__(self, settings, flags=[]):
+    def __init__(self, settings, fs, flags=[]):
         self.settings = settings
+        self.fs = fs
         self.flags = flags
 
         self._run = self.settings.runner(cwd=packer_dir, env_ctx=env()).run
@@ -45,7 +46,7 @@ class PackerDriver(object):
     def _run_packer(self, command):
         vars = self._get_variables()
         self._ensure_routing()
-        self._run(['packer', command] + vars + [packer_template])
+        self._run(['packer', command] + vars + [packer_templates[self.fs]])
 
     def __getattr__(self, name):
         if name in packer_commands:

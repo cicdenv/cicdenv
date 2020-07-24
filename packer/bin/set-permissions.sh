@@ -12,7 +12,7 @@ bin/cicdctl creds aws-mfa main
 # Only handles 1 snapshot
 #
 
-ami_name_pattern=${1-'base/hvm-ssd/ubuntu-focal-20.04-amd64-server-*'}
+ami_name_pattern=${1-'base/ubuntu-20.04-amd64-*'}
 
 AWS_PROFILE=${AWS_PROFILE-admin-main}
 AWS_REGION=${AWS_REGION-us-west-2}

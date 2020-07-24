@@ -1,16 +1,16 @@
-output "base_ami" {
-  value = {
-    id             = local.base_ami.id
-    name           = local.base_ami.name
-    image_location = local.base_ami.image_location
-    description    = local.base_ami.description
-    owner_id       = local.base_ami.owner_id
-    creation_date  = local.base_ami.creation_date
-    most_recent    = local.base_ami.most_recent
+output "base_amis" { 
+  value = { for fs, ami in local.base_ami : fs => {
+    id             = ami.id
+    name           = ami.name
+    image_location = ami.image_location
+    description    = ami.description
+    owner_id       = ami.owner_id
+    creation_date  = ami.creation_date
+    most_recent    = ami.most_recent
 
-    architecture = local.base_ami.architecture
-    hypervisor   = local.base_ami.hypervisor
+    architecture = ami.architecture
+    hypervisor   = ami.hypervisor
 
-    root_snapshot_id = local.base_ami.root_snapshot_id
-  }
+    root_snapshot_id = ami.root_snapshot_id
+  }}
 }

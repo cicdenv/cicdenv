@@ -37,16 +37,30 @@ locals {
 
 ## Outputs
 ```hcl
-base_ami = {
-  "architecture" = "x86_64"
-  "creation_date" = "2020-05-26T22:18:32.000Z"
-  "description" = "<github-repo>/terraform/packer/ubuntu-20.04.pkr.hcl"
-  "hypervisor" = "xen"
-  "id" = "ami-<0x*17>"
-  "image_location" = "<account-id>/base/hvm-ssd/ubuntu-focal-20.04-amd64-server-<yyyy-mm-ddTHH-MM-SSZ>"
-  "most_recent" = true
-  "name" = "base/hvm-ssd/ubuntu-focal-20.04-amd64-server-<yyyy-mm-ddTHH-MM-SSZ>"
-  "owner_id" = "<account-id>"
-  "root_snapshot_id" = "snap-<0x*17>"
+base_amis = {
+  "ext4" = {
+    "architecture" = "x86_64"
+    "creation_date" = "<yyyy-mm-ddTHH-MM-SSZ>"
+    "description" = "<github-repo>/terraform/packer/ubuntu-20.04-ext4.pkr.hcl"
+    "hypervisor" = "xen"
+    "id" = "ami-<0x*17>"
+    "image_location" = "<account-id>/base/ubuntu-20.04-amd64-ext4-<yyyy-mm-ddTHH-MM-SSZ>"
+    "most_recent" = true
+    "name" = "base/ubuntu-20.04-amd64-ext4-<yyyy-mm-ddTHH-MM-SSZ>"
+    "owner_id" = "<account-id>"
+    "root_snapshot_id" = "snap-<0x*17>"
+  }
+  "zfs" = {
+    "architecture" = "x86_64"
+    "creation_date" = "<yyyy-mm-ddTHH-MM-SSZ>"
+    "description" = "<github-repo>/terraform/packer/ubuntu-20.04-zfs.pkr.hcl"
+    "hypervisor" = "xen"
+    "id" = "ami-<0x*17>"
+    "image_location" = "<account-id>/base/ubuntu-20.04-amd64-zfs-<yyyy-mm-ddTHH-MM-SSZ>"
+    "most_recent" = true
+    "name" = "base/ubuntu-20.04-amd64-zfs-<yyyy-mm-ddTHH-MM-SSZ>"
+    "owner_id" = "<account-id>"
+    "root_snapshot_id" = "snap-<0x*17>"
+  }
 }
 ```

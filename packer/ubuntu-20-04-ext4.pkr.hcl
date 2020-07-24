@@ -38,8 +38,8 @@ source "amazon-ebs" "builder" {
   ssh_interface = "public_ip"
   ssh_timeout   = "2m"
 
-  ami_name        = "base/hvm-ssd/ubuntu-focal-20.04-amd64-server-{{ isotime | clean_resource_name }}"
-  ami_description = "https://github.com/vogtech/cicdenv/terraform/packer/ubuntu-20.04.pkr.hcl"
+  ami_name        = "base/ubuntu-20.04-amd64-ext4-{{ isotime | clean_resource_name }}"
+  ami_description = "https://github.com/vogtech/cicdenv/terraform/packer/ubuntu-20.04-ext4.pkr.hcl"
   snapshot_users  = var.account_ids
   ami_users       = var.account_ids
 
@@ -72,7 +72,7 @@ build {
   ]
   
   provisioner "ansible" {
-    playbook_file = "./ansible/playbook.yml"
+    playbook_file = "./ansible/playbook-ext4.yml"
     
     ansible_env_vars = [
       "ANSIBLE_SSH_ARGS='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o AddKeysToAgent=no -o IdentitiesOnly=yes'",
@@ -93,7 +93,7 @@ build {
 
   provisioner "file" {
     source      = "/tmp/info.txt"
-    destination = "./ami-info/ubuntu-20.04-{{ isotime \"2006-01-02T15-04-05Z07\" }}.txt"
+    destination = "./ami-info/ubuntu-20.04-ext4-{{ isotime \"2006-01-02T15-04-05Z07\" }}.txt"
     direction   = "download"
   }
 }

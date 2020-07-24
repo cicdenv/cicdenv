@@ -16,7 +16,7 @@ cicdenv$ cicdctl terraform destroy network/routing:main
 # Launch an instance using the latest base AMI
 cicdenv$ cicdctl console
 📦 $USER:~/cicdenv$ cicdctl terraform apply test-vpc:${WORKSPACE}
-📦 $USER:~/cicdenv$ terraform/test-vpc/bin/launch-instances.sh ${WORKSPACE} m5dn.large
+📦 $USER:~/cicdenv$ terraform/test-vpc/bin/launch-instances.sh ${WORKSPACE} <ext4|zfs> m5dn.large
 📦 $USER:~/cicdenv$ ssh -i /home/terraform/.ssh/manual-testing.pem ubuntu@<public-ip>
 
 # Teardown
@@ -33,7 +33,7 @@ cicdenv$ cicdctl terraform apply shared/packer:main
 
 Take diffs:
 ```bash
-cicdenv$ packer/bin/diff-ami-info.sh
+cicdenv$ packer/bin/diff-ami-info.sh <ext4,zfs>
 ```
 
 To test with an unreleased lastest AMI (for example bastion, jenkins):
@@ -51,7 +51,7 @@ cicdenv$ make
 
 # Remove all but the most recent kops custom AMIs
 ${USER}:~/cicdenv$ packer/bin/remove-old.sh
-${USER}:~/cicdenv$ packer/bin/remove-old.sh 'base/hvm-ssd/ubuntu-focal-20.04-amd64-server-*'
+${USER}:~/cicdenv$ packer/bin/remove-old.sh 'base/ubuntu-20.04-amd64-*'
 
 # Removal all AMIs
 ${USER}:~/cicdenv$ packer/bin/remove-all.sh
@@ -59,39 +59,9 @@ ${USER}:~/cicdenv$ exit
 ```
 
 ## NVMe Instance Stores
-TL;DR - with ubuntu 18.04+ the root `ebs` volume might be 
-`/dev/nvme0n1*` or `/dev/nvme1n1` or the last listed nvme device 
-(when 2 or more are present).
-
-The embedded scripts in the base AMI handle this.
-
-```
-# lsblk | tail +2 | grep -v 'loop'
-nvme0n1     259:0    0    75G  0 disk 
-└─nvme0n1p1 259:1    0    75G  0 part /
-nvme1n1     259:2    0 139.7G  0 disk
-
-or 
-
-# lsblk | tail +2 | grep -v 'loop'
-nvme0n1     259:2    0 139.7G  0 disk
-nvme1n1     259:0    0    75G  0 disk 
-└─nvme1n1p1 259:1    0    75G  0 part /
-```
-
-The embedded scripts use amazon linux's `ebsnvme-id.py` to filter out EBS NVMe devices:
-```
-# ebsnvme-id.py /dev/nvme0n1
-Volume ID: vol-07a2d1fac62b933db
-sda1                            
-root@ip-10-16-60-230:~# echo $?
-0
----
-# ebsnvme-id.py /dev/nvme1n1
-[ERROR] Not an EBS device: '/dev/nvme1n1'
-root@ip-10-16-60-230:~# echo $?
-1
-```
+The base AMIs mount all PCI-e SSDs into a single stripped pool.
+* `ext4` using linux `md`
+* `zfs` using Open ZFS ZOL
 
 ## Debugging
 * https://packer.io/docs/provisioners/ansible.html#debugging

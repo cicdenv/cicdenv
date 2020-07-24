@@ -2,12 +2,11 @@
 
 set -eu -o pipefail
 
-#
-# Usage: launch-instances.sh <workspace> <instance-type-1> [<instance-type-2> ...]
-#
+usage="Usage: $0 <workspace> <ext4|zfs> <instance-type-1> [<instance-type-2> ...]"
 
-workspace=${1?Usage: $0 <workspace> <instance-type-1> [<instance-type-2> ...]}
-instance_types="${@:2}"
+workspace=${1?$usage}
+fs=${2?$usage}
+instance_types="${@:3}"
 if [[ -z "$instance_types" ]]; then
     >&2 echo "Usage: $0 <workspace> <instance-type-1> [<instance-type-2> ...]"
     exit 1
@@ -27,7 +26,7 @@ security_group_id=$(terraform output -json security_group | jq -r '.id')
 
 instance_profile="$(terraform output -json iam | jq -r '.instance_profile | .arn')"
 
-ami_name_pattern='base/hvm-ssd/ubuntu-focal-20.04-amd64-server-*'
+ami_name_pattern="base/ubuntu-20.04-amd64-${fs}-*"
 image_id=$(aws ${AWS_OPTS}                            \
     ec2 describe-images                               \
     --owners "${account_id}"                          \

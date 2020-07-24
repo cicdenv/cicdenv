@@ -1,0 +1,14 @@
+---
+- hosts: default
+  become: yes
+  roles:
+    - apt-updates
+    - custom-apt-repo
+    - ephemeral-ext4
+    - ebs-mappings
+    - packages
+    - docker-ce
+    - cadvisor
+    - node_exporter
+    - motd
+    - scripts
