@@ -38,8 +38,8 @@ source "amazon-ebs" "builder" {
   ssh_interface = "public_ip"
   ssh_timeout   = "2m"
 
-  ami_name        = "base/ubuntu-20.04-amd64-zfs-{{ isotime | clean_resource_name }}"
-  ami_description = "https://github.com/vogtech/cicdenv/packer/ubuntu-20.04-zfs.pkr.hcl"
+  ami_name        = "base/ubuntu-20.04-amd64-none-{{ isotime | clean_resource_name }}"
+  ami_description = "https://github.com/vogtech/cicdenv/packer/ubuntu-20.04-none.pkr.hcl"
   snapshot_users  = var.account_ids
   ami_users       = var.account_ids
 
@@ -64,9 +64,9 @@ source "amazon-ebs" "builder" {
   }
 
   iam_instance_profile = "packer-build"
-
+  
   tags = {
-    Name = "base/ubuntu-20.04-amd64-zfs"
+    Name = "base/ubuntu-20.04-amd64-none"
   }
 }
 
@@ -76,7 +76,7 @@ build {
   ]
   
   provisioner "ansible" {
-    playbook_file = "./ansible/playbook-zfs.yml"
+    playbook_file = "./ansible/playbook-none.yml"
     
     ansible_env_vars = [
       "ANSIBLE_SSH_ARGS='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o AddKeysToAgent=no -o IdentitiesOnly=yes'",
@@ -97,7 +97,7 @@ build {
 
   provisioner "file" {
     source      = "/tmp/info.txt"
-    destination = "./ami-info/ubuntu-20.04-zfs-{{ isotime \"2006-01-02T15-04-05Z07\" }}.txt"
+    destination = "./ami-info/ubuntu-20.04-none-{{ isotime \"2006-01-02T15-04-05Z07\" }}.txt"
     direction   = "download"
   }
 }

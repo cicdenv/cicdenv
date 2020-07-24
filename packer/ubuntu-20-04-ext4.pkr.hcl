@@ -39,7 +39,7 @@ source "amazon-ebs" "builder" {
   ssh_timeout   = "2m"
 
   ami_name        = "base/ubuntu-20.04-amd64-ext4-{{ isotime | clean_resource_name }}"
-  ami_description = "https://github.com/vogtech/cicdenv/terraform/packer/ubuntu-20.04-ext4.pkr.hcl"
+  ami_description = "https://github.com/vogtech/cicdenv/packer/ubuntu-20.04-ext4.pkr.hcl"
   snapshot_users  = var.account_ids
   ami_users       = var.account_ids
 
@@ -64,6 +64,10 @@ source "amazon-ebs" "builder" {
   }
 
   iam_instance_profile = "packer-build"
+
+  tags = {
+    Name = "base/ubuntu-20.04-amd64-ext4"
+  }
 }
 
 build {

@@ -16,7 +16,7 @@ cicdenv$ cicdctl terraform destroy network/routing:main
 # Launch an instance using the latest base AMI
 cicdenv$ cicdctl console
 📦 $USER:~/cicdenv$ cicdctl terraform apply test-vpc:${WORKSPACE}
-📦 $USER:~/cicdenv$ terraform/test-vpc/bin/launch-instances.sh ${WORKSPACE} <ext4|zfs> m5dn.large
+📦 $USER:~/cicdenv$ terraform/test-vpc/bin/launch-instances.sh ${WORKSPACE} <none|ext4|zfs> m5dn.large
 📦 $USER:~/cicdenv$ ssh -i /home/terraform/.ssh/manual-testing.pem ubuntu@<public-ip>
 
 # Teardown
@@ -59,7 +59,10 @@ ${USER}:~/cicdenv$ exit
 ```
 
 ## NVMe Instance Stores
-The base AMIs mount all PCI-e SSDs into a single stripped pool.
+The `none` base AMI has no support for configuring instance stores.
+It also does not install docker-ce.
+
+These base AMIs mount all PCI-e SSDs into a single stripped pool.
 * `ext4` using linux `md`
 * `zfs` using Open ZFS ZOL
 

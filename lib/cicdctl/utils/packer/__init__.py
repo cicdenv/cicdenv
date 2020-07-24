@@ -9,6 +9,7 @@ workspace = 'main'
 packer_dir = path.join(getcwd(), 'packer')
 
 packer_templates = {
+  'none': 'ubuntu-20-04-none.pkr.hcl',
   'ext4': 'ubuntu-20-04-ext4.pkr.hcl',
   'zfs': 'ubuntu-20-04-zfs.pkr.hcl',
 }

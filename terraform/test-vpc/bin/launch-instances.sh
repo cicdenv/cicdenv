@@ -2,7 +2,7 @@
 
 set -eu -o pipefail
 
-usage="Usage: $0 <workspace> <ext4|zfs> <instance-type-1> [<instance-type-2> ...]"
+usage="Usage: $0 <workspace> <none|ext4|zfs> <instance-type-1> [<instance-type-2> ...]"
 
 workspace=${1?$usage}
 fs=${2?$usage}

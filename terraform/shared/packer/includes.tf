@@ -1,7 +1,7 @@
 data "aws_caller_identity" "current" {}
 
 data "aws_ami" "custom_base" {
-  for_each = toset(["ext4", "zfs"])
+  for_each = toset(["none", "ext4", "zfs"])
 
   most_recent = true
 

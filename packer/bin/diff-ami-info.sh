@@ -10,7 +10,7 @@ pushd "$DIR/../.." >/dev/null
 
 function usage () {
     cat <<EOF >&2
-usage: $0 <ext4|zfs> [packer/ami-info/<file1>] [packer/ami-info/<file2>]
+usage: $0 <none|ext4|zfs> [packer/ami-info/<file1>] [packer/ami-info/<file2>]
 EOF
 }
 

@@ -1,0 +1,10 @@
+---
+- hosts: default
+  become: yes
+  roles:
+    - apt-updates
+    - custom-apt-repo
+    - ebs-mappings
+    - packages
+    - motd
+    - scripts
