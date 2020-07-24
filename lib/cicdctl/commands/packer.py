@@ -20,9 +20,10 @@ def packer(settings):
 for command in commands(__file__):
     def bind_command(command):
         @click.pass_obj
+        @click.option('--fs', type=click.Choice(['ext4', 'zfs'], case_sensitive=False), required=True)
         @click.argument('flags', nargs=-1, type=FlagParamType())
-        def command_func(settings, flags):
-            driver_method = getattr(PackerDriver(settings, flags), command)
+        def command_func(settings, fs, flags):
+            driver_method = getattr(PackerDriver(settings, fs, flags), command)
             driver_method()
         command_func.__name__ = command
     

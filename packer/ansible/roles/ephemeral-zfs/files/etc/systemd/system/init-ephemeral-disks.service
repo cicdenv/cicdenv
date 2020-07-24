@@ -1,0 +1,10 @@
+[Unit]
+Description=Configures SSD/NVMe flash devices as a single Open ZFS on Linux (ZOL) pool
+Before=containerd.service docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/init-ephemeral-disks.sh
+
+[Install]
+WantedBy=multi-user.target

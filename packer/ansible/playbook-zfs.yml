@@ -4,8 +4,8 @@
   roles:
     - apt-updates
     - custom-apt-repo
-    - ephemeral-disks
-    - ebs-disks
+    - ephemeral-zfs
+    - ebs-mappings
     - packages
     - docker-ce
     - cadvisor

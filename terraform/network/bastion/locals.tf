@@ -5,7 +5,7 @@ locals {
     data.terraform_remote_state.shared.outputs.bastion_service.security_group,
   ]
 
-  ami_id = var.base_ami_id != "" ? var.base_ami_id : data.terraform_remote_state.amis.outputs.base_ami.id
+  ami_id = var.base_ami_id != "" ? var.base_ami_id : data.terraform_remote_state.amis.outputs.base_amis["ext4"].id
   
   instance_type = "c5d.large"
 

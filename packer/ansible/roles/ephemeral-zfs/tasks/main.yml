@@ -1,0 +1,30 @@
+---
+- name: install required ephemeral-disks packages
+  apt:
+    name: ['mdadm', 'nvme-cli']
+    state: present
+    update_cache: yes
+
+- name: install init-ephemeral-disks.sh
+  copy: 
+    src: "{{ role_path }}/files/usr/local/bin/init-ephemeral-disks.sh"
+    dest: /usr/local/bin/init-ephemeral-disks.sh 
+    mode: 0755 
+    owner: root 
+    group: root
+
+- name: init-ephemeral-disks service unit
+  copy:
+    src: "{{ role_path }}/files/etc/systemd/system/init-ephemeral-disks.service"
+    dest: /etc/systemd/system/init-ephemeral-disks.service
+    mode: 0644
+    owner: root
+    group: root
+  
+- name: systemd daemon-reload
+  systemd:
+    name: init-ephemeral-disks
+    daemon_reload: yes
+
+- name: start init-ephemeral-disks service
+  systemd: name=init-ephemeral-disks state=stopped enabled=yes

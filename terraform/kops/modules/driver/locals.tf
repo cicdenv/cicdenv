@@ -41,7 +41,7 @@ locals {
   
   nodes_per_az = var.cluster_settings.nodes_per_az
   
-  ami_id = var.ami_id != "" ? var.ami_id : data.terraform_remote_state.amis.outputs.base_ami.id
+  ami_id = var.ami_id != "" ? var.ami_id : data.terraform_remote_state.amis.outputs.base_amis["ext4"].id
 
   ssh_key = "~/.ssh/id-shared-ec2-${terraform.workspace}.pub"
 
