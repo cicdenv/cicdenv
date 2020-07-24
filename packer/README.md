@@ -4,8 +4,10 @@ Custom ubuntu AMIs.
 ## Usage
 ### Building
 ```bash
-# Create a new base AMI
-cicdenv$ cicdctl packer build
+# Create new base AMIs
+cicdenv$ for fs in none ext4 zfs; do cicdctl packer build --fs "$fs"; done
+# Or build just one base AMI
+cicdenv$ cicdctl packer build --fs zfs
 
 # Turn off private subnet NAT gateways
 cicdenv$ cicdctl terraform destroy network/routing:main

@@ -14,6 +14,10 @@ variable "account_ids" {
   type = list(string)
 }
 
+variable "ephemeral_fs" {
+  type = string
+}
+
 source "amazon-ebs" "builder" {
   region    = "us-west-2"
   vpc_id    = var.vpc_id
@@ -38,8 +42,8 @@ source "amazon-ebs" "builder" {
   ssh_interface = "public_ip"
   ssh_timeout   = "2m"
 
-  ami_name        = "base/ubuntu-20.04-amd64-none-{{ isotime | clean_resource_name }}"
-  ami_description = "https://github.com/vogtech/cicdenv/packer/ubuntu-20.04-none.pkr.hcl"
+  ami_name        = "base/ubuntu-20.04-amd64-${var.ephemeral_fs}-{{ isotime | clean_resource_name }}"
+  ami_description = "https://github.com/vogtech/cicdenv/packer/ubuntu-20.04-${var.ephemeral_fs}.pkr.hcl"
   snapshot_users  = var.account_ids
   ami_users       = var.account_ids
 
@@ -64,9 +68,9 @@ source "amazon-ebs" "builder" {
   }
 
   iam_instance_profile = "packer-build"
-  
+
   tags = {
-    Name = "base/ubuntu-20.04-amd64-none"
+    Name = "base/ubuntu-20.04-amd64-${var.ephemeral_fs}"
   }
 }
 
@@ -76,7 +80,7 @@ build {
   ]
   
   provisioner "ansible" {
-    playbook_file = "./ansible/playbook-none.yml"
+    playbook_file = "./ansible/playbook-${var.ephemeral_fs}.yml"
     
     ansible_env_vars = [
       "ANSIBLE_SSH_ARGS='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o AddKeysToAgent=no -o IdentitiesOnly=yes'",
@@ -97,7 +101,7 @@ build {
 
   provisioner "file" {
     source      = "/tmp/info.txt"
-    destination = "./ami-info/ubuntu-20.04-none-{{ isotime \"2006-01-02T15-04-05Z07\" }}.txt"
+    destination = "./ami-info/ubuntu-20.04-${var.ephemeral_fs}-{{ isotime \"2006-01-02T15-04-05Z07\" }}.txt"
     direction   = "download"
   }
 }

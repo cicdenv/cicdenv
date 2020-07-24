@@ -1,6 +1,8 @@
 #!/bin/bash
 
-set -eu -o pipefail
+set -Eeu -o pipefail
+
+# trap 'echo ERR $? $LINENO' ERR
 
 _PWD="$(pwd)"
 
@@ -27,13 +29,18 @@ fi
 
 _infos=("$@")  # Arguments if any
 # Look up the last 1 or 2 info files by age if less than 2 arguments
+_latest=()
 if [[ "$#" -lt 2 ]]; then
     IFS=$'\n' read -r -d '' -a _latest \
         < <(find packer/ami-info/ -type f -name "*-${fs_type}-*.txt" -printf '%T+ %p\n' \
             | sort | tail -n $((2 - ${#_infos[@]})) | awk '{print $2}') || true
 fi
+
+set +e  # Diff has normal non-zero exit status
+
 diff_cmd=$(echo diff ${_infos[*]-} ${_latest[*]-})
-diff_count=$(($($diff_cmd | grep -v '\-\-\-' | sed -e 's/^[^<>].*//' | sed -r '/^$/d' | wc -l) / 2))
+diff_count=$($diff_cmd | grep -v '\-\-\-' | sed -e 's/^[^<>].*//' | sed -r '/^$/d' | wc -l)
+diff_count=$(("$diff_count" / 2))
 echo $diff_cmd
 echo "diff count: ${diff_count}"
 

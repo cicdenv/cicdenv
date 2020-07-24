@@ -1,6 +1,6 @@
 import json
 
-from . import env, packer_dir, packer_templates, workspace
+from . import env, packer_dir, packer_template, workspace
 
 from ...commands.types.target import Target
 
@@ -41,12 +41,13 @@ class PackerDriver(object):
             '-var', f'subnet_id={list(subnets["public"].values())[0]["id"]}',
             '-var', f'key_id={key["key_id"]}',
             '-var', f'account_ids={json.dumps(account_ids)}',
+            '-var', f'ephemeral_fs={self.fs}',
         ]
 
     def _run_packer(self, command):
         vars = self._get_variables()
         self._ensure_routing()
-        self._run(['packer', command] + vars + [packer_templates[self.fs]])
+        self._run(['packer', command] + vars + [packer_template])
 
     def __getattr__(self, name):
         if name in packer_commands:
