@@ -30,7 +30,9 @@ fi
 diff_cmd=$(echo diff ${_versions[*]-} ${_latest[*]-})
 echo $diff_cmd
 
-diff_count=$(($($diff_cmd | grep -v '\-\-\-' | sed -e 's/^[^<>].*//' | sed -r '/^$/d' | wc -l) / 2)) || true
+set +e  # Diff has normal non-zero exit status
+
+diff_count=$(($($diff_cmd | grep -v '\-\-\-' | sed -e 's/^[^<>].*//' | sed -r '/^$/d' | wc -l) / 2))
 echo "diff count: ${diff_count}"
 
 # Output wihtout line numbers and groups removed
