@@ -21,11 +21,18 @@ for bind_dir in                 \
 "/var/jenkins_home/userContent" \
 "/var/jenkins_home/logs"        \
 ; do
-    # Create a subfolder to mount under $ephemeral_dir using the last path element
     real_dir="$${ephemeral_dir}/$(basename $bind_dir)"
 
-    if ! findmnt -rno TARGET "$bind_dir"; then
+    # If we're using ZFS for the instance stores, create separate data sets
+    if zpool list ephemeral &> /dev/null; then
+        if ! zfs get "ephemeral/$(basename $bind_dir)" &> /dev/null; then
+            zfs create "ephemeral/$(basename $bind_dir)"
+        fi
+    else  # Create a subfolder to mount under $ephemeral_dir using the last path element
         mkdir -p "$real_dir"
+    fi
+
+    if ! findmnt -rno TARGET "$bind_dir"; then
         mkdir -p "$bind_dir"
 
         chown -R jenkins:jenkins "$real_dir"
