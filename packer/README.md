@@ -40,8 +40,8 @@ cicdenv$ cicdctl terraform destroy network/routing:main
 ```bash
 # Launch an instance using the latest base AMI
 cicdenv$ cicdctl console
-📦 $USER:~/cicdenv$ cicdctl terraform apply test-vpc:${WORKSPACE}
-📦 $USER:~/cicdenv$ terraform/test-vpc/bin/launch-instances.sh ${WORKSPACE} <none|ext4|zfs> m5dn.large
+📦 $USER:~/cicdenv$ cicdctl terraform apply test-vpc:${WORKSPACE} -auto-approve
+📦 $USER:~/cicdenv$ terraform/test-vpc/bin/launch-instances.sh <ext4|zfs>/<none|ext4|zfs>:${WORKSPACE} m5dn.large
 📦 $USER:~/cicdenv$ ssh -i /home/terraform/.ssh/manual-testing.pem ubuntu@<public-ip>
 
 # Teardown
@@ -77,6 +77,7 @@ cicdenv$ make
 # Remove all but the most recent kops custom AMIs
 ${USER}:~/cicdenv$ packer/bin/remove-old.sh
 ${USER}:~/cicdenv$ packer/bin/remove-old.sh 'base/ubuntu-20.04-amd64-*'
+${USER}:~/cicdenv$ packer/bin/remove-old.sh 'zfs/ubuntu-20.04-amd64-*'
 
 # Removal all AMIs
 ${USER}:~/cicdenv$ packer/bin/remove-all.sh
@@ -84,11 +85,11 @@ ${USER}:~/cicdenv$ exit
 ```
 
 ## NVMe Instance Stores
-The `none` base AMI has no support for configuring instance stores.
+The `none` base AMI has no support for auto configuring instance stores.
 It also does not install docker-ce.
 
 These base AMIs mount all PCI-e SSDs into a single stripped pool.
-* `ext4` using linux `md`
+* `ext4` using linux `md` if there is more than 1 instance store device
 * `zfs` using Open ZFS ZOL
 
 ## Debugging
@@ -100,6 +101,8 @@ ssh -i packer/ec2_amazon-ebs.pem ubuntu@<public-ip>
 
 ## Links
 * https://www.packer.io/docs/builders/amazon-ebs.html
+* https://www.packer.io/docs/builders/amazon/ebssurrogate
+  * https://github.com/jen20/packer-ubuntu-zfs
 * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/nvme-ebs-volumes.html
 * https://russell.ballestrini.net/aws-nvme-to-block-mapping/
 
