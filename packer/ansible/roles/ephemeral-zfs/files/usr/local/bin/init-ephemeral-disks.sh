@@ -2,7 +2,8 @@
 
 set -eu -o pipefail
 
-mount_dir="/mnt/ephemeral"
+pool_name="ephemeral"
+mount_dir="/mnt/${pool_name}"
 
 mkdir -p "$mount_dir"
 
@@ -14,13 +15,19 @@ mkdir -p "$mount_dir"
 device_list=($(nvme list | grep "Instance Storage" | awk '{ print $1 }'))
 
 # Create ZFS pool from all devices
-if ! zpool list ephemeral &> /dev/null; then
-    zpool create -o ashift=12 \
-        -O recordsize=4k -O compression=off -O checksum=off \
-        ephemeral -m "$mount_dir" ${device_list[*]}
-    zfs set atime=off ephemeral
+if ! zpool list "$pool_name" &> /dev/null; then
+    zpool create            \
+        -o ashift=12        \
+        -O recordsize=4k    \
+        -O atime=off        \
+        -O compression=lz4  \
+        -O checksum=off     \
+        -m "$mount_dir"     \
+        "$pool_name"        \
+        ${device_list[*]}
 fi
 zpool list
+zpool status
 
 #
 # Bind mounts.
