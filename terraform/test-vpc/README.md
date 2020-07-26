@@ -14,7 +14,7 @@ cicdenv$ cicdctl terraform <init|plan|apply|destroy> test-vpc:${WORKSPACE}
 ```bash
 # Launch an ec2 instance in the target account
 cicdenv$ cicdctl console
-📦 $USER:~/cicdenv$ terraform/test-vpc/bin/launch-instances.sh ${WORKSPACE} <instance-type>
+📦 $USER:~/cicdenv$ terraform/test-vpc/bin/launch-instances.sh ${ROOTFS}/${EPHEMERALFS}:${WORKSPACE} <instance-type>
 ```
 
 ## NOTES

@@ -35,6 +35,11 @@ key = {
   "arn" = "arn:aws:kms:<region>:<main-acct-id>:key/<guid>"
   "key_id" = "<guid>"
 }
+main_account = {
+  "alias" = "cicdenv"
+  "id" = "<main-acct-id>"
+  "root" = "arn:aws:iam::<main-acct-id>:root"
+}
 ```
 
 ## Encrypted Boot Volumes

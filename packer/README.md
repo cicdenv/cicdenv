@@ -1,17 +1,40 @@
 ## Purpose
 Custom ubuntu AMIs.
 
+There are two considerations:
+* root-volume filesystem
+  * `ext4` - source: ubuntu 20.04 LTS latest
+  * `ZFS` - source: ubuntu 20.04 LTS latest + packer ebssurrogate custom chroot'd AMI 
+* instance-stores auto-configarion (filesystem)
+  * none
+  * md/ext4 - `/mnt/ephemeral`
+  * zfs zpool "ephemeral" - `/mnt/ephemeral`
+
 ## Usage
 ### Building
 ```bash
-# Create new base AMIs
-cicdenv$ for fs in none ext4 zfs; do cicdctl packer build --fs "$fs"; done
-# Or build just one base AMI
-cicdenv$ cicdctl packer build --fs zfs
+# Create new base AMIs (root-filesystem=ext4, ephemeral-filesystem=*)
+cicdenv$ for fs in none ext4 zfs; do cicdctl packer build --ephemeral-fs "$fs"; done
+
+# Create new source AMI (root-filesytem=zfs)
+cicdenv$ cicdctl packer build --builder "ebssurrogate" --root-fs "zfs"
+# Create new base AMIs (root-filesystem=zfs, ephemeral-filesystem=*)
+cicdenv$ for fs in none ext4 zfs; do cicdctl packer build --root-fs "zfs" --ephemeral-fs "$fs"; done
 
 # Turn off private subnet NAT gateways
 cicdenv$ cicdctl terraform destroy network/routing:main
 ```
+
+| Build Command | AMI Name Pattern | Root FS | Instance Store<br>(Auto Configuration) | Notes |
+| ------------- | ---------------- | ------- | -------------------------------------- | ----- |
+| cicdctl packer build                                          | base/ubuntu-20.04-amd64-ext4-none-* | ext4 | none      | docker-ce not installed |
+| cicdctl packer build --ephemeral-fs "none"                    | base/ubuntu-20.04-amd64-ext4-none-* | ext4 | none      | docker-ce not installed |
+| cicdctl packer build --ephemeral-fs "ext"                     | base/ubuntu-20.04-amd64-ext4-ext4-* | ext4 | [md]+ext4 | N/A |
+| cicdctl packer build --ephemeral-fs "zfs"                     | base/ubuntu-20.04-amd64-ext4-zfs-*  | ext4 | zfs pool  | N/A |
+| cicdctl packer build --builder "ebssurrogate" --root-fs "zfs" | zfs/ubuntu-20.04-amd64-*            | zfs  | N/A       | (source ami for --root-fs=zfs) |
+| cicdctl packer build --root-fs "zfs" --ephemeral-fs "none"    | base/ubuntu-20.04-amd64-zfs-none-*  | zfs  | none      | docker-ce not installed |
+| cicdctl packer build --root-fs "zfs" --ephemeral-fs "ext"     | base/ubuntu-20.04-amd64-zfs-ext-*   | zfs  | [md+]ext4 | N/A |
+| cicdctl packer build --root-fs "zfs" --ephemeral-fs "zfs"     | base/ubuntu-20.04-amd64-zfs-zfs-*   | zfs  | zfs pool  | N/A |
 
 ### Testing
 ```bash

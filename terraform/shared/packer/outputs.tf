@@ -1,4 +1,5 @@
-output "base_amis" { 
+output "base_amis" {
+  # filesystems => [root, instance-stores]
   value = { for fs, ami in local.base_ami : fs => {
     id             = ami.id
     name           = ami.name

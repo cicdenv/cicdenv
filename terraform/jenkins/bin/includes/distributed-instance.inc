@@ -1,5 +1,14 @@
 #!/bin/bash
 
+cat <<'EOF' > "instances/${name}/locals.tf"
+locals {
+  ami_ids = {
+    server = var.base_ami_id != "" ? var.base_ami_id : data.terraform_remote_state.amis.outputs.base_amis["ext4-zfs"].id
+    agent  = var.base_ami_id != "" ? var.base_ami_id : data.terraform_remote_state.amis.outputs.base_amis["ext4-ext4"].id
+  }
+}
+EOF
+
 cat <<EOF >> "instances/${name}/variables.tf"
 
 variable "server_instance_type" {
@@ -25,7 +34,7 @@ module "jenkins_instance" {
     bucket = var.bucket
   }
   
-  ami_id = local.ami_id
+  ami_ids = local.ami_ids
   
   name = "${name}"
 

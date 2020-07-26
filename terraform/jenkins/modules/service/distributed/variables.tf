@@ -6,8 +6,11 @@ variable "terraform_state" {
   description = "For importing terraform states."
 }
 
-variable "ami_id" {
-  type = string
+variable "ami_ids" {
+  type = object({
+    server = string
+    agent  = string
+  })
   description = "AWS EC2 Machine Image (AMI) id."
 }
 

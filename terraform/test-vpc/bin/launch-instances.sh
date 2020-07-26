@@ -2,11 +2,15 @@
 
 set -eu -o pipefail
 
-usage="Usage: $0 <workspace> <none|ext4|zfs> <instance-type-1> [<instance-type-2> ...]"
+usage="Usage: $0 <root-fs>/<ephemeral-fs>:<workspace> <instance-type-1> [<instance-type-2> ...]"
 
-workspace=${1?$usage}
-fs=${2?$usage}
-instance_types="${@:3}"
+target=${1?$usage}
+workspace=${target#*:}
+fs_spec=${target%:*}
+root_fs=${fs_spec%/*}
+ephemeral_fs=${fs_spec#*/}
+
+instance_types="${@:2}"
 if [[ -z "$instance_types" ]]; then
     >&2 echo "Usage: $0 <workspace> <instance-type-1> [<instance-type-2> ...]"
     exit 1
@@ -26,7 +30,7 @@ security_group_id=$(terraform output -json security_group | jq -r '.id')
 
 instance_profile="$(terraform output -json iam | jq -r '.instance_profile | .arn')"
 
-ami_name_pattern="base/ubuntu-20.04-amd64-${fs}-*"
+ami_name_pattern="base/ubuntu-20.04-amd64-${root_fs}-${ephemeral_fs}*"
 image_id=$(aws ${AWS_OPTS}                            \
     ec2 describe-images                               \
     --owners "${account_id}"                          \

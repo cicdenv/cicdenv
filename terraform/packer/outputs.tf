@@ -6,6 +6,10 @@ output "key" {
   }
 }
 
+output "main_account" {
+  value = local.main_account
+}
+
 output "allowed_account_ids" {
   value = local.allowed_account_ids
 }

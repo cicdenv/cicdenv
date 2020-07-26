@@ -1,5 +1,11 @@
 #!/bin/bash
 
+cat <<'EOF' > "instances/${name}/locals.tf"
+locals {
+  ami_id = var.base_ami_id != "" ? var.base_ami_id : data.terraform_remote_state.amis.outputs.base_amis["ext4-zfs"].id
+}
+EOF
+
 cat <<EOF >> "instances/${name}/variables.tf"
 
 variable "instance_type" {

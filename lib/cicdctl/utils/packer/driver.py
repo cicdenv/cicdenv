@@ -1,6 +1,6 @@
 import json
 
-from . import env, packer_dir, packer_template, workspace
+from . import env, packer_dir, packer_templates, workspace
 
 from ...commands.types.target import Target
 
@@ -16,9 +16,11 @@ packer_commands = [
 
 
 class PackerDriver(object):
-    def __init__(self, settings, fs, flags=[]):
+    def __init__(self, settings, root_fs, ephemeral_fs, builder, flags=[]):
         self.settings = settings
-        self.fs = fs
+        self.root_fs = root_fs
+        self.ephemeral_fs = ephemeral_fs
+        self.builder = builder
         self.flags = flags
 
         self._run = self.settings.runner(cwd=packer_dir, env_ctx=env()).run
@@ -34,20 +36,29 @@ class PackerDriver(object):
         return [outputs[key]['value'] for key in keys]
 
     def _get_variables(self):
-        (vpc, subnets)     = self._tf_outputs('network/shared',  ('vpc', 'subnets'))
-        (key, account_ids) = self._tf_outputs('packer',          ('key', 'allowed_account_ids'))
-        return [
+        (vpc, subnets) = self._tf_outputs('network/shared', ('vpc', 'subnets'))
+        (key, account_ids, main_account) = self._tf_outputs('packer', ('key', 'allowed_account_ids', 'main_account'))
+
+        _variables = [
             '-var', f'vpc_id={vpc["id"]}',
             '-var', f'subnet_id={list(subnets["public"].values())[0]["id"]}',
             '-var', f'key_id={key["key_id"]}',
             '-var', f'account_ids={json.dumps(account_ids)}',
-            '-var', f'ephemeral_fs={self.fs}',
+            '-var', f'root_fs={self.root_fs}',
         ]
+        if self.builder == 'ebs':
+            _variables.append('-var')
+            _variables.append(f'ephemeral_fs={self.ephemeral_fs}')
+            if self.root_fs == 'zfs':
+                _variables.append('-var')
+                _variables.append(f'source_owner={main_account["id"]}')
+        return _variables
+            
 
     def _run_packer(self, command):
         vars = self._get_variables()
         self._ensure_routing()
-        self._run(['packer', command] + vars + [packer_template])
+        self._run(['packer', command] + vars + [packer_templates[self.builder]])
 
     def __getattr__(self, name):
         if name in packer_commands:

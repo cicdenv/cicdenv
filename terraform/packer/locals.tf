@@ -1,4 +1,6 @@
 locals {
+  main_account = data.terraform_remote_state.accounts.outputs.main_account
+
   allowed_account_roots = data.terraform_remote_state.accounts.outputs.all_roots
   allowed_account_ids   = values(data.terraform_remote_state.accounts.outputs.organization_accounts)[*]["id"]
 

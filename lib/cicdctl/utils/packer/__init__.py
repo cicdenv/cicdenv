@@ -8,7 +8,10 @@ workspace = 'main'
 # Use packer/ as the current working directory
 packer_dir = path.join(getcwd(), 'packer')
 
-packer_template = 'ubuntu-20-04.pkr.hcl'
+packer_templates = {
+    'ebs': 'ubuntu-20-04.pkr.hcl',
+    'ebssurrogate': 'ubuntu-20-04-ebssurrogate.pkr.hcl',
+}
 
 
 def env():

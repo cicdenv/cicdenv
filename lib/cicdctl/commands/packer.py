@@ -1,5 +1,4 @@
 import click
-
 from . import PASS_THRU_FLAGS, commands
 from .types.flag import FlagParamType
 
@@ -20,10 +19,12 @@ def packer(settings):
 for command in commands(__file__):
     def bind_command(command):
         @click.pass_obj
-        @click.option('--fs', type=click.Choice(['none', 'ext4', 'zfs'], case_sensitive=False), required=True)
+        @click.option('--root-fs', type=click.Choice(['ext4', 'zfs']), default='ext4')
+        @click.option('--ephemeral-fs', type=click.Choice(['none', 'ext4', 'zfs']), default='none')
+        @click.option('--builder', type=click.Choice(['ebs', 'ebssurrogate']), default='ebs')
         @click.argument('flags', nargs=-1, type=FlagParamType())
-        def command_func(settings, fs, flags):
-            driver_method = getattr(PackerDriver(settings, fs, flags), command)
+        def command_func(settings, root_fs, ephemeral_fs, builder, flags):
+            driver_method = getattr(PackerDriver(settings, root_fs, ephemeral_fs, builder, flags), command)
             driver_method()
         command_func.__name__ = command
     

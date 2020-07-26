@@ -14,8 +14,27 @@ variable "account_ids" {
   type = list(string)
 }
 
+variable "source_pkr_hcl" {
+  default = "https://github.com/vogtech/cicdenv/packer/ubuntu-20.04.pkr.hcl"
+}
+
+variable "root_fs" {
+  type = string
+}
+
 variable "ephemeral_fs" {
   type = string
+}
+
+variable "source_owner" {
+  default = "099720109477"  # or 014719181291 for root volume zfs
+}
+
+locals {
+  source_ami = {
+    ext4 = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"  # Ubuntu LTS
+    zfs  = "zfs/ubuntu-20.04-amd64-*"                                 # Custom source AMI
+  }
 }
 
 source "amazon-ebs" "builder" {
@@ -25,12 +44,12 @@ source "amazon-ebs" "builder" {
   
   source_ami_filter {
     filters = {
-      name = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
+      name = local.source_ami[var.root_fs]
 
       virtualization-type = "hvm"
       root-device-type    = "ebs"
     }
-    owners      = ["099720109477"]
+    owners      = [var.source_owner]
     most_recent = true
   }
 
@@ -42,8 +61,8 @@ source "amazon-ebs" "builder" {
   ssh_interface = "public_ip"
   ssh_timeout   = "2m"
 
-  ami_name        = "base/ubuntu-20.04-amd64-${var.ephemeral_fs}-{{ isotime | clean_resource_name }}"
-  ami_description = "https://github.com/vogtech/cicdenv/packer/ubuntu-20.04-${var.ephemeral_fs}.pkr.hcl"
+  ami_name        = "base/ubuntu-20.04-amd64-${var.root_fs}-${var.ephemeral_fs}-{{ isotime | clean_resource_name }}"
+  ami_description = "template=${var.source_pkr_hcl} source-ami=${var.root_fs} ephemeral-fs=${var.ephemeral_fs}"
   snapshot_users  = var.account_ids
   ami_users       = var.account_ids
 
@@ -70,7 +89,7 @@ source "amazon-ebs" "builder" {
   iam_instance_profile = "packer-build"
 
   tags = {
-    Name = "base/ubuntu-20.04-amd64-${var.ephemeral_fs}"
+    Name = "base/ubuntu-20.04-amd64-${var.root_fs}-${var.ephemeral_fs}"
   }
 }
 
@@ -101,7 +120,7 @@ build {
 
   provisioner "file" {
     source      = "/tmp/info.txt"
-    destination = "./ami-info/ubuntu-20.04-${var.ephemeral_fs}-{{ isotime \"2006-01-02T15-04-05Z07\" }}.txt"
+    destination = "./ami-info/ubuntu-20.04-${var.root_fs}-${var.ephemeral_fs}-{{ isotime \"2006-01-02T15-04-05Z07\" }}.txt"
     direction   = "download"
   }
 }

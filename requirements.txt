@@ -2,6 +2,7 @@ awscli
 aws-mfa
 pytest
 click
+click-option-group
 pyhcl
 python-hcl2
 pytz

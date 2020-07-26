@@ -38,27 +38,75 @@ locals {
 ## Outputs
 ```hcl
 base_amis = {
-  "ext4" = {
+  "ext4-ext4" = {
     "architecture" = "x86_64"
     "creation_date" = "<yyyy-mm-ddTHH-MM-SSZ>"
-    "description" = "<github-repo>/packer/ubuntu-20.04-ext4.pkr.hcl"
+    "description" = "template=<github-repo>/packer/ubuntu-20.04.pkr.hcl source-ami=ext4 ephemeral-fs=ext4"
     "hypervisor" = "xen"
     "id" = "ami-<0x*17>"
-    "image_location" = "<account-id>/base/ubuntu-20.04-amd64-ext4-<yyyy-mm-ddTHH-MM-SSZ>"
+    "image_location" = "<account-id>/base/ubuntu-20.04-amd64-ext4-ext4-<yyyy-mm-ddTHH-MM-SSZ>"
     "most_recent" = true
-    "name" = "base/ubuntu-20.04-amd64-ext4-<yyyy-mm-ddTHH-MM-SSZ>"
+    "name" = "base/ubuntu-20.04-amd64-ext4-ext4-<yyyy-mm-ddTHH-MM-SSZ>"
     "owner_id" = "<account-id>"
     "root_snapshot_id" = "snap-<0x*17>"
   }
-  "zfs" = {
+  "ext4-none" = {
     "architecture" = "x86_64"
     "creation_date" = "<yyyy-mm-ddTHH-MM-SSZ>"
-    "description" = "<github-repo>/packer/ubuntu-20.04-zfs.pkr.hcl"
+    "description" = "template=<github-repo>/packer/ubuntu-20.04.pkr.hcl source-ami=ext4 ephemeral-fs=none"
     "hypervisor" = "xen"
     "id" = "ami-<0x*17>"
-    "image_location" = "<account-id>/base/ubuntu-20.04-amd64-zfs-<yyyy-mm-ddTHH-MM-SSZ>"
+    "image_location" = "<account-id>/base/ubuntu-20.04-amd64-ext4-none-<yyyy-mm-ddTHH-MM-SSZ>"
     "most_recent" = true
-    "name" = "base/ubuntu-20.04-amd64-zfs-<yyyy-mm-ddTHH-MM-SSZ>"
+    "name" = "base/ubuntu-20.04-amd64-ext4-none-<yyyy-mm-ddTHH-MM-SSZ>"
+    "owner_id" = "<account-id>"
+    "root_snapshot_id" = "snap-<0x*17>"
+  }
+  "ext4-zfs" = {
+    "architecture" = "x86_64"
+    "creation_date" = "<yyyy-mm-ddTHH-MM-SSZ>"
+    "description" = "template=<github-repo>/packer/ubuntu-20.04.pkr.hcl source-ami=ext4 ephemeral-fs=zfs"
+    "hypervisor" = "xen"
+    "id" = "ami-<0x*17>"
+    "image_location" = "<account-id>/base/ubuntu-20.04-amd64-ext4-zfs-<yyyy-mm-ddTHH-MM-SSZ>"
+    "most_recent" = true
+    "name" = "base/ubuntu-20.04-amd64-ext4-zfs-<yyyy-mm-ddTHH-MM-SSZ>"
+    "owner_id" = "<account-id>"
+    "root_snapshot_id" = "snap-<0x*17>"
+  }
+  "zfs-ext4" = {
+    "architecture" = "x86_64"
+    "creation_date" = "<yyyy-mm-ddTHH-MM-SSZ>"
+    "description" = "template=<github-repo>/packer/ubuntu-20.04.pkr.hcl source-ami=zfs ephemeral-fs=ext4"
+    "hypervisor" = "xen"
+    "id" = "ami-<0x*17>"
+    "image_location" = "<account-id>/base/ubuntu-20.04-amd64-zfs-ext4-<yyyy-mm-ddTHH-MM-SSZ>"
+    "most_recent" = true
+    "name" = "base/ubuntu-20.04-amd64-zfs-ext4-<yyyy-mm-ddTHH-MM-SSZ>"
+    "owner_id" = "<account-id>"
+    "root_snapshot_id" = "snap-<0x*17>"
+  }
+  "zfs-none" = {
+    "architecture" = "x86_64"
+    "creation_date" = "<yyyy-mm-ddTHH-MM-SSZ>"
+    "description" = "template=<github-repo>/packer/ubuntu-20.04.pkr.hcl source-ami=zfs ephemeral-fs=none"
+    "hypervisor" = "xen"
+    "id" = "ami-<0x*17>"
+    "image_location" = "<account-id>/base/ubuntu-20.04-amd64-zfs-none-<yyyy-mm-ddTHH-MM-SSZ>"
+    "most_recent" = true
+    "name" = "base/ubuntu-20.04-amd64-zfs-none-<yyyy-mm-ddTHH-MM-SSZ>"
+    "owner_id" = "<account-id>"
+    "root_snapshot_id" = "snap-<0x*17>"
+  }
+  "zfs-zfs" = {
+    "architecture" = "x86_64"
+    "creation_date" = "<yyyy-mm-ddTHH-MM-SSZ>"
+    "description" = "template=<github-repo>/packer/ubuntu-20.04.pkr.hcl source-ami=zfs ephemeral-fs=zfs"
+    "hypervisor" = "xen"
+    "id" = "ami-<0x*17>"
+    "image_location" = "<account-id>/base/ubuntu-20.04-amd64-zfs-zfs-<yyyy-mm-ddTHH-MM-SSZ>"
+    "most_recent" = true
+    "name" = "base/ubuntu-20.04-amd64-zfs-zfs-<yyyy-mm-ddTHH-MM-SSZ>"
     "owner_id" = "<account-id>"
     "root_snapshot_id" = "snap-<0x*17>"
   }
