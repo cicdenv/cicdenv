@@ -1,6 +1,14 @@
+#
+# Additional components to visit
+#
+# Schema:
+# <component>:
+# - list(followups)
+#
+# followup:
+#   ops: [{apply, destroy}]
+#   target: <target>
+#   type: {apply}
+#   opts: {-auto-approve}
+#
 cascades:
-  network/shared:
-  - ops: [apply, destroy]
-    target: shared/apt-repo:main  # cross account s3 (VPC Endpoints)
-    type: apply
-    opts: -auto-approve

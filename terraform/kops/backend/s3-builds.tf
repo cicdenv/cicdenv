@@ -39,40 +39,6 @@ data "aws_iam_policy_document" "kops_builds_s3" {
 
   statement {
     principals {
-      type = "AWS"
-
-      identifiers = [
-        "*",
-      ]
-    }
-
-    actions = [
-      "s3:List*",
-      "s3:Get*",
-    ]
-
-    resources = [
-      "arn:aws:s3:::${aws_s3_bucket.kops_builds.bucket}",
-      "arn:aws:s3:::${aws_s3_bucket.kops_builds.bucket}/kops/*",
-    ]
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:sourceVpce"
-      values   = local.vpc_endpoints
-    }
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:PrincipalOrgID"
-      values   = [
-        local.organization.id,
-      ]
-    }
-  }
-
-  statement {
-    principals {
       type = "*"
 
       identifiers = ["*"]

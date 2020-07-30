@@ -56,40 +56,6 @@ data "aws_iam_policy_document" "kops_state_s3" {
     }
 
     actions = [
-      "s3:List*",
-      "s3:Get*",
-    ]
-
-    resources = [
-      "arn:aws:s3:::${aws_s3_bucket.kops_state.bucket}",
-      "arn:aws:s3:::${aws_s3_bucket.kops_state.bucket}/kops/*",
-    ]
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:sourceVpce"
-      values   = local.vpc_endpoints
-    }
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:PrincipalOrgID"
-      values   = [
-        local.organization.id,
-      ]
-    }
-  }
-
-  statement {
-    principals {
-      type = "AWS"
-
-      identifiers = [
-        "*",
-      ]
-    }
-
-    actions = [
       "s3:PutObject",
     ]
 

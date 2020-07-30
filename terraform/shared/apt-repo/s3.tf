@@ -35,40 +35,6 @@ data "aws_iam_policy_document" "apt_repo" {
       ]
     }
   }
-
-  statement {
-    principals {
-      type = "AWS"
-
-      identifiers = [
-        "*",
-      ]
-    }
-
-    actions = [
-      "s3:List*",
-      "s3:Get*",
-    ]
-
-    resources = [
-      "arn:aws:s3:::${aws_s3_bucket.apt_repo.id}",
-      "arn:aws:s3:::${aws_s3_bucket.apt_repo.id}/*",
-    ]
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:sourceVpce"
-      values   = local.vpc_endpoints
-    }
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:PrincipalOrgID"
-      values   = [
-        local.organization.id,
-      ]
-    }
-  }
 }
 
 resource "aws_s3_bucket_policy" "apt_repo" {
