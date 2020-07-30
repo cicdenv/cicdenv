@@ -9,3 +9,13 @@ data "null_data_source" "cluster_tags" {
     Value = "shared"
   }
 }
+
+data "aws_s3_bucket_object" "event_subscriber_lambda" {
+  bucket = local.lambda_bucket.id
+  key    = local.event_subscriber_lambda_key
+}
+
+data "aws_s3_bucket_object" "ssh_keys_lambda" {
+  bucket = local.lambda_bucket.id
+  key    = local.ssh_keys_lambda_key
+}

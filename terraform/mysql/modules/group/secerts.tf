@@ -9,8 +9,12 @@ module "tls_keys" {
   suffix = "tls"
   desc   = "keys"
   random = random_string.random.result
+  lambda = "mysql-tls-generator"
 
-  filename = "${path.module}/../../shared/tls-function/lambda.zip"
+  terraform_state = {
+    region = var.terraform_state.region
+    bucket = var.terraform_state.bucket
+  }
 }
 
 module "credentials" {
@@ -20,6 +24,10 @@ module "credentials" {
   suffix = "creds"
   desc   = "passwords"
   random = random_string.random.result
+  lambda = "mysql-creds-generator"
 
-  filename = "${path.module}/../../shared/creds-function/lambda.zip"
+  terraform_state = {
+    region = var.terraform_state.region
+    bucket = var.terraform_state.bucket
+  }
 }

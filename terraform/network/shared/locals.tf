@@ -28,6 +28,11 @@ locals {
 
   iam_user_updates_sns_topic = data.terraform_remote_state.iam_events.outputs.sns.topics.iam_user_updates
   
+  lambda_bucket = data.terraform_remote_state.lambda.outputs.lambda.bucket
+
   event_subscriber_function_name = "event-subscriber-bastion-service"
-  ssh_keys_function_name         = "shared-ec2-keypair-generator"
+  event_subscriber_lambda_key    = "functions/${local.event_subscriber_function_name}.zip"
+
+  ssh_keys_function_name = "shared-ec2-keypair-generator"
+  ssh_keys_lambda_key    = "functions/${local.ssh_keys_function_name}.zip"
 }

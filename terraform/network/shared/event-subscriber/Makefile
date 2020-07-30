@@ -2,14 +2,22 @@
 
 SHELL=/bin/bash
 
+AWS_PROFILE=admin-main
+AWS_REGION=us-west-2
+
 package: lambda.zip
 
-target:
-	mkdir target
-
-lambda.zip: target deps lambda.py
-	cp lambda.py .python-version target
+lambda.zip: lambda.py
+	mkdir -p target
+	pip install --upgrade -r requirements.txt --target target
+	cp *.py target
 	(cd target; zip ../lambda.zip -r .)
 
-deps: target
-	pip install --upgrade -r requirements.txt --target target
+domain_config=$(CURDIR)/../../../domain.tfvars
+domain=$(shell grep 'domain ' "$(domain_config)" | awk -F= '{print $$2}' | sed 's/[" ]//g' | sed 's/\./-/g')
+s3_bucket=lambda-$(domain)
+function_name=event-subscriber-bastion-service
+
+upload: lambda.zip
+	$(CURDIR)/../../../../bin/cicdctl creds aws-mfa main
+	aws --profile=$(AWS_PROFILE) --region=$(AWS_REGION) s3 cp "lambda.zip" "s3://$(s3_bucket)/functions/$(function_name).zip"

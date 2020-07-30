@@ -1,5 +1,5 @@
 resource "aws_iam_role" "github_oauth_callback" {
-  name = "jenkins-github-oauth-callback"
+  name = local.oauth_function_name
 
   assume_role_policy = data.aws_iam_policy_document.lambda_trust.json
 }

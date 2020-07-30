@@ -1,5 +1,5 @@
 resource "aws_iam_role" "kops_ca" {
-  name = "kops-ca-secret-lambda"
+  name = local.kops_ca_function_name
 
   description = "KOPS - CA creator / renewer"
 

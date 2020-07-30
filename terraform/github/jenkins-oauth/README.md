@@ -17,8 +17,8 @@ N/A.
 ```hcl
 cloudwatch_log_groups = {
   "github_oauth_callback" = {
-    "arn" = "arn:aws:logs:<region>:<main-acct-id>:log-group:/aws/lambda/jenkins-github-oauth-AWS_PROXY:*"
-    "name" = "/aws/lambda/jenkins-github-oauth-AWS_PROXY"
+    "arn" = "arn:aws:logs:<region>:<main-acct-id>:log-group:/aws/lambda/jenkins-github-oauth-callback:*"
+    "name" = "/aws/lambda/jenkins-github-oauth-callback"
   }
 }
 dns = jenkins.cicdenv.com.cicdenv.com
@@ -43,7 +43,7 @@ iam = {
 }
 lambdas = {
   "github_oauth_callback" = {
-    "function_name" = "jenkins-github-oauth-AWS_PROXY"
+    "function_name" = "jenkins-github-oauth-callback"
     "handler" = "lambda.lambda_handler"
     "runtime" = "python3.7"
   }

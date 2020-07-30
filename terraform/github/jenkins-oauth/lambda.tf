@@ -1,11 +1,21 @@
 resource "aws_lambda_function" "github_oauth_callback" {
-  filename      = "github-oauth-callback/lambda.zip"
-  function_name = "jenkins-github-oauth-AWS_PROXY"
+  function_name = local.oauth_function_name
   role          = aws_iam_role.github_oauth_callback.arn
   handler       = "lambda.lambda_handler"
-  runtime       = "python3.7"
 
-  source_code_hash = filebase64sha256("github-oauth-callback/lambda.zip")
+  s3_bucket = local.lambda_bucket.id
+  s3_key    = local.oauth_lambda_key
+
+  # https://github.com/terraform-providers/terraform-provider-aws/issues/7385
+  # source_code_hash = base64sha256(data.aws_s3_bucket_object.lambda.etag)
+  s3_object_version = data.aws_s3_bucket_object.lambda.version_id
+
+  runtime = "python3.7"
+
+  depends_on = [
+    aws_iam_role_policy_attachment.github_oauth_callback, 
+    aws_cloudwatch_log_group.github_oauth_callback,
+  ]
 }
 
 resource "aws_lambda_permission" "apigw_lambda" {

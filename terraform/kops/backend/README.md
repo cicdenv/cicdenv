@@ -32,41 +32,41 @@ data "terraform_remote_state" "backend" {
 irsa = {
   "cluster_spec" = {
     "fileAssets" = "content: ...\n  isBase64: true\n  name: service-account-signing-key-file\n  path: /srv/kubernetes/assets/service-account-signing-key\n- content: ...\n  isBase64: true\n  name: service-account-key-file\n  path: /srv/kubernetes/assets/service-account-key\n"
-    "kubeAPIServer" = "apiAudiences:\n- sts.amazonaws.com\nserviceAccountIssuer: https://oidc-irsa-cicdenv-com.s3.amazonaws.com\nserviceAccountKeyFile:\n- /srv/kubernetes/server.key\n- /srv/kubernetes/assets/service-account-key\nserviceAccountSigningKeyFile: /srv/kubernetes/assets/service-account-signing-key\n"
+    "kubeAPIServer" = "apiAudiences:\n- sts.amazonaws.com\nserviceAccountIssuer: https://oidc-irsa-<domain->.s3.amazonaws.com\nserviceAccountKeyFile:\n- /srv/kubernetes/server.key\n- /srv/kubernetes/assets/service-account-key\nserviceAccountSigningKeyFile: /srv/kubernetes/assets/service-account-signing-key\n"
   }
   "oidc" = {
     "iam" = {
       "oidc_provider" = {
-        "arn" = "arn:aws:iam::<main-acct-id>:oidc-provider/oidc-irsa-cicdenv-com.s3.amazonaws.com"
+        "arn" = "arn:aws:iam::<main-acct-id>:oidc-provider/oidc-irsa-<domain->.s3.amazonaws.com"
         "client_id_list" = [
           "sts.amazonaws.com",
         ]
         "thumbprint_list" = [
           "3fe05b486e3f0987130ba1d4ea0f299539a58243",
         ]
-        "url" = "oidc-irsa-cicdenv-com.s3.amazonaws.com"
+        "url" = "oidc-irsa-<domain->.s3.amazonaws.com"
       }
     }
     "s3" = {
       "oidc_issuer" = {
-        "bucket_domain_name" = "oidc-irsa-cicdenv-com.s3.amazonaws.com"
-        "bucket_name" = "oidc-irsa-cicdenv-com"
+        "bucket_domain_name" = "oidc-irsa-<domain->.s3.amazonaws.com"
+        "bucket_name" = "oidc-irsa-<domain->"
       }
     }
   }
 }
 builds = {
   "bucket" = {
-    "arn" = "arn:aws:s3:::kops-builds-cicdenv-com"
-    "id" = "kops-builds-cicdenv-com"
-    "name" = "kops-builds-cicdenv-com"
+    "arn" = "arn:aws:s3:::kops-builds-<domain->"
+    "id" = "kops-builds-<domain->"
+    "name" = "kops-builds-<domain->"
   }
 }
 state_store = {
   "bucket" = {
-    "arn" = "arn:aws:s3:::kops-state-cicdenv-com"
-    "id" = "kops-state-cicdenv-com"
-    "name" = "kops-state-cicdenv-com"
+    "arn" = "arn:aws:s3:::kops-state-<domain->"
+    "id" = "kops-state-<domain->"
+    "name" = "kops-state-<domain->"
   }
   "key" = {
     "alias" = "alias/kops-state"
