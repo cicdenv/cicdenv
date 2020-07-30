@@ -6,7 +6,7 @@ data "aws_iam_policy_document" "iam_user_updates" {
       type = "AWS"
 
       identifiers = [
-        "*",
+        local.main_account.root,
       ]
     }
 
@@ -25,15 +25,6 @@ data "aws_iam_policy_document" "iam_user_updates" {
     resources = [
       aws_sns_topic.iam_user_updates.arn
     ]
-
-    condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceOwner"
-
-      values = [
-        data.aws_caller_identity.current.account_id
-      ]
-    }
   }
   
   statement {
@@ -62,7 +53,9 @@ data "aws_iam_policy_document" "iam_user_updates" {
     principals {
       type = "AWS"
       
-      identifiers = local.all_account_roots
+      identifiers = [
+        "*",
+      ]
     }
 
     actions = [
@@ -72,6 +65,14 @@ data "aws_iam_policy_document" "iam_user_updates" {
     resources = [
       aws_sns_topic.iam_user_updates.arn
     ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [
+        local.organization.id,
+      ]
+    }
   }
 }
 

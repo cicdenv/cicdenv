@@ -8,11 +8,34 @@ data "aws_iam_policy_document" "repo" {
     principals {
       type = "AWS"
       
-      identifiers = local.all_account_roots
+      identifiers = [
+        local.main_account.root,
+      ]
     }
 
-    # arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+    actions = [
+      "ecr:*",
+    ]
+  }
+
+  statement {
+    principals {
+      type = "AWS"
+      
+      identifiers = [
+        "*",
+      ]
+    }
+
     actions = local.subaccount_permissions
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [
+        local.organization.id,
+      ]
+    }
   }
 }
 

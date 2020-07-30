@@ -12,7 +12,10 @@ data "aws_iam_policy_document" "kops_service_accounts" {
   statement {
     principals {
       type = "AWS"
-      identifiers = local.org_account_roots
+      
+      identifiers = [
+        "*",
+      ]
     }
 
     actions = [
@@ -22,5 +25,13 @@ data "aws_iam_policy_document" "kops_service_accounts" {
     resources = [
       "*",
     ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [
+        local.organization.id,
+      ]
+    }
   }
 }

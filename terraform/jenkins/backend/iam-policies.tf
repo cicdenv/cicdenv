@@ -2,7 +2,10 @@ data "aws_iam_policy_document" "jenkins_key" {
   statement {
     principals {
       type = "AWS"
-      identifiers = local.all_account_roots
+
+      identifiers = [
+        local.main_account.root,
+      ]
     }
 
     actions = [
@@ -13,13 +16,48 @@ data "aws_iam_policy_document" "jenkins_key" {
       "*",
     ]
   }
+
+  statement {
+    principals {
+      type = "AWS"
+      
+      identifiers = [
+        "*",
+      ]
+    }
+
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:Generate*",
+      "kms:Describe*",
+      "kms:Get*",
+      "kms:List*",
+    ]
+
+    resources = [
+      "*",
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [
+        local.organization.id,
+      ]
+    }
+  }
 }
 
 data "aws_iam_policy_document" "jenkins_secret" {
   statement {
     principals {
       type = "AWS"
-      identifiers = local.org_account_roots
+
+      identifiers = [
+        "*",
+      ]
     }
 
     actions = [
@@ -29,5 +67,13 @@ data "aws_iam_policy_document" "jenkins_secret" {
     resources = [
       "*",
     ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [
+        local.organization.id,
+      ]
+    }
   }
 }

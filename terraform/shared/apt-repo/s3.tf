@@ -12,7 +12,9 @@ data "aws_iam_policy_document" "apt_repo" {
     principals {
       type = "AWS"
 
-      identifiers = local.org_account_roots
+      identifiers = [
+        "*",
+      ]
     }
 
     actions = [
@@ -24,13 +26,23 @@ data "aws_iam_policy_document" "apt_repo" {
       "arn:aws:s3:::${aws_s3_bucket.apt_repo.id}",
       "arn:aws:s3:::${aws_s3_bucket.apt_repo.id}/*",
     ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [
+        local.organization.id,
+      ]
+    }
   }
 
   statement {
     principals {
       type = "AWS"
 
-      identifiers = local.org_account_roots
+      identifiers = [
+        "*",
+      ]
     }
 
     actions = [
@@ -47,6 +59,14 @@ data "aws_iam_policy_document" "apt_repo" {
       test     = "StringEquals"
       variable = "aws:sourceVpce"
       values   = local.vpc_endpoints
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [
+        local.organization.id,
+      ]
     }
   }
 }

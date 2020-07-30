@@ -12,39 +12,26 @@ data "aws_iam_policy_document" "lambda" {
     principals {
       type = "AWS"
 
-      identifiers = local.org_account_roots
+      identifiers = [
+        "*",
+      ]
     }
 
     actions = [
-      "s3:*",
+      "s3:Get*",
+      "s3:List*",
     ]
 
     resources = [
       "arn:aws:s3:::${aws_s3_bucket.lambda.bucket}",
       "arn:aws:s3:::${aws_s3_bucket.lambda.bucket}/*",
     ]
-  }
-
-  statement {
-    principals {
-      type = "AWS"
-
-      identifiers = local.org_account_roots
-    }
-
-    actions = [
-      "s3:PutObject",
-    ]
-
-    resources = [
-      "arn:aws:s3:::${aws_s3_bucket.lambda.bucket}/*",
-    ]
 
     condition {
       test     = "StringEquals"
-      variable = "s3:x-amz-acl"
+      variable = "aws:PrincipalOrgID"
       values   = [
-        "bucket-owner-full-control",
+        local.organization.id,
       ]
     }
   }

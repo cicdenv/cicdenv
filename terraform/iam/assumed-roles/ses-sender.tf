@@ -9,12 +9,36 @@ data "aws_iam_policy_document" "ses_sender_trust" {
     principals {
       type = "AWS"
 
-      identifiers = local.all_account_roots
+      identifiers = [
+        local.main_account.root,
+      ]
     }
 
     actions = [
       "sts:AssumeRole",
     ]
+  }
+  
+  statement {
+    principals {
+      type = "AWS"
+
+      identifiers = [
+        "*",
+      ]
+    }
+
+    actions = [
+      "sts:AssumeRole",
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [
+        local.organization.id,
+      ]
+    }
   }
 }
 

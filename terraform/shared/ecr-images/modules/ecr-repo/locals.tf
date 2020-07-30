@@ -1,5 +1,6 @@
 locals {
-  all_account_roots = data.terraform_remote_state.accounts.outputs.all_roots
+  main_account = data.terraform_remote_state.accounts.outputs.main_account
+  organization = data.terraform_remote_state.accounts.outputs.organization
 
   # arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
   ecr_read_actions = [

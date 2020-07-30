@@ -16,7 +16,9 @@ data "aws_iam_policy_document" "terraform_state_s3" {
     principals {
       type = "AWS"
 
-      identifiers = local.org_account_roots
+      identifiers = [
+        "*",
+      ]
     }
 
     actions = [
@@ -27,13 +29,23 @@ data "aws_iam_policy_document" "terraform_state_s3" {
     resources = [
       "arn:aws:s3:::${var.bucket}",
     ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [
+        aws_organizations_organization.organization.id,
+      ]
+    }
   }
 
   statement {
     principals {
       type = "AWS"
 
-      identifiers = local.org_account_roots
+      identifiers = [
+        "*",
+      ]
     }
 
     actions = [
@@ -43,13 +55,23 @@ data "aws_iam_policy_document" "terraform_state_s3" {
     resources = [
       "arn:aws:s3:::${var.bucket}/*",
     ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [
+        aws_organizations_organization.organization.id,
+      ]
+    }
   }
 
   statement {
     principals {
       type = "AWS"
 
-      identifiers = local.org_account_roots
+      identifiers = [
+        "*",
+      ]
     }
 
     actions = [
@@ -66,6 +88,14 @@ data "aws_iam_policy_document" "terraform_state_s3" {
 
       values = [
         "bucket-owner-full-control",
+      ]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [
+        aws_organizations_organization.organization.id,
       ]
     }
   }

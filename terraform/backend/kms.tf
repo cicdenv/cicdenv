@@ -3,7 +3,9 @@ data "aws_iam_policy_document" "terraform_state_key" {
     principals {
       type = "AWS"
 
-      identifiers = local.all_account_roots
+      identifiers = [
+        local.main_account.root,
+      ]
     }
 
     actions = [
@@ -13,6 +15,38 @@ data "aws_iam_policy_document" "terraform_state_key" {
     resources = [
       "*",
     ]
+  }
+
+  statement {
+    principals {
+      type = "AWS"
+
+      identifiers = [
+        "*",
+      ]
+    }
+
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:Generate*",
+      "kms:Describe*",
+      "kms:Get*",
+      "kms:List*",
+    ]
+
+    resources = [
+      "*",
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [
+        aws_organizations_organization.organization.id,
+      ]
+    }
   }
 }
 

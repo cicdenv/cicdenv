@@ -13,39 +13,26 @@ data "aws_iam_policy_document" "kops_builds_s3" {
     principals {
       type = "AWS"
 
-      identifiers = local.org_account_roots
+      identifiers = [
+        "*",
+      ]
     }
 
     actions = [
-      "s3:*",
+      "s3:Get*",
+      "s3:List*",
     ]
 
     resources = [
       "arn:aws:s3:::${aws_s3_bucket.kops_builds.bucket}",
       "arn:aws:s3:::${aws_s3_bucket.kops_builds.bucket}/*",
     ]
-  }
-
-  statement {
-    principals {
-      type = "AWS"
-
-      identifiers = local.org_account_roots
-    }
-
-    actions = [
-      "s3:PutObject",
-    ]
-
-    resources = [
-      "arn:aws:s3:::${aws_s3_bucket.kops_builds.bucket}/*",
-    ]
 
     condition {
       test     = "StringEquals"
-      variable = "s3:x-amz-acl"
+      variable = "aws:PrincipalOrgID"
       values   = [
-        "bucket-owner-full-control",
+        local.organization.id,
       ]
     }
   }
@@ -54,7 +41,9 @@ data "aws_iam_policy_document" "kops_builds_s3" {
     principals {
       type = "AWS"
 
-      identifiers = local.org_account_roots
+      identifiers = [
+        "*",
+      ]
     }
 
     actions = [
@@ -71,6 +60,14 @@ data "aws_iam_policy_document" "kops_builds_s3" {
       test     = "StringEquals"
       variable = "aws:sourceVpce"
       values   = local.vpc_endpoints
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [
+        local.organization.id,
+      ]
     }
   }
 
@@ -95,6 +92,40 @@ data "aws_iam_policy_document" "kops_builds_s3" {
       test     = "IpAddress"
       variable = "aws:SourceIp"
       values   = var.allowed_cidr_blocks
+    }
+  }
+
+  statement {
+    principals {
+      type = "AWS"
+
+      identifiers = [
+        "*",
+      ]
+    }
+
+    actions = [
+      "s3:PutObject",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.kops_builds.bucket}/*",
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-acl"
+      values   = [
+        "bucket-owner-full-control",
+      ]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [
+        local.organization.id,
+      ]
     }
   }
 }
