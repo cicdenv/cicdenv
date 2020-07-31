@@ -12,6 +12,12 @@ There are two considerations:
 
 ## Usage
 ### Building
+Build a complete set of new AMIs:
+```bash
+📦 $USER:~/cicdenv$ packer/bin/build-amis.sh 
+```
+
+Manually build a complete set of new AMIs in three stages:
 ```bash
 # Create new base AMIs (root-filesystem=ext4, ephemeral-filesystem=*)
 cicdenv$ for fs in none ext4 zfs; do cicdctl packer build --ephemeral-fs "$fs"; done
@@ -20,9 +26,18 @@ cicdenv$ for fs in none ext4 zfs; do cicdctl packer build --ephemeral-fs "$fs"; 
 cicdenv$ cicdctl packer build --builder "ebssurrogate" --root-fs "zfs"
 # Create new base AMIs (root-filesystem=zfs, ephemeral-filesystem=*)
 cicdenv$ for fs in none ext4 zfs; do cicdctl packer build --root-fs "zfs" --ephemeral-fs "$fs"; done
+```
 
-# Turn off private subnet NAT gateways
-cicdenv$ cicdctl terraform destroy network/routing:main
+### Summary
+```bash
+📦 $USER:~/cicdenv$ packer/bin/build-amis.sh 
+cicdctl packer build --ephemeral-fs none
+cicdctl packer build --ephemeral-fs ext4
+cicdctl packer build --ephemeral-fs zfs
+cicdctl packer build --builder ebssurrogate --root-fs zfs
+cicdctl packer build --root-fs zfs --ephemeral-fs none
+cicdctl packer build --root-fs zfs --ephemeral-fs ext4
+cicdctl packer build --root-fs zfs --ephemeral-fs zfs
 ```
 
 | Build Command | AMI Name Pattern | Root FS | Instance Store<br>(Auto Configuration) | Notes |
@@ -69,19 +84,25 @@ base_ami_id = "..."
 cicdenv$ cicdctl jenkins create <instance>:<workspace>
 ```
 
+## New Organization Accounts
+If new org accounts are added AFTER AMIs are built, run:
+```bash
+cicdenv$ packer/bin/set-permissions.sh
+```
+
 ## Cleanup
 ```bash
+# Turn off private subnet NAT gateways
+cicdenv$ cicdctl terraform destroy network/routing:main -force
+
 # Interactive shell
 cicdenv$ make
 
-# Remove all but the most recent kops custom AMIs
+# Remove all but the most recent AMIs
 ${USER}:~/cicdenv$ packer/bin/remove-old.sh
-${USER}:~/cicdenv$ packer/bin/remove-old.sh 'base/ubuntu-20.04-amd64-*'
-${USER}:~/cicdenv$ packer/bin/remove-old.sh 'zfs/ubuntu-20.04-amd64-*'
 
 # Removal all AMIs
 ${USER}:~/cicdenv$ packer/bin/remove-all.sh
-${USER}:~/cicdenv$ exit
 ```
 
 ## NVMe Instance Stores

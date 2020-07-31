@@ -61,27 +61,21 @@ source "amazon-ebssurrogate" "builder" {
     device_name = "/dev/xvda"
     volume_size = 50
 
-    iops = 2500
-
     delete_on_termination = true
   }
 
   launch_block_device_mappings {
     device_name = "/dev/sda1"
-    volume_type = "io1"
+    volume_type = "gp2"
     volume_size = 50
-
-    iops = 2500
 
     delete_on_termination = true
   }
 
   launch_block_device_mappings {
     device_name = "/dev/xvdf"
-    volume_type = "io1"
+    volume_type = "gp2"
     volume_size = 50
-
-    iops = 2500
 
     delete_on_termination = true
   }
@@ -119,10 +113,12 @@ build {
   }
 
   provisioner "shell" {
+    script = "scripts/proceed-when-safe.sh"
+    execute_command = "sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
+  }
+
+  provisioner "shell" {
     script = "ebssurrogate/${var.root_fs}/scripts/surrogate-bootstrap.sh"
     execute_command = "sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
-
-    start_retry_timeout = "5m"
-    skip_clean = true
   }
 }

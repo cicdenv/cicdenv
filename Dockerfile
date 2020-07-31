@@ -73,12 +73,17 @@ RUN apk --no-cache --update add  \
     netcat-openbsd               \
     openssh                      \
     openssl                      \
+    parallel                     \
     socat                        \
     sudo                         \
     tzdata                       \
     vim                          \
     yaml                         \
     zip
+
+# Turn off parallel citation messages
+RUN mkdir -p "/home/terraform/.parallel" \
+ && touch "/home/terraform/.parallel/will-cite"
 
 # Allow su to root
 RUN echo "${nonroot_user} ALL=(ALL) NOPASSWD:ALL" > "/etc/sudoers.d/${nonroot_user}" \

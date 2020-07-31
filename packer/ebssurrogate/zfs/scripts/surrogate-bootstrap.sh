@@ -4,12 +4,6 @@ set -eux -o pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
-# Wait for cloudinit on the surrogate to complete before making progress
-while [[ ! -f /var/lib/cloud/instance/boot-finished ]]; do
-    echo 'Waiting for cloud-init...'
-    sleep 1
-done
-
 # Update apt and install required packages
 apt-get update
 apt-get install -y \

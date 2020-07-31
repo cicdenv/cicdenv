@@ -68,20 +68,16 @@ source "amazon-ebs" "builder" {
 
   ami_block_device_mappings {
     device_name = "/dev/sda1"
-    volume_type = "io1"
+    volume_type = "gp2"
     volume_size = 50
-    
-    iops = 2500
     
     delete_on_termination = true
   }
 
   launch_block_device_mappings {
     device_name = "/dev/sda1"
-    volume_type = "io1"
+    volume_type = "gp2"
     volume_size = 50
-
-    iops = 2500
 
     delete_on_termination = true
   }
@@ -97,7 +93,12 @@ build {
   sources = [
     "source.amazon-ebs.builder"
   ]
-  
+
+  provisioner "shell" {
+    script = "./scripts/proceed-when-safe.sh"
+    execute_command = "sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
+  }
+
   provisioner "ansible" {
     playbook_file = "./ansible/playbook-${var.ephemeral_fs}.yml"
     
@@ -106,21 +107,14 @@ build {
     ]
   }
 
-  provisioner "file" {
-    source      = "./scripts/info.sh"
-    destination = "/tmp/info.sh"
-  }
-
   provisioner "shell" {
-    inline = [
-      "sudo chmod +x /tmp/info.sh",
-      "sudo /tmp/info.sh > /tmp/info.txt"
-    ]
+    script = "scripts/info.sh"
+    execute_command = "sudo -S sh -c '{{ .Vars }} {{ .Path }} > /tmp/info.txt'"
   }
 
   provisioner "file" {
     source      = "/tmp/info.txt"
-    destination = "./ami-info/ubuntu-20.04-${var.root_fs}-${var.ephemeral_fs}-{{ isotime \"2006-01-02T15-04-05Z07\" }}.txt"
+    destination = "ami-info/ubuntu-20.04-${var.root_fs}-${var.ephemeral_fs}-{{ isotime \"2006-01-02T15-04-05Z07\" }}.txt"
     direction   = "download"
   }
 }
