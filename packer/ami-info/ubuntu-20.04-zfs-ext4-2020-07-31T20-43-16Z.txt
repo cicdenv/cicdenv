@@ -13,7 +13,7 @@ VERSION_CODENAME=focal
 UBUNTU_CODENAME=focal
 
 -- kernel --
-5.4.0-1020-aws
+5.4.0-1021-aws
 
 -- system python --
 Python 3.8.2
@@ -106,7 +106,7 @@ zipp==1.0.0
 zope.interface==4.7.1
 
 -- aws cli --
-aws-cli/1.18.105 Python/3.8.2 Linux/5.4.0-1020-aws botocore/1.17.28
+aws-cli/1.18.110 Python/3.8.2 Linux/5.4.0-1021-aws botocore/1.17.33
 
 -- packages --
 accountsservice                | 0.6.55-0ubuntu12~20.04.1
@@ -115,13 +115,16 @@ adduser                        | 3.118ubuntu2
 adwaita-icon-theme             | 3.36.1-2ubuntu0.20.04.2
 alsa-topology-conf             | 1.2.2-1
 alsa-ucm-conf                  | 1.2.2-1ubuntu0.1
+amazon-ecr-credential-helper   | 0.4.1
 apparmor                       | 2.13.3-7ubuntu5.1
 apport                         | 2.20.11-0ubuntu27.4
 apport-symptoms                | 0.23
 apt                            | 2.0.2ubuntu0.1
+apt-transport-https            | 2.0.2ubuntu0.1
 apt-utils                      | 2.0.2ubuntu0.1
 at                             | 3.1.23-1ubuntu1
 atop                           | 2.4.0-3
+aufs-tools                     | 1:4.14+20190211-1ubuntu1
 base-files                     | 11ubuntu5.1
 base-passwd                    | 3.5.47
 bash                           | 5.0-6ubuntu1.1
@@ -146,6 +149,7 @@ busybox-static                 | 1:1.30.1-4ubuntu6.1
 byobu                          | 5.133-0ubuntu1
 bzip2                          | 1.0.8-2
 ca-certificates                | 20190110ubuntu1.1
+cgroupfs-mount                 | 1.4
 cloud-guest-utils              | 0.31-7-gd99b2d76-0ubuntu1
 cloud-init                     | 20.2-45-g5f7825e2-0ubuntu1~20.04.1
 cloud-initramfs-copymods       | 0.45ubuntu1
@@ -153,6 +157,7 @@ cloud-initramfs-dyn-netconf    | 0.45ubuntu1
 command-not-found              | 20.04.2
 console-setup                  | 1.194ubuntu3
 console-setup-linux            | 1.194ubuntu3
+containerd.io                  | 1.2.13-2
 coreutils                      | 8.30-3ubuntu2
 cpio                           | 2.13+dfsg-2
 cpp                            | 4:9.3.0-1ubuntu2
@@ -177,6 +182,8 @@ distro-info-data               | 0.43ubuntu1.1
 dmeventd                       | 2:1.02.167-1ubuntu1
 dmidecode                      | 3.2-3
 dmsetup                        | 2:1.02.167-1ubuntu1
+docker-ce                      | 5:19.03.12~3-0~ubuntu-focal
+docker-ce-cli                  | 5:19.03.12~3-0~ubuntu-focal
 dosfstools                     | 4.1-2
 dpkg                           | 1.19.7ubuntu3
 dpkg-dev                       | 1.19.7ubuntu3
@@ -224,6 +231,7 @@ glib-networking-services       | 2.64.2-1ubuntu0.1
 gnupg                          | 2.2.19-3ubuntu2
 gnupg-l10n                     | 2.2.19-3ubuntu2
 gnupg-utils                    | 2.2.19-3ubuntu2
+gnupg2                         | 2.2.19-3ubuntu2
 gpg                            | 2.2.19-3ubuntu2
 gpg-agent                      | 2.2.19-3ubuntu2
 gpg-wks-client                 | 2.2.19-3ubuntu2
@@ -233,11 +241,11 @@ gpgsm                          | 2.2.19-3ubuntu2
 gpgv                           | 2.2.19-3ubuntu2
 grep                           | 3.4-1
 groff-base                     | 1.22.4-4build1
-grub-common                    | 2.04-1ubuntu26
+grub-common                    | 2.04-1ubuntu26.2
 grub-gfxpayload-lists          | 0.7
-grub-pc                        | 2.04-1ubuntu26
-grub-pc-bin                    | 2.04-1ubuntu26
-grub2-common                   | 2.04-1ubuntu26
+grub-pc                        | 2.04-1ubuntu26.2
+grub-pc-bin                    | 2.04-1ubuntu26.2
+grub2-common                   | 2.04-1ubuntu26.2
 gsettings-desktop-schemas      | 3.36.0-1ubuntu1
 gtk-update-icon-cache          | 3.24.20-0ubuntu1
 gzip                           | 1.10-0ubuntu4
@@ -556,7 +564,7 @@ libsmartcols1:amd64            | 2.34-0.1ubuntu9
 libsmbios-c2                   | 2.4.3-1
 libsodium23:amd64              | 1.0.18-1
 libsoup2.4-1:amd64             | 2.70.0-1
-libsqlite3-0:amd64             | 3.31.1-4ubuntu0.1
+libsqlite3-0:amd64             | 3.31.1-4ubuntu0.2
 libss2:amd64                   | 1.45.5-2ubuntu1
 libssh-4:amd64                 | 0.9.3-2ubuntu2
 libssl1.1:amd64                | 1.1.1f-1ubuntu2
@@ -646,15 +654,15 @@ libyaml-0-2:amd64              | 0.2.2-1
 libzfs2linux                   | 0.8.3-1ubuntu12.2
 libzpool2linux                 | 0.8.3-1ubuntu12.2
 libzstd1:amd64                 | 1.4.4+dfsg-3
-linux-aws                      | 5.4.0.1020.21
-linux-aws-headers-5.4.0-1020   | 5.4.0-1020.20
+linux-aws                      | 5.4.0.1021.22
+linux-aws-headers-5.4.0-1021   | 5.4.0-1021.21
 linux-base                     | 4.5ubuntu3.1
-linux-headers-5.4.0-1020-aws   | 5.4.0-1020.20
-linux-headers-aws              | 5.4.0.1020.21
-linux-image-5.4.0-1020-aws     | 5.4.0-1020.20
-linux-image-aws                | 5.4.0.1020.21
+linux-headers-5.4.0-1021-aws   | 5.4.0-1021.21
+linux-headers-aws              | 5.4.0.1021.22
+linux-image-5.4.0-1021-aws     | 5.4.0-1021.21
+linux-image-aws                | 5.4.0.1021.22
 linux-libc-dev:amd64           | 5.4.0-42.46
-linux-modules-5.4.0-1020-aws   | 5.4.0-1020.20
+linux-modules-5.4.0-1021-aws   | 5.4.0-1021.21
 lm-sensors                     | 1:3.6.0-2ubuntu1
 locales                        | 2.31-0ubuntu9
 login                          | 1:4.8.1-1ubuntu5.20.04
@@ -715,6 +723,7 @@ pciutils                       | 1:3.6.4-1
 perl                           | 5.30.0-9build1
 perl-base                      | 5.30.0-9build1
 perl-modules-5.30              | 5.30.0-9build1
+pigz                           | 2.4-1
 pinentry-curses                | 1.1.0-3build1
 plymouth                       | 0.9.4git20200323-0ubuntu6
 plymouth-theme-ubuntu-text     | 0.9.4git20200323-0ubuntu6
@@ -903,6 +912,7 @@ xkb-data                       | 2.29-2
 xxd                            | 2:8.1.2269-1ubuntu5
 xz-utils                       | 5.2.4-1
 zerofree                       | 1.1.1-1
+zfs-initramfs                  | 0.8.3-1ubuntu12.2
 zfs-zed                        | 0.8.3-1ubuntu12.2
 zfsutils-linux                 | 0.8.3-1ubuntu12.2
 zlib1g:amd64                   | 1:1.2.11.dfsg-2ubuntu1
@@ -910,7 +920,41 @@ zlib1g-dev:amd64               | 1:1.2.11.dfsg-2ubuntu1
 
 -- kernel modules --
 Module                  Size  Used by
-zfs                  4030464  6
+xt_conntrack           16384  1
+xt_MASQUERADE          20480  1
+nf_conntrack_netlink    45056  0
+nfnetlink              16384  2 nf_conntrack_netlink
+xfrm_user              36864  1
+xfrm_algo              16384  1 xfrm_user
+xt_addrtype            16384  2
+iptable_filter         16384  1
+iptable_nat            16384  1
+nf_nat                 40960  2 iptable_nat,xt_MASQUERADE
+nf_conntrack          139264  4 xt_conntrack,nf_nat,nf_conntrack_netlink,xt_MASQUERADE
+nf_defrag_ipv6         24576  1 nf_conntrack
+nf_defrag_ipv4         16384  1 nf_conntrack
+bpfilter               32768  0
+br_netfilter           28672  0
+bridge                176128  1 br_netfilter
+stp                    16384  1 bridge
+llc                    16384  2 bridge,stp
+aufs                  262144  0
+overlay               114688  0
+dm_multipath           32768  0
+scsi_dh_rdac           16384  0
+scsi_dh_emc            16384  0
+scsi_dh_alua           20480  0
+serio_raw              20480  0
+ppdev                  24576  0
+parport_pc             40960  0
+parport                53248  2 parport_pc,ppdev
+sch_fq_codel           20480  1
+drm                   491520  0
+i2c_core               81920  1 drm
+ip_tables              32768  2 iptable_filter,iptable_nat
+x_tables               40960  5 xt_conntrack,iptable_filter,xt_addrtype,ip_tables,xt_MASQUERADE
+autofs4                45056  2
+zfs                  4030464  15
 zunicode              331776  1 zfs
 zavl                   16384  1 zfs
 icp                   303104  1 zfs
@@ -918,28 +962,30 @@ zcommon                90112  2 zfs,icp
 znvpair                81920  2 zfs,zcommon
 spl                   126976  5 zfs,icp,znvpair,zcommon,zavl
 zlua                  147456  1 zfs
-dm_multipath           32768  0
-scsi_dh_rdac           16384  0
-scsi_dh_emc            16384  0
-scsi_dh_alua           20480  0
-ppdev                  24576  0
+btrfs                1253376  0
+zstd_compress         167936  1 btrfs
+raid10                 57344  0
+raid456               155648  0
+async_raid6_recov      24576  1 raid456
+async_memcpy           20480  2 raid456,async_raid6_recov
+async_pq               24576  2 raid456,async_raid6_recov
+async_xor              20480  3 async_pq,raid456,async_raid6_recov
+async_tx               20480  5 async_pq,async_memcpy,async_xor,raid456,async_raid6_recov
+xor                    24576  2 async_xor,btrfs
+raid6_pq              114688  4 async_pq,btrfs,raid456,async_raid6_recov
+libcrc32c              16384  4 nf_conntrack,nf_nat,btrfs,raid456
+raid1                  45056  0
+raid0                  24576  0
+multipath              20480  0
+linear                 20480  0
 crct10dif_pclmul       16384  1
 crc32_pclmul           16384  0
 ghash_clmulni_intel    16384  0
-parport_pc             40960  0
-ena                    98304  0
-parport                53248  2 parport_pc,ppdev
-serio_raw              20480  0
 aesni_intel           372736  0
 crypto_simd            16384  1 aesni_intel
 cryptd                 24576  2 crypto_simd,ghash_clmulni_intel
 glue_helper            16384  1 aesni_intel
-sch_fq_codel           20480  3
-drm                   491520  0
-i2c_core               81920  1 drm
-ip_tables              32768  0
-x_tables               40960  1 ip_tables
-autofs4                45056  2
+ena                    98304  0
 -- sysctl --
 abi.vsyscall32                                              = 1
 debug.exception-trace                                       = 1
@@ -983,13 +1029,13 @@ dev.tty.ldisc_autoload                                      = 1
 fs.aio-max-nr                                               = 65536
 fs.aio-nr                                                   = 0
 fs.binfmt_misc.status                                       = enabled
-fs.dentry-state                                             = 106706	92206	45	0	34052	0
+fs.dentry-state                                             = 113434	98299	45	0	36137	0
 fs.dir-notify-enable                                        = 1
-fs.epoll.max_user_watches                                   = 773509
+fs.epoll.max_user_watches                                   = 767488
 fs.file-max                                                 = 9223372036854775807
 fs.file-nr                                                  = 1376	0	9223372036854775807
-fs.inode-nr                                                 = 72596	436
-fs.inode-state                                              = 72596	436	0	0	0	0	0
+fs.inode-nr                                                 = 77173	10
+fs.inode-state                                              = 77167	10	0	0	0	0	0
 fs.inotify.max_queued_events                                = 16384
 fs.inotify.max_user_instances                               = 128
 fs.inotify.max_user_watches                                 = 8192
@@ -1017,7 +1063,7 @@ fs.quota.drops                                              = 0
 fs.quota.free_dquots                                        = 0
 fs.quota.lookups                                            = 0
 fs.quota.reads                                              = 0
-fs.quota.syncs                                              = 6
+fs.quota.syncs                                              = 0
 fs.quota.writes                                             = 0
 fs.suid_dumpable                                            = 2
 fs.verity.require_signatures                                = 0
@@ -1041,7 +1087,7 @@ kernel.ftrace_dump_on_oops                                  = 0
 kernel.ftrace_enabled                                       = 1
 kernel.hardlockup_all_cpu_backtrace                         = 0
 kernel.hardlockup_panic                                     = 0
-kernel.hostname                                             = ip-10-16-1-52
+kernel.hostname                                             = ip-10-16-0-176
 kernel.hotplug                                              = 
 kernel.hung_task_check_count                                = 4194304
 kernel.hung_task_check_interval_secs                        = 0
@@ -1066,17 +1112,17 @@ kernel.msgmnb                                               = 16384
 kernel.msgmni                                               = 32000
 kernel.ngroups_max                                          = 65536
 kernel.nmi_watchdog                                         = 0
-kernel.ns_last_pid                                          = 20781
+kernel.ns_last_pid                                          = 45388
 kernel.numa_balancing                                       = 0
 kernel.numa_balancing_scan_delay_ms                         = 1000
 kernel.numa_balancing_scan_period_max_ms                    = 60000
 kernel.numa_balancing_scan_period_min_ms                    = 1000
 kernel.numa_balancing_scan_size_mb                          = 256
-kernel.osrelease                                            = 5.4.0-1020-aws
+kernel.osrelease                                            = 5.4.0-1021-aws
 kernel.ostype                                               = Linux
 kernel.overflowgid                                          = 65534
 kernel.overflowuid                                          = 65534
-kernel.panic                                                = -1
+kernel.panic                                                = 0
 kernel.panic_on_io_nmi                                      = 0
 kernel.panic_on_oops                                        = 0
 kernel.panic_on_rcu_stall                                   = 0
@@ -1100,12 +1146,12 @@ kernel.printk_ratelimit_burst                               = 10
 kernel.pty.max                                              = 4096
 kernel.pty.nr                                               = 0
 kernel.pty.reserve                                          = 1024
-kernel.random.boot_id                                       = c02d4b0e-faea-4c4d-8b36-f46bfcedfa2d
-kernel.random.entropy_avail                                 = 1613
+kernel.random.boot_id                                       = e947da8b-bd82-48eb-bd65-8d1603d8b478
+kernel.random.entropy_avail                                 = 1998
 kernel.random.poolsize                                      = 4096
 kernel.random.read_wakeup_threshold                         = 64
 kernel.random.urandom_min_reseed_secs                       = 60
-kernel.random.uuid                                          = a1736476-0841-4792-979e-7c361754c140
+kernel.random.uuid                                          = 3568db00-457e-4815-86e7-f42c8560bd1f
 kernel.random.write_wakeup_threshold                        = 896
 kernel.randomize_va_space                                   = 2
 kernel.real-root-dev                                        = 0
@@ -1117,7 +1163,7 @@ kernel.sched_domain.cpu0.domain0.cache_nice_tries           = 0
 kernel.sched_domain.cpu0.domain0.flags                      = 4783
 kernel.sched_domain.cpu0.domain0.imbalance_pct              = 110
 kernel.sched_domain.cpu0.domain0.max_interval               = 4
-kernel.sched_domain.cpu0.domain0.max_newidle_lb_cost        = 7014
+kernel.sched_domain.cpu0.domain0.max_newidle_lb_cost        = 15514
 kernel.sched_domain.cpu0.domain0.min_interval               = 2
 kernel.sched_domain.cpu0.domain0.name                       = SMT
 kernel.sched_domain.cpu1.domain0.busy_factor                = 32
@@ -1125,7 +1171,7 @@ kernel.sched_domain.cpu1.domain0.cache_nice_tries           = 0
 kernel.sched_domain.cpu1.domain0.flags                      = 4783
 kernel.sched_domain.cpu1.domain0.imbalance_pct              = 110
 kernel.sched_domain.cpu1.domain0.max_interval               = 4
-kernel.sched_domain.cpu1.domain0.max_newidle_lb_cost        = 8154
+kernel.sched_domain.cpu1.domain0.max_newidle_lb_cost        = 9164
 kernel.sched_domain.cpu1.domain0.min_interval               = 2
 kernel.sched_domain.cpu1.domain0.name                       = SMT
 kernel.sched_latency_ns                                     = 12000000
@@ -1154,18 +1200,18 @@ kernel.soft_watchdog                                        = 1
 kernel.softlockup_all_cpu_backtrace                         = 0
 kernel.softlockup_panic                                     = 0
 kernel.spl.gitrev                                           = unknown
-kernel.spl.hostid                                           = 56cc5938
+kernel.spl.hostid                                           = 17be032a
 kernel.spl.kmem.slab_kmem_alloc                             = 0
 kernel.spl.kmem.slab_kmem_max                               = 0
 kernel.spl.kmem.slab_kmem_total                             = 0
-kernel.spl.kmem.slab_vmem_alloc                             = 1048576
-kernel.spl.kmem.slab_vmem_max                               = 1048576
-kernel.spl.kmem.slab_vmem_total                             = 1085440
+kernel.spl.kmem.slab_vmem_alloc                             = 137175808
+kernel.spl.kmem.slab_vmem_max                               = 334013184
+kernel.spl.kmem.slab_vmem_total                             = 233419584
 kernel.stack_tracer_enabled                                 = 0
 kernel.sysctl_writes_strict                                 = 1
 kernel.sysrq                                                = 176
 kernel.tainted                                              = 4097
-kernel.threads-max                                          = 29507
+kernel.threads-max                                          = 29277
 kernel.timer_migration                                      = 1
 kernel.traceoff_on_warning                                  = 0
 kernel.tracepoint_printk                                    = 0
@@ -1175,11 +1221,17 @@ kernel.unprivileged_userns_apparmor_policy                  = 1
 kernel.unprivileged_userns_clone                            = 1
 kernel.usermodehelper.bset                                  = 4294967295	63
 kernel.usermodehelper.inheritable                           = 4294967295	63
-kernel.version                                              = #20-Ubuntu SMP Fri Jul 10 05:52:40 UTC 2020
+kernel.version                                              = #21-Ubuntu SMP Fri Jul 24 09:42:29 UTC 2020
 kernel.watchdog                                             = 1
 kernel.watchdog_cpumask                                     = 0-1
 kernel.watchdog_thresh                                      = 10
 kernel.yama.ptrace_scope                                    = 1
+net.bridge.bridge-nf-call-arptables                         = 1
+net.bridge.bridge-nf-call-ip6tables                         = 1
+net.bridge.bridge-nf-call-iptables                          = 1
+net.bridge.bridge-nf-filter-pppoe-tagged                    = 0
+net.bridge.bridge-nf-filter-vlan-tagged                     = 0
+net.bridge.bridge-nf-pass-vlan-input-dev                    = 0
 net.core.bpf_jit_enable                                     = 1
 net.core.bpf_jit_harden                                     = 0
 net.core.bpf_jit_kallsyms                                   = 0
@@ -1222,7 +1274,7 @@ net.ipv4.cipso_cache_enable                                 = 1
 net.ipv4.cipso_rbm_optfmt                                   = 0
 net.ipv4.cipso_rbm_strictvalid                              = 1
 net.ipv4.conf.all.accept_local                              = 0
-net.ipv4.conf.all.accept_redirects                          = 1
+net.ipv4.conf.all.accept_redirects                          = 0
 net.ipv4.conf.all.accept_source_route                       = 0
 net.ipv4.conf.all.arp_accept                                = 0
 net.ipv4.conf.all.arp_announce                              = 0
@@ -1236,7 +1288,7 @@ net.ipv4.conf.all.disable_xfrm                              = 0
 net.ipv4.conf.all.drop_gratuitous_arp                       = 0
 net.ipv4.conf.all.drop_unicast_in_l2_multicast              = 0
 net.ipv4.conf.all.force_igmp_version                        = 0
-net.ipv4.conf.all.forwarding                                = 0
+net.ipv4.conf.all.forwarding                                = 1
 net.ipv4.conf.all.igmpv2_unsolicited_report_interval        = 10000
 net.ipv4.conf.all.igmpv3_unsolicited_report_interval        = 1000
 net.ipv4.conf.all.ignore_routes_with_linkdown               = 0
@@ -1268,7 +1320,7 @@ net.ipv4.conf.default.disable_xfrm                          = 0
 net.ipv4.conf.default.drop_gratuitous_arp                   = 0
 net.ipv4.conf.default.drop_unicast_in_l2_multicast          = 0
 net.ipv4.conf.default.force_igmp_version                    = 0
-net.ipv4.conf.default.forwarding                            = 0
+net.ipv4.conf.default.forwarding                            = 1
 net.ipv4.conf.default.igmpv2_unsolicited_report_interval    = 10000
 net.ipv4.conf.default.igmpv3_unsolicited_report_interval    = 1000
 net.ipv4.conf.default.ignore_routes_with_linkdown           = 0
@@ -1285,38 +1337,70 @@ net.ipv4.conf.default.send_redirects                        = 1
 net.ipv4.conf.default.shared_media                          = 1
 net.ipv4.conf.default.src_valid_mark                        = 0
 net.ipv4.conf.default.tag                                   = 0
-net.ipv4.conf.ens5.accept_local                             = 0
-net.ipv4.conf.ens5.accept_redirects                         = 1
-net.ipv4.conf.ens5.accept_source_route                      = 1
-net.ipv4.conf.ens5.arp_accept                               = 0
-net.ipv4.conf.ens5.arp_announce                             = 0
-net.ipv4.conf.ens5.arp_filter                               = 0
-net.ipv4.conf.ens5.arp_ignore                               = 0
-net.ipv4.conf.ens5.arp_notify                               = 0
-net.ipv4.conf.ens5.bc_forwarding                            = 0
-net.ipv4.conf.ens5.bootp_relay                              = 0
-net.ipv4.conf.ens5.disable_policy                           = 0
-net.ipv4.conf.ens5.disable_xfrm                             = 0
-net.ipv4.conf.ens5.drop_gratuitous_arp                      = 0
-net.ipv4.conf.ens5.drop_unicast_in_l2_multicast             = 0
-net.ipv4.conf.ens5.force_igmp_version                       = 0
-net.ipv4.conf.ens5.forwarding                               = 0
-net.ipv4.conf.ens5.igmpv2_unsolicited_report_interval       = 10000
-net.ipv4.conf.ens5.igmpv3_unsolicited_report_interval       = 1000
-net.ipv4.conf.ens5.ignore_routes_with_linkdown              = 0
-net.ipv4.conf.ens5.log_martians                             = 0
-net.ipv4.conf.ens5.mc_forwarding                            = 0
-net.ipv4.conf.ens5.medium_id                                = 0
-net.ipv4.conf.ens5.promote_secondaries                      = 1
-net.ipv4.conf.ens5.proxy_arp                                = 0
-net.ipv4.conf.ens5.proxy_arp_pvlan                          = 0
-net.ipv4.conf.ens5.route_localnet                           = 0
-net.ipv4.conf.ens5.rp_filter                                = 2
-net.ipv4.conf.ens5.secure_redirects                         = 1
-net.ipv4.conf.ens5.send_redirects                           = 1
-net.ipv4.conf.ens5.shared_media                             = 1
-net.ipv4.conf.ens5.src_valid_mark                           = 0
-net.ipv4.conf.ens5.tag                                      = 0
+net.ipv4.conf.docker0.accept_local                          = 0
+net.ipv4.conf.docker0.accept_redirects                      = 1
+net.ipv4.conf.docker0.accept_source_route                   = 1
+net.ipv4.conf.docker0.arp_accept                            = 0
+net.ipv4.conf.docker0.arp_announce                          = 0
+net.ipv4.conf.docker0.arp_filter                            = 0
+net.ipv4.conf.docker0.arp_ignore                            = 0
+net.ipv4.conf.docker0.arp_notify                            = 0
+net.ipv4.conf.docker0.bc_forwarding                         = 0
+net.ipv4.conf.docker0.bootp_relay                           = 0
+net.ipv4.conf.docker0.disable_policy                        = 0
+net.ipv4.conf.docker0.disable_xfrm                          = 0
+net.ipv4.conf.docker0.drop_gratuitous_arp                   = 0
+net.ipv4.conf.docker0.drop_unicast_in_l2_multicast          = 0
+net.ipv4.conf.docker0.force_igmp_version                    = 0
+net.ipv4.conf.docker0.forwarding                            = 1
+net.ipv4.conf.docker0.igmpv2_unsolicited_report_interval    = 10000
+net.ipv4.conf.docker0.igmpv3_unsolicited_report_interval    = 1000
+net.ipv4.conf.docker0.ignore_routes_with_linkdown           = 0
+net.ipv4.conf.docker0.log_martians                          = 0
+net.ipv4.conf.docker0.mc_forwarding                         = 0
+net.ipv4.conf.docker0.medium_id                             = 0
+net.ipv4.conf.docker0.promote_secondaries                   = 1
+net.ipv4.conf.docker0.proxy_arp                             = 0
+net.ipv4.conf.docker0.proxy_arp_pvlan                       = 0
+net.ipv4.conf.docker0.route_localnet                        = 0
+net.ipv4.conf.docker0.rp_filter                             = 2
+net.ipv4.conf.docker0.secure_redirects                      = 1
+net.ipv4.conf.docker0.send_redirects                        = 1
+net.ipv4.conf.docker0.shared_media                          = 1
+net.ipv4.conf.docker0.src_valid_mark                        = 0
+net.ipv4.conf.docker0.tag                                   = 0
+net.ipv4.conf.eth0.accept_local                             = 0
+net.ipv4.conf.eth0.accept_redirects                         = 1
+net.ipv4.conf.eth0.accept_source_route                      = 1
+net.ipv4.conf.eth0.arp_accept                               = 0
+net.ipv4.conf.eth0.arp_announce                             = 0
+net.ipv4.conf.eth0.arp_filter                               = 0
+net.ipv4.conf.eth0.arp_ignore                               = 0
+net.ipv4.conf.eth0.arp_notify                               = 0
+net.ipv4.conf.eth0.bc_forwarding                            = 0
+net.ipv4.conf.eth0.bootp_relay                              = 0
+net.ipv4.conf.eth0.disable_policy                           = 0
+net.ipv4.conf.eth0.disable_xfrm                             = 0
+net.ipv4.conf.eth0.drop_gratuitous_arp                      = 0
+net.ipv4.conf.eth0.drop_unicast_in_l2_multicast             = 0
+net.ipv4.conf.eth0.force_igmp_version                       = 0
+net.ipv4.conf.eth0.forwarding                               = 1
+net.ipv4.conf.eth0.igmpv2_unsolicited_report_interval       = 10000
+net.ipv4.conf.eth0.igmpv3_unsolicited_report_interval       = 1000
+net.ipv4.conf.eth0.ignore_routes_with_linkdown              = 0
+net.ipv4.conf.eth0.log_martians                             = 0
+net.ipv4.conf.eth0.mc_forwarding                            = 0
+net.ipv4.conf.eth0.medium_id                                = 0
+net.ipv4.conf.eth0.promote_secondaries                      = 1
+net.ipv4.conf.eth0.proxy_arp                                = 0
+net.ipv4.conf.eth0.proxy_arp_pvlan                          = 0
+net.ipv4.conf.eth0.route_localnet                           = 0
+net.ipv4.conf.eth0.rp_filter                                = 0
+net.ipv4.conf.eth0.secure_redirects                         = 1
+net.ipv4.conf.eth0.send_redirects                           = 1
+net.ipv4.conf.eth0.shared_media                             = 1
+net.ipv4.conf.eth0.src_valid_mark                           = 0
+net.ipv4.conf.eth0.tag                                      = 0
 net.ipv4.conf.lo.accept_local                               = 0
 net.ipv4.conf.lo.accept_redirects                           = 1
 net.ipv4.conf.lo.accept_source_route                        = 1
@@ -1332,7 +1416,7 @@ net.ipv4.conf.lo.disable_xfrm                               = 1
 net.ipv4.conf.lo.drop_gratuitous_arp                        = 0
 net.ipv4.conf.lo.drop_unicast_in_l2_multicast               = 0
 net.ipv4.conf.lo.force_igmp_version                         = 0
-net.ipv4.conf.lo.forwarding                                 = 0
+net.ipv4.conf.lo.forwarding                                 = 1
 net.ipv4.conf.lo.igmpv2_unsolicited_report_interval         = 10000
 net.ipv4.conf.lo.igmpv3_unsolicited_report_interval         = 1000
 net.ipv4.conf.lo.ignore_routes_with_linkdown                = 0
@@ -1371,7 +1455,7 @@ net.ipv4.inet_peer_threshold                                = 65664
 net.ipv4.ip_default_ttl                                     = 64
 net.ipv4.ip_dynaddr                                         = 0
 net.ipv4.ip_early_demux                                     = 1
-net.ipv4.ip_forward                                         = 0
+net.ipv4.ip_forward                                         = 1
 net.ipv4.ip_forward_update_priority                         = 1
 net.ipv4.ip_forward_use_pmtu                                = 0
 net.ipv4.ip_local_port_range                                = 32768	60999
@@ -1402,20 +1486,34 @@ net.ipv4.neigh.default.retrans_time_ms                      = 1000
 net.ipv4.neigh.default.ucast_solicit                        = 3
 net.ipv4.neigh.default.unres_qlen                           = 101
 net.ipv4.neigh.default.unres_qlen_bytes                     = 212992
-net.ipv4.neigh.ens5.anycast_delay                           = 100
-net.ipv4.neigh.ens5.app_solicit                             = 0
-net.ipv4.neigh.ens5.base_reachable_time_ms                  = 30000
-net.ipv4.neigh.ens5.delay_first_probe_time                  = 5
-net.ipv4.neigh.ens5.gc_stale_time                           = 60
-net.ipv4.neigh.ens5.locktime                                = 100
-net.ipv4.neigh.ens5.mcast_resolicit                         = 0
-net.ipv4.neigh.ens5.mcast_solicit                           = 3
-net.ipv4.neigh.ens5.proxy_delay                             = 80
-net.ipv4.neigh.ens5.proxy_qlen                              = 64
-net.ipv4.neigh.ens5.retrans_time_ms                         = 1000
-net.ipv4.neigh.ens5.ucast_solicit                           = 3
-net.ipv4.neigh.ens5.unres_qlen                              = 101
-net.ipv4.neigh.ens5.unres_qlen_bytes                        = 212992
+net.ipv4.neigh.docker0.anycast_delay                        = 100
+net.ipv4.neigh.docker0.app_solicit                          = 0
+net.ipv4.neigh.docker0.base_reachable_time_ms               = 30000
+net.ipv4.neigh.docker0.delay_first_probe_time               = 5
+net.ipv4.neigh.docker0.gc_stale_time                        = 60
+net.ipv4.neigh.docker0.locktime                             = 100
+net.ipv4.neigh.docker0.mcast_resolicit                      = 0
+net.ipv4.neigh.docker0.mcast_solicit                        = 3
+net.ipv4.neigh.docker0.proxy_delay                          = 80
+net.ipv4.neigh.docker0.proxy_qlen                           = 64
+net.ipv4.neigh.docker0.retrans_time_ms                      = 1000
+net.ipv4.neigh.docker0.ucast_solicit                        = 3
+net.ipv4.neigh.docker0.unres_qlen                           = 101
+net.ipv4.neigh.docker0.unres_qlen_bytes                     = 212992
+net.ipv4.neigh.eth0.anycast_delay                           = 100
+net.ipv4.neigh.eth0.app_solicit                             = 0
+net.ipv4.neigh.eth0.base_reachable_time_ms                  = 30000
+net.ipv4.neigh.eth0.delay_first_probe_time                  = 5
+net.ipv4.neigh.eth0.gc_stale_time                           = 60
+net.ipv4.neigh.eth0.locktime                                = 100
+net.ipv4.neigh.eth0.mcast_resolicit                         = 0
+net.ipv4.neigh.eth0.mcast_solicit                           = 3
+net.ipv4.neigh.eth0.proxy_delay                             = 80
+net.ipv4.neigh.eth0.proxy_qlen                              = 64
+net.ipv4.neigh.eth0.retrans_time_ms                         = 1000
+net.ipv4.neigh.eth0.ucast_solicit                           = 3
+net.ipv4.neigh.eth0.unres_qlen                              = 101
+net.ipv4.neigh.eth0.unres_qlen_bytes                        = 212992
 net.ipv4.neigh.lo.anycast_delay                             = 100
 net.ipv4.neigh.lo.app_solicit                               = 0
 net.ipv4.neigh.lo.base_reachable_time_ms                    = 30000
@@ -1482,7 +1580,7 @@ net.ipv4.tcp_max_orphans                                    = 16384
 net.ipv4.tcp_max_reordering                                 = 300
 net.ipv4.tcp_max_syn_backlog                                = 256
 net.ipv4.tcp_max_tw_buckets                                 = 16384
-net.ipv4.tcp_mem                                            = 43071	57431	86142
+net.ipv4.tcp_mem                                            = 42729	56972	85458
 net.ipv4.tcp_min_rtt_wlen                                   = 300
 net.ipv4.tcp_min_snd_mss                                    = 48
 net.ipv4.tcp_min_tso_segs                                   = 2
@@ -1520,7 +1618,7 @@ net.ipv4.tcp_wmem                                           = 4096	16384	4194304
 net.ipv4.tcp_workaround_signed_windows                      = 0
 net.ipv4.udp_early_demux                                    = 1
 net.ipv4.udp_l3mdev_accept                                  = 0
-net.ipv4.udp_mem                                            = 86145	114863	172290
+net.ipv4.udp_mem                                            = 85458	113944	170916
 net.ipv4.udp_rmem_min                                       = 4096
 net.ipv4.udp_wmem_min                                       = 4096
 net.ipv4.xfrm4_gc_thresh                                    = 32768
@@ -1576,7 +1674,7 @@ net.ipv6.conf.all.suppress_frag_ndisc                       = 1
 net.ipv6.conf.all.temp_prefered_lft                         = 86400
 net.ipv6.conf.all.temp_valid_lft                            = 604800
 net.ipv6.conf.all.use_oif_addrs_only                        = 0
-net.ipv6.conf.all.use_tempaddr                              = 0
+net.ipv6.conf.all.use_tempaddr                              = 2
 net.ipv6.conf.default.accept_dad                            = 1
 net.ipv6.conf.default.accept_ra                             = 1
 net.ipv6.conf.default.accept_ra_defrtr                      = 1
@@ -1624,55 +1722,103 @@ net.ipv6.conf.default.suppress_frag_ndisc                   = 1
 net.ipv6.conf.default.temp_prefered_lft                     = 86400
 net.ipv6.conf.default.temp_valid_lft                        = 604800
 net.ipv6.conf.default.use_oif_addrs_only                    = 0
-net.ipv6.conf.default.use_tempaddr                          = 0
-net.ipv6.conf.ens5.accept_dad                               = 1
-net.ipv6.conf.ens5.accept_ra                                = 0
-net.ipv6.conf.ens5.accept_ra_defrtr                         = 1
-net.ipv6.conf.ens5.accept_ra_from_local                     = 0
-net.ipv6.conf.ens5.accept_ra_min_hop_limit                  = 1
-net.ipv6.conf.ens5.accept_ra_mtu                            = 1
-net.ipv6.conf.ens5.accept_ra_pinfo                          = 1
-net.ipv6.conf.ens5.accept_ra_rt_info_max_plen               = 0
-net.ipv6.conf.ens5.accept_ra_rt_info_min_plen               = 0
-net.ipv6.conf.ens5.accept_ra_rtr_pref                       = 1
-net.ipv6.conf.ens5.accept_redirects                         = 1
-net.ipv6.conf.ens5.accept_source_route                      = 0
-net.ipv6.conf.ens5.addr_gen_mode                            = 0
-net.ipv6.conf.ens5.autoconf                                 = 1
-net.ipv6.conf.ens5.dad_transmits                            = 1
-net.ipv6.conf.ens5.disable_ipv6                             = 0
-net.ipv6.conf.ens5.disable_policy                           = 0
-net.ipv6.conf.ens5.drop_unicast_in_l2_multicast             = 0
-net.ipv6.conf.ens5.drop_unsolicited_na                      = 0
-net.ipv6.conf.ens5.enhanced_dad                             = 1
-net.ipv6.conf.ens5.force_mld_version                        = 0
-net.ipv6.conf.ens5.force_tllao                              = 0
-net.ipv6.conf.ens5.forwarding                               = 0
-net.ipv6.conf.ens5.hop_limit                                = 64
-net.ipv6.conf.ens5.ignore_routes_with_linkdown              = 0
-net.ipv6.conf.ens5.keep_addr_on_down                        = 0
-net.ipv6.conf.ens5.max_addresses                            = 16
-net.ipv6.conf.ens5.max_desync_factor                        = 600
-net.ipv6.conf.ens5.mc_forwarding                            = 0
-net.ipv6.conf.ens5.mldv1_unsolicited_report_interval        = 10000
-net.ipv6.conf.ens5.mldv2_unsolicited_report_interval        = 1000
-net.ipv6.conf.ens5.mtu                                      = 9001
-net.ipv6.conf.ens5.ndisc_notify                             = 0
-net.ipv6.conf.ens5.ndisc_tclass                             = 0
-net.ipv6.conf.ens5.proxy_ndp                                = 0
-net.ipv6.conf.ens5.regen_max_retry                          = 3
-net.ipv6.conf.ens5.router_probe_interval                    = 60
-net.ipv6.conf.ens5.router_solicitation_delay                = 1
-net.ipv6.conf.ens5.router_solicitation_interval             = 4
-net.ipv6.conf.ens5.router_solicitation_max_interval         = 3600
-net.ipv6.conf.ens5.router_solicitations                     = -1
-net.ipv6.conf.ens5.seg6_enabled                             = 0
-net.ipv6.conf.ens5.seg6_require_hmac                        = 0
-net.ipv6.conf.ens5.suppress_frag_ndisc                      = 1
-net.ipv6.conf.ens5.temp_prefered_lft                        = 86400
-net.ipv6.conf.ens5.temp_valid_lft                           = 604800
-net.ipv6.conf.ens5.use_oif_addrs_only                       = 0
-net.ipv6.conf.ens5.use_tempaddr                             = 0
+net.ipv6.conf.default.use_tempaddr                          = 2
+net.ipv6.conf.docker0.accept_dad                            = 1
+net.ipv6.conf.docker0.accept_ra                             = 0
+net.ipv6.conf.docker0.accept_ra_defrtr                      = 1
+net.ipv6.conf.docker0.accept_ra_from_local                  = 0
+net.ipv6.conf.docker0.accept_ra_min_hop_limit               = 1
+net.ipv6.conf.docker0.accept_ra_mtu                         = 1
+net.ipv6.conf.docker0.accept_ra_pinfo                       = 1
+net.ipv6.conf.docker0.accept_ra_rt_info_max_plen            = 0
+net.ipv6.conf.docker0.accept_ra_rt_info_min_plen            = 0
+net.ipv6.conf.docker0.accept_ra_rtr_pref                    = 1
+net.ipv6.conf.docker0.accept_redirects                      = 1
+net.ipv6.conf.docker0.accept_source_route                   = 0
+net.ipv6.conf.docker0.addr_gen_mode                         = 0
+net.ipv6.conf.docker0.autoconf                              = 1
+net.ipv6.conf.docker0.dad_transmits                         = 1
+net.ipv6.conf.docker0.disable_ipv6                          = 0
+net.ipv6.conf.docker0.disable_policy                        = 0
+net.ipv6.conf.docker0.drop_unicast_in_l2_multicast          = 0
+net.ipv6.conf.docker0.drop_unsolicited_na                   = 0
+net.ipv6.conf.docker0.enhanced_dad                          = 1
+net.ipv6.conf.docker0.force_mld_version                     = 0
+net.ipv6.conf.docker0.force_tllao                           = 0
+net.ipv6.conf.docker0.forwarding                            = 0
+net.ipv6.conf.docker0.hop_limit                             = 64
+net.ipv6.conf.docker0.ignore_routes_with_linkdown           = 0
+net.ipv6.conf.docker0.keep_addr_on_down                     = 0
+net.ipv6.conf.docker0.max_addresses                         = 16
+net.ipv6.conf.docker0.max_desync_factor                     = 600
+net.ipv6.conf.docker0.mc_forwarding                         = 0
+net.ipv6.conf.docker0.mldv1_unsolicited_report_interval     = 10000
+net.ipv6.conf.docker0.mldv2_unsolicited_report_interval     = 1000
+net.ipv6.conf.docker0.mtu                                   = 1500
+net.ipv6.conf.docker0.ndisc_notify                          = 0
+net.ipv6.conf.docker0.ndisc_tclass                          = 0
+net.ipv6.conf.docker0.proxy_ndp                             = 0
+net.ipv6.conf.docker0.regen_max_retry                       = 3
+net.ipv6.conf.docker0.router_probe_interval                 = 60
+net.ipv6.conf.docker0.router_solicitation_delay             = 1
+net.ipv6.conf.docker0.router_solicitation_interval          = 4
+net.ipv6.conf.docker0.router_solicitation_max_interval      = 3600
+net.ipv6.conf.docker0.router_solicitations                  = -1
+net.ipv6.conf.docker0.seg6_enabled                          = 0
+net.ipv6.conf.docker0.seg6_require_hmac                     = 0
+net.ipv6.conf.docker0.suppress_frag_ndisc                   = 1
+net.ipv6.conf.docker0.temp_prefered_lft                     = 86400
+net.ipv6.conf.docker0.temp_valid_lft                        = 604800
+net.ipv6.conf.docker0.use_oif_addrs_only                    = 0
+net.ipv6.conf.docker0.use_tempaddr                          = 2
+net.ipv6.conf.eth0.accept_dad                               = 1
+net.ipv6.conf.eth0.accept_ra                                = 0
+net.ipv6.conf.eth0.accept_ra_defrtr                         = 1
+net.ipv6.conf.eth0.accept_ra_from_local                     = 0
+net.ipv6.conf.eth0.accept_ra_min_hop_limit                  = 1
+net.ipv6.conf.eth0.accept_ra_mtu                            = 1
+net.ipv6.conf.eth0.accept_ra_pinfo                          = 1
+net.ipv6.conf.eth0.accept_ra_rt_info_max_plen               = 0
+net.ipv6.conf.eth0.accept_ra_rt_info_min_plen               = 0
+net.ipv6.conf.eth0.accept_ra_rtr_pref                       = 1
+net.ipv6.conf.eth0.accept_redirects                         = 1
+net.ipv6.conf.eth0.accept_source_route                      = 0
+net.ipv6.conf.eth0.addr_gen_mode                            = 0
+net.ipv6.conf.eth0.autoconf                                 = 1
+net.ipv6.conf.eth0.dad_transmits                            = 1
+net.ipv6.conf.eth0.disable_ipv6                             = 0
+net.ipv6.conf.eth0.disable_policy                           = 0
+net.ipv6.conf.eth0.drop_unicast_in_l2_multicast             = 0
+net.ipv6.conf.eth0.drop_unsolicited_na                      = 0
+net.ipv6.conf.eth0.enhanced_dad                             = 1
+net.ipv6.conf.eth0.force_mld_version                        = 0
+net.ipv6.conf.eth0.force_tllao                              = 0
+net.ipv6.conf.eth0.forwarding                               = 0
+net.ipv6.conf.eth0.hop_limit                                = 64
+net.ipv6.conf.eth0.ignore_routes_with_linkdown              = 0
+net.ipv6.conf.eth0.keep_addr_on_down                        = 0
+net.ipv6.conf.eth0.max_addresses                            = 16
+net.ipv6.conf.eth0.max_desync_factor                        = 600
+net.ipv6.conf.eth0.mc_forwarding                            = 0
+net.ipv6.conf.eth0.mldv1_unsolicited_report_interval        = 10000
+net.ipv6.conf.eth0.mldv2_unsolicited_report_interval        = 1000
+net.ipv6.conf.eth0.mtu                                      = 9001
+net.ipv6.conf.eth0.ndisc_notify                             = 0
+net.ipv6.conf.eth0.ndisc_tclass                             = 0
+net.ipv6.conf.eth0.proxy_ndp                                = 0
+net.ipv6.conf.eth0.regen_max_retry                          = 3
+net.ipv6.conf.eth0.router_probe_interval                    = 60
+net.ipv6.conf.eth0.router_solicitation_delay                = 1
+net.ipv6.conf.eth0.router_solicitation_interval             = 4
+net.ipv6.conf.eth0.router_solicitation_max_interval         = 3600
+net.ipv6.conf.eth0.router_solicitations                     = -1
+net.ipv6.conf.eth0.seg6_enabled                             = 0
+net.ipv6.conf.eth0.seg6_require_hmac                        = 0
+net.ipv6.conf.eth0.suppress_frag_ndisc                      = 1
+net.ipv6.conf.eth0.temp_prefered_lft                        = 86400
+net.ipv6.conf.eth0.temp_valid_lft                           = 604800
+net.ipv6.conf.eth0.use_oif_addrs_only                       = 0
+net.ipv6.conf.eth0.use_tempaddr                             = 0
 net.ipv6.conf.lo.accept_dad                                 = -1
 net.ipv6.conf.lo.accept_ra                                  = 1
 net.ipv6.conf.lo.accept_ra_defrtr                           = 1
@@ -1762,20 +1908,34 @@ net.ipv6.neigh.default.retrans_time_ms                      = 1000
 net.ipv6.neigh.default.ucast_solicit                        = 3
 net.ipv6.neigh.default.unres_qlen                           = 101
 net.ipv6.neigh.default.unres_qlen_bytes                     = 212992
-net.ipv6.neigh.ens5.anycast_delay                           = 100
-net.ipv6.neigh.ens5.app_solicit                             = 0
-net.ipv6.neigh.ens5.base_reachable_time_ms                  = 30000
-net.ipv6.neigh.ens5.delay_first_probe_time                  = 5
-net.ipv6.neigh.ens5.gc_stale_time                           = 60
-net.ipv6.neigh.ens5.locktime                                = 0
-net.ipv6.neigh.ens5.mcast_resolicit                         = 0
-net.ipv6.neigh.ens5.mcast_solicit                           = 3
-net.ipv6.neigh.ens5.proxy_delay                             = 80
-net.ipv6.neigh.ens5.proxy_qlen                              = 64
-net.ipv6.neigh.ens5.retrans_time_ms                         = 1000
-net.ipv6.neigh.ens5.ucast_solicit                           = 3
-net.ipv6.neigh.ens5.unres_qlen                              = 101
-net.ipv6.neigh.ens5.unres_qlen_bytes                        = 212992
+net.ipv6.neigh.docker0.anycast_delay                        = 100
+net.ipv6.neigh.docker0.app_solicit                          = 0
+net.ipv6.neigh.docker0.base_reachable_time_ms               = 30000
+net.ipv6.neigh.docker0.delay_first_probe_time               = 5
+net.ipv6.neigh.docker0.gc_stale_time                        = 60
+net.ipv6.neigh.docker0.locktime                             = 0
+net.ipv6.neigh.docker0.mcast_resolicit                      = 0
+net.ipv6.neigh.docker0.mcast_solicit                        = 3
+net.ipv6.neigh.docker0.proxy_delay                          = 80
+net.ipv6.neigh.docker0.proxy_qlen                           = 64
+net.ipv6.neigh.docker0.retrans_time_ms                      = 1000
+net.ipv6.neigh.docker0.ucast_solicit                        = 3
+net.ipv6.neigh.docker0.unres_qlen                           = 101
+net.ipv6.neigh.docker0.unres_qlen_bytes                     = 212992
+net.ipv6.neigh.eth0.anycast_delay                           = 100
+net.ipv6.neigh.eth0.app_solicit                             = 0
+net.ipv6.neigh.eth0.base_reachable_time_ms                  = 30000
+net.ipv6.neigh.eth0.delay_first_probe_time                  = 5
+net.ipv6.neigh.eth0.gc_stale_time                           = 60
+net.ipv6.neigh.eth0.locktime                                = 0
+net.ipv6.neigh.eth0.mcast_resolicit                         = 0
+net.ipv6.neigh.eth0.mcast_solicit                           = 3
+net.ipv6.neigh.eth0.proxy_delay                             = 80
+net.ipv6.neigh.eth0.proxy_qlen                              = 64
+net.ipv6.neigh.eth0.retrans_time_ms                         = 1000
+net.ipv6.neigh.eth0.ucast_solicit                           = 3
+net.ipv6.neigh.eth0.unres_qlen                              = 101
+net.ipv6.neigh.eth0.unres_qlen_bytes                        = 212992
 net.ipv6.neigh.lo.anycast_delay                             = 100
 net.ipv6.neigh.lo.app_solicit                               = 0
 net.ipv6.neigh.lo.base_reachable_time_ms                    = 30000
@@ -1802,6 +1962,56 @@ net.ipv6.route.mtu_expires                                  = 600
 net.ipv6.route.skip_notify_on_dev_down                      = 0
 net.ipv6.seg6_flowlabel                                     = 0
 net.ipv6.xfrm6_gc_thresh                                    = 32768
+net.netfilter.nf_conntrack_acct                             = 0
+net.netfilter.nf_conntrack_buckets                          = 16384
+net.netfilter.nf_conntrack_checksum                         = 1
+net.netfilter.nf_conntrack_count                            = 53
+net.netfilter.nf_conntrack_dccp_loose                       = 1
+net.netfilter.nf_conntrack_dccp_timeout_closereq            = 64
+net.netfilter.nf_conntrack_dccp_timeout_closing             = 64
+net.netfilter.nf_conntrack_dccp_timeout_open                = 43200
+net.netfilter.nf_conntrack_dccp_timeout_partopen            = 480
+net.netfilter.nf_conntrack_dccp_timeout_request             = 240
+net.netfilter.nf_conntrack_dccp_timeout_respond             = 480
+net.netfilter.nf_conntrack_dccp_timeout_timewait            = 240
+net.netfilter.nf_conntrack_events                           = 1
+net.netfilter.nf_conntrack_expect_max                       = 256
+net.netfilter.nf_conntrack_frag6_high_thresh                = 4194304
+net.netfilter.nf_conntrack_frag6_low_thresh                 = 3145728
+net.netfilter.nf_conntrack_frag6_timeout                    = 60
+net.netfilter.nf_conntrack_generic_timeout                  = 600
+net.netfilter.nf_conntrack_gre_timeout                      = 30
+net.netfilter.nf_conntrack_gre_timeout_stream               = 180
+net.netfilter.nf_conntrack_helper                           = 0
+net.netfilter.nf_conntrack_icmp_timeout                     = 30
+net.netfilter.nf_conntrack_icmpv6_timeout                   = 30
+net.netfilter.nf_conntrack_log_invalid                      = 0
+net.netfilter.nf_conntrack_max                              = 65536
+net.netfilter.nf_conntrack_sctp_timeout_closed              = 10
+net.netfilter.nf_conntrack_sctp_timeout_cookie_echoed       = 3
+net.netfilter.nf_conntrack_sctp_timeout_cookie_wait         = 3
+net.netfilter.nf_conntrack_sctp_timeout_established         = 432000
+net.netfilter.nf_conntrack_sctp_timeout_heartbeat_acked     = 210
+net.netfilter.nf_conntrack_sctp_timeout_heartbeat_sent      = 30
+net.netfilter.nf_conntrack_sctp_timeout_shutdown_ack_sent   = 3
+net.netfilter.nf_conntrack_sctp_timeout_shutdown_recd       = 0
+net.netfilter.nf_conntrack_sctp_timeout_shutdown_sent       = 0
+net.netfilter.nf_conntrack_tcp_be_liberal                   = 0
+net.netfilter.nf_conntrack_tcp_loose                        = 1
+net.netfilter.nf_conntrack_tcp_max_retrans                  = 3
+net.netfilter.nf_conntrack_tcp_timeout_close                = 10
+net.netfilter.nf_conntrack_tcp_timeout_close_wait           = 60
+net.netfilter.nf_conntrack_tcp_timeout_established          = 432000
+net.netfilter.nf_conntrack_tcp_timeout_fin_wait             = 120
+net.netfilter.nf_conntrack_tcp_timeout_last_ack             = 30
+net.netfilter.nf_conntrack_tcp_timeout_max_retrans          = 300
+net.netfilter.nf_conntrack_tcp_timeout_syn_recv             = 60
+net.netfilter.nf_conntrack_tcp_timeout_syn_sent             = 120
+net.netfilter.nf_conntrack_tcp_timeout_time_wait            = 120
+net.netfilter.nf_conntrack_tcp_timeout_unacknowledged       = 300
+net.netfilter.nf_conntrack_timestamp                        = 0
+net.netfilter.nf_conntrack_udp_timeout                      = 30
+net.netfilter.nf_conntrack_udp_timeout_stream               = 120
 net.netfilter.nf_log.0                                      = NONE
 net.netfilter.nf_log.1                                      = NONE
 net.netfilter.nf_log.10                                     = NONE
@@ -1816,16 +2026,17 @@ net.netfilter.nf_log.7                                      = NONE
 net.netfilter.nf_log.8                                      = NONE
 net.netfilter.nf_log.9                                      = NONE
 net.netfilter.nf_log_all_netns                              = 0
+net.nf_conntrack_max                                        = 65536
 net.unix.max_dgram_qlen                                     = 512
-user.max_cgroup_namespaces                                  = 14753
+user.max_cgroup_namespaces                                  = 14638
 user.max_inotify_instances                                  = 128
 user.max_inotify_watches                                    = 8192
-user.max_ipc_namespaces                                     = 14753
-user.max_mnt_namespaces                                     = 14753
-user.max_net_namespaces                                     = 14753
-user.max_pid_namespaces                                     = 14753
-user.max_user_namespaces                                    = 14753
-user.max_uts_namespaces                                     = 14753
+user.max_ipc_namespaces                                     = 14638
+user.max_mnt_namespaces                                     = 14638
+user.max_net_namespaces                                     = 14638
+user.max_pid_namespaces                                     = 14638
+user.max_user_namespaces                                    = 14638
+user.max_uts_namespaces                                     = 14638
 vm.admin_reserve_kbytes                                     = 8192
 vm.block_dump                                               = 0
 vm.compact_unevictable_allowed                              = 1
@@ -1866,7 +2077,7 @@ vm.percpu_pagelist_fraction                                 = 0
 vm.stat_interval                                            = 1
 vm.swappiness                                               = 60
 vm.unprivileged_userfaultfd                                 = 1
-vm.user_reserve_kbytes                                      = 117906
+vm.user_reserve_kbytes                                      = 116991
 vm.vfs_cache_pressure                                       = 100
 vm.watermark_boost_factor                                   = 0
 vm.watermark_scale_factor                                   = 10

@@ -1,9 +1,9 @@
 -- /etc/os-release --
 NAME="Ubuntu"
-VERSION="20.04 LTS (Focal Fossa)"
+VERSION="20.04.1 LTS (Focal Fossa)"
 ID=ubuntu
 ID_LIKE=debian
-PRETTY_NAME="Ubuntu 20.04 LTS"
+PRETTY_NAME="Ubuntu 20.04.1 LTS"
 VERSION_ID="20.04"
 HOME_URL="https://www.ubuntu.com/"
 SUPPORT_URL="https://help.ubuntu.com/"
@@ -13,7 +13,7 @@ VERSION_CODENAME=focal
 UBUNTU_CODENAME=focal
 
 -- kernel --
-5.4.0-1020-aws
+5.4.0-1021-aws
 
 -- system python --
 Python 3.8.2
@@ -82,7 +82,7 @@ pyserial==3.4
 pysmi==0.3.2
 pysnmp==4.4.6
 pystache==0.5.4
-python-apt==2.0.0
+python-apt==2.0.0+ubuntu0.20.4.1
 python-dateutil==2.7.3
 python-debian===0.1.36ubuntu1
 pytz==2019.3
@@ -106,7 +106,7 @@ zipp==1.0.0
 zope.interface==4.7.1
 
 -- aws cli --
-aws-cli/1.18.105 Python/3.8.2 Linux/5.4.0-1020-aws botocore/1.17.28
+aws-cli/1.18.109 Python/3.8.2 Linux/5.4.0-1021-aws botocore/1.17.32
 
 -- packages --
 accountsservice                | 0.6.55-0ubuntu12~20.04.1
@@ -125,7 +125,7 @@ apt-utils                      | 2.0.2ubuntu0.1
 at                             | 3.1.23-1ubuntu1
 atop                           | 2.4.0-3
 aufs-tools                     | 1:4.14+20190211-1ubuntu1
-base-files                     | 11ubuntu5
+base-files                     | 11ubuntu5.1
 base-passwd                    | 3.5.47
 bash                           | 5.0-6ubuntu1.1
 bash-completion                | 1:2.10-1ubuntu1
@@ -241,11 +241,11 @@ gpgsm                          | 2.2.19-3ubuntu2
 gpgv                           | 2.2.19-3ubuntu2
 grep                           | 3.4-1
 groff-base                     | 1.22.4-4build1
-grub-common                    | 2.04-1ubuntu26
+grub-common                    | 2.04-1ubuntu26.2
 grub-gfxpayload-lists          | 0.7
-grub-pc                        | 2.04-1ubuntu26
-grub-pc-bin                    | 2.04-1ubuntu26
-grub2-common                   | 2.04-1ubuntu26
+grub-pc                        | 2.04-1ubuntu26.2
+grub-pc-bin                    | 2.04-1ubuntu26.2
+grub2-common                   | 2.04-1ubuntu26.2
 gsettings-desktop-schemas      | 3.36.0-1ubuntu1
 gtk-update-icon-cache          | 3.24.20-0ubuntu1
 gzip                           | 1.10-0ubuntu4
@@ -494,7 +494,7 @@ libnghttp2-14:amd64            | 1.40.0-1build1
 libnl-3-200:amd64              | 3.4.0-1
 libnl-route-3-200:amd64        | 3.4.0-1
 libnpth0:amd64                 | 1.6-1
-libnss-systemd:amd64           | 245.4-4ubuntu3.1
+libnss-systemd:amd64           | 245.4-4ubuntu3.2
 libntfs-3g883                  | 1:2017.3.23AR.3-3ubuntu1
 libnuma1:amd64                 | 2.0.12-1
 libnvpair1linux                | 0.8.3-1ubuntu12.2
@@ -506,7 +506,7 @@ libpam-cap:amd64               | 1:2.32-1
 libpam-modules:amd64           | 1.3.1-5ubuntu4
 libpam-modules-bin             | 1.3.1-5ubuntu4
 libpam-runtime                 | 1.3.1-5ubuntu4
-libpam-systemd:amd64           | 245.4-4ubuntu3.1
+libpam-systemd:amd64           | 245.4-4ubuntu3.2
 libpam0g:amd64                 | 1.3.1-5ubuntu4
 libpango-1.0-0:amd64           | 1.44.7-2ubuntu4
 libpangocairo-1.0-0:amd64      | 1.44.7-2ubuntu4
@@ -564,14 +564,14 @@ libsmartcols1:amd64            | 2.34-0.1ubuntu9
 libsmbios-c2                   | 2.4.3-1
 libsodium23:amd64              | 1.0.18-1
 libsoup2.4-1:amd64             | 2.70.0-1
-libsqlite3-0:amd64             | 3.31.1-4ubuntu0.1
+libsqlite3-0:amd64             | 3.31.1-4ubuntu0.2
 libss2:amd64                   | 1.45.5-2ubuntu1
 libssh-4:amd64                 | 0.9.3-2ubuntu2
 libssl1.1:amd64                | 1.1.1f-1ubuntu2
 libstdc++-9-dev:amd64          | 9.3.0-10ubuntu2
 libstdc++6:amd64               | 10-20200411-0ubuntu1
 libstemmer0d:amd64             | 0+svn585-2
-libsystemd0:amd64              | 245.4-4ubuntu3.1
+libsystemd0:amd64              | 245.4-4ubuntu3.2
 libtasn1-6:amd64               | 4.16.0-2
 libtcl8.6:amd64                | 8.6.10+dfsg-1
 libtdb1:amd64                  | 1.4.2-3build1
@@ -589,7 +589,7 @@ libtsan0:amd64                 | 10-20200411-0ubuntu1
 libtss2-esys0                  | 2.3.2-1
 libubsan1:amd64                | 10-20200411-0ubuntu1
 libuchardet0:amd64             | 0.0.6-3build1
-libudev1:amd64                 | 245.4-4ubuntu3.1
+libudev1:amd64                 | 245.4-4ubuntu3.2
 libunistring2:amd64            | 0.9.10-2
 libunwind8:amd64               | 1.2.1-9build1
 liburcu6:amd64                 | 0.11.1-2
@@ -654,15 +654,15 @@ libyaml-0-2:amd64              | 0.2.2-1
 libzfs2linux                   | 0.8.3-1ubuntu12.2
 libzpool2linux                 | 0.8.3-1ubuntu12.2
 libzstd1:amd64                 | 1.4.4+dfsg-3
-linux-aws                      | 5.4.0.1020.21
-linux-aws-headers-5.4.0-1020   | 5.4.0-1020.20
+linux-aws                      | 5.4.0.1021.22
+linux-aws-headers-5.4.0-1021   | 5.4.0-1021.21
 linux-base                     | 4.5ubuntu3.1
-linux-headers-5.4.0-1020-aws   | 5.4.0-1020.20
-linux-headers-aws              | 5.4.0.1020.21
-linux-image-5.4.0-1020-aws     | 5.4.0-1020.20
-linux-image-aws                | 5.4.0.1020.21
+linux-headers-5.4.0-1021-aws   | 5.4.0-1021.21
+linux-headers-aws              | 5.4.0.1021.22
+linux-image-5.4.0-1021-aws     | 5.4.0-1021.21
+linux-image-aws                | 5.4.0.1021.22
 linux-libc-dev:amd64           | 5.4.0-42.46
-linux-modules-5.4.0-1020-aws   | 5.4.0-1020.20
+linux-modules-5.4.0-1021-aws   | 5.4.0-1021.21
 lm-sensors                     | 1:3.6.0-2ubuntu1
 locales                        | 2.31-0ubuntu9
 login                          | 1:4.8.1-1ubuntu5.20.04
@@ -705,7 +705,7 @@ node-normalize.css             | 8.0.1-3
 ntfs-3g                        | 1:2017.3.23AR.3-3ubuntu1
 nvme-cli                       | 1.9-1
 open-iscsi                     | 2.0.874-7.1ubuntu6.1
-open-vm-tools                  | 2:11.0.5-4
+open-vm-tools                  | 2:11.1.0-2~ubuntu20.04.1
 openssh-client                 | 1:8.2p1-4ubuntu0.1
 openssh-server                 | 1:8.2p1-4ubuntu0.1
 openssh-sftp-server            | 1:8.2p1-4ubuntu0.1
@@ -734,7 +734,7 @@ powermgmt-base                 | 1.36
 procps                         | 2:3.3.16-1ubuntu2
 psmisc                         | 23.3-1
 publicsuffix                   | 20200303.0012-1
-python-apt-common              | 2.0.0
+python-apt-common              | 2.0.0ubuntu0.20.04.1
 python-is-python3              | 3.8.2-4
 python-matplotlib-data         | 3.1.2-1ubuntu4
 python-pip-whl                 | 20.0.2-5ubuntu1
@@ -742,7 +742,7 @@ python2.7                      | 2.7.18~rc1-2
 python2.7-minimal              | 2.7.18~rc1-2
 python3                        | 3.8.2-0ubuntu2
 python3-apport                 | 2.20.11-0ubuntu27.4
-python3-apt                    | 2.0.0
+python3-apt                    | 2.0.0ubuntu0.20.04.1
 python3-attr                   | 19.3.0-2
 python3-automat                | 0.8.0-1ubuntu1
 python3-blinker                | 1.4+dfsg1-0.3ubuntu1
@@ -764,7 +764,7 @@ python3-debian                 | 0.1.36ubuntu1
 python3-dev                    | 3.8.2-0ubuntu2
 python3-distro                 | 1.4.0-1
 python3-distro-info            | 0.23ubuntu1
-python3-distupgrade            | 1:20.04.21
+python3-distupgrade            | 1:20.04.23
 python3-distutils              | 3.8.2-1ubuntu1
 python3-docker                 | 4.1.0-1
 python3-entrypoints            | 0.3-2ubuntu1
@@ -863,9 +863,9 @@ ssh-import-id                  | 5.10-0ubuntu1
 strace                         | 5.5-3ubuntu1
 sudo                           | 1.8.31-1ubuntu1
 sysstat                        | 12.2.0-2
-systemd                        | 245.4-4ubuntu3.1
-systemd-sysv                   | 245.4-4ubuntu3.1
-systemd-timesyncd              | 245.4-4ubuntu3.1
+systemd                        | 245.4-4ubuntu3.2
+systemd-sysv                   | 245.4-4ubuntu3.2
+systemd-timesyncd              | 245.4-4ubuntu3.2
 sysvinit-utils                 | 2.96-2.1ubuntu1
 tar                            | 1.30+dfsg-7
 tcpdump                        | 4.9.3-4
@@ -882,11 +882,11 @@ ubuntu-advantage-tools         | 20.3
 ubuntu-keyring                 | 2020.02.11.2
 ubuntu-minimal                 | 1.450.1
 ubuntu-mono                    | 19.04-0ubuntu3
-ubuntu-release-upgrader-core   | 1:20.04.21
+ubuntu-release-upgrader-core   | 1:20.04.23
 ubuntu-server                  | 1.450.1
 ubuntu-standard                | 1.450.1
 ucf                            | 3.0038+nmu1
-udev                           | 245.4-4ubuntu3.1
+udev                           | 245.4-4ubuntu3.2
 ufw                            | 0.36-6
 unattended-upgrades            | 2.3
 unzip                          | 6.0-25ubuntu1
@@ -932,7 +932,6 @@ nf_nat                 40960  2 iptable_nat,xt_MASQUERADE
 nf_conntrack          139264  4 xt_conntrack,nf_nat,nf_conntrack_netlink,xt_MASQUERADE
 nf_defrag_ipv6         24576  1 nf_conntrack
 nf_defrag_ipv4         16384  1 nf_conntrack
-libcrc32c              16384  2 nf_conntrack,nf_nat
 bpfilter               32768  0
 br_netfilter           28672  0
 bridge                176128  1 br_netfilter
@@ -948,6 +947,14 @@ zcommon                90112  2 zfs,icp
 znvpair                81920  2 zfs,zcommon
 spl                   126976  5 zfs,icp,znvpair,zcommon,zavl
 zlua                  147456  1 zfs
+btrfs                1253376  0
+xor                    24576  1 btrfs
+zstd_compress         167936  1 btrfs
+raid6_pq              114688  1 btrfs
+ufs                    81920  0
+msdos                  20480  0
+xfs                  1277952  0
+libcrc32c              16384  4 nf_conntrack,nf_nat,btrfs,xfs
 dm_multipath           32768  0
 scsi_dh_rdac           16384  0
 scsi_dh_emc            16384  0
@@ -955,12 +962,12 @@ scsi_dh_alua           20480  0
 ppdev                  24576  0
 crct10dif_pclmul       16384  1
 crc32_pclmul           16384  0
-ena                    98304  0
 ghash_clmulni_intel    16384  0
 parport_pc             40960  0
+ena                    98304  0
 parport                53248  2 parport_pc,ppdev
-serio_raw              20480  0
 aesni_intel           372736  0
+serio_raw              20480  0
 crypto_simd            16384  1 aesni_intel
 cryptd                 24576  2 crypto_simd,ghash_clmulni_intel
 glue_helper            16384  1 aesni_intel
@@ -1013,13 +1020,13 @@ dev.tty.ldisc_autoload                                      = 1
 fs.aio-max-nr                                               = 65536
 fs.aio-nr                                                   = 0
 fs.binfmt_misc.status                                       = enabled
-fs.dentry-state                                             = 105874	91177	45	0	33285	0
+fs.dentry-state                                             = 110558	91598	45	0	33086	0
 fs.dir-notify-enable                                        = 1
 fs.epoll.max_user_watches                                   = 773509
 fs.file-max                                                 = 9223372036854775807
 fs.file-nr                                                  = 1408	0	9223372036854775807
-fs.inode-nr                                                 = 72445	678
-fs.inode-state                                              = 72445	678	0	0	0	0	0
+fs.inode-nr                                                 = 77420	689
+fs.inode-state                                              = 77420	689	0	0	0	0	0
 fs.inotify.max_queued_events                                = 16384
 fs.inotify.max_user_instances                               = 128
 fs.inotify.max_user_watches                                 = 8192
@@ -1047,10 +1054,25 @@ fs.quota.drops                                              = 0
 fs.quota.free_dquots                                        = 0
 fs.quota.lookups                                            = 0
 fs.quota.reads                                              = 0
-fs.quota.syncs                                              = 8
+fs.quota.syncs                                              = 184
 fs.quota.writes                                             = 0
 fs.suid_dumpable                                            = 2
 fs.verity.require_signatures                                = 0
+fs.xfs.error_level                                          = 3
+fs.xfs.filestream_centisecs                                 = 3000
+fs.xfs.inherit_noatime                                      = 1
+fs.xfs.inherit_nodefrag                                     = 1
+fs.xfs.inherit_nodump                                       = 1
+fs.xfs.inherit_nosymlinks                                   = 0
+fs.xfs.inherit_sync                                         = 1
+fs.xfs.irix_sgid_inherit                                    = 0
+fs.xfs.irix_symlink_mode                                    = 0
+fs.xfs.panic_mask                                           = 0
+fs.xfs.rotorstep                                            = 1
+fs.xfs.speculative_cow_prealloc_lifetime                    = 1800
+fs.xfs.speculative_prealloc_lifetime                        = 300
+fs.xfs.stats_clear                                          = 0
+fs.xfs.xfssyncd_centisecs                                   = 3000
 kernel.acct                                                 = 4	2	30
 kernel.acpi_video_flags                                     = 0
 kernel.auto_msgmni                                          = 0
@@ -1071,7 +1093,7 @@ kernel.ftrace_dump_on_oops                                  = 0
 kernel.ftrace_enabled                                       = 1
 kernel.hardlockup_all_cpu_backtrace                         = 0
 kernel.hardlockup_panic                                     = 0
-kernel.hostname                                             = ip-10-16-3-33
+kernel.hostname                                             = ip-10-16-1-149
 kernel.hotplug                                              = 
 kernel.hung_task_check_count                                = 4194304
 kernel.hung_task_check_interval_secs                        = 0
@@ -1096,13 +1118,13 @@ kernel.msgmnb                                               = 16384
 kernel.msgmni                                               = 32000
 kernel.ngroups_max                                          = 65536
 kernel.nmi_watchdog                                         = 0
-kernel.ns_last_pid                                          = 18711
+kernel.ns_last_pid                                          = 20429
 kernel.numa_balancing                                       = 0
 kernel.numa_balancing_scan_delay_ms                         = 1000
 kernel.numa_balancing_scan_period_max_ms                    = 60000
 kernel.numa_balancing_scan_period_min_ms                    = 1000
 kernel.numa_balancing_scan_size_mb                          = 256
-kernel.osrelease                                            = 5.4.0-1020-aws
+kernel.osrelease                                            = 5.4.0-1021-aws
 kernel.ostype                                               = Linux
 kernel.overflowgid                                          = 65534
 kernel.overflowuid                                          = 65534
@@ -1130,12 +1152,12 @@ kernel.printk_ratelimit_burst                               = 10
 kernel.pty.max                                              = 4096
 kernel.pty.nr                                               = 0
 kernel.pty.reserve                                          = 1024
-kernel.random.boot_id                                       = c784ee76-2699-4548-b728-df1c6ea11c91
-kernel.random.entropy_avail                                 = 2119
+kernel.random.boot_id                                       = b1657e19-7dd0-4e76-9198-a6b5aaf88c9b
+kernel.random.entropy_avail                                 = 2053
 kernel.random.poolsize                                      = 4096
 kernel.random.read_wakeup_threshold                         = 64
 kernel.random.urandom_min_reseed_secs                       = 60
-kernel.random.uuid                                          = dba3bd6b-ff2f-4b59-93f9-5de1cf5390cb
+kernel.random.uuid                                          = a9e444e7-7991-4960-b7c9-0d7b3027eecc
 kernel.random.write_wakeup_threshold                        = 896
 kernel.randomize_va_space                                   = 2
 kernel.real-root-dev                                        = 0
@@ -1147,7 +1169,7 @@ kernel.sched_domain.cpu0.domain0.cache_nice_tries           = 0
 kernel.sched_domain.cpu0.domain0.flags                      = 4783
 kernel.sched_domain.cpu0.domain0.imbalance_pct              = 110
 kernel.sched_domain.cpu0.domain0.max_interval               = 4
-kernel.sched_domain.cpu0.domain0.max_newidle_lb_cost        = 7840
+kernel.sched_domain.cpu0.domain0.max_newidle_lb_cost        = 25715
 kernel.sched_domain.cpu0.domain0.min_interval               = 2
 kernel.sched_domain.cpu0.domain0.name                       = SMT
 kernel.sched_domain.cpu1.domain0.busy_factor                = 32
@@ -1155,7 +1177,7 @@ kernel.sched_domain.cpu1.domain0.cache_nice_tries           = 0
 kernel.sched_domain.cpu1.domain0.flags                      = 4783
 kernel.sched_domain.cpu1.domain0.imbalance_pct              = 110
 kernel.sched_domain.cpu1.domain0.max_interval               = 4
-kernel.sched_domain.cpu1.domain0.max_newidle_lb_cost        = 9740
+kernel.sched_domain.cpu1.domain0.max_newidle_lb_cost        = 10538
 kernel.sched_domain.cpu1.domain0.min_interval               = 2
 kernel.sched_domain.cpu1.domain0.name                       = SMT
 kernel.sched_latency_ns                                     = 12000000
@@ -1184,7 +1206,7 @@ kernel.soft_watchdog                                        = 1
 kernel.softlockup_all_cpu_backtrace                         = 0
 kernel.softlockup_panic                                     = 0
 kernel.spl.gitrev                                           = unknown
-kernel.spl.hostid                                           = 15fc96ee
+kernel.spl.hostid                                           = 6bb3f3b
 kernel.spl.kmem.slab_kmem_alloc                             = 0
 kernel.spl.kmem.slab_kmem_max                               = 0
 kernel.spl.kmem.slab_kmem_total                             = 0
@@ -1205,7 +1227,7 @@ kernel.unprivileged_userns_apparmor_policy                  = 1
 kernel.unprivileged_userns_clone                            = 1
 kernel.usermodehelper.bset                                  = 4294967295	63
 kernel.usermodehelper.inheritable                           = 4294967295	63
-kernel.version                                              = #20-Ubuntu SMP Fri Jul 10 05:52:40 UTC 2020
+kernel.version                                              = #21-Ubuntu SMP Fri Jul 24 09:42:29 UTC 2020
 kernel.watchdog                                             = 1
 kernel.watchdog_cpumask                                     = 0-1
 kernel.watchdog_thresh                                      = 10
@@ -1949,7 +1971,7 @@ net.ipv6.xfrm6_gc_thresh                                    = 32768
 net.netfilter.nf_conntrack_acct                             = 0
 net.netfilter.nf_conntrack_buckets                          = 16384
 net.netfilter.nf_conntrack_checksum                         = 1
-net.netfilter.nf_conntrack_count                            = 56
+net.netfilter.nf_conntrack_count                            = 55
 net.netfilter.nf_conntrack_dccp_loose                       = 1
 net.netfilter.nf_conntrack_dccp_timeout_closereq            = 64
 net.netfilter.nf_conntrack_dccp_timeout_closing             = 64
