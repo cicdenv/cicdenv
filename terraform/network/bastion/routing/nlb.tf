@@ -21,7 +21,7 @@ resource "aws_lb_target_group" "bastion_service" {
   name     = "bastion-service"
   protocol = "TCP"
   port     = var.ssh_service_port
-  vpc_id   = local.vpc_id
+  vpc_id   = local.vpc.id
 
   health_check {
     healthy_threshold   = 2
@@ -51,7 +51,7 @@ resource "aws_lb_target_group" "bastion_host" {
   name     = "bastion-host"
   protocol = "TCP"
   port     = var.ssh_host_port
-  vpc_id   = local.vpc_id
+  vpc_id   = local.vpc.id
 
   health_check {
     healthy_threshold   = 2

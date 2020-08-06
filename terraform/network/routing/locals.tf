@@ -1,10 +1,12 @@
 locals {
-  vpc_id = data.terraform_remote_state.shared.outputs.vpc.id
+  transit_gateway = data.terraform_remote_state.network_backend.outputs.transit_gateways["internet"]
+
+  vpc = data.terraform_remote_state.network_backend.outputs.vpc
   
-  availability_zones = data.terraform_remote_state.shared.outputs.availability_zones
+  region = data.aws_region.current.name
   
-  subnets      = data.terraform_remote_state.shared.outputs.subnets
-  route_tables = data.terraform_remote_state.shared.outputs.route_tables
+  availability_zones = values(data.terraform_remote_state.network_backend.outputs.availability_zones[local.region])
   
-  account_hosted_zone = data.terraform_remote_state.domains.outputs.account_public_zone
+  subnets      = data.terraform_remote_state.network_backend.outputs.subnets
+  route_tables = data.terraform_remote_state.network_backend.outputs.route_tables
 }

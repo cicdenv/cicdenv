@@ -13,7 +13,7 @@ resource "aws_lambda_function" "iam_user_event_subscriber" {
   runtime = "python3.7"
 
   vpc_config {
-    subnet_ids         = values(module.shared_vpc.subnets["private"]).*.id
+    subnet_ids         = values(local.subnets["private"]).*.id
     security_group_ids = [aws_security_group.events.id]
   }
 

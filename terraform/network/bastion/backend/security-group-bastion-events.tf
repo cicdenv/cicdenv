@@ -1,6 +1,6 @@
 resource "aws_security_group" "events" {
   name   = "bastion-events"
-  vpc_id = module.shared_vpc.vpc.id
+  vpc_id = local.vpc.id
 
   description = "Bastion events"
       

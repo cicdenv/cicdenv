@@ -20,6 +20,9 @@ variables_config = 'variables.tf'
 # s3 backend config
 backend_config = path.join(varfile_dir, 'backend-config.tfvars')
 
+# IP Address Management
+ipam_config = path.join(varfile_dir, 'ipam.tfvars')
+
 # site domain name
 domain_config = path.join(varfile_dir, 'domain.tfvars')
 

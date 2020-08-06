@@ -1,7 +1,7 @@
 ## Testing
 ```bash
-cicdenv$ (cd terraform/network/bastion/event-subscriber; make)
-cicdenv$ (cd terraform/network/bastion/event-subscriber/target; AWS_PROFILE=admin-dev python lambda.py)
+cicdenv$ (cd terraform/network/bastion/backend/event-subscriber; make)
+cicdenv$ (cd terraform/network/bastion/backend/event-subscriber/target; AWS_PROFILE=admin-dev python lambda.py)
 
 docker run --rm -it -p 5000:5000 -v /var/run/docker.sock:/var/run/docker.sock events-worker --host=0.0.0.0 --port 5000
 ```

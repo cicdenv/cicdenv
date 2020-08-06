@@ -1,6 +1,10 @@
 locals {
-  network_cidr = "10.16.0.0/16"
+  network_cidr = var.ipam[terraform.workspace].shared.network_cidr
 
+  transit_gateway = data.terraform_remote_state.network_backend.outputs.transit_gateways["internet"]
+
+  private_hosted_zone = data.terraform_remote_state.network_backend.outputs.private_dns_zone
+  
   public_subnet_tags = {
     "kubernetes.io/role/elb" = "1"
     "SubnetType"             = "Utility"
@@ -14,24 +18,19 @@ locals {
   cluster_tags = zipmap(data.null_data_source.cluster_tags.*.outputs.Key,
                         data.null_data_source.cluster_tags.*.outputs.Value)
 
-  # Limit AZs to no more than 3
-  availability_zones = split(",", length(data.aws_availability_zones.azs.names) > 3 ? 
-      join(",", slice(data.aws_availability_zones.azs.names, 0, 3)) 
-    : join(",", data.aws_availability_zones.azs.names))
+  acct_azs = zipmap(
+    data.aws_availability_zones.azs.zone_ids, 
+    data.aws_availability_zones.azs.names
+  )
 
-  apt_repo_policy = data.terraform_remote_state.iam_common_policies.outputs.iam.apt_repo.policy
-  
-  assume_role = data.terraform_remote_state.iam_assumed_roles.outputs.iam.identity_resolver.role
- 
-  ecr_bastion_sshd_worker   = data.terraform_remote_state.ecr_bastion_sshd_worker.outputs.ecr.bastion_sshd_worker
-  ecr_bastion_events_worker = data.terraform_remote_state.ecr_bastion_events_worker.outputs.ecr.bastion_events_worker
+  region = data.aws_region.current.name
 
-  iam_user_updates_sns_topic = data.terraform_remote_state.iam_events.outputs.sns.topics.iam_user_updates
-  
+  # Map this accounts AZs to the (up to 3) AZs in the main acct
+  main_azs = data.terraform_remote_state.network_backend.outputs.availability_zones[local.region]
+
+  availability_zones = [for zone_id in keys(local.main_azs) : local.acct_azs[zone_id]]
+
   lambda_bucket = data.terraform_remote_state.lambda.outputs.lambda.bucket
-
-  event_subscriber_function_name = "event-subscriber-bastion-service"
-  event_subscriber_lambda_key    = "functions/${local.event_subscriber_function_name}.zip"
 
   ssh_keys_function_name = "shared-ec2-keypair-generator"
   ssh_keys_lambda_key    = "functions/${local.ssh_keys_function_name}.zip"

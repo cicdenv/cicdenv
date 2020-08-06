@@ -9,8 +9,8 @@ data "external" "vpc-endpoints" {
   program = ["${path.module}/.../data/external/dynamodb-scan-for-attribute.py"]
 
   query = {
-    dynamodb_table = "vpc-endpoints"
-    attribute      = "VPCeID"
+    dynamodb_table = "kops-clusters"
+    attribute      = "FQDN"
   }
 }
 ```
@@ -19,10 +19,10 @@ data "external" "vpc-endpoints" {
 * dynamodb-scan-for-attribute.py
   ```
   echo '{
-  	"dynamodb_table": "vpc-endpoints", 
-  	"attribute": "VPCeID"
+  	"dynamodb_table": "kops-clusters", 
+  	"attribute": "FQDN"
   }' \
   | "AWS_PROFILE=admin-main" "AWS_DEFAULT_REGION=us-west-2" \
     "terraform/data/external/dynamodb-scan-for-attribute.py"
-  {"items": "<vpce-id1>,<vpce-id2>,..."}
+  {"items": "<fqdn1>,<fqdn2>,..."}
   ```

@@ -22,18 +22,14 @@ def bastion(settings):
 for command in commands(__file__):
     def bind_command(command):
         @click.pass_obj
-        @click.argument('workspace', type=WorkspaceParamType())
         @click.option('--user')
         @click.option('--host', is_flag=True, default=False)
         @click.option('--ip')
         @click.argument('flags', nargs=-1, type=FlagParamType())
-        def command_func(settings, workspace, user, host, ip, flags):
-            if settings.creds:
-                sts = StsAssumeRoleCredentials(settings)
-                sts.refresh(workspace)
+        def command_func(settings, user, host, ip, flags):
             if user == None:
                 user = iam.get_username()
-            driver_method = getattr(BastionDriver(settings, workspace, user, host, ip, flags), command)
+            driver_method = getattr(BastionDriver(settings, user, host, ip, flags), command)
             driver_method()
         command_func.__name__ = command
     

@@ -1,8 +1,6 @@
 terraform {
-  required_version = ">= 0.12.25"
+  required_version = ">= 0.12.29"
   backend "s3" {
-    key = "network_routing/terraform.tfstate"
-
-    workspace_key_prefix = "state"
+    key = "state/main/network_routing/terraform.tfstate"
   }
 }

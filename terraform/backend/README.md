@@ -89,6 +89,7 @@ org_roots = [
   ...
 ]
 organization = {
+  "arn" = "arn:aws:organizations::<main-acct-id>:organization/o-<[a-z0-9]*10>"
   "id" = "o-<[a-z0-9]*10>"
 }
 organization_accounts = {
@@ -99,9 +100,5 @@ organization_accounts = {
     "root" = "arn:aws:iam::<account-id>:root"
   }
   ...
-}
-vpc_endpoints_dynamodb_table = {
-  "hash_key" = "VPCeID"
-  "name" = "vpc-endpoints"
 }
 ```

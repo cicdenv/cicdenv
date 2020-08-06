@@ -30,8 +30,4 @@ module "vpc_endpoints" {
   public_route_tables  = module.test_vpc.route_tables["public"]
   private_route_tables = values(module.test_vpc.route_tables["private"]).*.id
   private_subnets      = values(module.test_vpc.subnets["private"]).*.id
-
-  providers = {
-    aws.main = aws.main
-  }
 }

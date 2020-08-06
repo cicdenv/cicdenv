@@ -1,12 +1,12 @@
 ## Purpose
-Jump host(s) for KOPS VPCs.
+Jump host(s) for SSH host access to EC2 instances in private subnets.
 
 ## Workspaces
-This state is per-account.
+N/A.
 
 ## Usage
 ```bash
-cicdenv$ cicdctl terraform <init|plan|apply|destroy|output> network/bastion:${WORKSPACE}
+cicdenv$ cicdctl terraform <init|plan|apply|destroy|output> network/bastion:main
 ...
 ```
 

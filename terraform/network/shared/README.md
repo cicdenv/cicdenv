@@ -31,79 +31,34 @@ availability_zones = [
   "<region>b",
   "<region>c",
 ]
-bastion_events = {
-  "security_group" = {
-    "id" = "sg-<0x*17>"
-  }
-}
-bastion_service = {
-  "security_group" = {
-    "id" = "sg-<0x*17>"
-  }
-}
 cloudwatch_log_groups = {
-  "iam_user_event_subscriber" = {
-    "arn" = "arn:aws:logs:<region>:<account-id>:log-group:/aws/lambda/event-subscriber-bastion-service:*"
-    "name" = "/aws/lambda/event-subscriber-bastion-service"
+  "ssh_keys" = {
+    "arn" = "arn:aws:logs:<region>:<account-id>:log-group:/aws/lambda/shared-ec2-keypair-generator:*"
+    "name" = "/aws/lambda/shared-ec2-keypair-generator"
   }
 }
 iam = {
-  "bastion_service" = {
+  "ssh_keys" = {
     "instance_profile" = {
-      "arn" = "arn:aws:iam::<account-id>:instance-profile/bastion"
+      "arn" = "arn:aws:iam::<account-id>:instance-profile/shared-ec2-keypair-secret-generator"
     }
     "policy" = {
-      "arn" = "arn:aws:iam::<account-id>:policy/BastionService"
-      "name" = "BastionService"
+      "arn" = "arn:aws:iam::<account-id>:policy/SharedEC2KeyPairSecretGenerator"
+      "name" = "SharedEC2KeyPairSecretGenerator"
       "path" = "/"
     }
     "role" = {
-      "arn" = "arn:aws:iam::<account-id>:role/bastion"
-      "name" = "bastion"
-    }
-  }
-  "iam_user_event_subscriber" = {
-    "policy" = {
-      "arn" = "arn:aws:iam::<account-id>:policy/iam-user-event-subscriber"
-      "name" = "iam-user-event-subscriber"
-      "path" = "/"
-    }
-    "role" = {
-      "arn" = "arn:aws:iam::<account-id>:role/iam-user-event-subscriber"
-      "name" = "iam-user-event-subscriber"
+      "arn" = "arn:aws:iam::<account-id>:role/shared-ec2-keypair-secret-generator"
+      "name" = "shared-ec2-keypair-secret-generator"
     }
   }
 }
 lambdas = {
-  "iam_user_event_subscriber" = {
-    "function_name" = "event-subscriber-bastion-service"
+  "ssh_keys" = {
+    "function_name" = "shared-ec2-keypair-generator"
     "handler" = "lambda.lambda_handler"
     "runtime" = "python3.7"
-    "vpc_config" = [
-      {
-        "security_group_ids" = [
-          "sg-<0x*17>",
-        ]
-        "subnet_ids" = [
-          "subnet-<0x*17>",
-          "subnet-<0x*17>",
-          "subnet-<0x*17>",
-        ]
-        "vpc_id" = "vpc-<0x*17>"
-      },
-    ]
   }
-}
-private_dns_zone = {
-  "domain" = "<domain>"
-  "name" = "<domain>."
-  "name_servers" = [
-    "ns-<N*>.awsdns-00.com.",
-    "ns-<N*>.awsdns-00.org.",
-    "ns-<N*>.awsdns-00.co.uk.",
-    "ns-<N*>.awsdns-00.net.",
-  ]
-  "zone_id" = "Z<[A-Z0-9]*20>"
 }
 route_tables = {
   "private" = {

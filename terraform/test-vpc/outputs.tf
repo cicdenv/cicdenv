@@ -3,7 +3,14 @@ output "vpc" {
 }
 
 output "private_dns_zone" {
-  value = module.test_vpc.private_dns_zone
+  value = {
+    name         = aws_route53_zone.private.name
+    zone_id      = aws_route53_zone.private.zone_id
+    name_servers = aws_route53_zone.private.name_servers
+
+    # .name with trailing dot stripped
+    domain = replace(aws_route53_zone.private.name, "/\\.$/", "")
+  }
 }
 
 output "availability_zones" {

@@ -1,5 +1,5 @@
 resource "aws_iam_role" "ssh_keys" {
-  name = "shared-ec2-keypair-secret-lambda"
+  name = "shared-ec2-keypair-secret-generator"
 
   description = "shared ec2 ssh-key creator / renewer"
 
@@ -32,7 +32,7 @@ data "aws_iam_policy_document" "ssh_keys" {
 }
 
 resource "aws_iam_policy" "ssh_keys" {
-  name   = "SharedEC2KeyPairSecretLambda"
+  name   = "SharedEC2KeyPairSecretGenerator"
   path   = "/"
   policy = data.aws_iam_policy_document.ssh_keys.json
 }

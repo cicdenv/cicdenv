@@ -1,13 +1,7 @@
-output "vpc_endpoints_dynamodb_table" {
-  value = {
-    name     = aws_dynamodb_table.vpc_endpoints.name
-    hash_key = aws_dynamodb_table.vpc_endpoints.hash_key
-  }
-}
-
 output "organization" {
   value = {
-    id = aws_organizations_organization.organization.id
+    id  = aws_organizations_organization.organization.id
+    arn = aws_organizations_organization.organization.arn
   }
 }
 

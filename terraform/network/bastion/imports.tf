@@ -1,17 +1,26 @@
-data "terraform_remote_state" "shared" {
+data "terraform_remote_state" "network_backend" {
   backend = "s3"
   config = {
     bucket = var.bucket
-    key    = "state/${terraform.workspace}/network_shared/terraform.tfstate"
+    key    = "state/main/network_backend/terraform.tfstate"
     region = var.region
   }
 }
 
-data "terraform_remote_state" "routing" {
+data "terraform_remote_state" "bastion_backend" {
   backend = "s3"
   config = {
     bucket = var.bucket
-    key    = "state/${terraform.workspace}/network_routing/terraform.tfstate"
+    key    = "state/main/network_bastion_backend/terraform.tfstate"
+    region = var.region
+  }
+}
+
+data "terraform_remote_state" "bastion_routing" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/network_bastion_routing/terraform.tfstate"
     region = var.region
   }
 }

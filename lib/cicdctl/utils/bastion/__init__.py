@@ -1,8 +1,9 @@
 from os import path, environ
 import re
+from ipaddress import ip_address, ip_network
 
 from ..runners import EnvironmentContext
-from ..terraform import parse_tfvars, domain_config, bastion_config
+from ..terraform import parse_tfvars, ipam_config, domain_config, bastion_config
 
 from ..ssh import default_ssh_key
 
@@ -55,20 +56,40 @@ def ssh_opts(port, identity, flags):
     return opts
 
 
-def bastion_address(user, workspace):
+def normalize_ip(ip):
+    if ip:
+        _aws_hostnam_matched = _aws_hostname_pattern.match(ip)
+        if _aws_hostnam_matched:  # handle aws default private hostnames
+            return ".".join(_aws_hostnam_matched.groups())
+        else:
+            return ip
+    else:
+        return ip
+
+
+def workspace_from_ip(ip):
+    if not ip:
+        return 'main'
+    else:
+        _address = ip_address(ip)
+        ipam = parse_tfvars(ipam_config)
+        for workspace, networks in ipam.items():
+            for network, cidr_block in networks:
+                _network = ip_network(cidr_block)
+                if _address in _network:
+                    return workspace
+
+
+def bastion_address(user):
     domain = parse_tfvars(domain_config)['domain']
-    address = f'{user}@bastion.{workspace}.{domain}'
+    address = f'{user}@bastion.{domain}'
     return address
 
 
 def ssh_cmd(cmd, user, port, identity, ip, workspace, flags):
-    _bastion = bastion_address(user, workspace)
+    _bastion = bastion_address(user)
     if ip:
-        _aws_hostnam_matched = _aws_hostname_pattern.match(ip)
-        if _aws_hostnam_matched:  # handle aws default private hostnames
-            address = f'ubuntu@{".".join(_aws_hostnam_matched.groups())}'
-        else:
-            address = f'ubuntu@{ip}'
+        address = f'ubuntu@{ip}'
         proxy_opts = f'ProxyCommand=ssh {" ".join(ssh_opts(port, DEFAULT_USER_IDENTITY, flags))} -W %h:%p {_bastion}'
         return [cmd] + ssh_opts(port, default_ssh_key(workspace), flags) + ['-o', proxy_opts, address]
     else:

@@ -1,28 +1,25 @@
 ## Purpose
-NAT gateways enable private subnets to access networks outside the VPC.
-They are relatively expensive ~ $50 per month, per AZ, per sub-account.
+Side-wide NAT gateways enable private subnets to access networks outside the VPC.
+They are relatively expensive ~ $50 per month, per AZ.
 
-Similarly VPC-endpoints cost $15 per endpoint per VPC.
-
-Its useful to define them in a different component than the parent VPC so
-they can be destroyed separately when no ec2 instances are running.
+Its useful to define them in a different component than the egress VPC so
+they can be destroyed separately when no ec2 instances are running site-wide.
 
 ## Workspaces
-This state is per-account.
+N/A.
 
 ## Usage
 ```bash
-cicdenv$ cicdctl terraform <init|plan|apply|destroy> network/routing:${WORKSPACE}
+cicdenv$ cicdctl terraform <init|plan|apply|destroy> network/routing:main
 ...
 ```
-
 ## Importing
 ```hcl
-data "terraform_remote_state" "network" {
+data "terraform_remote_state" "network_routing" {
   backend = "s3"
   config = {
     bucket = var.bucket
-    key    = "state/${terraform.workspace}/network_shared/terraform.tfstate"
+    key    = "state/${terraform.workspace}/network_routing/terraform.tfstate"
     region = var.region
   }
 }
@@ -30,23 +27,6 @@ data "terraform_remote_state" "network" {
 
 ## Outputs
 ```hcl
-bastion = {
-  "dns" = bastion.dev.cicdenv.com
-  "nlb" = {
-    "arn" = "arn:aws:elasticloadbalancing:<region>:<account-id>:loadbalancer/net/bastion-nlb/<0x*16>"
-    "dns_name" = "bastion-nlb-<0x*16>.elb.<region>.amazonaws.com"
-    "zone_id" = "<elb.amazonaws.com-zone-id>"
-    "target_groups" = [
-      {
-        "arn" = "arn:aws:elasticloadbalancing:<region>:<account-id>:targetgroup/bastion-service/<0x*16>"
-      },
-      {
-        "arn" = "arn:aws:elasticloadbalancing:<region>:<account-id>:targetgroup/bastion-host/<0x*16>"
-      },
-    ]
-
-  }
-}
 nat_gateways = {
   "<region>a" = {
     "id" = "nat-<0x*17>"
@@ -59,6 +39,11 @@ nat_gateways = {
   "<region>c" = {
     "id" = "nat-<0x*17>"
     "ip" = "<ipv4-public-ip>"
+  }
+}
+transit_gateway_vpc_attachment = {
+  "internet" = {
+    "id" = "tgw-attach-<0x*17>"
   }
 }
 vpc_endpoints = {

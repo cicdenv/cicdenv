@@ -229,13 +229,12 @@ $ cicdctl terraform destroy network/routing:dev -force
 
 * [Bastion Service Overview](https://docs.google.com/presentation/d/19ytRvaBg0QrlciX1pEgoqATQSfBkOHdcAI-9S9lG_Kg/)
 
-Example: `dev` account  
 ```bash
 # Bring up bastion cluster
-$ cicdctl terraform apply network/bastion:dev -auto-approve
+$ cicdctl terraform apply network/bastion:main -auto-approve
 
 # Turn off bastion cluster
-$ cicdctl terraform destroy network/bastion:dev -force
+$ cicdctl terraform destroy network/bastion:main -force
 ```
 
 </details>
@@ -244,7 +243,7 @@ $ cicdctl terraform destroy network/bastion:dev -force
 Example: debug ec2 instance in the `dev` account
 ```bash
 # Hop thru the bastion service to get ssh access to the target instance
-$ cicdctl bastion ssh dev --ip <target host private-ip>
+$ cicdctl bastion ssh --ip <target host private-ip>
 ```
 
 ## Interactive Sessions

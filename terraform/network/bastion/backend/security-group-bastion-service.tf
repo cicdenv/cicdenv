@@ -1,6 +1,6 @@
 resource "aws_security_group" "bastion" {
   name   = "bastion-service"
-  vpc_id = module.shared_vpc.vpc.id
+  vpc_id = local.vpc.id
 
   description = "Bastion service"
       
@@ -42,7 +42,7 @@ resource "aws_security_group_rule" "bastion_service_healthcheck" {
   to_port   = var.ssh_service_port + 1
 
   security_group_id = aws_security_group.bastion.id
-  cidr_blocks       = [module.shared_vpc.vpc.cidr_block]
+  cidr_blocks       = [local.vpc.cidr_block]
 }
 
 resource "aws_security_group_rule" "bastion_host_in" {
@@ -55,18 +55,6 @@ resource "aws_security_group_rule" "bastion_host_in" {
 
   security_group_id = aws_security_group.bastion.id
   cidr_blocks       = var.allowed_cidr_blocks
-}
-
-resource "aws_security_group_rule" "bastion_host_healthcheck" {
-  description = "bastion host ssh access from NLB"
-
-  type      = "ingress"
-  protocol  = "tcp"
-  from_port = var.ssh_host_port
-  to_port   = var.ssh_host_port
-
-  security_group_id = aws_security_group.bastion.id
-  cidr_blocks       = [module.shared_vpc.vpc.cidr_block]
 }
 
 resource "aws_security_group_rule" "events_host_in" {
