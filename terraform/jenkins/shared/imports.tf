@@ -25,7 +25,7 @@ data "terraform_remote_state" "jenkins_backend" {
   }
 }
 
-data "terraform_remote_state" "network" {
+data "terraform_remote_state" "network_shared" {
   backend = "s3"
   config = {
     bucket = var.bucket
@@ -48,6 +48,15 @@ data "terraform_remote_state" "accounts" {
   config = {
     bucket = var.bucket
     key    = "state/main/backend/terraform.tfstate"
+    region = var.region
+  }
+}
+
+data "terraform_remote_state" "bastion_backend" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/network_bastion_backend/terraform.tfstate"
     region = var.region
   }
 }

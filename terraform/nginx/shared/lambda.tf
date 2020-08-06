@@ -12,11 +12,6 @@ resource "aws_lambda_function" "nginx_tls" {
 
   runtime = "python3.8"
   timeout = 15
-
-  depends_on = [
-    aws_iam_role_policy_attachment.nginx_tls, 
-    aws_cloudwatch_log_group.nginx_tls,
-  ]
 }
 
 resource "aws_lambda_permission" "secret_manager_call_Lambda" {

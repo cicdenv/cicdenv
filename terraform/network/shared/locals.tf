@@ -3,6 +3,12 @@ locals {
 
   transit_gateway = data.terraform_remote_state.network_backend.outputs.transit_gateways["internet"]
 
+  main_account = data.terraform_remote_state.accounts.outputs.main_account
+
+  backend_vpc = data.terraform_remote_state.network_backend.outputs.vpc
+  
+  backend_route_tables = data.terraform_remote_state.network_backend.outputs.route_tables
+
   private_hosted_zone = data.terraform_remote_state.network_backend.outputs.private_dns_zone
   
   public_subnet_tags = {

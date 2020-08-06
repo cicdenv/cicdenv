@@ -3,7 +3,7 @@ locals {
 
   account_hosted_zone = data.terraform_remote_state.domains.outputs.account_public_zone
 
-  subnets = data.terraform_remote_state.network.outputs.subnets
+  subnets = data.terraform_remote_state.network_shared.outputs.subnets
   
   apt_repo_policy = data.terraform_remote_state.iam_common_policies.outputs.iam.apt_repo.policy
 
@@ -19,9 +19,9 @@ locals {
   jenkins_github_secrets           = data.terraform_remote_state.jenkins_backend.outputs.secrets.github.ec2
   jenkins_github_localhost_secrets = data.terraform_remote_state.jenkins_backend.outputs.secrets.github.localhost
 
-  vpc_id = data.terraform_remote_state.network.outputs.vpc.id
+  vpc_id = data.terraform_remote_state.network_shared.outputs.vpc.id
 
-  bastion_security_group = data.terraform_remote_state.network.outputs.bastion_service.security_group
+  bastion_security_group = data.terraform_remote_state.bastion_backend.outputs.bastion_service.security_group
 
   main_account = data.terraform_remote_state.accounts.outputs.main_account
   this_account = {

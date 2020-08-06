@@ -12,11 +12,6 @@ resource "aws_lambda_function" "ssh_keys" {
 
   runtime = "python3.8"
   timeout = 30
-
-  depends_on = [
-    aws_iam_role_policy_attachment.ssh_keys, 
-    aws_cloudwatch_log_group.ssh_keys,
-  ]
 }
 
 resource "aws_lambda_permission" "ssh_keys" {

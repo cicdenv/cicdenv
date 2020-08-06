@@ -123,4 +123,9 @@ resource "aws_api_gateway_integration" "jenkins_github_oauth_callbacks" {
   type = "AWS_PROXY"
 
   uri = aws_lambda_function.github_oauth_callback.invoke_arn
+
+  # Ensures lambda before perms are set
+  depends_on = [
+    aws_iam_role_policy_attachment.github_oauth_callback,
+  ]
 }

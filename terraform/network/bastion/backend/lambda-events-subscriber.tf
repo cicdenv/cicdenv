@@ -16,8 +16,4 @@ resource "aws_lambda_function" "iam_user_event_subscriber" {
     subnet_ids         = values(local.subnets["private"]).*.id
     security_group_ids = [aws_security_group.events.id]
   }
-
-  depends_on = [
-    aws_iam_role_policy_attachment.iam_user_event_subscriber,
-  ]
 }

@@ -12,4 +12,9 @@ resource "aws_sns_topic_subscription" "iam_user_event_subscriber" {
   endpoint  = aws_lambda_function.iam_user_event_subscriber.arn
   
   provider = aws.us-east-1
+
+  # Ensures lambda before perms are set
+  depends_on = [
+    aws_iam_role_policy_attachment.iam_user_event_subscriber,
+  ]
 }

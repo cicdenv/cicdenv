@@ -11,11 +11,6 @@ resource "aws_lambda_function" "github_oauth_callback" {
   s3_object_version = data.aws_s3_bucket_object.lambda.version_id
 
   runtime = "python3.7"
-
-  depends_on = [
-    aws_iam_role_policy_attachment.github_oauth_callback, 
-    aws_cloudwatch_log_group.github_oauth_callback,
-  ]
 }
 
 resource "aws_lambda_permission" "apigw_lambda" {

@@ -15,17 +15,24 @@ resource "aws_acm_certificate" "jenkins_cert" {
 }
 
 resource "aws_route53_record" "cert_validations" {
-  type    = "CNAME"
-  name    =  aws_acm_certificate.jenkins_cert.domain_validation_options.0.resource_record_name
-  records = [aws_acm_certificate.jenkins_cert.domain_validation_options.0.resource_record_value]
-  zone_id = local.account_hosted_zone.zone_id
-  ttl     = 60
+  for_each = {
+    for dvo in aws_acm_certificate.jenkins_cert.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+
+  name            = each.value.name
+  records         = [each.value.record]
+  type            = each.value.type
+  zone_id         = local.account_hosted_zone.zone_id
+  allow_overwrite = true
+  ttl             = 60
 }
 
 resource "aws_acm_certificate_validation" "jenkins_cert" {
   certificate_arn = aws_acm_certificate.jenkins_cert.arn
 
-  validation_record_fqdns = [
-    aws_route53_record.cert_validations.fqdn,
-  ]
+  validation_record_fqdns = [for record in aws_route53_record.cert_validations : record.fqdn]
 }

@@ -11,4 +11,9 @@ resource "aws_secretsmanager_secret_rotation" "kops_ca" {
   rotation_rules {
     automatically_after_days = 90
   }
+  
+  # Ensures lambda before perms are set
+  depends_on = [
+    aws_iam_role_policy_attachment.kops_ca,
+  ]
 }

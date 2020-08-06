@@ -11,4 +11,8 @@ resource "aws_secretsmanager_secret_rotation" "this" {
   rotation_rules {
     automatically_after_days = 90
   }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.lambda,
+  ]
 }

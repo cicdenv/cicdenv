@@ -16,11 +16,6 @@ resource "aws_lambda_function" "kops_ca" {
   layers = [
     local.cfssl_layer.arn,
   ]
-  
-  depends_on = [
-    aws_iam_role_policy_attachment.kops_ca, 
-    aws_cloudwatch_log_group.kops_ca,
-  ]
 }
 
 resource "aws_lambda_permission" "secret_manager_call_Lambda" {

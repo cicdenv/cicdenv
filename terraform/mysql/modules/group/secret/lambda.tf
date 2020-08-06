@@ -15,11 +15,6 @@ resource "aws_lambda_function" "rotator" {
 
   runtime = "python3.8"
   timeout = 15
-
-  depends_on = [
-    aws_iam_role_policy_attachment.lambda, 
-    aws_cloudwatch_log_group.lambda,
-  ]
 }
 
 resource "aws_lambda_permission" "secret_manager_call_Lambda" {
