@@ -1,6 +1,6 @@
 resource "aws_security_group" "jenkins_server" {
   name   = "jenkins-server"
-  vpc_id = local.vpc_id
+  vpc_id = local.vpc.id
 
   description = "jenkins dedicated server host"
       

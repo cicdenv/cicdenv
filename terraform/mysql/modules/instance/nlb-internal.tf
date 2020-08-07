@@ -23,7 +23,7 @@ resource "aws_lb_target_group" "mysql_internal" {
   name     = "mysql-internal"
   protocol = "TCP"
   port     = 3306
-  vpc_id   = local.vpc_id
+  vpc_id   = local.vpc.id
 
   health_check {
     healthy_threshold   = 2

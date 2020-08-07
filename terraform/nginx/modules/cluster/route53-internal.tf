@@ -8,4 +8,6 @@ resource "aws_route53_record" "nginx_internal_nlb" {
     zone_id                = aws_lb.nginx_internal.zone_id
     evaluate_target_health = false
   }
+
+  provider = aws.main
 }

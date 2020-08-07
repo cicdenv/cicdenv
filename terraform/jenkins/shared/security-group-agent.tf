@@ -1,6 +1,6 @@
 resource "aws_security_group" "jenkins_agent" {
   name   = "jenkins-agent"
-  vpc_id = local.vpc_id
+  vpc_id = local.vpc.id
 
   description = "jenkins dedicated agent host"
       

@@ -1,5 +1,5 @@
 locals {
-  vpc_id  = data.terraform_remote_state.network_shared.outputs.vpc.id
+  vpc = data.terraform_remote_state.network_shared.outputs.vpc
   
   bastion = data.terraform_remote_state.bastion_backend.outputs.bastion_service
 

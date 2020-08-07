@@ -5,7 +5,6 @@ locals {
   master_asg_names = data.terraform_remote_state.cluster.outputs.master_autoscaling_group_ids
 
   # network/shared
-  vpc_id            = data.terraform_remote_state.network.outputs.vpc.id
   public_subnet_ids = values(data.terraform_remote_state.network.outputs.subnets["public"]).*.id
 
   # kops/shared

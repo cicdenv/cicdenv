@@ -14,7 +14,7 @@ cicdenv$ cicdctl terraform <init|plan|apply|destroy> network/shared:${WORKSPACE}
 
 ## Importing
 ```hcl
-data "terraform_remote_state" "shared" {
+data "terraform_remote_state" "network_shared" {
   backend = "s3"
   config = {
     bucket = var.bucket

@@ -1,6 +1,6 @@
 resource "aws_security_group" "jenkins_persistent_config_efs" {
   name   = "jenkins-efs"
-  vpc_id = local.vpc_id
+  vpc_id = local.vpc.id
 
   tags = {
     Name = "jenkins-servers persistent config efs"

@@ -19,7 +19,7 @@ resource "aws_lb_listener_rule" "internal_https" {
 resource "aws_lb_target_group" "internal_https" {
   name = "jenkins-int-${var.jenkins_instance}"
 
-  vpc_id   = local.vpc_id
+  vpc_id   = local.vpc.id
 
   protocol = "HTTPS"
   port     = 443

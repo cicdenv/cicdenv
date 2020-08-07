@@ -15,6 +15,14 @@ EOF
 
 cat <<'EOF' > "clusters/${name}/providers.tf"
 provider "aws" {
+  region = var.region
+
+  alias = "main"
+
+  profile = "admin-main"
+}
+
+provider "aws" {
   region = var.target_region
 
   profile = "admin-${terraform.workspace}"
@@ -80,6 +88,10 @@ module "nginx_cluster" {
   name = "${name}"
 
   instance_type = var.instance_type
+
+  providers = {
+    aws.main = aws.main
+  }
 }
 EOF
 

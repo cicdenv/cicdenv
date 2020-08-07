@@ -1,6 +1,6 @@
 resource "aws_security_group" "nginx_node" {
   name   = "nginx-cluster-node"
-  vpc_id = local.vpc_id
+  vpc_id = local.vpc.id
 
   description = "nginx dedicated cluster node"
       

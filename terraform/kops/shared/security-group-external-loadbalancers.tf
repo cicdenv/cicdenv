@@ -1,6 +1,6 @@
 resource "aws_security_group" "kops_external_apiserver" {
   name   = "kops-external-apiserver"
-  vpc_id = local.vpc_id
+  vpc_id = local.vpc.id
 
   description = "kops-apiserver external load balancer"
     

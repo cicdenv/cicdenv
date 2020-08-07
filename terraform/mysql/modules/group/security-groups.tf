@@ -1,6 +1,6 @@
 resource "aws_security_group" "mysql_group" {
   name   = "mysql-${var.name}"
-  vpc_id = local.vpc_id
+  vpc_id = local.vpc.id
 
   description = "mysql ${var.name} member server"
       

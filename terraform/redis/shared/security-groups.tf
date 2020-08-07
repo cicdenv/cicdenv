@@ -1,6 +1,6 @@
 resource "aws_security_group" "redis_node" {
   name   = "redis-cluster-node"
-  vpc_id = local.vpc_id
+  vpc_id = local.vpc.id
 
   description = "redis dedicated cluster node"
       

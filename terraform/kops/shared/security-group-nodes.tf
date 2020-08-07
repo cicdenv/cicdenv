@@ -1,6 +1,6 @@
 resource "aws_security_group" "kops_nodes" {
   name   = "kops-nodes"
-  vpc_id = local.vpc_id
+  vpc_id = local.vpc.id
 
   description = "kops-nodes"
 

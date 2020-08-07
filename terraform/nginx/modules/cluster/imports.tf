@@ -7,7 +7,7 @@ data "terraform_remote_state" "domains" {
   }
 }
 
-data "terraform_remote_state" "network" {
+data "terraform_remote_state" "network_shared" {
   backend = "s3"
   config = {
     bucket = var.terraform_state.bucket

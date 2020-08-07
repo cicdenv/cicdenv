@@ -1,6 +1,6 @@
 resource "aws_security_group" "mysql_shared" {
   name   = "mysql-shared"
-  vpc_id = local.vpc_id
+  vpc_id = local.vpc.id
 
   description = "mysql common"
       

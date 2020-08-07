@@ -47,7 +47,7 @@ data "template_file" "cluster_spec" {
     
     kubernetes_version = local.kubernetes_version
 
-    vpc_id           = local.vpc_id
+    vpc_id           = local.vpc.id
     network_cidr     = local.network_cidr
     networking       = local.networking
     private_dns_zone = local.private_dns_zone.zone_id

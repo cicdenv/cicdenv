@@ -21,7 +21,7 @@ resource "aws_lb_target_group" "nginx_external" {
   name     = "nginx-external"
   protocol = "TCP"
   port     = 443
-  vpc_id   = local.vpc_id
+  vpc_id   = local.vpc.id
 
   health_check {
     healthy_threshold   = 2

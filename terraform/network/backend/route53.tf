@@ -1,5 +1,6 @@
 resource "aws_route53_zone" "private" {
-  name = var.domain
+  name    = var.domain
+  comment = "backend private services"
 
   vpc {
     vpc_id = module.vpc.vpc.id

@@ -1,11 +1,9 @@
 locals {
-  private_hosted_zone = data.terraform_remote_state.network.outputs.private_dns_zone
-
-  vpc_id = data.terraform_remote_state.network.outputs.vpc.id
+  private_hosted_zone = data.terraform_remote_state.domains.outputs.private_dns_zone
   
-  availability_zones = data.terraform_remote_state.network.outputs.availability_zones
+  availability_zones = data.terraform_remote_state.network_shared.outputs.availability_zones
   
-  subnets = data.terraform_remote_state.network.outputs.subnets
+  subnets = data.terraform_remote_state.network_shared.outputs.subnets
 
   instance_profile = data.terraform_remote_state.shared.outputs.iam.redis_node.instance_profile
 

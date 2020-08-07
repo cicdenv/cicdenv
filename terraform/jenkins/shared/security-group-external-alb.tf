@@ -1,6 +1,6 @@
 resource "aws_security_group" "jenkins_server_external_alb" {
   name   = "jenkins-server-external-alb"
-  vpc_id = local.vpc_id
+  vpc_id = local.vpc.id
 
   description = "routing for jenkins dedicated server hosts"
       
