@@ -230,6 +230,9 @@ $ cicdctl terraform destroy network/routing:dev -force
 * [Bastion Service Overview](https://docs.google.com/presentation/d/19ytRvaBg0QrlciX1pEgoqATQSfBkOHdcAI-9S9lG_Kg/)
 
 ```bash
+# Bring up bastion routing
+$ cicdctl terraform apply network/bastion/routing:main -auto-approve
+
 # Bring up bastion cluster
 $ cicdctl terraform apply network/bastion:main -auto-approve
 
