@@ -12,7 +12,7 @@ variable stage_name {
 }
 
 resource "aws_api_gateway_rest_api" "jenkins_github_oauth_callbacks" {
-  name        = "jenkins-github-oauth-callbacks"
+  name        = local.oauth_function_name
   description = "Forwards github oauth callbacks to Jenkins instances"
 }
 
@@ -123,6 +123,8 @@ resource "aws_api_gateway_integration" "jenkins_github_oauth_callbacks" {
   type = "AWS_PROXY"
 
   uri = aws_lambda_function.github_oauth_callback.invoke_arn
+  
+  credentials = aws_iam_role.aws_api_gateway_integration.arn
 
   # Ensures lambda before perms are set
   depends_on = [

@@ -13,11 +13,11 @@ resource "aws_lambda_function" "github_oauth_callback" {
   runtime = "python3.7"
 }
 
-resource "aws_lambda_permission" "apigw_lambda" {
-  statement_id  = "AllowExecutionFromAPIGateway"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.github_oauth_callback.function_name
-  principal     = "apigateway.amazonaws.com"
-
-  source_arn = "arn:aws:execute-api:${var.region}:${local.account_id}:${aws_api_gateway_rest_api.jenkins_github_oauth_callbacks.id}/*/*"
-}
+#resource "aws_lambda_permission" "apigateway" {
+#  statement_id  = "AllowExecutionFromAPIGateway"
+#  action        = "lambda:InvokeFunction"
+#  function_name = aws_lambda_function.github_oauth_callback.function_name
+#  principal     = "apigateway.amazonaws.com"
+#
+#  source_arn = "${aws_api_gateway_rest_api.jenkins_github_oauth_callbacks.execution_arn}/*/GET/securityRealm/finishLogin/*/*"
+#}

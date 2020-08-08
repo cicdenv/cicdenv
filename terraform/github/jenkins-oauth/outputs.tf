@@ -18,7 +18,7 @@ output "lambdas" {
 }
 
 output "dns" {
-  value = "${aws_route53_record.jenkins_github_oauth_callback.name}.${replace(local.public_hosted_zone.name, "/\\.$/", "")}"
+  value = aws_route53_record.jenkins_github_oauth_callback.name
 }
 
 output "iam" {
