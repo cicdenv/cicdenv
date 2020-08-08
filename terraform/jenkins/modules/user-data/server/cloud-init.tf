@@ -173,6 +173,28 @@ openssl rsa \
 chown -R jenkins:jenkins "/var/lib/jenkins/tls"
 
 #
+# Wait for the dpkg/apt lock(s) to be available for at least 3 secs.
+# 
+quiet_period=3  # seconds
+countdown="$quiet_period"
+while [[ "$countdown" -gt 0 ]]; do
+    echo "apt/dpkg lock - quiet period countdown: $${countdown} ..."
+    for lock_file in                    \
+        /var/lib/dpkg/lock              \
+        /var/lib/dpkg/lock-frontend     \
+        /var/lib/apt/lists/lock         \
+        /var/cache/apt/archives/lock; do
+        # echo "Checking lock: $${lock_file} ..."
+        if [[ $(fuser "$lock_file") ]]; then
+            echo "Waiting for lock: $${lock_file} ..."
+            countdown="$quiet_period"  # Reset quiet period countdown
+        fi
+    done
+    sleep 1
+    countdown=$(($countdown - 1))
+done
+
+#
 # Required packages
 #
 apt-get update

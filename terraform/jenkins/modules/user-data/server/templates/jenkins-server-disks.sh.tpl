@@ -3,7 +3,7 @@
 set -eux -o pipefail
 
 pool_name="ephemeral"
-ephemeral_dir="/mnt/${pool_name}"
+ephemeral_dir="/mnt/$${pool_name}"
 persistent_dir="/mnt/persistent"
 
 #
@@ -26,8 +26,8 @@ for bind_dir in                 \
 
     # If we're using ZFS for the instance stores, create separate data sets
     if zpool list "$pool_name" &> /dev/null; then
-        if ! zfs get "${pool_name}/$(basename $bind_dir)" &> /dev/null; then
-            zfs create "${pool_name}/$(basename $bind_dir)"
+        if ! zfs get "$${pool_name}/$(basename $bind_dir)" &> /dev/null; then
+            zfs create "$${pool_name}/$(basename $bind_dir)"
         fi
     else  # Create a subfolder to mount under $ephemeral_dir using the last path element
         mkdir -p "$real_dir"
