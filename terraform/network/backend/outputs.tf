@@ -30,10 +30,19 @@ output "private_dns_zone" {
   value = {
     name         = aws_route53_zone.private.name
     zone_id      = aws_route53_zone.private.zone_id
-    name_servers = aws_route53_zone.private.name_servers
 
     # .name with trailing dot stripped
     domain       = replace(aws_route53_zone.private.name, "/\\.$/", "")
+  }
+}
+
+output "private_dns_zone_ecr_vpce" {
+  value = {
+    name         = aws_route53_zone.ecr.name
+    zone_id      = aws_route53_zone.ecr.zone_id
+
+    # .name with trailing dot stripped
+    domain       = replace(aws_route53_zone.ecr.name, "/\\.$/", "")
   }
 }
 

@@ -6,4 +6,6 @@ module "vpc_endpoints" {
   vpc_id = local.vpc.id
 
   private_subnets = values(local.subnets["private"]).*.id
+
+  private_dns_enabled = false
 }

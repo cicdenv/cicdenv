@@ -11,6 +11,8 @@ locals {
 
   private_hosted_zone = data.terraform_remote_state.network_backend.outputs.private_dns_zone
   
+  private_dns_zone_ecr_vpce = data.terraform_remote_state.network_backend.outputs.private_dns_zone_ecr_vpce
+  
   public_subnet_tags = {
     "kubernetes.io/role/elb" = "1"
     "SubnetType"             = "Utility"

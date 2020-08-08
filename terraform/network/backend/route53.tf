@@ -7,7 +7,7 @@ resource "aws_route53_zone" "private" {
   }
 
   tags = {
-    Name = "${var.domain}"
+    Name = var.domain
   }
   
   lifecycle {

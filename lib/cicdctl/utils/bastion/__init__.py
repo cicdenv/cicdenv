@@ -72,10 +72,10 @@ def workspace_from_ip(ip):
         return 'main'
     else:
         _address = ip_address(ip)
-        ipam = parse_tfvars(ipam_config)
+        ipam = parse_tfvars(ipam_config)["ipam"]
         for workspace, networks in ipam.items():
-            for network, cidr_block in networks:
-                _network = ip_network(cidr_block)
+            for network, config in networks.items():
+                _network = ip_network(config["network_cidr"])
                 if _address in _network:
                     return workspace
 

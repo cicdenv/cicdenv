@@ -16,19 +16,23 @@ resource "aws_vpc_peering_connection_accepter" "backend" {
   provider = aws.main
 }
 
-resource "aws_route" "to_backend" {
+resource "aws_route" "shared_to_backend_private" {
   for_each = module.shared_vpc.route_tables["private"]
 
-  route_table_id            = each.value.id
-  destination_cidr_block    = local.backend_vpc.cidr_block
+  destination_cidr_block = local.backend_vpc.cidr_block
+
+  route_table_id = each.value.id
+  
   vpc_peering_connection_id = aws_vpc_peering_connection.backend.id
 }
 
-resource "aws_route" "to_shared" {
+resource "aws_route" "backend_private_to_shared" {
   for_each = local.backend_route_tables["private"]
 
-  route_table_id            = each.value.id
-  destination_cidr_block    = module.shared_vpc.vpc.cidr_block
+  destination_cidr_block = module.shared_vpc.vpc.cidr_block
+
+  route_table_id = each.value.id
+
   vpc_peering_connection_id = aws_vpc_peering_connection.backend.id
 
   provider = aws.main

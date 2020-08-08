@@ -34,12 +34,11 @@ availability_zones = {
 private_dns_zone = {
   "domain" = "<domain>"
   "name" = "<domain>."
-  "name_servers" = [
-    "ns-<N*>.awsdns-00.com.",
-    "ns-<N*>.awsdns-00.org.",
-    "ns-<N*>.awsdns-00.co.uk.",
-    "ns-<N*>.awsdns-00.net.",
-  ]
+  "zone_id" = "Z<[A-Z0-9]*20>"
+}
+private_dns_zone_ecr_vpce = {
+  "domain" = "api.ecr.<region>.amazonws.com"
+  "name" = "api.ecr.<region>.amazonws.com."
   "zone_id" = "Z<[A-Z0-9]*20>"
 }
 route_tables = {
