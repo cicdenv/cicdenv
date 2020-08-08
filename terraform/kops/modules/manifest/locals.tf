@@ -1,10 +1,10 @@
 locals {
   # network/shared
-  availability_zones = data.terraform_remote_state.network.outputs.availability_zones
-  vpc                = data.terraform_remote_state.network.outputs.vpc
-  network_cidr       = data.terraform_remote_state.network.outputs.vpc.cidr_block
-  private_dns_zone   = data.terraform_remote_state.network.outputs.private_dns_zone
-  subnets            = data.terraform_remote_state.network.outputs.subnets
+  availability_zones = data.terraform_remote_state.network_shared.outputs.availability_zones
+  vpc                = data.terraform_remote_state.network_shared.outputs.vpc
+  network_cidr       = data.terraform_remote_state.network_shared.outputs.vpc.cidr_block
+  private_dns_zone   = data.terraform_remote_state.network_shared.outputs.private_dns_zone
+  subnets            = data.terraform_remote_state.network_shared.outputs.subnets
   public_subnets     = local.subnets["public"]
   private_subnets    = local.subnets["private"]
 
