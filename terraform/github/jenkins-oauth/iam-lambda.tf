@@ -23,7 +23,6 @@ data "aws_iam_policy_document" "lambda_trust" {
 data "aws_iam_policy_document" "github_oauth_callback" {
   statement {
     actions = [
-      "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
     ]

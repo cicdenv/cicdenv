@@ -58,10 +58,6 @@ EOF
     content      = <<EOF
 #!/bin/bash
 
-set -e 
-
-#!/bin/bash
-
 set -eu -o pipefail
 
 # Download the sshd-worker image

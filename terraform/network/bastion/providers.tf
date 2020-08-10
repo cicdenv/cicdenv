@@ -1,5 +1,5 @@
 provider "aws" {
-  region = var.target_region
+  region = var.region
 
   profile = "admin-main"
 }

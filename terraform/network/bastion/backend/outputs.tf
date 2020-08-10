@@ -13,6 +13,7 @@ output "bastion_events" {
     }
   }
 }
+
 output "iam" {
   value = {
     iam_user_event_subscriber = {
@@ -42,6 +43,7 @@ output "iam" {
     }
   }
 }
+
 output "cloudwatch_log_groups" {
   value = {
     iam_user_event_subscriber = {

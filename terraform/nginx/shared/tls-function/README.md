@@ -2,7 +2,7 @@
 Per account lambda TLS key secret creator/rotator.
 
 ## archive
-```
+```bash
 cicdenv$ (cd terraform/nginx/shared/tls-function; make)
 ```
 
