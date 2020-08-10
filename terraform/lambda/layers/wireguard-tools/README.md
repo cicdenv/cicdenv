@@ -13,25 +13,11 @@ cicdenv$ cicdctl terraform <init|plan|apply|destroy> lambda/layers/wireguard-too
 
 ## Builds
 ```bash
-cicdenv$ (cd terraform/lambda/layers/wireguard-tools; make build package)
-cicdenv$ (cd terraform/lambda/layers/wireguard-tools; make upload)
-```
+# Generate the layer archive
+cicdenv$ (cd terraform/lambda/layers/wireguard-tools; make build test package)
 
-## Resource Policy
-```bash
-export AWS_PROFILE=admin-main
-
-org_id=$(cd terraform/backend; terraform output -json organization | jq -r '.id')
-version=$(aws lambda list-layer-versions \
-    --layer-name "wireguard-tools" --no-paginate --query 'sort_by(LayerVersions, &Version)[-1].Version')
-aws lambda add-layer-version-permission  \
---layer-name "wireguard-tools"           \
---version-number "$version"              \
---statement-id xaccount-getlayerversion  \
---action lambda:GetLayerVersion          \
---principal '*'                          \
---organization-id "$org_id"              \
---output text
+# Publish
+cicdenv$ (cd terraform/lambda/layers/wireguard-tools; make upload permissions)
 ```
 
 ## Importing
