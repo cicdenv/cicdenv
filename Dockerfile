@@ -78,6 +78,7 @@ RUN apk --no-cache --update add  \
     sudo                         \
     tzdata                       \
     vim                          \
+    wireguard-tools              \
     yaml                         \
     zip
 
