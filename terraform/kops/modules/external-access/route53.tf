@@ -1,5 +1,5 @@
 resource "aws_route53_record" "dns" {
-  name    = "api.${local.cluster_name}-${terraform.workspace}"
+  name    = "api.${local.cluster_name}-kops"
   zone_id = local.public_zone.zone_id
   type    = "A"
 
@@ -9,6 +9,4 @@ resource "aws_route53_record" "dns" {
 
     evaluate_target_health = false
   }
-
-  provider = aws.main
 }

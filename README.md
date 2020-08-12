@@ -148,7 +148,7 @@ ip-... node    True
 ip-... node    True
 ip-... node    True
 
-Your cluster 1-19b2-large-dev.kops.cicdenv.com is ready
+Your cluster 1-19b2-large-kops.dev.cicdenv.com is ready
 
 $ cicdctl kubectl 1-19b2-large:dev ...
 

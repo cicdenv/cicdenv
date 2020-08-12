@@ -16,8 +16,7 @@ ${name}-${workspace}.${domain}  =>  "cluster instance fqdn"
 Example:  `name=1-18a3`
 ```
 1-18a3
-1-18a3:dev
-1-18a3-dev.kops.cicdenv.com
+1-18a3-kops.dev.cicdenv.com
 ```
 
 ## Overiview

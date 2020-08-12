@@ -31,10 +31,6 @@ module "kops_external_access" {
   }
 
   cluster_name = local.cluster_name
-
-  providers = {
-    aws.main = aws.main
-  }
 }
 EOF
 

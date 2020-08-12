@@ -61,10 +61,6 @@ output "cluster_name" {
   value = local.cluster_name
 }
 
-output "cluster_instance" {
-  value = module.kops_driver.cluster_instance
-}
-
 output "cluster_fqdn" {
   value = module.kops_driver.cluster_fqdn
 }

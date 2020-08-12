@@ -8,7 +8,7 @@ variable "terraform_state" {
 
 variable "cluster_fqdn" {
   type = string
-  description = "Cluster fully qualified domain name: <cluser>-<workspace>.kops.cicdenv.com."
+  description = "Cluster fully qualified domain name: <cluser>-kops.<workspace>.cicdenv.com."
 }
 
 variable "files" {

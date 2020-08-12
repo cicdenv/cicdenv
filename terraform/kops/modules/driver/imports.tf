@@ -1,3 +1,12 @@
+data "terraform_remote_state" "network_backend" {
+  backend = "s3"
+  config = {
+    bucket = var.terraform_state.bucket
+    key    = "state/main/network_backend/terraform.tfstate"
+    region = var.terraform_state.region
+  }
+}
+
 data "terraform_remote_state" "network_shared" {
   backend = "s3"
   config = {
@@ -29,7 +38,7 @@ data "terraform_remote_state" "domains" {
   backend = "s3"
   config = {
     bucket = var.terraform_state.bucket
-    key    = "state/main/kops_domains/terraform.tfstate"
+    key    = "state/${terraform.workspace}/domains/terraform.tfstate"
     region = var.terraform_state.region
   }
 }

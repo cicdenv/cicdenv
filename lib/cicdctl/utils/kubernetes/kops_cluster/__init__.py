@@ -26,7 +26,7 @@ def kubeconfig(name, workspace, perms):
 
 def cluster_fqdn(name, workspace):
     domain = parse_tfvars(domain_config)['domain']
-    return f'{name}-{workspace}.kops.{domain}'
+    return f'{name}-kops.{workspace}.{domain}'
 
 
 def state_store():

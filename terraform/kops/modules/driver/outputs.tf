@@ -2,10 +2,6 @@ output "cluster_name" {
   value = local.cluster_name
 }
 
-output "cluster_instance" {
-  value = local.cluster_instance
-}
-
 output "cluster_fqdn" {
   value = local.cluster_fqdn
 }

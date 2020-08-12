@@ -1,10 +1,11 @@
 locals {
+  region = data.aws_region.current.name
+  
   # network
-  availability_zones = data.terraform_remote_state.network_shared.outputs.availability_zones
+  availability_zones = data.terraform_remote_state.network_backend.outputs.availability_zones
   subnets            = data.terraform_remote_state.network_shared.outputs.subnets
   public_subnets     = local.subnets["public"]
   private_subnets    = local.subnets["private"]
-  private_dns_zone   = data.terraform_remote_state.network_shared.outputs.private_dns_zone
 
   # ssh
   shared_ssh_key = data.terraform_remote_state.ssh.outputs.key_pairs.shared.public_key
@@ -16,8 +17,8 @@ locals {
   state_store = data.terraform_remote_state.backend.outputs.state_store
   secrets     = data.terraform_remote_state.backend.outputs.secrets
 
-  # kops/domains
-  kops_domain = data.terraform_remote_state.domains.outputs.kops_public_zone.domain
+  # domains
+  private_dns_zone = data.terraform_remote_state.domains.outputs.private_dns_zone
 
   # kops/shared
   etcd_kms_key = data.terraform_remote_state.shared.outputs.etcd_kms_key
@@ -29,8 +30,7 @@ locals {
   main_admin = data.terraform_remote_state.iam_users.outputs.iam.main_admin.role.arn
 
   cluster_name     = var.cluster_name
-  cluster_instance = "${local.cluster_name}-${terraform.workspace}"
-  cluster_fqdn     = "${local.cluster_instance}.${local.kops_domain}"
+  cluster_fqdn     = "${local.cluster_name}-kops.${local.private_dns_zone.domain}"
   
   kubernetes_version = var.cluster_settings.kubernetes_version
 

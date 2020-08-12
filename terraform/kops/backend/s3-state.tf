@@ -63,13 +63,41 @@ data "aws_iam_policy_document" "kops_state_s3" {
       "arn:aws:s3:::${aws_s3_bucket.kops_state.bucket}/*",
     ]
 
+    # https://github.com/kubernetes/kops/issues/7968
+    # condition {
+    #   test     = "StringEquals"
+    #   variable = "s3:x-amz-acl"
+    #   values   = [
+    #     "bucket-owner-full-control",
+    #   ]
+    # }
+
     condition {
       test     = "StringEquals"
-      variable = "s3:x-amz-acl"
+      variable = "aws:PrincipalOrgID"
       values   = [
-        "bucket-owner-full-control",
+        local.organization.id,
       ]
     }
+  }
+
+  statement {
+    principals {
+      type = "AWS"
+
+      identifiers = [
+        "*",
+      ]
+    }
+
+    actions = [
+      "s3:DeleteObject",
+      "s3:DeleteObjectVersion",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.kops_state.bucket}/*",
+    ]
 
     condition {
       test     = "StringEquals"

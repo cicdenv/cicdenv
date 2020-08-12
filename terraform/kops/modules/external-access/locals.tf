@@ -11,5 +11,5 @@ locals {
   security_group   = data.terraform_remote_state.shared.outputs.security_groups.external_apiserver
 
   # kops/domains
-  public_zone = data.terraform_remote_state.domains.outputs.kops_public_zone
+  public_zone = data.terraform_remote_state.domains.outputs.account_public_zone
 }
