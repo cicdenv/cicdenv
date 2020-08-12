@@ -2,6 +2,10 @@ output "vpc" {
   value = module.shared_vpc.vpc
 }
 
+output "availability_zones" {
+  value = local.availability_zones
+}
+
 output "subnets" {
   value = module.shared_vpc.subnets
 }

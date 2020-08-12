@@ -1,5 +1,5 @@
 resource "aws_route53_record" "internal_dns" {
-  name    = "jenkins.${terraform.workspace}"
+  name    = "jenkins"
   zone_id = local.private_hosted_zone.zone_id
   type    = "A"
 
