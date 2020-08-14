@@ -1,4 +1,4 @@
-apiVersion: admissionregistration.k8s.io/v1
+apiVersion: admissionregistration.k8s.io/v1beta1
 kind: MutatingWebhookConfiguration
 metadata:
   name: pod-identity-webhook
@@ -17,3 +17,5 @@ webhooks:
         apiVersions: ["v1"]
         resources: ["pods"]
         operations: [ "CREATE" ]
+    sideEffects: None
+    admissionReviewVersions: ["v1beta1"]

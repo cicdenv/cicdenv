@@ -57,6 +57,7 @@ output "irsa" {
           bucket_domain_name = aws_s3_bucket.oidc.bucket_domain_name
         }
       }
+      tls = data.tls_certificate.oidc
     }
     cluster_spec = {
       fileAssets = <<-EOF

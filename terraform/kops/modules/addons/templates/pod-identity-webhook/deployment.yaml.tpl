@@ -33,10 +33,12 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
           args:
-            - "-namespace=$(NAMESPACE)"
-            - "-pod-name=$(POD_NAME)"
-            - "-service-names=pod-identity-webhook"
-            - "-cert-dir=/etc/tls"
+            - -namespace=$(NAMESPACE)
+            - -pod-name=$(POD_NAME)
+            - -service-names=pod-identity-webhook
+            - -query-k8s=true
+            - -include-unqualified=true
+            - -cert-dir=/etc/tls
           volumeMounts:
             - name: tls
               mountPath: /etc/tls

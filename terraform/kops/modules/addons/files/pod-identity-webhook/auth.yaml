@@ -9,6 +9,14 @@ kind: ClusterRole
 metadata:
   name: pod-identity-webhook
 rules:
+  - apiGroups: 
+      - ""
+    resources:
+      - pods
+      - services
+    verbs:
+      - get
+      - list
   - apiGroups:
       - ""
     resources:
