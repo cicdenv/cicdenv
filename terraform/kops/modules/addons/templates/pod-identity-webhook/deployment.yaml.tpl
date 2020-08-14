@@ -58,7 +58,7 @@ spec:
             - --aws-default-region=${region}
             - --token-audience=sts.amazonaws.com
             - --token-expiration=86400
-            - --token-mount-path=/var/run/secrets/eks.amazonaws.com/serviceaccount
+            - --token-mount-path=/var/run/secrets/irsa.amazonaws.com/serviceaccount
           volumeMounts:
             - name: tls
               mountPath: /etc/tls

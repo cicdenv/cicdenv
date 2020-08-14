@@ -33,6 +33,45 @@ cicdenv$ cicdctl kubectl <cluster>:dev run "irsa-test" \
 PRE kops/
 ```
 
+## MutatingWebHook
+Uses the annotation on the kubernetes service account (sa)
+to set environment variables and "file project" an AWS token
+for the AWS  SDK to use.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: irsa-test
+  namespace: default
+spec:
+  serviceAccountName: irsa-test
+  containers:
+  - name: irsa-test
+    image: amazon/aws-cli:latest
+### Everything below is added by the webhook ###
+    env:
+    - name: AWS_DEFAULT_REGION
+      value: us-west-2
+    - name: AWS_REGION
+      value: us-west-2
+    - name: AWS_ROLE_ARN
+      value: "<iam-role-arn>"
+    - name: AWS_WEB_IDENTITY_TOKEN_FILE
+      value: "/var/run/secrets/irsa.amazonaws.com/serviceaccount/token"
+    volumeMounts:
+    - mountPath: "/var/run/secrets/irsa.amazonaws.com/serviceaccount/"
+      name: aws-token
+  volumes:
+  - name: aws-token
+    projected:
+      sources:
+      - serviceAccountToken:
+          audience: "sts.amazonaws.com"
+          expirationSeconds: 86400
+          path: token
+```
+
 ## Importing
 ```hcl
 data "terraform_remote_state" "irsa-test" {
