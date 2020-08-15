@@ -8,3 +8,9 @@ IAM Roles for (Kubernetes) Service Accounts integration.
 or:
 * [bin/decrypt-key.sh]
 * use files ...
+
+## Verify
+```bash
+curl https://oidc-irsa-cicdenv-com.s3.amazonaws.com/.well-known/openid-configuration
+curl https://oidc-irsa-cicdenv-com.s3.amazonaws.com/jwks.json
+```

@@ -35,9 +35,8 @@ spec:
           args:
             - -namespace=$(NAMESPACE)
             - -pod-name=$(POD_NAME)
-            - -service-names=pod-identity-webhook
-            - -query-k8s=true
-            - -include-unqualified=true
+            - -query-k8s
+            - -include-unqualified
             - -cert-dir=/etc/tls
           volumeMounts:
             - name: tls
