@@ -17,7 +17,13 @@ cicdenv$ cicdctl terraform <init|plan|apply|destroy> lambda/layers/wireguard-too
 cicdenv$ (cd terraform/lambda/layers/wireguard-tools; make build test package)
 
 # Publish
-cicdenv$ (cd terraform/lambda/layers/wireguard-tools; make upload permissions)
+📦 $USER:~/cicdenv$ (cd terraform/lambda/layers/wireguard-tools; make upload)
+
+# Push new version
+cicdenv$ cicdctl terraform apply lambda/layers/wireguard:main -auto-approve
+
+# Update cross account perms
+📦 $USER:~/cicdenv$ (cd terraform/lambda/layers/wireguard-tools; make permissions)
 ```
 
 ## Importing

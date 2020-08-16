@@ -28,7 +28,7 @@ permissions:
 	    --layer-name "wireguard-tools" --no-paginate --query 'sort_by(LayerVersions, &Version)[-1].Version'); \
 	aws --profile=$(AWS_PROFILE) --region=$(AWS_REGION)      \
 	    lambda add-layer-version-permission                  \
-	    --layer-name "wireguard-tools"                       \
+	    --layer-name "$(layer_name)"                         \
 	    --version-number "$$version"                         \
 	    --statement-id "xaccount-getlayerversion-$$version"  \
 	    --action lambda:GetLayerVersion                      \
