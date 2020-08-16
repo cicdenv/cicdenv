@@ -44,6 +44,15 @@ data "template_file" "master_instance_group" {
       | base64 -di                                             \
       > "/srv/kubernetes/assets/service-account-signing-key"
       chmod 0600 "/srv/kubernetes/assets/service-account-signing-key"
+
+      aws secretsmanager get-secret-value                      \
+          --secret-id "${local.secrets.service_accounts.arn}"  \
+          --version-stage 'AWSCURRENT'                         \
+          --query  'SecretString'                              \
+      | jq -r 'fromjson | .["account-signing-key-pkcs8.pub"]'  \
+      | base64 -di                                             \
+      > "/srv/kubernetes/assets/service-account-key"
+      chmod 0600 "/srv/kubernetes/assets/service-account-key"
 EOF
   }
 }

@@ -59,7 +59,6 @@ ${public_subnets}
     masters: private
     nodes: private
   fileAssets:
-  ${irsa_file_assets}
   - name: kubernetes-audit
     path: /srv/kubernetes/audit.yaml
     roles: [Master]

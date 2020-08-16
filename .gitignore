@@ -53,3 +53,5 @@ client-key.pem
 server-key.pem
 
 terraform/lambda/layers/wireguard-tools/layer
+terraform/lambda/layers/jwks-tools/layer
+

@@ -42,3 +42,12 @@ data "terraform_remote_state" "cfssl_layer" {
     region = var.region
   }
 }
+
+data "terraform_remote_state" "jwks-tools_layer" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket
+    key    = "state/main/lambda_layers_jwks-tools/terraform.tfstate"
+    region = var.region
+  }
+}

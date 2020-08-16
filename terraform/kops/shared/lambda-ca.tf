@@ -18,7 +18,7 @@ resource "aws_lambda_function" "kops_ca" {
   ]
 }
 
-resource "aws_lambda_permission" "secret_manager_call_Lambda" {
+resource "aws_lambda_permission" "secret_manager_call_kops_ca_Lambda" {
     function_name = aws_lambda_function.kops_ca.function_name
     statement_id  = "AllowExecutionSecretManager"
     action        = "lambda:InvokeFunction"

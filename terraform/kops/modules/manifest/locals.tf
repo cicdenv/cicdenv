@@ -12,16 +12,14 @@ locals {
 
   # kops/backend:
   state_store = data.terraform_remote_state.backend.outputs.state_store
-  secrets     = data.terraform_remote_state.backend.outputs.secrets
-
-  irsa_file_assets   = trimspace(data.terraform_remote_state.backend.outputs.irsa.cluster_spec["fileAssets"])
-  irsa_kube_api_args = trimspace(data.terraform_remote_state.backend.outputs.irsa.cluster_spec["kubeAPIServer"])
 
   # kops/shared:
   etcd_kms_key           = data.terraform_remote_state.shared.outputs.etcd_kms_key
   master_security_groups = [data.terraform_remote_state.shared.outputs.security_groups.master.id]
   node_security_groups   = [data.terraform_remote_state.shared.outputs.security_groups.node.id]
   api_security_groups    = [data.terraform_remote_state.shared.outputs.security_groups.internal_apiserver.id]
+  secrets                = data.terraform_remote_state.shared.outputs.secrets
+  irsa_kube_api_args     = trimspace(data.terraform_remote_state.shared.outputs.irsa.cluster_spec["kubeAPIServer"])
 
   region = data.aws_region.current.name
 

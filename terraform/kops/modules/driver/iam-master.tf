@@ -244,16 +244,6 @@ data "aws_iam_policy_document" "kops_master" {
       local.secrets.service_accounts.arn,
     ]
   }
-  
-  statement {
-    actions = [
-      "kms:Decrypt",
-    ]
-
-    resources = [
-      local.secrets.key.arn,
-    ]
-  }
 }
 
 resource "aws_iam_policy" "kops_master" {

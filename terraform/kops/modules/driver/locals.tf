@@ -15,13 +15,13 @@ locals {
 
   # kops/backend
   state_store = data.terraform_remote_state.backend.outputs.state_store
-  secrets     = data.terraform_remote_state.backend.outputs.secrets
 
   # domains
   private_dns_zone = data.terraform_remote_state.domains.outputs.private_dns_zone
 
   # kops/shared
   etcd_kms_key = data.terraform_remote_state.shared.outputs.etcd_kms_key
+  secrets      = data.terraform_remote_state.shared.outputs.secrets
   
   # backend (accounts)
   account_admin = data.terraform_remote_state.accounts.outputs.organization_accounts[terraform.workspace].role
