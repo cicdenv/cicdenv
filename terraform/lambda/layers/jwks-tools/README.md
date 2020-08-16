@@ -2,6 +2,8 @@
 Tools for creating JSON web key sets (jwks) key + config
 for use in lambda secrets manager secret rotation.
 
+* [RFC-7517 - JSON Web Key (JWK)](https://tools.ietf.org/html/rfc7517)
+
 ## Workspaces
 N/A.
 
