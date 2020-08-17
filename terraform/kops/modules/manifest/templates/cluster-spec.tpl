@@ -14,8 +14,7 @@ spec:
       crossZoneLoadBalancing: true
       additionalSecurityGroups: ${lb_security_groups}
   authentication:
-    aws: 
-      clusterID: ${cluster_fqdn}
+    aws: {}
   authorization:
     rbac: {}
   channel: stable
