@@ -47,7 +47,7 @@ source "amazon-ebssurrogate" "builder" {
   ssh_interface = "public_ip"
   ssh_timeout   = "2m"
 
-  ami_name        = "${var.root_fs}/ubuntu-20.04-amd64-{{ isotime | clean_resource_name }}"
+  ami_name        = "${var.root_fs}/ubuntu-20.04-amd64-${formatdate("YYYY-MM-DD'T'HH-mm-ssZ", timestamp())}"
   ami_description = "template=${var.source_pkr_hcl}"
 
   snapshot_users  = var.account_ids

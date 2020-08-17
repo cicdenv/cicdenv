@@ -43,7 +43,7 @@ python                 ->  3.7.7
 make                   ->  4.2.1
 aws (cli)              ->  1.18.115
 terraform              ->  v0.13.0
-packer                 ->  v1.6.0
+packer                 ->  v1.6.1
 kops                   ->  1.19.0-alpha.2
 kubectl                ->  v1.19.0-beta.2
 aws-iam-authenticator  ->  0.5.1

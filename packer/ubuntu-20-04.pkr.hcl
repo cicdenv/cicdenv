@@ -61,7 +61,7 @@ source "amazon-ebs" "builder" {
   ssh_interface = "public_ip"
   ssh_timeout   = "2m"
 
-  ami_name        = "base/ubuntu-20.04-amd64-${var.root_fs}-${var.ephemeral_fs}-{{ isotime | clean_resource_name }}"
+  ami_name        = "base/ubuntu-20.04-amd64-${var.root_fs}-${var.ephemeral_fs}-${formatdate("YYYY-MM-DD'T'HH-mm-ssZ", timestamp())}"
   ami_description = "template=${var.source_pkr_hcl} source-ami=${var.root_fs} ephemeral-fs=${var.ephemeral_fs}"
   snapshot_users  = var.account_ids
   ami_users       = var.account_ids
