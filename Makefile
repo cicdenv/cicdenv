@@ -84,7 +84,7 @@ docker-build:
 	    --build-arg      terraform_releases=$(TERRAFORM_RELEASES)     \
 	    --build-arg            kops_version=$(KOPS_VERSION)           \
 	    --build-arg               kops_sha256=$(KOPS_SHA256)          \
-	    --build-arg           kops_releases=$(KOPS_DOWNLOADS)         \
+	    --build-arg           kops_downloads=$(KOPS_DOWNLOADS)        \
 	    --build-arg          packer_version=$(PACKER_VERSION)         \
 	    --build-arg        packer_sha256=$(PACKER_SHA256)             \
 	    --build-arg         packer_releases=$(PACKER_RELEASES)        \

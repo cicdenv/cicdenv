@@ -38,8 +38,8 @@ AUTHENTICATOR_VERSION = 0.5.1
 AUTHENTICATOR_SHA256  = afb16f35071c977554f1097cbb84ca4f38f9ce42142c8a0612716ae66bb9fdb9
 AUTHENTICATOR_PROJECT = https://github.com/kubernetes-sigs/aws-iam-authenticator
 
-# https://pkg.cfssl.org/
-CFSSL_VERSION    = R1.2
-CFSSL_SHA256     = eb34ab2179e0b67c29fd55f52422a94fe751527b06a403a79325fed7cf0145bd
-CFSSLJSON_SHA256 = 1c9e628c3b86c3f2f8af56415d474c9ed4c8f9246630bd21c3418dbe5bf6401e
-CFSSL_DOWNLOADS  = https://pkg.cfssl.org
+# https://github.com/cloudflare/cfssl/releases/ (cfssl_*-checksums.txt)
+CFSSL_VERSION    = 1.4.1
+CFSSL_SHA256     = d01a26bc88851aab4c986e820e7b3885cedf1316a9c26a98fbba83105cfd7b87
+CFSSLJSON_SHA256 = 05d67e05cacb8b2e78e737637acdcf9127b0732f0c4104403e9e9b74032fd685
+CFSSL_DOWNLOADS  = https://github.com/cloudflare/cfssl/releases/download

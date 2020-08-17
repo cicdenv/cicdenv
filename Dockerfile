@@ -157,8 +157,8 @@ RUN for item in linux_amd64.zip SHA256SUMS SHA256SUMS.sig; do                  \
 # Kops cli
 ARG kops_version
 ARG kops_sha256
-ARG kops_releases
-RUN curl -o /bin/kops -sL "${kops_releases}/v$(python -c 'import urllib.parse; print(urllib.parse.quote("'${kops_version}'"))')/kops-linux-amd64"  \
+ARG kops_downloads
+RUN curl -o /bin/kops -sL "${kops_downloads}/v$(python -c 'import urllib.parse; print(urllib.parse.quote("'${kops_version}'"))')/kops-linux-amd64"  \
  && echo "${kops_sha256}  /bin/kops" | sha256sum -c - \
  && chmod +x /bin/kops
 
@@ -187,13 +187,13 @@ ARG cfssl_version
 ARG cfssl_sha256
 ARG cfssljson_sha256
 ARG cfssl_downloads
-RUN curl -o /bin/cfssl                                             \
-         -sL ${cfssl_downloads}/${cfssl_version}/cfssl_linux-amd64 \
- && echo "${cfssl_sha256}  /bin/cfssl" | sha256sum -c -            \
+RUN curl -o /bin/cfssl                                                             \
+    -sL "${cfssl_downloads}/v${cfssl_version}/cfssl_${cfssl_version}_linux_amd64"  \
+ && echo "${cfssl_sha256}  /bin/cfssl" | sha256sum -c -                            \
  && chmod +x /bin/cfssl
-RUN curl -o /bin/cfssljson                                             \
-         -sL ${cfssl_downloads}/${cfssl_version}/cfssljson_linux-amd64 \
- && echo "${cfssljson_sha256}  /bin/cfssljson" | sha256sum -c -        \
+RUN curl -o /bin/cfssljson                                                             \
+    -sL "${cfssl_downloads}/v${cfssl_version}/cfssljson_${cfssl_version}_linux_amd64"  \
+ && echo "${cfssljson_sha256}  /bin/cfssljson" | sha256sum -c -                        \
  && chmod +x /bin/cfssljson
 
 # Install OpenJDK 11 (keytool)

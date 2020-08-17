@@ -38,15 +38,16 @@ Confirm tool versions:
 cicdenv$ make versions
 [Tool]                     [Version]
 -----------------------------------------
-bash                   --> 5.0.0(1)
-python                 --> 3.7.5
-make                   --> 4.2.1
-terraform              --> v0.12.28
-packer                 --> v1.6.0
-kops                   --> 1.18.0-beta.2-6309b96
-kubectl                --> v1.18.5
-aws-iam-authenticator  --> 0.5.1
-aws (cli)              --> 1.18.71
+bash                   ->  5.0.0(1)
+python                 ->  3.7.7
+make                   ->  4.2.1
+aws (cli)              ->  1.18.115
+terraform              ->  v0.13.0
+packer                 ->  v1.6.0
+kops                   ->  1.19.0-alpha.2
+kubectl                ->  v1.19.0-beta.2
+aws-iam-authenticator  ->  0.5.1
+cfssl                  ->  Version: 1.4.1
 ```
 
 ## AWS Access
