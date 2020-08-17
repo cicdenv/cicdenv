@@ -1,3 +1,3 @@
 variable "jenkins_server_default_tag" { 
-  default = "2.249-2020-07-24-01" 
+  default = "2.251-2020-08-04-01" 
 }
