@@ -27,7 +27,5 @@ module "vpc_endpoints" {
 
   vpc_id = module.test_vpc.vpc.id
 
-  public_route_tables  = module.test_vpc.route_tables["public"]
-  private_route_tables = values(module.test_vpc.route_tables["private"]).*.id
   private_subnets      = values(module.test_vpc.subnets["private"]).*.id
 }
