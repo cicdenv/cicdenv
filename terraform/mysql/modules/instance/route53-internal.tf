@@ -1,5 +1,5 @@
 resource "aws_route53_record" "mysql_internal_nlb" {
-  name    = "${var.name}.${terraform.workspace}"
+  name    = "${var.name}"
   zone_id = local.private_hosted_zone.zone_id
   type    = "A"
 
