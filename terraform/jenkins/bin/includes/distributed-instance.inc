@@ -55,9 +55,10 @@ output "autoscaling_groups" {
   value = module.jenkins_instance.autoscaling_groups
 }
 
-output "ami" {
+output "amis" {
   value = {
-    id = local.ami_id
+    server = local.ami_ids.server
+    agent  = local.ami_ids.agent
   }
 }
 
