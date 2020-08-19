@@ -101,9 +101,13 @@ shell:
 	    --entrypoint /bin/bash                                                      \
 	    $(image_name):$(image_tag)
 
-clean:
+clean: clean-docker clean-terraform clean-python
+	git clean -xn
+	
+clean-docker:
+	# Docker clean
 	docker system prune --force # removes unused networks
-	for image in $(image_name) ; do \
+	-for image in $(image_name) ; do \
 	    if [ "$$(docker images -q $$image | wc -l)" -gt 0 ]; then                 \
 	        for img_id in $$(docker images -q $$image | uniq); do                 \
 	            for dep_id in                                                     \
@@ -116,3 +120,10 @@ clean:
 	        done;                                                                 \
 	    fi;                                                                       \
 	done  
+
+clean-terraform:
+	find . -name .terraform -type d -prune -exec rm -rf '{}' \;
+	rm -rf .terraform.d
+
+clean-python:
+	rm -rf .pytest_cache

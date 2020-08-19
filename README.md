@@ -275,3 +275,8 @@ cicdenv$ make clean
 docker system prune --all --volumes
 ```
 
+Check .gitnored files:
+```bash
+cicdenv$ git clean -xnd
+cicdenv$ # git clean -xdf
+```
