@@ -261,3 +261,17 @@ cicdenv$ make        # or `cicdctl console`
 There is a single main account base AMI for all EC2 instances in all accounts.
 
 See [packer/](packer/) for details on how to build / test / publish.
+
+## Maintenance
+Slow tool start ?
+```bash
+cicdenv$ cicdctl console
+📦 $USER:~/cicdenv$ docker system prune
+
+# Optional
+cicdenv$ make clean
+
+# Extreme
+docker system prune --all --volumes
+```
+

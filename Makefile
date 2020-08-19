@@ -26,50 +26,6 @@ repo=$(shell git config --get remote.origin.url | sed -E 's!.*/([^.]+).git$$!\1!
 include tool-versions.mk
 include tool-vars.mk
 
-shell:
-	@if [[ ! -d ~/.local                  ]]; then mkdir -p ~/.local;               fi
-	@if [[ ! -f ~/.jenkins.conf           ]]; then touch ~/.jenkins.conf;           fi
-	@if [[ ! -f ~/.jenkins-local.auth     ]]; then touch ~/.jenkins-local.auth;     fi
-	@if [[ ! -f "$(CURDIR)/.bash_history" ]]; then touch "$(CURDIR)/.bash_history"; fi
-	@docker run -it --rm                                                            \
-	    --cap-add SYS_PTRACE                                                        \
-        --volume "/var/run/docker.sock:/var/run/docker.sock"                        \
-	    --volume "$(HOME)/.aws:/home/terraform/.aws"                                \
-	    --volume "$(HOME)/.ssh:/home/terraform/.ssh"                                \
-	    --volume "$(HOME)/.cache:/home/terraform/.cache"                            \
-	    --volume "$(HOME)/.config:/home/terraform/.config"                          \
-	    --volume "$(HOME)/.gnupg:/home/terraform/.gnupg"                            \
-	    --volume "$(HOME)/.local:/home/terraform/.local"                            \
-	    $(shell if [[ $$(uname -s) == "Linux" ]]; then                              \
-	      echo '--volume "/run/user/$(user_id):/run/user/$(user_id)"';              \
-	    fi)                                                                         \
-	    --volume "$(CURDIR):/home/terraform/$(repo)"                                \
-	    --volume "$(CURDIR)/.bash_history:/home/terraform/.bash_history"            \
-	    --volume "$(HOME)/.gitconfig:/home/terraform/.gitconfig"                    \
-	    --volume "$(HOME)/.jenkins.conf:/home/terraform/.jenkins.conf"              \
-	    --volume "$(HOME)/.jenkins-local.auth:/home/terraform/.jenkins-local.auth"  \
-	    --user $(user_name)                                                         \
-	    --workdir=/home/terraform/$(repo)                                           \
-	    $(shell if [[ $$(uname -s) == "Linux" ]]; then                              \
-	      echo '--env XDG_RUNTIME_DIR="/run/user/$(user_id)"';                      \
-	    fi)                                                                         \
-	    --env TZ=$(timezone)                                                        \
-	    --env PATH=$(_PATH)                                                         \
-	    --env "HOST_PATH=$(CURDIR)"                                                 \
-	    --env "HOST_HOME=$(HOME)"                                                   \
-	    --env PS1=$(_PS1)                                                           \
-	    --entrypoint /bin/bash                                                      \
-	    $(image_name):$(image_tag)
-
-versions:
-	@docker run -it --rm                              \
-	    --volume "$(CURDIR):/home/terraform/$(repo)"  \
-	    --user $(user_name)                           \
-	    --workdir=/home/terraform/$(repo)             \
-	    --entrypoint /bin/bash                        \
-	    $(image_name):$(image_tag)                    \
-	    bin/versions.sh
-
 docker-build:
 	docker build -t "$(image_name):$(image_tag)"                      \
 	    --build-arg                     tag=$(ALPINE_TAG)             \
@@ -100,3 +56,63 @@ docker-build:
 	    --build-arg         cfssl_downloads=$(CFSSL_DOWNLOADS)        \
 	    .
 	docker tag "$(image_name):$(image_tag)" "$(image_name):latest"
+
+versions:
+	@docker run -it --rm                              \
+	    --volume "$(CURDIR):/home/terraform/$(repo)"  \
+	    --user $(user_name)                           \
+	    --workdir=/home/terraform/$(repo)             \
+	    --entrypoint /bin/bash                        \
+	    $(image_name):$(image_tag)                    \
+	    bin/versions.sh
+
+shell:
+	@if [[ ! -d ~/.local                  ]]; then mkdir -p ~/.local;               fi
+	@if [[ ! -f ~/.jenkins.conf           ]]; then touch ~/.jenkins.conf;           fi
+	@if [[ ! -f ~/.jenkins-local.auth     ]]; then touch ~/.jenkins-local.auth;     fi
+	@if [[ ! -f "$(CURDIR)/.bash_history" ]]; then touch "$(CURDIR)/.bash_history"; fi
+	@docker run -it --rm                                                            \
+	    --cap-add SYS_PTRACE                                                        \
+	    --volume "/var/run/docker.sock:/var/run/docker.sock"                        \
+	    --volume "$(HOME)/.aws:/home/terraform/.aws"                                \
+	    --volume "$(HOME)/.ssh:/home/terraform/.ssh"                                \
+	    --volume "$(HOME)/.cache:/home/terraform/.cache"                            \
+	    --volume "$(HOME)/.config:/home/terraform/.config"                          \
+	    --volume "$(HOME)/.gnupg:/home/terraform/.gnupg"                            \
+	    --volume "$(HOME)/.local:/home/terraform/.local"                            \
+	    $(shell if [[ $$(uname -s) == "Linux" ]]; then                              \
+	      echo '--volume "/run/user/$(user_id):/run/user/$(user_id)"';              \
+	    fi)                                                                         \
+	    --volume "$(CURDIR):/home/terraform/$(repo)"                                \
+	    --volume "$(CURDIR)/.bash_history:/home/terraform/.bash_history"            \
+	    --volume "$(HOME)/.gitconfig:/home/terraform/.gitconfig"                    \
+	    --volume "$(HOME)/.jenkins.conf:/home/terraform/.jenkins.conf"              \
+	    --volume "$(HOME)/.jenkins-local.auth:/home/terraform/.jenkins-local.auth"  \
+	    --user $(user_name)                                                         \
+	    --workdir=/home/terraform/$(repo)                                           \
+	    $(shell if [[ $$(uname -s) == "Linux" ]]; then                              \
+	      echo '--env XDG_RUNTIME_DIR="/run/user/$(user_id)"';                      \
+	    fi)                                                                         \
+	    --env TZ=$(timezone)                                                        \
+	    --env PATH=$(_PATH)                                                         \
+	    --env "HOST_PATH=$(CURDIR)"                                                 \
+	    --env "HOST_HOME=$(HOME)"                                                   \
+	    --env PS1=$(_PS1)                                                           \
+	    --entrypoint /bin/bash                                                      \
+	    $(image_name):$(image_tag)
+
+clean:
+	docker system prune --force # removes unused networks
+	for image in $(image_name) ; do \
+	    if [ "$$(docker images -q $$image | wc -l)" -gt 0 ]; then                 \
+	        for img_id in $$(docker images -q $$image | uniq); do                 \
+	            for dep_id in                                                     \
+	                    $$(for id in $$(docker images -q); do                     \
+	                        docker history $$id | grep -q $$img_id && echo $$id;  \
+	                    done | sort -u); do                                       \
+	                docker rmi --force $$dep_id;                                  \
+	            done;                                                             \
+	            docker rmi --force $$img_id;                                      \
+	        done;                                                                 \
+	    fi;                                                                       \
+	done  
