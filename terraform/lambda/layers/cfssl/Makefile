@@ -8,7 +8,7 @@ AWS_REGION=us-west-2
 package: layer.zip
 
 layer.zip: 
-	zip layer.zip /bin/{cfssl,cfssljson}
+	zip layer.zip "$(CURDIR)/layer/bin/"{cfssl,cfssljson}
 
 domain_config=$(CURDIR)/../../../domain.tfvars
 domain=$(shell grep 'domain ' "$(domain_config)" | awk -F= '{print $$2}' | sed 's/[" ]//g' | sed 's/\./-/g')
@@ -18,3 +18,45 @@ layer_name=cfssl
 upload: layer.zip
 	$(CURDIR)/../../../../bin/cicdctl creds aws-mfa main
 	aws --profile=$(AWS_PROFILE) --region=$(AWS_REGION) s3 cp "layer.zip" "s3://$(s3_bucket)/layers/$(layer_name).zip"
+
+permissions:
+	cicdctl terraform init backend:main; \
+	org_id=$$(cd $(CURDIR)/../../../../terraform/backend; \
+		AWS_PROFILE=$(AWS_PROFILE) terraform output -json organization | jq -r '.id'); \
+	version=$$(aws --profile=$(AWS_PROFILE) --region=$(AWS_REGION) \
+		lambda list-layer-versions \
+	    --layer-name "$(layer_name)" --no-paginate --query 'sort_by(LayerVersions, &Version)[-1].Version'); \
+	aws --profile=$(AWS_PROFILE) --region=$(AWS_REGION)      \
+	    lambda add-layer-version-permission                  \
+	    --layer-name "$(layer_name)"                         \
+	    --version-number "$$version"                         \
+	    --statement-id "xaccount-getlayerversion-$$version"  \
+	    --action lambda:GetLayerVersion                      \
+	    --principal '*'                                      \
+	    --organization-id "$$org_id"                         \
+	    --output text
+
+build:
+	mkdir -p "$(CURDIR)/layer/bin"
+	docker run --rm -v "$(CURDIR)/layer:/output" "lambci/yumda:2" \
+	    bash -c '\
+yum install -y cfssl; \
+cp /lambda/opt/bin/{cfssl,cfssljson} /output/bin; \
+	'
+
+shell:
+	mkdir -p "$(CURDIR)/layer/bin"
+	docker run --rm -it \
+	    -v "$(CURDIR)/layer:/opt" \
+	    -e PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin" \
+	    "lambci/yumda:2" \
+	    bash
+
+test:
+	docker run --rm -it -v "$(CURDIR)/layer:/opt" \
+	    --entrypoint bash \
+	    "lambci/lambda:python3.8" \
+	    -c '\
+cfssl      version; \
+cfssljson -version; \
+	'

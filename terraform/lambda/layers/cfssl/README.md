@@ -13,8 +13,17 @@ cicdenv$ cicdctl terraform <init|plan|apply|destroy> lambda/layers/cfssl:main
 
 ## Builds
 ```bash
-cicdenv$ (cd terraform/lambda/layers/cfssl; make package)
-cicdenv$ (cd terraform/lambda/layers/cfssl; make upload)
+# Generate the layer archive
+cicdenv$ (cd terraform/lambda/layers/cfssl; make build test package)
+
+# Publish
+📦 $USER:~/cicdenv$ (cd terraform/lambda/layers/cfssl; make upload)
+
+# Push new version
+cicdenv$ cicdctl terraform apply lambda/layers/cfssl:main -auto-approve
+
+# Update cross account perms
+📦 $USER:~/cicdenv$ (cd terraform/lambda/layers/cfssl; make permissions)
 ```
 
 ## Resource Policy
