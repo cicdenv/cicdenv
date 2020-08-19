@@ -21,11 +21,12 @@ upload: layer.zip
 	    s3 cp "layer.zip" "s3://$(s3_bucket)/layers/$(layer_name).zip"
 
 permissions:
+	cicdctl terraform init backend:main; \
 	org_id=$$(cd $(CURDIR)/../../../../terraform/backend; \
 		AWS_PROFILE=$(AWS_PROFILE) terraform output -json organization | jq -r '.id'); \
 	version=$$(aws --profile=$(AWS_PROFILE) --region=$(AWS_REGION) \
 		lambda list-layer-versions \
-	    --layer-name "wireguard-tools" --no-paginate --query 'sort_by(LayerVersions, &Version)[-1].Version'); \
+	    --layer-name "$(layer_name)" --no-paginate --query 'sort_by(LayerVersions, &Version)[-1].Version'); \
 	aws --profile=$(AWS_PROFILE) --region=$(AWS_REGION)      \
 	    lambda add-layer-version-permission                  \
 	    --layer-name "$(layer_name)"                         \
@@ -58,16 +59,20 @@ cp /lambda/opt/lib/{libcrypt.so.1,libfipscheck.so.1} /output/lib; \
 
 shell:
 	mkdir -p "$(CURDIR)/layer/bin"
-	docker run --rm -it -v "$(CURDIR)/layer:/output" "lambci/yumda:2" bash
+	docker run --rm -it \
+	    -v "$(CURDIR)/layer:/opt" \
+	    -e PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin" \
+	    "lambci/yumda:2" \
+	    bash
 
 test:
 	docker run --rm -it -v "$(CURDIR)/layer:/opt" \
 	    --entrypoint bash \
 	    "lambci/lambda:python3.8" \
 	    -c '\
-	    /opt/bin/jwks -h; \
-	    mkfifo /tmp/key /tmp/key.pub && cat /tmp/{key,key.pub} & \
-	    echo "y" | /opt/bin/ssh-keygen -b 2048 -t rsa -f /tmp/key -q -N ""; \
-	    rm /tmp/key*; \
+/opt/bin/jwks -h; \
+mkfifo /tmp/key /tmp/key.pub && cat /tmp/{key,key.pub} & \
+echo "y" | /opt/bin/ssh-keygen -b 2048 -t rsa -f /tmp/key -q -N ""; \
+rm /tmp/key*; \
 	'
 	    
