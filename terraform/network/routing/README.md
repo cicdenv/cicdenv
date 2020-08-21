@@ -1,5 +1,5 @@
 ## Purpose
-Side-wide NAT gateways enable private subnets to access networks outside the VPC.
+Site-wide NAT gateways enable private subnets to access networks outside the VPC.
 They are relatively expensive ~ $50 per month, per AZ.
 
 Its useful to define them in a different component than the egress VPC so

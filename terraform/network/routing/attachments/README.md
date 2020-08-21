@@ -1,5 +1,13 @@
 ## Purpose
-Attaches the workload VCP(s) to the main account transit gateway.
+Attache workload VCP(s) to the main account (egress) transit gateway.
+
+Tranist Gateway attachments enable private subnets to access networks outside the VPC.
+TG attachments are relatively expensive ~ $28 per VPC.
+
+Its useful to define them in a different component than the shared account VPC so
+they can be destroyed separately when no ec2 instances are running in the account.
+
+NOTE: `network/routing` creates the `backend` (transit) VPC to shared TG attachment.
 
 ## Workspaces
 This state is per-account.
