@@ -5,7 +5,7 @@ from . import env, packer_dir, packer_templates, workspace
 from ...commands.types.target import Target
 
 from ..terraform.driver import TerraformDriver
-from ..terraform.routing import routing_target
+from ..terraform.routing import routing_targets
 
 # Supported packer sub-commands
 packer_commands = [
@@ -26,9 +26,10 @@ class PackerDriver(object):
         self._run = self.settings.runner(cwd=packer_dir, env_ctx=env()).run
 
     def _ensure_routing(self):
-        _network_routing = routing_target('main')
-        if not TerraformDriver(self.settings, _network_routing).has_resources():
-            TerraformDriver(self.settings, _network_routing, ['-auto-approve']).apply()
+        network_targets = routing_targets(self.workspace)
+        for network_target in network_targets:
+            if not TerraformDriver(self.settings, network_target).has_resources():
+                TerraformDriver(self.settings, network_target, ['-auto-approve']).apply()
 
     def _tf_outputs(self, component, keys):
         target = Target(component, 'main')

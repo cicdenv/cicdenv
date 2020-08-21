@@ -8,7 +8,7 @@ from .ansible import ansible_dir, playbook_actions
 from ..ssh import add_ssh_secret
 
 from ..terraform.driver import TerraformDriver
-from ..terraform.routing import routing_target as network_routing
+from ..terraform.routing import routing_targets as network_routings
 
 from ...commands.types.target import parse_target
 from ...commands.types.instance import Instance
@@ -44,13 +44,13 @@ class JenkinsDriver(object):
             self._run([new_instance_script, self.name, self.type, *self.tf_vars])
 
     def _ensure_routing(self):
-        routings = [
-          network_routing(self.workspace),
+        network_targets = [
+          *network_routings(self.workspace),
           jenkins_routing(self.workspace),
         ]
-        for routing in routings:
-            if not TerraformDriver(self.settings, routing).has_resources():
-                TerraformDriver(self.settings, routing, ['-auto-approve']).apply()
+        for network_target in network_targets:
+            if not TerraformDriver(self.settings, network_target).has_resources():
+                TerraformDriver(self.settings, network_target, ['-auto-approve']).apply()
 
     def _tf_outputs(self, component, workspace, keys):
         target = Target(component, workspace)

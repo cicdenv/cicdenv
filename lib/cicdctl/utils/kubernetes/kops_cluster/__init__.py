@@ -5,7 +5,6 @@ from ....commands.types.target import parse_target
 from ...runners import EnvironmentContext
 from ...aws import DEFAULT_REGION, config_profile
 from ...terraform import parse_tfvars, domain_config
-from ...terraform.routing import routing_target
 
 new_cluster_script = 'terraform/kops/bin/generate-cluster-components.sh'
 stop_cluster_script = 'terraform/kops/clusters/bin/stop-cluster.sh'
@@ -42,7 +41,6 @@ ACCESS = 3
 
 def cluster_targets(name, workspace):
     return [
-        routing_target(workspace),
         parse_target(f'kops/clusters/{name}/kops:{workspace}'),
         parse_target(f'kops/clusters/{name}/cluster/{workspace}:{workspace}'),
         parse_target(f'kops/clusters/{name}/external-access:{workspace}'),

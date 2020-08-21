@@ -4,7 +4,7 @@ ipam = {
       network_cidr = "10.16.0.0/16"
     }
     backend = {
-      network_cidr = "192.168.64.0/22"
+      network_cidr = "192.168.16.0/20"
     }
   }
 

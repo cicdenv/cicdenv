@@ -4,7 +4,7 @@ from . import (env,
     new_instance_script)
 
 from ..terraform.driver import TerraformDriver
-from ..terraform.routing import routing_target
+from ..terraform.routing import routing_targets
 
 from ...commands.types.target import parse_target
 from ...commands.types.instance import Instance
@@ -40,9 +40,10 @@ class RedisDriver(object):
             self._run([new_instance_script, self.name, *self.tf_vars])
 
     def _ensure_routing(self):
-        network_routing = routing_target(self.workspace)
-        if not TerraformDriver(self.settings, network_routing).has_resources():
-            TerraformDriver(self.settings, network_routing, ['-auto-approve']).apply()
+        network_targets = routing_targets(self.workspace)
+        for network_target in network_targets:
+            if not TerraformDriver(self.settings, network_target).has_resources():
+                TerraformDriver(self.settings, network_target, ['-auto-approve']).apply()
 
     def _tf_outputs(self, component, workspace, keys):
         target = Target(component, workspace)

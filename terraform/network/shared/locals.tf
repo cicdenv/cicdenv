@@ -1,8 +1,6 @@
 locals {
   network_cidr = var.ipam[terraform.workspace].shared.network_cidr
 
-  transit_gateway = data.terraform_remote_state.network_backend.outputs.transit_gateways["internet"]
-
   main_account = data.terraform_remote_state.accounts.outputs.main_account
 
   backend_vpc = data.terraform_remote_state.network_backend.outputs.vpc

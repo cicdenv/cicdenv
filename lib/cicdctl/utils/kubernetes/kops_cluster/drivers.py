@@ -5,8 +5,8 @@ from . import (env, new_cluster_script, stop_cluster_script, download_ca_script,
 	cluster_targets, ROUTING, CONFIG, CLUSTER, ACCESS)
 from ...aws import config_profile
 
-from ...terraform.routing import routing_target
 from ...terraform.driver import TerraformDriver
+from ...terraform.routing import routing_targets
 
 
 class AuthenticatorDriver(object):
@@ -80,6 +80,12 @@ class ClusterDriver(object):
         self.env_ctx = env(self.workspace)
 
         self._run = self.settings.runner(cwd=getcwd(), env_ctx=self.env_ctx).run
+    
+    def _ensure_routing(self):
+        network_targets = routing_targets(self.workspace)
+        for network_target in network_targets:
+            if not TerraformDriver(self.settings, network_target).has_resources():
+                TerraformDriver(self.settings, network_target, ['-auto-approve']).apply()
 
     def _cluster_prep(self):
         # Generate cluster root module (component)
@@ -116,6 +122,7 @@ class ClusterDriver(object):
 
     def create(self):
         self._cluster_prep()
+        self._ensure_routing()
         self._terraform('apply', CLUSTER, self.tf_flags)
         self._terraform('apply', ACCESS,  self.tf_flags)
 
@@ -132,6 +139,7 @@ class ClusterDriver(object):
 
     def start(self):
         # cluster must exist
+        self._ensure_routing()
         self._terraform('apply', CLUSTER, ['-auto-approve'])
 
     def stop(self):

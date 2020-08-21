@@ -5,7 +5,11 @@ resource "aws_vpc_peering_connection" "backend" {
   peer_owner_id = local.main_account.id
   peer_region   = var.region
 
-  auto_accept   = false
+  auto_accept = false
+
+  tags = {
+    Name = "backend <=> ${terraform.workspace}"
+  }
 }
 
 resource "aws_vpc_peering_connection_accepter" "backend" {
