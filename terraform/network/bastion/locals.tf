@@ -7,7 +7,7 @@ locals {
 
   ami_id = var.base_ami_id != "" ? var.base_ami_id : data.terraform_remote_state.amis.outputs.base_amis["ext4-ext4"].id
   
-  instance_type = "c5d.large"
+  instance_type = "c5ad.large"
 
   instance_profile = data.terraform_remote_state.bastion_backend.outputs.iam.bastion.instance_profile
 
