@@ -57,3 +57,4 @@ terraform/lambda/layers/jwks-tools/layer
 terraform/lambda/layers/cfssl/layer
 terraform/lambda/layers/gnupg2/layer
 
+.aws

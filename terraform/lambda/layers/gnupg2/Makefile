@@ -8,7 +8,8 @@ AWS_REGION=us-west-2
 package: layer.zip
 
 layer.zip: 
-	zip layer.zip "$(CURDIR)/layer/bin/"{cfssl,cfssljson}
+	(cd "$(CURDIR)/layer"; zip "$(CURDIR)/layer.zip" -r *)
+	unzip -l "$(CURDIR)/layer.zip"
 
 domain_config=$(CURDIR)/../../../domain.tfvars
 domain=$(shell grep 'domain ' "$(domain_config)" | awk -F= '{print $$2}' | sed 's/[" ]//g' | sed 's/\./-/g')
@@ -44,12 +45,16 @@ yum install -y gnupg2; \
 ls -lh /lambda/opt/bin; \
 ls -lh /lambda/opt/lib; \
 ldd /lambda/opt/bin/gpg2; \
+ldd /lambda/opt/bin/gpg-agent; \
+cp /lambda/opt/bin/gpg  /output/bin; \
 cp /lambda/opt/bin/gpg2 /output/bin; \
+cp lambda/opt/bin/gpg-agent  /output/bin; \
 cp /lambda/opt/lib/libbz2* /output/lib; \
 cp /lambda/opt/lib/libreadline* /output/lib; \
 cp /lambda/opt/lib/libgcrypt* /output/lib; \
 cp /lambda/opt/lib/libgpg-error* /output/lib; \
 cp /lambda/opt/lib/libassuan* /output/lib; \
+cp /lambda/opt/lib/libpth* /output/lib; \
 	'
 
 shell:

@@ -9,6 +9,7 @@ package: layer.zip
 
 layer.zip: 
 	(cd "$(CURDIR)/layer"; zip "$(CURDIR)/layer.zip" -r *)
+	unzip -l "$(CURDIR)/layer.zip"
 
 domain_config=$(CURDIR)/../../../domain.tfvars
 domain=$(shell grep 'domain ' "$(domain_config)" | awk -F= '{print $$2}' | sed 's/[" ]//g' | sed 's/\./-/g')
