@@ -1,26 +1,26 @@
 -----BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+Hash: SHA512
 
 Origin: Ubuntu
 Label: Ubuntu
-Version: 18.04
+Version: 20.04
 Codename: repo/dists/
-Date: Sun, 09 Feb 2020 16:36:21 +0000
-Description: Ubuntu Bionic 18.04 cicdenv
+Date: Tue, 25 Aug 2020 23:22:00 +0000
+Description: Ubuntu 20.04 LTS (Focal Fossa) cicdenv
 MD5Sum:
- a8b01d9bbf0034dc1f27e5d3b2c0c0fd 426 Packages
+ e12013284904f7b675b05692880e77db 1060 Packages
 SHA1:
- dc9b5df240f3a1d60322ac5640208ab98883f338 426 Packages
+ f4db5b050d42ee7e6930540776ead6d91eac4f15 1060 Packages
 SHA256:
- 9860060e3862682c37fa2c9e446e1caa19925f59b99c4331beff3afa2c9c5f82 426 Packages
+ 2f7b4b6bf2b26fa89555f7260ce7a742cfef7e36d144f77936096c0c79f53c27 1060 Packages
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQEcBAEBCAAGBQJeQDUIAAoJEEWK0TpBWA0WzMEIAJPtzfOFKlTWIT+VxxjkehYH
-/551mNLEQNPb+ku+4hybdHmc7BL7v3TDpJtEg3nWyev7cYFrUubNN1P92o/qbiah
-L9WAHAeYj2cy923Z6htyUVNI1pITCU33J51stOnBm3HKuQeATZHjRpy2bw+53Y5P
-gD1NPxHvRbncyEEKnxNqjR3HxvceFJeZNWHVP9PVeXEnr+BQukkpJ5CyeSVzah1H
-mFcBi9HFhy7XEWW9WyNYc0BqErcASKNDlmisyEuuxE8Brb09yG2k6VWrzBS6E1ni
-1PPCiGFGHioWSlzm1BLuJ4NVmUZrGHxPtTJVMo92OrLkzcd9Yr/n9pKeQijjHV4=
-=Jdt9
+iQEcBAEBCgAGBQJfRZ0ZAAoJEHqc6GXUGPCSK24H/1buS8HMdEo6aQZP+8s8Nf3n
+VNONkv/Barp1Fnu2pyfgEUMeMajzq+5azOihevI1VlqQKJCek0obtws1MX9Uog/a
+/+w08fp8Gyw22iMnethgugUDZGxfAxxcLmKL08TKc3Sh3zQePPkclEEODQ1TntCw
+FXNz/XHEaj4s0mAVVMXEQeXKgUWvclSHcEayzFvq704cOVjAa1RL8MVHBDkrV+1n
+5oeZQXxj1RaXxm8YOJkfB1TwaIVHlk+zQg7bUuWHFKJ5JwsK5g/RmBvIj7kkscFn
+U8fG/Xusz0E1QELQ3JWkkxYTBmcfszLLeWlqxYTiQPR1ipvjoaZc8jXIj41cMF0=
+=Qltk
 -----END PGP SIGNATURE-----

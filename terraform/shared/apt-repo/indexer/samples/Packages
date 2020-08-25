@@ -1,11 +1,27 @@
+Package: amazon-ecr-credential-helper 
+Version: 0.4.1 
+Architecture: amd64 
+Maintainer: samuelkarp <samuel.karp@aws.com> 
+Original-Maintainer: Samuel Karp <skarp@amazon.com> 
+Depends: libc6 (>= 2.4), ca-certificates 
+Section: misc 
+Priority: optional 
+Homepage: https://github.com/awslabs/amazon-ecr-credential-helper 
+Description: Automatically gets credentials for Amazon ECR on docker push/pull
+Size: 2321568
+MD5sum: b3e62e742b8c2abb70086e85788a1157
+SHA1: 4dade62de05fd5604d2d0f29a0b6212d4df7b605
+SHA256: 8af4ea199416efb86a878c8e4441a0662eef0d65e94e2832f8399edd56e14585
+Filename: repo/dists/amazon-ecr-credential-helper-0.4.1.deb
+
 Package: libnss-iam 
 Version: 0.1 
 Architecture: amd64 
 Maintainer: George Fleury <gfleury@gmail.com> 
 Homepage: https://github.com/gfleury/libnss-iam 
 Description: Lib NSS module to integrate IAM users/groups
-Size: 8598338
-MD5sum: 677e6ce7bafc2ab9e74552fa6ebde81e
-SHA1: 60718fd8c158c945e5b59ce7f133bf0860770e67
-SHA256: 2af37af1a8fd243f2cfb28e57ed9f6f5d549a7c5c8bef5a46567c6bc2f091e4d
+Size: 30269560
+MD5sum: 27c8aa9dfc053b141c7000abca02e2af
+SHA1: 993bcc7ef46af929e5ce056e00d8977f811a3841
+SHA256: d85df2d140a6368b9630311b4ed6810b1d445f63b20212a085ee0010ff57a0d3
 Filename: repo/dists/libnss-iam-0.1.deb

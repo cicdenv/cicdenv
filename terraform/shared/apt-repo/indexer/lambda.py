@@ -31,7 +31,7 @@ def lambda_handler(event, context):
 
     # If a .deb was updated, added or deleted, rebuild the index.
     # If the Package index or *Release files were modified rebuild Package index and *Release files
-    if bucket == environ['BUCKET'] and file.endswith(".deb") or file in ["Packages", "Release", "InRelease", "key.asc"]:
+    if bucket == environ['BUCKET'] and file.endswith(".deb") or file in ["Packages", "Release", "Release.gpg", "InRelease", "key.asc"]:
         package_index_bytes = rebuild_package_index(prefix)
         rebuild_release_files(prefix, package_index_bytes)
 

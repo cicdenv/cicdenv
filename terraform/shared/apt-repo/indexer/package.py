@@ -63,7 +63,7 @@ def rebuild_package_index(prefix):
     print("Writing package index: %s" % (str(package_index_obj)))
     package_index = "\n".join(sorted(pkginfos))
     package_index_bytes = package_index.encode('utf-8')
-    package_index_obj.put(Body=package_index_bytes, Metadata={'packages-hash': calcd_pkghash})
+    package_index_obj.put(Body=package_index_bytes, Metadata={'packages-hash': calcd_pkghash}, ContentType="text/plain")
     print("DONE REBUILDING PACKAGE INDEX")
 
     return package_index_bytes

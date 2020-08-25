@@ -33,7 +33,7 @@ SHA256:
  {sha256} {size} Packages
 """
     print(release)
-    release_file_obj.put(Body=release)
+    release_file_obj.put(Body=release, ContentType="text/plain")
 
     print("DONE REBUILDING RELEASE FILE")
     
@@ -46,7 +46,7 @@ SHA256:
     print(release_sig)
 
     release_sig_file_obj = s3.Object(bucket_name=environ['BUCKET'], key=prefix + "/Release.gpg")
-    release_sig_file_obj.put(Body=str(release_sig))
+    release_sig_file_obj.put(Body=str(release_sig), ContentType="text/plain")
 
     print("DONE REBUILDING RELEASE SIG FILE")
 
@@ -56,7 +56,7 @@ SHA256:
     print(in_release)
 
     in_release_file_obj = s3.Object(bucket_name=environ['BUCKET'], key=prefix + "/InRelease")
-    in_release_file_obj.put(Body=str(in_release))
+    in_release_file_obj.put(Body=str(in_release), ContentType="text/plain")
 
     print("DONE REBUILDING IN-RELEASE FILE")
 

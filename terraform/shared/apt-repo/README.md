@@ -101,6 +101,7 @@ s3://apt-repo-cicdenv-com/repo/dists/
 |-- Packages     ← description of repo's packages
 |-- InRelease    ← "in-file-signed" Release file (see below)
 |-- Release      ← metadata (file listing and checksum) of the current repo
+|-- Release.gpg  ← gpg signature of the file above
 ```
 
 ## GPG
@@ -110,17 +111,16 @@ Note: instances on start should check / install the package signing key.
 curl -sL https://apt-repo-cicdenv-com.s3-us-west-2.amazonaws.com/repo/dists/key.asc
 ```
 
-## Links
+## Inspired By
 * https://medium.com/sqooba/create-your-own-custom-and-authenticated-apt-repository-1e4a4cf0b864
 * https://webscale.plumbing/managing-apt-repos-in-s3-using-lambda
   * https://news.ycombinator.com/item?id=12241998
   * https://github.com/szinck/s3apt
 * http://www.bauser.com/websnob/keydist
+
+## Links
 * https://packages.ubuntu.com/search?keywords=apt-transport-s3
   * https://github.com/MayaraCloud/apt-transport-s3
 * http://www.fifi.org/doc/libapt-pkg-doc/method.html/ch2.html
 * https://wiki.debian.org/RepositoryFormat
 * http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/focal/
-  * http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/focal/InRelease
-  * http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/focal/main/binary-amd64/Packages
-  * http://us-west-2.ec2.archive.ubuntu.com/ubuntu/dists/focal/main/binary-amd64/
