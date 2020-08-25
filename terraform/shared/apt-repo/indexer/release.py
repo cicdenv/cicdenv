@@ -17,7 +17,7 @@ def rebuild_release_files(prefix, package_index_bytes):
     md5, sha1, sha256 = content_checksums(package_index_bytes)
     size = len(package_index_bytes)
     # Sat, 08 Feb 2020 22:07:37 UTC
-    tstamp = datetime.now(tz=timezone.utc).strftime("%a, %d %b %Y %H:%M:%S %Z")
+    tstamp = datetime.now(tz=timezone.utc).strftime("%a, %d %b %Y %H:%M:%S %z")
     release = f"""\
 Origin: Ubuntu
 Label: Ubuntu
