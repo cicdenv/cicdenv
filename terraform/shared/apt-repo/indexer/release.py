@@ -36,12 +36,23 @@ SHA256:
     release_file_obj.put(Body=release)
 
     print("DONE REBUILDING RELEASE FILE")
-
-    print("REBUILDING IN-RELEASE FILE: %s/InRelease" % (prefix))
     
     gpg_init()
     key_id, passphrase = key_init()
-    in_release = sign_content(release, key_id=key_id, passphrase=passphrase)
+
+    print("REBUILDING RELEASE SIG FILE: %s/Release.gpg" % (prefix))
+
+    release_sig = sign_content(release, key_id=key_id, passphrase=passphrase, clearsign=False)
+    print(release_sig)
+
+    release_sig_file_obj = s3.Object(bucket_name=environ['BUCKET'], key=prefix + "/Release.gpg")
+    release_sig_file_obj.put(Body=str(release_sig))
+
+    print("DONE REBUILDING RELEASE SIG FILE")
+
+    print("REBUILDING IN-RELEASE FILE: %s/InRelease" % (prefix))
+
+    in_release = sign_content(release, key_id=key_id, passphrase=passphrase, clearsign=True)
     print(in_release)
 
     in_release_file_obj = s3.Object(bucket_name=environ['BUCKET'], key=prefix + "/InRelease")

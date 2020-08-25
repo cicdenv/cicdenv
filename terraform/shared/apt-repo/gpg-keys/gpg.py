@@ -11,7 +11,7 @@ def create_key():
 
     gpg = gnupg.GPG(gnupghome=gpg_home, verbose=True)
     gpg.encoding = 'utf-8'
-    
+
     # Allow for pipe passphrase delivery
     with open(f'{gpg_home}/gpg-agent.conf', 'w') as agent_config:
         agent_config.write('allow-loopback-pinentry\n')

@@ -14,6 +14,11 @@ def gpg_init():
 
     gpg_home = '/tmp/.gnupg'
     makedirs(gpg_home, mode=0o700, exist_ok=True)
+    
+    # Use SHA512 hashes (default is SHA1 which apt won't accept)
+    with open(f'{gpg_home}/gpg.conf', 'w') as gpg_config:
+        gpg_config.write('cert-digest-algo SHA512\n')
+        gpg_config.write('digest-algo SHA512\n')
 
     # Allow for pipe passphrase delivery
     with open(f'{gpg_home}/gpg-agent.conf', 'w') as agent_config:
@@ -39,11 +44,13 @@ def key_init():
     return key_id, passphrase
 
 
-def sign_content(content, key_id, passphrase):
-    return gpg.sign(content, keyid=key_id, passphrase=passphrase)
+def sign_content(content, key_id, passphrase, clearsign):
+    return gpg.sign(content, keyid=key_id, passphrase=passphrase, clearsign=clearsign)
 
 
 if __name__ == "__main__":
     gpg_init()
-    signed_content = sign_content('test', *key_init())
+    signed_content = sign_content('test', *key_init(), clearsign=False)
+    print(signed_content)
+    signed_content = sign_content('test', *key_init(), clearsign=True)
     print(signed_content)
