@@ -51,3 +51,7 @@ layer = {
   "version" = "2"
 }
 ```
+
+## Links
+* https://github.com/lambci/docker-lambda
+* https://github.com/lambci/yumda
