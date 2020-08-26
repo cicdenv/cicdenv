@@ -28,34 +28,6 @@ data "aws_iam_policy_document" "apt_repo" {
     condition {
       test     = "IpAddress"
       variable = "aws:SourceIp"
-      values   = [
-        "10.0.0.0/8",
-        "172.16.0.0/12",
-        "192.168.0.0/16",
-      ]
-    }
-  }
-
-  statement {
-    principals {
-      type = "*"
-
-      identifiers = ["*"]
-    }
-
-    actions = [
-      "s3:List*",
-      "s3:Get*",
-    ]
-
-    resources = [
-      "arn:aws:s3:::${aws_s3_bucket.apt_repo.id}",
-      "arn:aws:s3:::${aws_s3_bucket.apt_repo.id}/repo/dists/*",
-    ]
-
-    condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
       values   = var.allowed_cidr_blocks
     }
   }
