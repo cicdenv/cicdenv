@@ -59,15 +59,8 @@ Index-File:true
 EOF
 
 # Verify host has s3 access
-$ AWS_PROFILE=admin-main aws --region=us-west-2 s3 cp s3://apt-repo-cicdenv-com/repo/dists/key.asc -
-
-# Verify host has https access
-$ curl -sL https://apt-repo-cicdenv-com.s3-us-west-2.amazonaws.com/repo/dists/key.asc
-$ wget -q -O - https://apt-repo-cicdenv-com.s3-us-west-2.amazonaws.com/repo/dists/key.asc
-
-# HTTPS method
-echo "deb http://apt-repo-cicdenv-com/ repo/dists/" > "/etc/apt/sources.list.d/s3-repos.list"
+$aws s3 cp s3://apt-repo-cicdenv-com/repo/dists/key.asc -
 
 # Install a package
-$ sudo apt update && sudo apt install libnss-iam
+$ apt update && sudo apt install libnss-iam
 ```

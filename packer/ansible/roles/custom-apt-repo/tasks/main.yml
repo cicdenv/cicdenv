@@ -8,7 +8,7 @@
 
 - name: install custom s3-repo key-id
   apt_key:
-    data: "{{ lookup('file', 's3-repo.asc') }}"
+    url: https://apt-repo-cicdenv-com.s3-us-west-2.amazonaws.com/repo/dists/key.asc
 
 - name: custom s3 apt-repository
   apt_repository:
