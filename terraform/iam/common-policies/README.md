@@ -33,6 +33,10 @@ iam = {
       "name" = "S3AptRepositoryReadOnly"
       "path" = "/"
     }
+    "role" = {
+      "arn" = "arn:aws:iam::<account-id>:role/apt-repo-access"
+      "name" = "apt-repo-access"
+    }
   }
 }
 ```
