@@ -10,8 +10,9 @@ source "bin/ami-names.inc"
 
 # Bring up main account NAT gateways if needed
 cicdctl terraform apply network/routing:main -auto-approve
+cicdctl terraform apply network/routing/attachments:main -auto-approve
 
-bin/build-ext4-rootfs-amis.sh $(ephemeral_filesystems)
+parallel --verbose --tagstring ext4-{} --linebuffer --joblog - cicdctl packer build --ephemeral-fs ::: $(ephemeral_filesystems)
 
 cicdctl packer build --builder "ebssurrogate" --root-fs "zfs"
-bin/build-zfs-rootfs-amis.sh $(ephemeral_filesystems)
+parallel --verbose --tagstring zfs-{} --linebuffer --joblog - cicdctl packer build --root-fs "zfs" --ephemeral-fs ::: $(ephemeral_filesystems)

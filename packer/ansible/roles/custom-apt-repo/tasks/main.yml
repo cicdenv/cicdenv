@@ -6,6 +6,22 @@
 - name: copy s3 apt-transport script
   copy: src=apt-transport-s3.py dest=/usr/lib/apt/methods/s3 mode=0755 owner=root group=root
 
+- name: install s3apt-keys.sh update script
+  copy: 
+    src: "{{ role_path }}/files/usr/local/bin/s3apt-keys.sh"
+    dest: /usr/local/bin/s3apt-keys.sh 
+    mode: 0755 
+    owner: root 
+    group: root
+
+- name: install s3apt-keys.sh update hook
+  copy: 
+    src: "{{ role_path }}/files/etc/apt/apt.conf.d/00-s3apt-keys"
+    dest: /etc/apt/apt.conf.d/00-s3apt-keys 
+    mode: 0755 
+    owner: root 
+    group: root
+
 - name: install custom s3-repo key-id
   apt_key:
     url: https://apt-repo-cicdenv-com.s3-us-west-2.amazonaws.com/repo/dists/key.asc

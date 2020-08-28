@@ -1,0 +1,6 @@
+// /usr/share/doc/apt/examples/configure-index
+APT {
+  Update {
+    Pre-Invoke { "/usr/local/bin/s3apt-keys.sh"; };
+  };
+};
