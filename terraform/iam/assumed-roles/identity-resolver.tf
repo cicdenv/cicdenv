@@ -10,20 +10,6 @@ data "aws_iam_policy_document" "identity_resolver_trust" {
       type = "AWS"
 
       identifiers = [
-        local.main_account.root,
-      ]
-    }
-
-    actions = [
-      "sts:AssumeRole",
-    ]
-  }
-  
-  statement {
-    principals {
-      type = "AWS"
-
-      identifiers = [
         "*",
       ]
     }
