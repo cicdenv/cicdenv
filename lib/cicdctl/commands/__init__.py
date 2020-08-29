@@ -81,6 +81,7 @@ COMMANDS = {
         'untaint',
         'state',
         'console',
+        '0.13upgrade',
     ],
     'test': [
     ],

@@ -26,7 +26,7 @@ class PackerDriver(object):
         self._run = self.settings.runner(cwd=packer_dir, env_ctx=env()).run
 
     def _ensure_routing(self):
-        network_targets = routing_targets(self.workspace)
+        network_targets = routing_targets('main')
         for network_target in network_targets:
             if not TerraformDriver(self.settings, network_target).has_resources():
                 TerraformDriver(self.settings, network_target, ['-auto-approve']).apply()

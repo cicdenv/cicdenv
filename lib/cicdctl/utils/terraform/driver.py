@@ -17,6 +17,7 @@ commands_no_vars = [
     'state',
     'taint',
     'untaint',
+    '0.13upgrade',
 ]
 commands_with_vars = [
     'plan',
