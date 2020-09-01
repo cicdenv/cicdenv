@@ -34,6 +34,11 @@ Options:
 -o/--local-ipv4           Public IP address if launched with direct addressing; private IP address if launched with public addressing.
 -k/--kernel-id            The ID of the kernel launched with this instance, if applicable.
 -z/--availability-zone    The availability zone in which the instance launched. Same as placement
+-g/--group-name           The name of the placement group in which the instance is launched.
+-j/--host-id              The ID of the host on which the instance is launched. Applicable only to Dedicated Hosts.
+-w/--partition-number     The number of the partition in which the instance is launched.
+-x/--region               The AWS Region in which the instance is launched.
+-y/--availability-zone-id The static Availability Zone ID in which the instance is launched. Consistent across accounts.
 -c/--product-codes        Product codes associated with this instance.
 -p/--public-hostname      The public hostname of the instance.
 -v/--public-ipv4          NATted public IP Address
@@ -151,6 +156,11 @@ function print_all() {
     print_with_header local-ipv4
     print_with_header kernel-id
     print_with_header placement/availability-zone
+    print_with_header placement/group-name
+    print_with_header placement/host-id
+    print_with_header placement/partition-number
+    print_with_header placement/region
+    print_with_header placement/availability-zone-id
     print_with_header product-codes
     print_with_header public-hostname
     print_with_header public-ipv4
@@ -199,6 +209,16 @@ while [ "$1" != "" ]; do
     -k | --kernel-id )             print_value kernel-id meta-data/kernel-id
                                                                  ;;
     -z | --availability-zone )     print_value placement/availability-zone meta-data/placement/availability-zone
+                                                                 ;;
+    -g | --group-name )            print_value placement/group-name meta-data/placement/group-name
+                                                                 ;;
+    -j | --host-id )               print_value placement/host-id meta-data/placement/host-id
+                                                                 ;;
+    -w | --partition-number )      print_value placement/partition-number meta-data/placement/partition-number
+                                                                 ;;
+    -x | --region )                print_value placement/region meta-data/placement/region
+                                                                 ;;
+    -y | --availability-zone-id )  print_value placement/availability-zone-id meta-data/placement/availability-zone-id
                                                                  ;;
     -c | --product-codes )         print_value product-codes meta-data/product-codes
                                                                  ;;
