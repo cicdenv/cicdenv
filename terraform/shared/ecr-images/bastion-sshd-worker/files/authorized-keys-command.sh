@@ -59,6 +59,7 @@ redis-cli -s /var/run/redis/sock \
     --user sshd-worker --pass sshd-worker \
     --no-auth-warning \
     SETNX "$CONTAINER_ID" "$username"
-) > >(tee -a /var/log/sshd-service-out.log) 2> >(tee -a /var/log/sshd-service-err.log >&2)
+) > >(tee -a /var/log/sshd-service-out.log) \
+ 2> >(tee -a /var/log/sshd-service-err.log)
 
 cat "/home/${username}/.ssh/authorized_keys"
