@@ -31,7 +31,6 @@ docker-build:
 	    --build-arg                     tag=$(ALPINE_TAG)             \
 	    --build-arg         keybase_version=$(KEYBASE_TAG)            \
 	    --build-arg           keybase_build=$(KEYBASE_BUILD)          \
-	    --build-arg                hcql_tag=$(HCLQ_TAG)               \
 	    --build-arg            nonroot_user=$(user_name)              \
 	    --build-arg             nonroot_uid=$(user_id)                \
 	    --build-arg              docker_gid=$(docker_gid)             \

@@ -8,20 +8,16 @@ _KEYBASE_FULL_VERSION = $(shell keybase version -S)
 KEYBASE_TAG   = v$(shell echo "$(_KEYBASE_FULL_VERSION)" | awk -F- '{print $$1}')
 KEYBASE_BUILD =  $(shell echo "$(_KEYBASE_FULL_VERSION)" | awk -F- '{print $$2}')
 
-# Hashicorp config language command line parser/query tool
-# https://github.com/mattolenik/hclq/releases
-HCLQ_TAG = 0.5.3
-
 # https://www.terraform.io/downloads.html
 TERRAFORM_VERSION  = 0.13.2
 TERRAFORM_RELEASES = https://releases.hashicorp.com/terraform
 
 # https://github.com/kubernetes/kops/releases
 # NOTE: node local dns is broken in '1.18.0-beta.1', so avoid
-KOPS_VERSION   = 1.19.0-alpha.2-21a9564
-KOPS_SHA256    = 4ab0f6ea0c5833ca4f9826af8329ea60988ea42c1222391c3134ab04ef0cffcd
-#KOPS_DOWNLOADS = https://github.com/kubernetes/kops/releases/download
- KOPS_DOWNLOADS = https://github.com/fred-vogt/kops/releases/download
+KOPS_VERSION   = 1.19.0-alpha.3
+KOPS_SHA256    = b7364623c58c64f488e48ce9ea8f19f480f508987ae24f659b873c9a7d2bb4ff
+KOPS_DOWNLOADS = https://github.com/kubernetes/kops/releases/download
+#KOPS_DOWNLOADS = https://github.com/fred-vogt/kops/releases/download
 
 # https://www.packer.io/downloads.html
 PACKER_VERSION  = 1.6.2
@@ -29,8 +25,8 @@ PACKER_RELEASES = https://releases.hashicorp.com/packer
 
 # https://github.com/kubernetes/kubernetes/releases
 # https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-<version>.md (checksums)
-KUBE_VERSION   = 1.19.0
-KUBE_SHA512    = 1590d4357136a71a70172e32820c4a68430d1b94cf0ac941ea17695fbe0c5440d13e26e24a2e9ebdd360c231d4cd16ffffbbe5b577c898c78f7ebdc1d8d00fa3
+KUBE_VERSION   = 1.19.1
+KUBE_SHA512    = 424ba5a094947e62c935ad7049efc13762f2f232ed05872e4f3945b3c39d6e6c82d1e3f60d0970fdc8f01cf4886ef5de77224df7e481774c04d86429dbfb2055
 KUBE_DOWNLOADS = https://dl.k8s.io
 
 # https://github.com/kubernetes-sigs/aws-iam-authenticator/releases
