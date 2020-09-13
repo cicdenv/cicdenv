@@ -19,6 +19,11 @@ terraform {
   backend "s3" {
     key = "state/main/${new_state//\//_}/terraform.tfstate"
   }
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+    }
+  }
 }
 EOF
 fi

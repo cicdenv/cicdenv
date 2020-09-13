@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.13"
+  required_version = ">= 0.13.2"
   backend "s3" {
     key = "iam_common-policies/terraform.tfstate"
 

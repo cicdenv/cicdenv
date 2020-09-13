@@ -10,6 +10,17 @@ terraform {
 
     workspace_key_prefix = "state"
   }
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+    }
+    acme = {
+      source = "terraform-providers/acme"
+    }
+    tls = {
+      source = "hashicorp/tls"
+    }
+  }
 }
 EOF
 

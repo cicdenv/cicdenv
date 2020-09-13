@@ -82,6 +82,7 @@ COMMANDS = {
         'state',
         'console',
         '0.13upgrade',
+        'providers',
     ],
     'test': [
     ],

@@ -9,7 +9,7 @@ data "aws_iam_policy_document" "nginx_kms" {
     }
 
     actions = [
-      "ecr:*",
+      "kms:*",
     ]
 
     resources = [
