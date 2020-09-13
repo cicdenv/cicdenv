@@ -1,6 +1,7 @@
 # https://wiki.alpinelinux.org/wiki/Alpine_Linux:Releases
 # https://hub.docker.com/_/alpine?tab=tags
-ALPINE_TAG = 3.10
+# https://alpinelinux.org/posts/Alpine-3.12.0-released.html
+ALPINE_TAG = 3.12
 
 # Keybase is very rigid about versioning and server compat
 # We'll checkout/build the same version you have installed on the host
