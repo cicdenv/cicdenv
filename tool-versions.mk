@@ -10,7 +10,7 @@ KEYBASE_TAG   = v$(shell echo "$(_KEYBASE_FULL_VERSION)" | awk -F- '{print $$1}'
 KEYBASE_BUILD =  $(shell echo "$(_KEYBASE_FULL_VERSION)" | awk -F- '{print $$2}')
 
 # https://www.terraform.io/downloads.html
-TERRAFORM_VERSION  = 0.13.2
+TERRAFORM_VERSION  = 0.13.3
 TERRAFORM_RELEASES = https://releases.hashicorp.com/terraform
 
 # https://github.com/kubernetes/kops/releases
