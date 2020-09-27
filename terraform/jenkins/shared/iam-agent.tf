@@ -23,6 +23,11 @@ resource "aws_iam_role_policy_attachment" "jenkins_agent_apt_repo" {
   policy_arn = local.apt_repo_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "jenkins_agent_ssm_core" {
+  role       = aws_iam_role.jenkins_agent.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 resource "aws_iam_instance_profile" "jenkins_agent" {
   name = "jenkins-agent"
   role = aws_iam_role.jenkins_agent.name

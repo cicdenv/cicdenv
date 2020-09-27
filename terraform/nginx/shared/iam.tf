@@ -74,6 +74,11 @@ resource "aws_iam_role_policy_attachment" "nginx_node" {
   policy_arn = aws_iam_policy.nginx_node.arn
 }
 
+resource "aws_iam_role_policy_attachment" "ssm_core" {
+  role       = aws_iam_role.nginx_node.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 resource "aws_iam_instance_profile" "nginx_node" {
   name = "nginx-cluster-node"
   role = aws_iam_role.nginx_node.name

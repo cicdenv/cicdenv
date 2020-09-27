@@ -88,6 +88,11 @@ resource "aws_iam_role_policy_attachment" "kops_node_apt_repo" {
   policy_arn = local.apt_repo_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "kops_node_ssm_core" {
+  role       = aws_iam_role.kops_node.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 resource "aws_iam_instance_profile" "kops_node" {
   name = "kops-node-${local.cluster_name}"
   role = aws_iam_role.kops_node.name

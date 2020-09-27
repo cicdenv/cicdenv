@@ -262,6 +262,11 @@ resource "aws_iam_role_policy_attachment" "kops_master_apt_repo" {
   policy_arn = local.apt_repo_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "kops_master_ssm_core" {
+  role       = aws_iam_role.kops_master.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 resource "aws_iam_instance_profile" "kops_master" {
   name = "kops-master-${local.cluster_name}"
   role = aws_iam_role.kops_master.name

@@ -123,6 +123,11 @@ resource "aws_iam_role_policy_attachment" "mysql_group" {
   policy_arn = aws_iam_policy.mysql_group.arn
 }
 
+resource "aws_iam_role_policy_attachment" "ssm_core" {
+  role       = aws_iam_role.mysql_group.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 resource "aws_iam_instance_profile" "mysql_group" {
   name = "mysql-${var.name}"
   role = aws_iam_role.mysql_group.name

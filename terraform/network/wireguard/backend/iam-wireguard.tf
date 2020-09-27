@@ -50,6 +50,11 @@ resource "aws_iam_role_policy_attachment" "apt_repo" {
   policy_arn = local.apt_repo_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "ssm_core" {
+  role       = aws_iam_role.wireguard.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 resource "aws_iam_instance_profile" "wireguard" {
   name = "wireguard"
   role = aws_iam_role.wireguard.name
