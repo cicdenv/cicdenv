@@ -38,11 +38,6 @@
     path: /usr/bin/pip3
     priority: 1
 
-- name: remove amazon-ssm-agent
-  snap:
-    name: amazon-ssm-agent
-    state: absent
-
 - name: install latest aws cli bundle
   shell: |
     set -e
