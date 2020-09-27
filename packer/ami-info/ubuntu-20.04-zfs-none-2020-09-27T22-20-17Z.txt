@@ -13,7 +13,7 @@ VERSION_CODENAME=focal
 UBUNTU_CODENAME=focal
 
 -- kernel --
-5.4.0-1021-aws
+5.4.0-1025-aws
 
 -- system python --
 Python 3.8.2
@@ -24,7 +24,7 @@ bottle==0.12.15
 certifi==2019.11.28
 chardet==3.0.4
 Click==7.0
-cloud-init==20.2
+cloud-init==20.3
 colorama==0.4.3
 command-not-found==0.3
 configobj==5.0.6
@@ -64,6 +64,7 @@ netifaces==0.10.4
 numpy==1.17.4
 oauthlib==3.1.0
 olefile==0.46
+pexpect==4.6.0
 Pillow==7.0.0
 ply==3.11
 psutil==5.5.1
@@ -93,6 +94,7 @@ SecretStorage==2.3.1
 service-identity==18.1.0
 simplejson==3.16.0
 six==1.14.0
+sos==4.0
 ssh-import-id==5.10
 systemd-python==234
 Twisted==18.9.0
@@ -106,7 +108,7 @@ zipp==1.0.0
 zope.interface==4.7.1
 
 -- aws cli --
-aws-cli/1.18.109 Python/3.8.2 Linux/5.4.0-1021-aws botocore/1.17.32
+aws-cli/1.18.147 Python/3.8.2 Linux/5.4.0-1025-aws botocore/1.18.6
 
 -- packages --
 accountsservice                | 0.6.55-0ubuntu12~20.04.1
@@ -114,23 +116,23 @@ acpid                          | 1:2.0.32-1ubuntu1
 adduser                        | 3.118ubuntu2
 adwaita-icon-theme             | 3.36.1-2ubuntu0.20.04.2
 alsa-topology-conf             | 1.2.2-1
-alsa-ucm-conf                  | 1.2.2-1ubuntu0.1
+alsa-ucm-conf                  | 1.2.2-1ubuntu0.4
 apparmor                       | 2.13.3-7ubuntu5.1
-apport                         | 2.20.11-0ubuntu27.4
+apport                         | 2.20.11-0ubuntu27.9
 apport-symptoms                | 0.23
 apt                            | 2.0.2ubuntu0.1
 apt-utils                      | 2.0.2ubuntu0.1
 at                             | 3.1.23-1ubuntu1
 atop                           | 2.4.0-3
-base-files                     | 11ubuntu5.1
+base-files                     | 11ubuntu5.2
 base-passwd                    | 3.5.47
 bash                           | 5.0-6ubuntu1.1
 bash-completion                | 1:2.10-1ubuntu1
 bc                             | 1.07.1-2build1
-bcache-tools                   | 1.0.8-3
-bind9-dnsutils                 | 1:9.16.1-0ubuntu2.2
-bind9-host                     | 1:9.16.1-0ubuntu2.2
-bind9-libs:amd64               | 1:9.16.1-0ubuntu2.2
+bcache-tools                   | 1.0.8-3ubuntu0.1
+bind9-dnsutils                 | 1:9.16.1-0ubuntu2.3
+bind9-host                     | 1:9.16.1-0ubuntu2.3
+bind9-libs:amd64               | 1:9.16.1-0ubuntu2.3
 binutils                       | 2.34-6ubuntu1
 binutils-common:amd64          | 2.34-6ubuntu1
 binutils-x86-64-linux-gnu      | 2.34-6ubuntu1
@@ -138,19 +140,19 @@ blt                            | 2.5.3+dfsg-4
 bolt                           | 0.8-4
 bridge-utils                   | 1.6-2ubuntu1
 bsdmainutils                   | 11.1.2ubuntu3
-bsdutils                       | 1:2.34-0.1ubuntu9
+bsdutils                       | 1:2.34-0.1ubuntu9.1
 btrfs-progs                    | 5.4.1-2
 build-essential                | 12.8ubuntu1
-busybox-initramfs              | 1:1.30.1-4ubuntu6.1
-busybox-static                 | 1:1.30.1-4ubuntu6.1
+busybox-initramfs              | 1:1.30.1-4ubuntu6.2
+busybox-static                 | 1:1.30.1-4ubuntu6.2
 byobu                          | 5.133-0ubuntu1
 bzip2                          | 1.0.8-2
 ca-certificates                | 20190110ubuntu1.1
 cloud-guest-utils              | 0.31-7-gd99b2d76-0ubuntu1
-cloud-init                     | 20.2-45-g5f7825e2-0ubuntu1~20.04.1
+cloud-init                     | 20.3-2-g371b392c-0ubuntu1~20.04.1
 cloud-initramfs-copymods       | 0.45ubuntu1
 cloud-initramfs-dyn-netconf    | 0.45ubuntu1
-command-not-found              | 20.04.2
+command-not-found              | 20.04.4
 console-setup                  | 1.194ubuntu3
 console-setup-linux            | 1.194ubuntu3
 coreutils                      | 8.30-3ubuntu2
@@ -158,11 +160,11 @@ cpio                           | 2.13+dfsg-2
 cpp                            | 4:9.3.0-1ubuntu2
 cpp-9                          | 9.3.0-10ubuntu2
 cron                           | 3.0pl1-136ubuntu1
-cryptsetup                     | 2:2.2.2-3ubuntu2
-cryptsetup-bin                 | 2:2.2.2-3ubuntu2
-cryptsetup-initramfs           | 2:2.2.2-3ubuntu2
-cryptsetup-run                 | 2:2.2.2-3ubuntu2
-curl                           | 7.68.0-1ubuntu2.1
+cryptsetup                     | 2:2.2.2-3ubuntu2.2
+cryptsetup-bin                 | 2:2.2.2-3ubuntu2.2
+cryptsetup-initramfs           | 2:2.2.2-3ubuntu2.2
+cryptsetup-run                 | 2:2.2.2-3ubuntu2.2
+curl                           | 7.68.0-1ubuntu2.2
 dash                           | 0.5.10.2-6
 dbus                           | 1.12.16-2ubuntu2.1
 dbus-user-session              | 1.12.16-2ubuntu2.1
@@ -189,9 +191,9 @@ ed                             | 1.16-1
 eject                          | 2.1.5+deb1+cvs20081104-14
 ethtool                        | 1:5.4-1
 fakeroot                       | 1.24-1
-fdisk                          | 2.34-0.1ubuntu9
+fdisk                          | 2.34-0.1ubuntu9.1
 file                           | 1:5.38-4
-finalrd                        | 5
+finalrd                        | 6~ubuntu20.04.1
 findutils                      | 4.7.0-1ubuntu1
 fio                            | 3.16-1
 fontconfig                     | 2.13.1-2ubuntu3
@@ -214,7 +216,7 @@ gcc-9-base:amd64               | 9.3.0-10ubuntu2
 gdisk                          | 1.0.5-1
 gettext-base                   | 0.19.8.1-10build1
 gir1.2-glib-2.0:amd64          | 1.64.1-1~ubuntu20.04.1
-gir1.2-packagekitglib-1.0      | 1.1.13-2ubuntu1
+gir1.2-packagekitglib-1.0      | 1.1.13-2ubuntu1.1
 git                            | 1:2.25.1-1ubuntu3
 git-man                        | 1:2.25.1-1ubuntu3
 glances                        | 3.1.3-1
@@ -233,11 +235,11 @@ gpgsm                          | 2.2.19-3ubuntu2
 gpgv                           | 2.2.19-3ubuntu2
 grep                           | 3.4-1
 groff-base                     | 1.22.4-4build1
-grub-common                    | 2.04-1ubuntu26.2
+grub-common                    | 2.04-1ubuntu26.4
 grub-gfxpayload-lists          | 0.7
-grub-pc                        | 2.04-1ubuntu26.2
-grub-pc-bin                    | 2.04-1ubuntu26.2
-grub2-common                   | 2.04-1ubuntu26.2
+grub-pc                        | 2.04-1ubuntu26.4
+grub-pc-bin                    | 2.04-1ubuntu26.4
+grub2-common                   | 2.04-1ubuntu26.4
 gsettings-desktop-schemas      | 3.36.0-1ubuntu1
 gtk-update-icon-cache          | 3.24.20-0ubuntu1
 gzip                           | 1.10-0ubuntu4
@@ -253,9 +255,9 @@ iftop                          | 1.0~pre4-6build1
 info                           | 6.7.0.dfsg.2-5
 init                           | 1.57
 init-system-helpers            | 1.57
-initramfs-tools                | 0.136ubuntu6.2
-initramfs-tools-bin            | 0.136ubuntu6.2
-initramfs-tools-core           | 0.136ubuntu6.2
+initramfs-tools                | 0.136ubuntu6.3
+initramfs-tools-bin            | 0.136ubuntu6.3
+initramfs-tools-core           | 0.136ubuntu6.3
 install-info                   | 6.7.0.dfsg.2-5
 inxi                           | 3.0.38-1-0ubuntu1
 ioping                         | 1.1-1
@@ -280,7 +282,7 @@ kmod                           | 27-1ubuntu2
 kpartx                         | 0.8.3-1ubuntu2
 krb5-locales                   | 1.17-6ubuntu4
 landscape-common               | 19.12-0ubuntu4.1
-language-selector-common       | 0.204
+language-selector-common       | 0.204.1
 less                           | 551-1ubuntu0.1
 libaccountsservice0:amd64      | 0.6.55-0ubuntu12~20.04.1
 libacl1:amd64                  | 2.2.53-6
@@ -295,8 +297,8 @@ libarchive13:amd64             | 3.4.0-2ubuntu1
 libargon2-1:amd64              | 0~20171227-0.2
 libasan5:amd64                 | 9.3.0-10ubuntu2
 libasn1-8-heimdal:amd64        | 7.7.0+dfsg-1ubuntu1
-libasound2:amd64               | 1.2.2-2.1ubuntu1
-libasound2-data                | 1.2.2-2.1ubuntu1
+libasound2:amd64               | 1.2.2-2.1ubuntu2
+libasound2-data                | 1.2.2-2.1ubuntu2
 libassuan0:amd64               | 2.5.3-7ubuntu2
 libatk1.0-0:amd64              | 2.35.1-1ubuntu2
 libatk1.0-data                 | 2.35.1-1ubuntu2
@@ -310,16 +312,16 @@ libavahi-common-data:amd64     | 0.7-4ubuntu7
 libavahi-common3:amd64         | 0.7-4ubuntu7
 libbinutils:amd64              | 2.34-6ubuntu1
 libblas3:amd64                 | 3.9.0-1build1
-libblkid1:amd64                | 2.34-0.1ubuntu9
+libblkid1:amd64                | 2.34-0.1ubuntu9.1
 libboost-iostreams1.71.0:amd64 | 1.71.0-6ubuntu6
 libboost-thread1.71.0:amd64    | 1.71.0-6ubuntu6
 libbrotli1:amd64               | 1.0.7-6build1
 libbsd0:amd64                  | 0.10.0-1
 libbz2-1.0:amd64               | 1.0.8-2
-libc-bin                       | 2.31-0ubuntu9
-libc-dev-bin                   | 2.31-0ubuntu9
-libc6:amd64                    | 2.31-0ubuntu9
-libc6-dev:amd64                | 2.31-0ubuntu9
+libc-bin                       | 2.31-0ubuntu9.1
+libc-dev-bin                   | 2.31-0ubuntu9.1
+libc6:amd64                    | 2.31-0ubuntu9.1
+libc6-dev:amd64                | 2.31-0ubuntu9.1
 libcairo-gobject2:amd64        | 1.16.0-4ubuntu1
 libcairo2:amd64                | 1.16.0-4ubuntu1
 libcanberra0:amd64             | 0.30-7ubuntu1
@@ -331,12 +333,12 @@ libcc1-0:amd64                 | 10-20200411-0ubuntu1
 libcom-err2:amd64              | 1.45.5-2ubuntu1
 libcrypt-dev:amd64             | 1:4.4.10-10ubuntu4
 libcrypt1:amd64                | 1:4.4.10-10ubuntu4
-libcryptsetup12:amd64          | 2:2.2.2-3ubuntu2
+libcryptsetup12:amd64          | 2:2.2.2-3ubuntu2.2
 libctf-nobfd0:amd64            | 2.34-6ubuntu1
 libctf0:amd64                  | 2.34-6ubuntu1
 libcups2:amd64                 | 2.3.1-9ubuntu1.1
-libcurl3-gnutls:amd64          | 7.68.0-1ubuntu2.1
-libcurl4:amd64                 | 7.68.0-1ubuntu2.1
+libcurl3-gnutls:amd64          | 7.68.0-1ubuntu2.2
+libcurl4:amd64                 | 7.68.0-1ubuntu2.2
 libdatrie1:amd64               | 0.2.12-3
 libdb5.3:amd64                 | 5.3.28+dfsg1-0.6ubuntu2
 libdbus-1-3:amd64              | 1.12.16-2ubuntu2.1
@@ -344,7 +346,7 @@ libdconf1:amd64                | 0.36.0-1
 libdebconfclient0:amd64        | 0.251ubuntu1
 libdevmapper-event1.02.1:amd64 | 2:1.02.167-1ubuntu1
 libdevmapper1.02.1:amd64       | 2:1.02.167-1ubuntu1
-libdns-export1109              | 1:9.11.16+dfsg-3~build1
+libdns-export1109              | 1:9.11.16+dfsg-3~ubuntu1
 libdpkg-perl                   | 1.19.7ubuntu3
 libdrm-amdgpu1:amd64           | 2.4.101-2
 libdrm-common                  | 2.4.101-2
@@ -365,7 +367,7 @@ libexpat1-dev:amd64            | 2.2.9-1build1
 libext2fs2:amd64               | 1.45.5-2ubuntu1
 libfakeroot:amd64              | 1.24-1
 libfastjson4:amd64             | 0.99.8-2
-libfdisk1:amd64                | 2.34-0.1ubuntu9
+libfdisk1:amd64                | 2.34-0.1ubuntu9.1
 libffi7:amd64                  | 3.3-4
 libfido2-1:amd64               | 1.3.1-1ubuntu2
 libfile-fcntllock-perl         | 0.22-3build4
@@ -393,18 +395,18 @@ libgfortran5:amd64             | 10-20200411-0ubuntu1
 libgfrpc0:amd64                | 7.2-2build1
 libgfxdr0:amd64                | 7.2-2build1
 libgirepository-1.0-1:amd64    | 1.64.1-1~ubuntu20.04.1
-libgl1:amd64                   | 1.3.1-1
+libgl1:amd64                   | 1.3.1-1ubuntu0.20.04.1
 libgl1-mesa-dri:amd64          | 20.0.8-0ubuntu1~20.04.1
 libglapi-mesa:amd64            | 20.0.8-0ubuntu1~20.04.1
 libglib2.0-0:amd64             | 2.64.3-1~ubuntu20.04.1
 libglib2.0-bin                 | 2.64.3-1~ubuntu20.04.1
 libglib2.0-data                | 2.64.3-1~ubuntu20.04.1
 libglusterfs0:amd64            | 7.2-2build1
-libglvnd0:amd64                | 1.3.1-1
+libglvnd0:amd64                | 1.3.1-1ubuntu0.20.04.1
 libglx-mesa0:amd64             | 20.0.8-0ubuntu1~20.04.1
-libglx0:amd64                  | 1.3.1-1
+libglx0:amd64                  | 1.3.1-1ubuntu0.20.04.1
 libgmp10:amd64                 | 2:6.2.0+dfsg-4
-libgnutls30:amd64              | 3.6.13-2ubuntu1.2
+libgnutls30:amd64              | 3.6.13-2ubuntu1.3
 libgomp1:amd64                 | 10-20200411-0ubuntu1
 libgpg-error0:amd64            | 1.37-1
 libgpgme11:amd64               | 1.13.1-7ubuntu2
@@ -431,7 +433,7 @@ libidn2-0:amd64                | 2.2.0-2
 libimagequant0:amd64           | 2.12.2-1.1
 libip4tc2:amd64                | 1.8.4-3ubuntu2
 libip6tc2:amd64                | 1.8.4-3ubuntu2
-libisc-export1105:amd64        | 1:9.11.16+dfsg-3~build1
+libisc-export1105:amd64        | 1:9.11.16+dfsg-3~ubuntu1
 libisl22:amd64                 | 0.22.1-1
 libisns0:amd64                 | 0.97-3
 libitm1:amd64                  | 10-20200411-0ubuntu1
@@ -463,13 +465,13 @@ liblsan0:amd64                 | 10-20200411-0ubuntu1
 libltdl7:amd64                 | 2.4.6-14
 liblvm2cmd2.03:amd64           | 2.03.07-1ubuntu1
 liblz4-1:amd64                 | 1.9.2-2
-liblzma5:amd64                 | 5.2.4-1
+liblzma5:amd64                 | 5.2.4-1ubuntu1
 liblzo2-2:amd64                | 2.10-2
 libmagic-mgc                   | 1:5.38-4
 libmagic1:amd64                | 1:5.38-4
 libmaxminddb0:amd64            | 1.4.2-0ubuntu1
 libmnl0:amd64                  | 1.0.4-2
-libmount1:amd64                | 2.34-0.1ubuntu9
+libmount1:amd64                | 2.34-0.1ubuntu9.1
 libmpc3:amd64                  | 1.1.0-1
 libmpdec2:amd64                | 2.4.2-3
 libmpfr6:amd64                 | 4.0.2-1
@@ -489,17 +491,17 @@ libnpth0:amd64                 | 1.6-1
 libnss-systemd:amd64           | 245.4-4ubuntu3.2
 libntfs-3g883                  | 1:2017.3.23AR.3-3ubuntu1
 libnuma1:amd64                 | 2.0.12-1
-libnvpair1linux                | 0.8.3-1ubuntu12.2
+libnvpair1linux                | 0.8.3-1ubuntu12.4
 libogg0:amd64                  | 1.3.4-0ubuntu1
 libonig5:amd64                 | 6.9.4-1
 libp11-kit0:amd64              | 0.23.20-1build1
-libpackagekit-glib2-18:amd64   | 1.1.13-2ubuntu1
+libpackagekit-glib2-18:amd64   | 1.1.13-2ubuntu1.1
 libpam-cap:amd64               | 1:2.32-1
-libpam-modules:amd64           | 1.3.1-5ubuntu4
-libpam-modules-bin             | 1.3.1-5ubuntu4
-libpam-runtime                 | 1.3.1-5ubuntu4
+libpam-modules:amd64           | 1.3.1-5ubuntu4.1
+libpam-modules-bin             | 1.3.1-5ubuntu4.1
+libpam-runtime                 | 1.3.1-5ubuntu4.1
 libpam-systemd:amd64           | 245.4-4ubuntu3.2
-libpam0g:amd64                 | 1.3.1-5ubuntu4
+libpam0g:amd64                 | 1.3.1-5ubuntu4.1
 libpango-1.0-0:amd64           | 1.44.7-2ubuntu4
 libpangocairo-1.0-0:amd64      | 1.44.7-2ubuntu4
 libpangoft2-1.0-0:amd64        | 1.44.7-2ubuntu4
@@ -518,7 +520,7 @@ libpolkit-agent-1-0:amd64      | 0.105-26ubuntu1
 libpolkit-gobject-1-0:amd64    | 0.105-26ubuntu1
 libpopt0:amd64                 | 1.16-14
 libprocps8:amd64               | 2:3.3.16-1ubuntu2
-libproxy1v5:amd64              | 0.4.15-10ubuntu1
+libproxy1v5:amd64              | 0.4.15-10ubuntu1.1
 libpsl5:amd64                  | 0.21.0-1ubuntu1
 libpython2.7-minimal:amd64     | 2.7.18~rc1-2
 libpython2.7-stdlib:amd64      | 2.7.18~rc1-2
@@ -529,8 +531,8 @@ libpython3.8-dev:amd64         | 3.8.2-1ubuntu1.2
 libpython3.8-minimal:amd64     | 3.8.2-1ubuntu1.2
 libpython3.8-stdlib:amd64      | 3.8.2-1ubuntu1.2
 libquadmath0:amd64             | 10-20200411-0ubuntu1
-librados2                      | 15.2.3-0ubuntu0.20.04.1
-librbd1                        | 15.2.3-0ubuntu0.20.04.1
+librados2                      | 15.2.3-0ubuntu0.20.04.2
+librbd1                        | 15.2.3-0ubuntu0.20.04.2
 librdmacm1:amd64               | 28.0-1ubuntu1
 libreadline5:amd64             | 5.2+dfsg-3build3
 libreadline8:amd64             | 8.0-4
@@ -552,13 +554,13 @@ libsgutils2-2                  | 1.44-1ubuntu2
 libsigsegv2:amd64              | 2.12-2
 libslang2:amd64                | 2.3.2-4
 libsm6:amd64                   | 2:1.2.3-1
-libsmartcols1:amd64            | 2.34-0.1ubuntu9
+libsmartcols1:amd64            | 2.34-0.1ubuntu9.1
 libsmbios-c2                   | 2.4.3-1
 libsodium23:amd64              | 1.0.18-1
 libsoup2.4-1:amd64             | 2.70.0-1
 libsqlite3-0:amd64             | 3.31.1-4ubuntu0.2
 libss2:amd64                   | 1.45.5-2ubuntu1
-libssh-4:amd64                 | 0.9.3-2ubuntu2
+libssh-4:amd64                 | 0.9.3-2ubuntu2.1
 libssl1.1:amd64                | 1.1.1f-1ubuntu2
 libstdc++-9-dev:amd64          | 9.3.0-10ubuntu2
 libstdc++6:amd64               | 10-20200411-0ubuntu1
@@ -587,8 +589,8 @@ libunwind8:amd64               | 1.2.1-9build1
 liburcu6:amd64                 | 0.11.1-2
 libusb-1.0-0:amd64             | 2:1.0.23-2build1
 libutempter0:amd64             | 1.1.6-4
-libuuid1:amd64                 | 2.34-0.1ubuntu9
-libuutil1linux                 | 0.8.3-1ubuntu12.2
+libuuid1:amd64                 | 2.34-0.1ubuntu9.1
+libuutil1linux                 | 0.8.3-1ubuntu12.4
 libuv1:amd64                   | 1.34.2-1ubuntu1
 libvorbis0a:amd64              | 1.3.6-2ubuntu1
 libvorbisfile3:amd64           | 1.3.6-2ubuntu1
@@ -599,9 +601,9 @@ libwebpdemux2:amd64            | 0.6.1-2
 libwebpmux3:amd64              | 0.6.1-2
 libwind0-heimdal:amd64         | 7.7.0+dfsg-1ubuntu1
 libwrap0:amd64                 | 7.6.q-30
-libx11-6:amd64                 | 2:1.6.9-2ubuntu1
-libx11-data                    | 2:1.6.9-2ubuntu1
-libx11-xcb1:amd64              | 2:1.6.9-2ubuntu1
+libx11-6:amd64                 | 2:1.6.9-2ubuntu1.1
+libx11-data                    | 2:1.6.9-2ubuntu1.1
+libx11-xcb1:amd64              | 2:1.6.9-2ubuntu1.1
 libxau6:amd64                  | 1:1.0.9-0ubuntu1
 libxaw7:amd64                  | 2:1.0.13-1
 libxcb-dri2-0:amd64            | 1.14-2
@@ -643,20 +645,20 @@ libxv1:amd64                   | 2:1.0.11-1
 libxxf86dga1:amd64             | 2:1.1.5-0ubuntu1
 libxxf86vm1:amd64              | 1:1.1.4-1build1
 libyaml-0-2:amd64              | 0.2.2-1
-libzfs2linux                   | 0.8.3-1ubuntu12.2
-libzpool2linux                 | 0.8.3-1ubuntu12.2
+libzfs2linux                   | 0.8.3-1ubuntu12.4
+libzpool2linux                 | 0.8.3-1ubuntu12.4
 libzstd1:amd64                 | 1.4.4+dfsg-3
-linux-aws                      | 5.4.0.1021.22
-linux-aws-headers-5.4.0-1021   | 5.4.0-1021.21
+linux-aws                      | 5.4.0.1025.26
+linux-aws-headers-5.4.0-1025   | 5.4.0-1025.25
 linux-base                     | 4.5ubuntu3.1
-linux-headers-5.4.0-1021-aws   | 5.4.0-1021.21
-linux-headers-aws              | 5.4.0.1021.22
-linux-image-5.4.0-1021-aws     | 5.4.0-1021.21
-linux-image-aws                | 5.4.0.1021.22
-linux-libc-dev:amd64           | 5.4.0-42.46
-linux-modules-5.4.0-1021-aws   | 5.4.0-1021.21
+linux-headers-5.4.0-1025-aws   | 5.4.0-1025.25
+linux-headers-aws              | 5.4.0.1025.26
+linux-image-5.4.0-1025-aws     | 5.4.0-1025.25
+linux-image-aws                | 5.4.0.1025.26
+linux-libc-dev:amd64           | 5.4.0-48.52
+linux-modules-5.4.0-1025-aws   | 5.4.0-1025.25
 lm-sensors                     | 1:3.6.0-2ubuntu1
-locales                        | 2.31-0ubuntu9
+locales                        | 2.31-0ubuntu9.1
 login                          | 1:4.8.1-1ubuntu5.20.04
 logrotate                      | 3.14.0-4ubuntu3
 logsave                        | 1.45.5-2ubuntu1
@@ -677,7 +679,8 @@ mdadm                          | 4.1-5ubuntu1
 mesa-utils                     | 8.4.0-1build1
 mesa-vulkan-drivers:amd64      | 20.0.8-0ubuntu1~20.04.1
 mime-support                   | 3.64ubuntu1
-mount                          | 2.34-0.1ubuntu9
+motd-news-config               | 11ubuntu5.2
+mount                          | 2.34-0.1ubuntu9.1
 mtr                            | 0.93-1
 multipath-tools                | 0.8.3-1ubuntu2
 multitail                      | 6.4.2-3build2
@@ -695,7 +698,7 @@ networkd-dispatcher            | 2.0.1-1
 nicstat                        | 1.95-1build1
 node-normalize.css             | 8.0.1-3
 ntfs-3g                        | 1:2017.3.23AR.3-3ubuntu1
-nvme-cli                       | 1.9-1
+nvme-cli                       | 1.9-1ubuntu0.1
 open-iscsi                     | 2.0.874-7.1ubuntu6.1
 open-vm-tools                  | 2:11.1.0-2~ubuntu20.04.1
 openssh-client                 | 1:8.2p1-4ubuntu0.1
@@ -704,8 +707,8 @@ openssh-sftp-server            | 1:8.2p1-4ubuntu0.1
 openssl                        | 1.1.1f-1ubuntu2
 os-prober                      | 1.74ubuntu2
 overlayroot                    | 0.45ubuntu1
-packagekit                     | 1.1.13-2ubuntu1
-packagekit-tools               | 1.1.13-2ubuntu1
+packagekit                     | 1.1.13-2ubuntu1.1
+packagekit-tools               | 1.1.13-2ubuntu1.1
 parted                         | 3.3-4
 passwd                         | 1:4.8.1-1ubuntu5.20.04
 pastebinit                     | 1.5.1-1
@@ -732,7 +735,7 @@ python-pip-whl                 | 20.0.2-5ubuntu1
 python2.7                      | 2.7.18~rc1-2
 python2.7-minimal              | 2.7.18~rc1-2
 python3                        | 3.8.2-0ubuntu2
-python3-apport                 | 2.20.11-0ubuntu27.4
+python3-apport                 | 2.20.11-0ubuntu27.9
 python3-apt                    | 2.0.0ubuntu0.20.04.1
 python3-attr                   | 19.3.0-2
 python3-automat                | 0.8.0-1ubuntu1
@@ -743,7 +746,7 @@ python3-cffi-backend           | 1.14.0-1build1
 python3-chardet                | 3.0.4-4build1
 python3-click                  | 7.0-3
 python3-colorama               | 0.4.3-1build1
-python3-commandnotfound        | 20.04.2
+python3-commandnotfound        | 20.04.4
 python3-configobj              | 5.0.6-4
 python3-constantly             | 15.1.0-1build1
 python3-cryptography           | 2.8-3
@@ -755,7 +758,7 @@ python3-debian                 | 0.1.36ubuntu1
 python3-dev                    | 3.8.2-0ubuntu2
 python3-distro                 | 1.4.0-1
 python3-distro-info            | 0.23ubuntu1
-python3-distupgrade            | 1:20.04.23
+python3-distupgrade            | 1:20.04.25
 python3-distutils              | 3.8.2-1ubuntu1
 python3-docker                 | 4.1.0-1
 python3-entrypoints            | 0.3-2ubuntu1
@@ -791,12 +794,14 @@ python3-numpy                  | 1:1.17.4-5ubuntu3
 python3-oauthlib               | 3.1.0-1ubuntu2
 python3-olefile                | 0.46-2
 python3-openssl                | 19.0.0-1build1
+python3-pexpect                | 4.6.0-1build1
 python3-pil:amd64              | 7.0.0-4ubuntu0.1
 python3-pip                    | 20.0.2-5ubuntu1
 python3-pkg-resources          | 45.2.0-1
 python3-ply                    | 3.11-3build1
-python3-problem-report         | 2.20.11-0ubuntu27.4
+python3-problem-report         | 2.20.11-0ubuntu27.9
 python3-psutil                 | 5.5.1-1ubuntu4
+python3-ptyprocess             | 0.6.0-1ubuntu1
 python3-pyasn1                 | 0.4.2-3build1
 python3-pyasn1-modules         | 0.2.1-0.2build1
 python3-pycryptodome           | 3.6.1-2build4
@@ -814,7 +819,7 @@ python3-service-identity       | 18.1.0-5build1
 python3-setuptools             | 45.2.0-1
 python3-simplejson             | 3.16.0-2ubuntu2
 python3-six                    | 1.14.0-2
-python3-software-properties    | 0.98.9.1
+python3-software-properties    | 0.98.9.2
 python3-systemd                | 234-3build2
 python3-tk:amd64               | 3.8.2-1ubuntu1
 python3-twisted                | 18.9.0-11
@@ -835,24 +840,24 @@ python3.8-minimal              | 3.8.2-1ubuntu1.2
 python3.8-venv                 | 3.8.2-1ubuntu1.2
 readline-common                | 8.0-4
 rsync                          | 3.1.3-8
-rsyslog                        | 8.2001.0-1ubuntu1
+rsyslog                        | 8.2001.0-1ubuntu1.1
 run-one                        | 1.17-0ubuntu1
 sbsigntool                     | 0.9.2-2ubuntu1
 screen                         | 4.8.0-1
-secureboot-db                  | 1.5
+secureboot-db                  | 1.6~20.04.1
 sed                            | 4.7-1
 sensible-utils                 | 0.0.12+nmu1
 sg3-utils                      | 1.44-1ubuntu2
 sg3-utils-udev                 | 1.44-1ubuntu2
 shared-mime-info               | 1.15-1
-snapd                          | 2.45.1+20.04.2
-software-properties-common     | 0.98.9.1
-sosreport                      | 3.9.1-1ubuntu0.20.04.2
+snapd                          | 2.46.1+20.04
+software-properties-common     | 0.98.9.2
+sosreport                      | 4.0-1~ubuntu0.20.04.1
 sound-theme-freedesktop        | 0.8-2ubuntu1
 squashfs-tools                 | 1:4.4-1
 ssh-import-id                  | 5.10-0ubuntu1
 strace                         | 5.5-3ubuntu1
-sudo                           | 1.8.31-1ubuntu1
+sudo                           | 1.8.31-1ubuntu1.1
 sysstat                        | 12.2.0-2
 systemd                        | 245.4-4ubuntu3.2
 systemd-sysv                   | 245.4-4ubuntu3.2
@@ -864,29 +869,29 @@ telnet                         | 0.17-41.2build1
 thin-provisioning-tools        | 0.8.5-4build1
 time                           | 1.7-25.1build1
 tk8.6-blt2.5                   | 2.5.3+dfsg-4
-tmux                           | 3.0a-2
+tmux                           | 3.0a-2ubuntu0.1
 tpm-udev                       | 0.4
 tree                           | 1.8.0-1
 ttf-bitstream-vera             | 1.10-8
 tzdata                         | 2020a-0ubuntu0.20.04
 ubuntu-advantage-tools         | 20.3
 ubuntu-keyring                 | 2020.02.11.2
-ubuntu-minimal                 | 1.450.1
+ubuntu-minimal                 | 1.450.2
 ubuntu-mono                    | 19.04-0ubuntu3
-ubuntu-release-upgrader-core   | 1:20.04.23
-ubuntu-server                  | 1.450.1
-ubuntu-standard                | 1.450.1
+ubuntu-release-upgrader-core   | 1:20.04.25
+ubuntu-server                  | 1.450.2
+ubuntu-standard                | 1.450.2
 ucf                            | 3.0038+nmu1
 udev                           | 245.4-4ubuntu3.2
 ufw                            | 0.36-6
-unattended-upgrades            | 2.3
+unattended-upgrades            | 2.3ubuntu0.1
 unzip                          | 6.0-25ubuntu1
 update-manager-core            | 1:20.04.10.1
 update-notifier-common         | 3.192.30
 usb.ids                        | 2020.03.19-1
 usbutils                       | 1:012-2
-util-linux                     | 2.34-0.1ubuntu9
-uuid-runtime                   | 2.34-0.1ubuntu9
+util-linux                     | 2.34-0.1ubuntu9.1
+uuid-runtime                   | 2.34-0.1ubuntu9.1
 vim                            | 2:8.1.2269-1ubuntu5
 vim-common                     | 2:8.1.2269-1ubuntu5
 vim-runtime                    | 2:8.1.2269-1ubuntu5
@@ -901,16 +906,31 @@ xdg-user-dirs                  | 0.17-2ubuntu1
 xfsprogs                       | 5.3.0-1ubuntu2
 xkb-data                       | 2.29-2
 xxd                            | 2:8.1.2269-1ubuntu5
-xz-utils                       | 5.2.4-1
+xz-utils                       | 5.2.4-1ubuntu1
 zerofree                       | 1.1.1-1
-zfs-zed                        | 0.8.3-1ubuntu12.2
-zfsutils-linux                 | 0.8.3-1ubuntu12.2
+zfs-initramfs                  | 0.8.3-1ubuntu12.4
+zfs-zed                        | 0.8.3-1ubuntu12.4
+zfsutils-linux                 | 0.8.3-1ubuntu12.4
 zlib1g:amd64                   | 1:1.2.11.dfsg-2ubuntu1
 zlib1g-dev:amd64               | 1:1.2.11.dfsg-2ubuntu1
 
 -- kernel modules --
 Module                  Size  Used by
-zfs                  4030464  6
+dm_multipath           32768  0
+scsi_dh_rdac           16384  0
+scsi_dh_emc            16384  0
+scsi_dh_alua           20480  0
+ppdev                  24576  0
+serio_raw              20480  0
+parport_pc             40960  0
+parport                53248  2 parport_pc,ppdev
+sch_fq_codel           20480  1
+drm                   491520  0
+i2c_core               81920  1 drm
+ip_tables              32768  0
+x_tables               40960  1 ip_tables
+autofs4                45056  2
+zfs                  4030464  15
 zunicode              331776  1 zfs
 zavl                   16384  1 zfs
 icp                   303104  1 zfs
@@ -919,35 +939,29 @@ znvpair                81920  2 zfs,zcommon
 spl                   126976  5 zfs,icp,znvpair,zcommon,zavl
 zlua                  147456  1 zfs
 btrfs                1253376  0
-xor                    24576  1 btrfs
 zstd_compress         167936  1 btrfs
-raid6_pq              114688  1 btrfs
-ufs                    81920  0
-msdos                  20480  0
-xfs                  1277952  0
-libcrc32c              16384  2 btrfs,xfs
-dm_multipath           32768  0
-scsi_dh_rdac           16384  0
-scsi_dh_emc            16384  0
-scsi_dh_alua           20480  0
-ppdev                  24576  0
+raid10                 57344  0
+raid456               155648  0
+async_raid6_recov      24576  1 raid456
+async_memcpy           20480  2 raid456,async_raid6_recov
+async_pq               24576  2 raid456,async_raid6_recov
+async_xor              20480  3 async_pq,raid456,async_raid6_recov
+async_tx               20480  5 async_pq,async_memcpy,async_xor,raid456,async_raid6_recov
+xor                    24576  2 async_xor,btrfs
+raid6_pq              114688  4 async_pq,btrfs,raid456,async_raid6_recov
+libcrc32c              16384  2 btrfs,raid456
+raid1                  45056  0
+raid0                  24576  0
+multipath              20480  0
+linear                 20480  0
 crct10dif_pclmul       16384  1
 crc32_pclmul           16384  0
 ghash_clmulni_intel    16384  0
-parport_pc             40960  0
-ena                    98304  0
 aesni_intel           372736  0
-parport                53248  2 parport_pc,ppdev
-serio_raw              20480  0
 crypto_simd            16384  1 aesni_intel
 cryptd                 24576  2 crypto_simd,ghash_clmulni_intel
 glue_helper            16384  1 aesni_intel
-sch_fq_codel           20480  3
-drm                   491520  0
-i2c_core               81920  1 drm
-ip_tables              32768  0
-x_tables               40960  1 ip_tables
-autofs4                45056  2
+ena                   106496  0
 -- sysctl --
 abi.vsyscall32                                              = 1
 debug.exception-trace                                       = 1
@@ -991,13 +1005,13 @@ dev.tty.ldisc_autoload                                      = 1
 fs.aio-max-nr                                               = 65536
 fs.aio-nr                                                   = 0
 fs.binfmt_misc.status                                       = enabled
-fs.dentry-state                                             = 108286	89566	45	0	32445	0
+fs.dentry-state                                             = 114753	99819	45	0	37285	0
 fs.dir-notify-enable                                        = 1
-fs.epoll.max_user_watches                                   = 773509
+fs.epoll.max_user_watches                                   = 767488
 fs.file-max                                                 = 9223372036854775807
-fs.file-nr                                                  = 1312	0	9223372036854775807
-fs.inode-nr                                                 = 75800	692
-fs.inode-state                                              = 75800	692	0	0	0	0	0
+fs.file-nr                                                  = 1344	0	9223372036854775807
+fs.inode-nr                                                 = 77409	8
+fs.inode-state                                              = 77409	8	0	0	0	0	0
 fs.inotify.max_queued_events                                = 16384
 fs.inotify.max_user_instances                               = 128
 fs.inotify.max_user_watches                                 = 8192
@@ -1025,25 +1039,10 @@ fs.quota.drops                                              = 0
 fs.quota.free_dquots                                        = 0
 fs.quota.lookups                                            = 0
 fs.quota.reads                                              = 0
-fs.quota.syncs                                              = 180
+fs.quota.syncs                                              = 0
 fs.quota.writes                                             = 0
 fs.suid_dumpable                                            = 2
 fs.verity.require_signatures                                = 0
-fs.xfs.error_level                                          = 3
-fs.xfs.filestream_centisecs                                 = 3000
-fs.xfs.inherit_noatime                                      = 1
-fs.xfs.inherit_nodefrag                                     = 1
-fs.xfs.inherit_nodump                                       = 1
-fs.xfs.inherit_nosymlinks                                   = 0
-fs.xfs.inherit_sync                                         = 1
-fs.xfs.irix_sgid_inherit                                    = 0
-fs.xfs.irix_symlink_mode                                    = 0
-fs.xfs.panic_mask                                           = 0
-fs.xfs.rotorstep                                            = 1
-fs.xfs.speculative_cow_prealloc_lifetime                    = 1800
-fs.xfs.speculative_prealloc_lifetime                        = 300
-fs.xfs.stats_clear                                          = 0
-fs.xfs.xfssyncd_centisecs                                   = 3000
 kernel.acct                                                 = 4	2	30
 kernel.acpi_video_flags                                     = 0
 kernel.auto_msgmni                                          = 0
@@ -1064,7 +1063,7 @@ kernel.ftrace_dump_on_oops                                  = 0
 kernel.ftrace_enabled                                       = 1
 kernel.hardlockup_all_cpu_backtrace                         = 0
 kernel.hardlockup_panic                                     = 0
-kernel.hostname                                             = ip-10-16-1-15
+kernel.hostname                                             = ip-10-16-5-50
 kernel.hotplug                                              = 
 kernel.hung_task_check_count                                = 4194304
 kernel.hung_task_check_interval_secs                        = 0
@@ -1089,17 +1088,17 @@ kernel.msgmnb                                               = 16384
 kernel.msgmni                                               = 32000
 kernel.ngroups_max                                          = 65536
 kernel.nmi_watchdog                                         = 0
-kernel.ns_last_pid                                          = 16546
+kernel.ns_last_pid                                          = 45369
 kernel.numa_balancing                                       = 0
 kernel.numa_balancing_scan_delay_ms                         = 1000
 kernel.numa_balancing_scan_period_max_ms                    = 60000
 kernel.numa_balancing_scan_period_min_ms                    = 1000
 kernel.numa_balancing_scan_size_mb                          = 256
-kernel.osrelease                                            = 5.4.0-1021-aws
+kernel.osrelease                                            = 5.4.0-1025-aws
 kernel.ostype                                               = Linux
 kernel.overflowgid                                          = 65534
 kernel.overflowuid                                          = 65534
-kernel.panic                                                = -1
+kernel.panic                                                = 0
 kernel.panic_on_io_nmi                                      = 0
 kernel.panic_on_oops                                        = 0
 kernel.panic_on_rcu_stall                                   = 0
@@ -1123,12 +1122,12 @@ kernel.printk_ratelimit_burst                               = 10
 kernel.pty.max                                              = 4096
 kernel.pty.nr                                               = 0
 kernel.pty.reserve                                          = 1024
-kernel.random.boot_id                                       = 0d5dcf2a-f260-4492-84f3-ab6c04cb0057
-kernel.random.entropy_avail                                 = 2503
+kernel.random.boot_id                                       = bd388afa-3616-4c98-999d-03a47e38be0e
+kernel.random.entropy_avail                                 = 1600
 kernel.random.poolsize                                      = 4096
 kernel.random.read_wakeup_threshold                         = 64
 kernel.random.urandom_min_reseed_secs                       = 60
-kernel.random.uuid                                          = c53459aa-85e9-4bc4-b791-8a755671e868
+kernel.random.uuid                                          = 950c8fa4-6943-4679-88ef-8ceee282fdc5
 kernel.random.write_wakeup_threshold                        = 896
 kernel.randomize_va_space                                   = 2
 kernel.real-root-dev                                        = 0
@@ -1140,7 +1139,7 @@ kernel.sched_domain.cpu0.domain0.cache_nice_tries           = 0
 kernel.sched_domain.cpu0.domain0.flags                      = 4783
 kernel.sched_domain.cpu0.domain0.imbalance_pct              = 110
 kernel.sched_domain.cpu0.domain0.max_interval               = 4
-kernel.sched_domain.cpu0.domain0.max_newidle_lb_cost        = 8903
+kernel.sched_domain.cpu0.domain0.max_newidle_lb_cost        = 5001
 kernel.sched_domain.cpu0.domain0.min_interval               = 2
 kernel.sched_domain.cpu0.domain0.name                       = SMT
 kernel.sched_domain.cpu1.domain0.busy_factor                = 32
@@ -1148,7 +1147,7 @@ kernel.sched_domain.cpu1.domain0.cache_nice_tries           = 0
 kernel.sched_domain.cpu1.domain0.flags                      = 4783
 kernel.sched_domain.cpu1.domain0.imbalance_pct              = 110
 kernel.sched_domain.cpu1.domain0.max_interval               = 4
-kernel.sched_domain.cpu1.domain0.max_newidle_lb_cost        = 8286
+kernel.sched_domain.cpu1.domain0.max_newidle_lb_cost        = 7989
 kernel.sched_domain.cpu1.domain0.min_interval               = 2
 kernel.sched_domain.cpu1.domain0.name                       = SMT
 kernel.sched_latency_ns                                     = 12000000
@@ -1177,18 +1176,18 @@ kernel.soft_watchdog                                        = 1
 kernel.softlockup_all_cpu_backtrace                         = 0
 kernel.softlockup_panic                                     = 0
 kernel.spl.gitrev                                           = unknown
-kernel.spl.hostid                                           = 9d4238d5
+kernel.spl.hostid                                           = 30c7408c
 kernel.spl.kmem.slab_kmem_alloc                             = 0
 kernel.spl.kmem.slab_kmem_max                               = 0
 kernel.spl.kmem.slab_kmem_total                             = 0
-kernel.spl.kmem.slab_vmem_alloc                             = 1048576
-kernel.spl.kmem.slab_vmem_max                               = 1048576
-kernel.spl.kmem.slab_vmem_total                             = 1085440
+kernel.spl.kmem.slab_vmem_alloc                             = 110732032
+kernel.spl.kmem.slab_vmem_max                               = 328606464
+kernel.spl.kmem.slab_vmem_total                             = 190960448
 kernel.stack_tracer_enabled                                 = 0
 kernel.sysctl_writes_strict                                 = 1
 kernel.sysrq                                                = 176
 kernel.tainted                                              = 4097
-kernel.threads-max                                          = 29507
+kernel.threads-max                                          = 29277
 kernel.timer_migration                                      = 1
 kernel.traceoff_on_warning                                  = 0
 kernel.tracepoint_printk                                    = 0
@@ -1198,7 +1197,7 @@ kernel.unprivileged_userns_apparmor_policy                  = 1
 kernel.unprivileged_userns_clone                            = 1
 kernel.usermodehelper.bset                                  = 4294967295	63
 kernel.usermodehelper.inheritable                           = 4294967295	63
-kernel.version                                              = #21-Ubuntu SMP Fri Jul 24 09:42:29 UTC 2020
+kernel.version                                              = #25-Ubuntu SMP Fri Sep 11 09:37:24 UTC 2020
 kernel.watchdog                                             = 1
 kernel.watchdog_cpumask                                     = 0-1
 kernel.watchdog_thresh                                      = 10
@@ -1308,38 +1307,38 @@ net.ipv4.conf.default.send_redirects                        = 1
 net.ipv4.conf.default.shared_media                          = 1
 net.ipv4.conf.default.src_valid_mark                        = 0
 net.ipv4.conf.default.tag                                   = 0
-net.ipv4.conf.ens5.accept_local                             = 0
-net.ipv4.conf.ens5.accept_redirects                         = 1
-net.ipv4.conf.ens5.accept_source_route                      = 1
-net.ipv4.conf.ens5.arp_accept                               = 0
-net.ipv4.conf.ens5.arp_announce                             = 0
-net.ipv4.conf.ens5.arp_filter                               = 0
-net.ipv4.conf.ens5.arp_ignore                               = 0
-net.ipv4.conf.ens5.arp_notify                               = 0
-net.ipv4.conf.ens5.bc_forwarding                            = 0
-net.ipv4.conf.ens5.bootp_relay                              = 0
-net.ipv4.conf.ens5.disable_policy                           = 0
-net.ipv4.conf.ens5.disable_xfrm                             = 0
-net.ipv4.conf.ens5.drop_gratuitous_arp                      = 0
-net.ipv4.conf.ens5.drop_unicast_in_l2_multicast             = 0
-net.ipv4.conf.ens5.force_igmp_version                       = 0
-net.ipv4.conf.ens5.forwarding                               = 0
-net.ipv4.conf.ens5.igmpv2_unsolicited_report_interval       = 10000
-net.ipv4.conf.ens5.igmpv3_unsolicited_report_interval       = 1000
-net.ipv4.conf.ens5.ignore_routes_with_linkdown              = 0
-net.ipv4.conf.ens5.log_martians                             = 0
-net.ipv4.conf.ens5.mc_forwarding                            = 0
-net.ipv4.conf.ens5.medium_id                                = 0
-net.ipv4.conf.ens5.promote_secondaries                      = 1
-net.ipv4.conf.ens5.proxy_arp                                = 0
-net.ipv4.conf.ens5.proxy_arp_pvlan                          = 0
-net.ipv4.conf.ens5.route_localnet                           = 0
-net.ipv4.conf.ens5.rp_filter                                = 2
-net.ipv4.conf.ens5.secure_redirects                         = 1
-net.ipv4.conf.ens5.send_redirects                           = 1
-net.ipv4.conf.ens5.shared_media                             = 1
-net.ipv4.conf.ens5.src_valid_mark                           = 0
-net.ipv4.conf.ens5.tag                                      = 0
+net.ipv4.conf.eth0.accept_local                             = 0
+net.ipv4.conf.eth0.accept_redirects                         = 1
+net.ipv4.conf.eth0.accept_source_route                      = 1
+net.ipv4.conf.eth0.arp_accept                               = 0
+net.ipv4.conf.eth0.arp_announce                             = 0
+net.ipv4.conf.eth0.arp_filter                               = 0
+net.ipv4.conf.eth0.arp_ignore                               = 0
+net.ipv4.conf.eth0.arp_notify                               = 0
+net.ipv4.conf.eth0.bc_forwarding                            = 0
+net.ipv4.conf.eth0.bootp_relay                              = 0
+net.ipv4.conf.eth0.disable_policy                           = 0
+net.ipv4.conf.eth0.disable_xfrm                             = 0
+net.ipv4.conf.eth0.drop_gratuitous_arp                      = 0
+net.ipv4.conf.eth0.drop_unicast_in_l2_multicast             = 0
+net.ipv4.conf.eth0.force_igmp_version                       = 0
+net.ipv4.conf.eth0.forwarding                               = 0
+net.ipv4.conf.eth0.igmpv2_unsolicited_report_interval       = 10000
+net.ipv4.conf.eth0.igmpv3_unsolicited_report_interval       = 1000
+net.ipv4.conf.eth0.ignore_routes_with_linkdown              = 0
+net.ipv4.conf.eth0.log_martians                             = 0
+net.ipv4.conf.eth0.mc_forwarding                            = 0
+net.ipv4.conf.eth0.medium_id                                = 0
+net.ipv4.conf.eth0.promote_secondaries                      = 1
+net.ipv4.conf.eth0.proxy_arp                                = 0
+net.ipv4.conf.eth0.proxy_arp_pvlan                          = 0
+net.ipv4.conf.eth0.route_localnet                           = 0
+net.ipv4.conf.eth0.rp_filter                                = 0
+net.ipv4.conf.eth0.secure_redirects                         = 1
+net.ipv4.conf.eth0.send_redirects                           = 1
+net.ipv4.conf.eth0.shared_media                             = 1
+net.ipv4.conf.eth0.src_valid_mark                           = 0
+net.ipv4.conf.eth0.tag                                      = 0
 net.ipv4.conf.lo.accept_local                               = 0
 net.ipv4.conf.lo.accept_redirects                           = 1
 net.ipv4.conf.lo.accept_source_route                        = 1
@@ -1425,20 +1424,20 @@ net.ipv4.neigh.default.retrans_time_ms                      = 1000
 net.ipv4.neigh.default.ucast_solicit                        = 3
 net.ipv4.neigh.default.unres_qlen                           = 101
 net.ipv4.neigh.default.unres_qlen_bytes                     = 212992
-net.ipv4.neigh.ens5.anycast_delay                           = 100
-net.ipv4.neigh.ens5.app_solicit                             = 0
-net.ipv4.neigh.ens5.base_reachable_time_ms                  = 30000
-net.ipv4.neigh.ens5.delay_first_probe_time                  = 5
-net.ipv4.neigh.ens5.gc_stale_time                           = 60
-net.ipv4.neigh.ens5.locktime                                = 100
-net.ipv4.neigh.ens5.mcast_resolicit                         = 0
-net.ipv4.neigh.ens5.mcast_solicit                           = 3
-net.ipv4.neigh.ens5.proxy_delay                             = 80
-net.ipv4.neigh.ens5.proxy_qlen                              = 64
-net.ipv4.neigh.ens5.retrans_time_ms                         = 1000
-net.ipv4.neigh.ens5.ucast_solicit                           = 3
-net.ipv4.neigh.ens5.unres_qlen                              = 101
-net.ipv4.neigh.ens5.unres_qlen_bytes                        = 212992
+net.ipv4.neigh.eth0.anycast_delay                           = 100
+net.ipv4.neigh.eth0.app_solicit                             = 0
+net.ipv4.neigh.eth0.base_reachable_time_ms                  = 30000
+net.ipv4.neigh.eth0.delay_first_probe_time                  = 5
+net.ipv4.neigh.eth0.gc_stale_time                           = 60
+net.ipv4.neigh.eth0.locktime                                = 100
+net.ipv4.neigh.eth0.mcast_resolicit                         = 0
+net.ipv4.neigh.eth0.mcast_solicit                           = 3
+net.ipv4.neigh.eth0.proxy_delay                             = 80
+net.ipv4.neigh.eth0.proxy_qlen                              = 64
+net.ipv4.neigh.eth0.retrans_time_ms                         = 1000
+net.ipv4.neigh.eth0.ucast_solicit                           = 3
+net.ipv4.neigh.eth0.unres_qlen                              = 101
+net.ipv4.neigh.eth0.unres_qlen_bytes                        = 212992
 net.ipv4.neigh.lo.anycast_delay                             = 100
 net.ipv4.neigh.lo.app_solicit                               = 0
 net.ipv4.neigh.lo.base_reachable_time_ms                    = 30000
@@ -1505,7 +1504,7 @@ net.ipv4.tcp_max_orphans                                    = 16384
 net.ipv4.tcp_max_reordering                                 = 300
 net.ipv4.tcp_max_syn_backlog                                = 256
 net.ipv4.tcp_max_tw_buckets                                 = 16384
-net.ipv4.tcp_mem                                            = 43071	57431	86142
+net.ipv4.tcp_mem                                            = 42729	56972	85458
 net.ipv4.tcp_min_rtt_wlen                                   = 300
 net.ipv4.tcp_min_snd_mss                                    = 48
 net.ipv4.tcp_min_tso_segs                                   = 2
@@ -1543,7 +1542,7 @@ net.ipv4.tcp_wmem                                           = 4096	16384	4194304
 net.ipv4.tcp_workaround_signed_windows                      = 0
 net.ipv4.udp_early_demux                                    = 1
 net.ipv4.udp_l3mdev_accept                                  = 0
-net.ipv4.udp_mem                                            = 86145	114863	172290
+net.ipv4.udp_mem                                            = 85458	113944	170916
 net.ipv4.udp_rmem_min                                       = 4096
 net.ipv4.udp_wmem_min                                       = 4096
 net.ipv4.xfrm4_gc_thresh                                    = 32768
@@ -1599,7 +1598,7 @@ net.ipv6.conf.all.suppress_frag_ndisc                       = 1
 net.ipv6.conf.all.temp_prefered_lft                         = 86400
 net.ipv6.conf.all.temp_valid_lft                            = 604800
 net.ipv6.conf.all.use_oif_addrs_only                        = 0
-net.ipv6.conf.all.use_tempaddr                              = 0
+net.ipv6.conf.all.use_tempaddr                              = 2
 net.ipv6.conf.default.accept_dad                            = 1
 net.ipv6.conf.default.accept_ra                             = 1
 net.ipv6.conf.default.accept_ra_defrtr                      = 1
@@ -1647,55 +1646,55 @@ net.ipv6.conf.default.suppress_frag_ndisc                   = 1
 net.ipv6.conf.default.temp_prefered_lft                     = 86400
 net.ipv6.conf.default.temp_valid_lft                        = 604800
 net.ipv6.conf.default.use_oif_addrs_only                    = 0
-net.ipv6.conf.default.use_tempaddr                          = 0
-net.ipv6.conf.ens5.accept_dad                               = 1
-net.ipv6.conf.ens5.accept_ra                                = 0
-net.ipv6.conf.ens5.accept_ra_defrtr                         = 1
-net.ipv6.conf.ens5.accept_ra_from_local                     = 0
-net.ipv6.conf.ens5.accept_ra_min_hop_limit                  = 1
-net.ipv6.conf.ens5.accept_ra_mtu                            = 1
-net.ipv6.conf.ens5.accept_ra_pinfo                          = 1
-net.ipv6.conf.ens5.accept_ra_rt_info_max_plen               = 0
-net.ipv6.conf.ens5.accept_ra_rt_info_min_plen               = 0
-net.ipv6.conf.ens5.accept_ra_rtr_pref                       = 1
-net.ipv6.conf.ens5.accept_redirects                         = 1
-net.ipv6.conf.ens5.accept_source_route                      = 0
-net.ipv6.conf.ens5.addr_gen_mode                            = 0
-net.ipv6.conf.ens5.autoconf                                 = 1
-net.ipv6.conf.ens5.dad_transmits                            = 1
-net.ipv6.conf.ens5.disable_ipv6                             = 0
-net.ipv6.conf.ens5.disable_policy                           = 0
-net.ipv6.conf.ens5.drop_unicast_in_l2_multicast             = 0
-net.ipv6.conf.ens5.drop_unsolicited_na                      = 0
-net.ipv6.conf.ens5.enhanced_dad                             = 1
-net.ipv6.conf.ens5.force_mld_version                        = 0
-net.ipv6.conf.ens5.force_tllao                              = 0
-net.ipv6.conf.ens5.forwarding                               = 0
-net.ipv6.conf.ens5.hop_limit                                = 64
-net.ipv6.conf.ens5.ignore_routes_with_linkdown              = 0
-net.ipv6.conf.ens5.keep_addr_on_down                        = 0
-net.ipv6.conf.ens5.max_addresses                            = 16
-net.ipv6.conf.ens5.max_desync_factor                        = 600
-net.ipv6.conf.ens5.mc_forwarding                            = 0
-net.ipv6.conf.ens5.mldv1_unsolicited_report_interval        = 10000
-net.ipv6.conf.ens5.mldv2_unsolicited_report_interval        = 1000
-net.ipv6.conf.ens5.mtu                                      = 9001
-net.ipv6.conf.ens5.ndisc_notify                             = 0
-net.ipv6.conf.ens5.ndisc_tclass                             = 0
-net.ipv6.conf.ens5.proxy_ndp                                = 0
-net.ipv6.conf.ens5.regen_max_retry                          = 3
-net.ipv6.conf.ens5.router_probe_interval                    = 60
-net.ipv6.conf.ens5.router_solicitation_delay                = 1
-net.ipv6.conf.ens5.router_solicitation_interval             = 4
-net.ipv6.conf.ens5.router_solicitation_max_interval         = 3600
-net.ipv6.conf.ens5.router_solicitations                     = -1
-net.ipv6.conf.ens5.seg6_enabled                             = 0
-net.ipv6.conf.ens5.seg6_require_hmac                        = 0
-net.ipv6.conf.ens5.suppress_frag_ndisc                      = 1
-net.ipv6.conf.ens5.temp_prefered_lft                        = 86400
-net.ipv6.conf.ens5.temp_valid_lft                           = 604800
-net.ipv6.conf.ens5.use_oif_addrs_only                       = 0
-net.ipv6.conf.ens5.use_tempaddr                             = 0
+net.ipv6.conf.default.use_tempaddr                          = 2
+net.ipv6.conf.eth0.accept_dad                               = 1
+net.ipv6.conf.eth0.accept_ra                                = 0
+net.ipv6.conf.eth0.accept_ra_defrtr                         = 1
+net.ipv6.conf.eth0.accept_ra_from_local                     = 0
+net.ipv6.conf.eth0.accept_ra_min_hop_limit                  = 1
+net.ipv6.conf.eth0.accept_ra_mtu                            = 1
+net.ipv6.conf.eth0.accept_ra_pinfo                          = 1
+net.ipv6.conf.eth0.accept_ra_rt_info_max_plen               = 0
+net.ipv6.conf.eth0.accept_ra_rt_info_min_plen               = 0
+net.ipv6.conf.eth0.accept_ra_rtr_pref                       = 1
+net.ipv6.conf.eth0.accept_redirects                         = 1
+net.ipv6.conf.eth0.accept_source_route                      = 0
+net.ipv6.conf.eth0.addr_gen_mode                            = 0
+net.ipv6.conf.eth0.autoconf                                 = 1
+net.ipv6.conf.eth0.dad_transmits                            = 1
+net.ipv6.conf.eth0.disable_ipv6                             = 0
+net.ipv6.conf.eth0.disable_policy                           = 0
+net.ipv6.conf.eth0.drop_unicast_in_l2_multicast             = 0
+net.ipv6.conf.eth0.drop_unsolicited_na                      = 0
+net.ipv6.conf.eth0.enhanced_dad                             = 1
+net.ipv6.conf.eth0.force_mld_version                        = 0
+net.ipv6.conf.eth0.force_tllao                              = 0
+net.ipv6.conf.eth0.forwarding                               = 0
+net.ipv6.conf.eth0.hop_limit                                = 64
+net.ipv6.conf.eth0.ignore_routes_with_linkdown              = 0
+net.ipv6.conf.eth0.keep_addr_on_down                        = 0
+net.ipv6.conf.eth0.max_addresses                            = 16
+net.ipv6.conf.eth0.max_desync_factor                        = 600
+net.ipv6.conf.eth0.mc_forwarding                            = 0
+net.ipv6.conf.eth0.mldv1_unsolicited_report_interval        = 10000
+net.ipv6.conf.eth0.mldv2_unsolicited_report_interval        = 1000
+net.ipv6.conf.eth0.mtu                                      = 9001
+net.ipv6.conf.eth0.ndisc_notify                             = 0
+net.ipv6.conf.eth0.ndisc_tclass                             = 0
+net.ipv6.conf.eth0.proxy_ndp                                = 0
+net.ipv6.conf.eth0.regen_max_retry                          = 3
+net.ipv6.conf.eth0.router_probe_interval                    = 60
+net.ipv6.conf.eth0.router_solicitation_delay                = 1
+net.ipv6.conf.eth0.router_solicitation_interval             = 4
+net.ipv6.conf.eth0.router_solicitation_max_interval         = 3600
+net.ipv6.conf.eth0.router_solicitations                     = -1
+net.ipv6.conf.eth0.seg6_enabled                             = 0
+net.ipv6.conf.eth0.seg6_require_hmac                        = 0
+net.ipv6.conf.eth0.suppress_frag_ndisc                      = 1
+net.ipv6.conf.eth0.temp_prefered_lft                        = 86400
+net.ipv6.conf.eth0.temp_valid_lft                           = 604800
+net.ipv6.conf.eth0.use_oif_addrs_only                       = 0
+net.ipv6.conf.eth0.use_tempaddr                             = 0
 net.ipv6.conf.lo.accept_dad                                 = -1
 net.ipv6.conf.lo.accept_ra                                  = 1
 net.ipv6.conf.lo.accept_ra_defrtr                           = 1
@@ -1785,20 +1784,20 @@ net.ipv6.neigh.default.retrans_time_ms                      = 1000
 net.ipv6.neigh.default.ucast_solicit                        = 3
 net.ipv6.neigh.default.unres_qlen                           = 101
 net.ipv6.neigh.default.unres_qlen_bytes                     = 212992
-net.ipv6.neigh.ens5.anycast_delay                           = 100
-net.ipv6.neigh.ens5.app_solicit                             = 0
-net.ipv6.neigh.ens5.base_reachable_time_ms                  = 30000
-net.ipv6.neigh.ens5.delay_first_probe_time                  = 5
-net.ipv6.neigh.ens5.gc_stale_time                           = 60
-net.ipv6.neigh.ens5.locktime                                = 0
-net.ipv6.neigh.ens5.mcast_resolicit                         = 0
-net.ipv6.neigh.ens5.mcast_solicit                           = 3
-net.ipv6.neigh.ens5.proxy_delay                             = 80
-net.ipv6.neigh.ens5.proxy_qlen                              = 64
-net.ipv6.neigh.ens5.retrans_time_ms                         = 1000
-net.ipv6.neigh.ens5.ucast_solicit                           = 3
-net.ipv6.neigh.ens5.unres_qlen                              = 101
-net.ipv6.neigh.ens5.unres_qlen_bytes                        = 212992
+net.ipv6.neigh.eth0.anycast_delay                           = 100
+net.ipv6.neigh.eth0.app_solicit                             = 0
+net.ipv6.neigh.eth0.base_reachable_time_ms                  = 30000
+net.ipv6.neigh.eth0.delay_first_probe_time                  = 5
+net.ipv6.neigh.eth0.gc_stale_time                           = 60
+net.ipv6.neigh.eth0.locktime                                = 0
+net.ipv6.neigh.eth0.mcast_resolicit                         = 0
+net.ipv6.neigh.eth0.mcast_solicit                           = 3
+net.ipv6.neigh.eth0.proxy_delay                             = 80
+net.ipv6.neigh.eth0.proxy_qlen                              = 64
+net.ipv6.neigh.eth0.retrans_time_ms                         = 1000
+net.ipv6.neigh.eth0.ucast_solicit                           = 3
+net.ipv6.neigh.eth0.unres_qlen                              = 101
+net.ipv6.neigh.eth0.unres_qlen_bytes                        = 212992
 net.ipv6.neigh.lo.anycast_delay                             = 100
 net.ipv6.neigh.lo.app_solicit                               = 0
 net.ipv6.neigh.lo.base_reachable_time_ms                    = 30000
@@ -1840,15 +1839,15 @@ net.netfilter.nf_log.8                                      = NONE
 net.netfilter.nf_log.9                                      = NONE
 net.netfilter.nf_log_all_netns                              = 0
 net.unix.max_dgram_qlen                                     = 512
-user.max_cgroup_namespaces                                  = 14753
+user.max_cgroup_namespaces                                  = 14638
 user.max_inotify_instances                                  = 128
 user.max_inotify_watches                                    = 8192
-user.max_ipc_namespaces                                     = 14753
-user.max_mnt_namespaces                                     = 14753
-user.max_net_namespaces                                     = 14753
-user.max_pid_namespaces                                     = 14753
-user.max_user_namespaces                                    = 14753
-user.max_uts_namespaces                                     = 14753
+user.max_ipc_namespaces                                     = 14638
+user.max_mnt_namespaces                                     = 14638
+user.max_net_namespaces                                     = 14638
+user.max_pid_namespaces                                     = 14638
+user.max_user_namespaces                                    = 14638
+user.max_uts_namespaces                                     = 14638
 vm.admin_reserve_kbytes                                     = 8192
 vm.block_dump                                               = 0
 vm.compact_unevictable_allowed                              = 1
@@ -1889,7 +1888,7 @@ vm.percpu_pagelist_fraction                                 = 0
 vm.stat_interval                                            = 1
 vm.swappiness                                               = 60
 vm.unprivileged_userfaultfd                                 = 1
-vm.user_reserve_kbytes                                      = 117896
+vm.user_reserve_kbytes                                      = 116986
 vm.vfs_cache_pressure                                       = 100
 vm.watermark_boost_factor                                   = 0
 vm.watermark_scale_factor                                   = 10
