@@ -4,7 +4,7 @@ Check for core / remoting / jetty releases:
 * https://github.com/jenkinsci/jenkins/releases
   * https://jenkins.io/changelog/
   * https://jenkins.io/security/advisories/
-  * [winstone/jetty-version =%gt; pom.xml/properties/jetty.version](https://github.com/jenkinsci/winstone/blob/master/pom.xml#L22)
+  * [winstone/jetty-version => pom.xml/properties/jetty.version](https://github.com/jenkinsci/winstone/blob/master/pom.xml#L22)
 * https://github.com/jenkinsci/remoting/releases
 
 ## Steps
