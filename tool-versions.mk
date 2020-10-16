@@ -14,9 +14,8 @@ TERRAFORM_VERSION  = 0.13.3
 TERRAFORM_RELEASES = https://releases.hashicorp.com/terraform
 
 # https://github.com/kubernetes/kops/releases
-# NOTE: node local dns is broken in '1.18.0-beta.1', so avoid
-KOPS_VERSION   = 1.19.0-alpha.3
-KOPS_SHA256    = b7364623c58c64f488e48ce9ea8f19f480f508987ae24f659b873c9a7d2bb4ff
+KOPS_VERSION   = 1.19.0-alpha.5
+KOPS_SHA256    = 3c340ad8ad094218beee983c6ee85d9916bef4d62a2680fc1c758147100be8a4
 KOPS_DOWNLOADS = https://github.com/kubernetes/kops/releases/download
 #KOPS_DOWNLOADS = https://github.com/fred-vogt/kops/releases/download
 
@@ -26,8 +25,8 @@ PACKER_RELEASES = https://releases.hashicorp.com/packer
 
 # https://github.com/kubernetes/kubernetes/releases
 # https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-<version>.md (checksums)
-KUBE_VERSION   = 1.19.2
-KUBE_SHA512    = fe1aa1fa3d0c1a311d26159cb6b8acdc13d9201b647cc65b7bf2ac6e13400c07a0947fea479d1abd2da499809116dc64a1ee973ac33c81514d6d418f8bc6f5ac
+KUBE_VERSION   = 1.19.3
+KUBE_SHA512    = d9a6b28cddb673e1ad9e5e8befb98f1ff8ab25778c2aa4c7c377ade84c07fa484aa35b43a32b802e9e9cd5945b3219a2b28a87e02717a5dcb39acadb4ea52ae3
 KUBE_DOWNLOADS = https://dl.k8s.io
 
 # https://github.com/kubernetes-sigs/aws-iam-authenticator/releases

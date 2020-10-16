@@ -4,8 +4,9 @@ kind: Cluster
 metadata:
   name: ${cluster_fqdn}
 spec:
+  metricsServer:
+    enabled: true
   addons:
-  - manifest: metrics-server
   - manifest: s3://${state_store}/${cluster_fqdn}/addons/custom-channel.yaml
   api:
     loadBalancer:

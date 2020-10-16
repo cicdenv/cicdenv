@@ -25,7 +25,7 @@ locals {
     KOPS_STATE_S3_ACL = "bucket-owner-full-control"
 
     # KOPS_BASE_URL   = "https://kubeupv2.s3.amazonaws.com/kops/"
-    KOPS_BASE_URL     = "https://s3-${var.terraform_state.region}.amazonaws.com/${local.builds.bucket.name}/kops/${urlencode(local.kops_version)}/"
+    # KOPS_BASE_URL     = "https://s3-${var.terraform_state.region}.amazonaws.com/${local.builds.bucket.name}/kops/${urlencode(local.kops_version)}/"
   }
   env_vars = join(" ", [for key in keys(local.kops_vars) : "${key}='${local.kops_vars[key]}'"])
 
