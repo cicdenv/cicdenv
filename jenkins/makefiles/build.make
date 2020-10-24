@@ -3,6 +3,8 @@ build-server: build-jenkinsci-docker
 	docker build -t "$(SERVER_IMAGE_NAME):$(SERVER_VERSION)"  \
 	    --build-arg='jettyVersion=$(JETTY_VERSION)'           \
 	    --build-arg='FOOTER_URL=$(FOOTER_URL)'                \
+	    --build-arg='REMOTING_VERSION=$(REMOTING_VERSION)'  \
+	    --build-arg='REMOTING_REPO=$(REMOTING_REPO)'        \
 	    images/server                                         \
 	    -f images/server/Dockerfile-$(JDK_VERSION)
 
@@ -14,6 +16,7 @@ build-agent: build-server
 	docker build -t "$(AGENT_IMAGE_NAME):$(AGENT_VERSION)"  \
 	    --build-arg='jenkinsVersion=$(JENKINS_VERSION)'     \
 	    --build-arg='REMOTING_VERSION=$(REMOTING_VERSION)'  \
+	    --build-arg='REMOTING_REPO=$(REMOTING_REPO)'        \
 	    --build-arg='uid=$(JENKINS_UID)'                    \
 	    --build-arg='gid=$(JENKINS_GID)'                    \
 	    images/agent                                        \

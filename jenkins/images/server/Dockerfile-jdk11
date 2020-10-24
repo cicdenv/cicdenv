@@ -13,6 +13,20 @@ RUN apt-get update          \
  && apt-get install -y vim  \
  && rm -rf /var/lib/apt/lists/*
 
+# Utilities
+RUN apt-get update          \
+ && apt-get install -y zip  \
+ && rm -rf /var/lib/apt/lists/*
+
+# Override remoting jar
+ARG REMOTING_VERSION=4.5
+ARG REMOTING_REPO=public
+ARG RELEASES_URL=https://repo.jenkins-ci.org/${REMOTING_REPO}/org/jenkins-ci/main/remoting
+RUN zip -d /usr/share/jenkins/jenkins.war 'WEB-INF/lib/remoting-*.jar' \
+ && mkdir -p "/tmp/WEB-INF/lib" \
+ && curl --create-dirs -sSLo "/tmp/WEB-INF/lib/remoting-${REMOTING_VERSION}.jar" "${RELEASES_URL}/${REMOTING_VERSION}/remoting-${REMOTING_VERSION}.jar" \
+ && (cd /tmp; zip -r /usr/share/jenkins/jenkins.war "WEB-INF/lib/remoting-${REMOTING_VERSION}.jar")
+
 USER jenkins
 
 # Install plugins

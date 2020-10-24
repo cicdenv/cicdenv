@@ -42,9 +42,10 @@ RUN mkdir -p /usr/share/jenkins
 COPY --from=jenkins_server "/tmp/WEB-INF/lib/cli-${jenkinsVersion}.jar" /usr/share/jenkins/jenkins-cli.jar
 
 # Install remoting jar
-ARG REMOTING_VERSION=4.0
-ARG RELEASES_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting
-RUN curl --create-dirs -sSLo /usr/share/jenkins/agent.jar ${RELEASES_URL}/${REMOTING_VERSION}/remoting-${REMOTING_VERSION}.jar \
+ARG REMOTING_VERSION=4.5
+ARG REMOTING_REPO=public
+ARG RELEASES_URL=https://repo.jenkins-ci.org/${REMOTING_REPO}/org/jenkins-ci/main/remoting
+RUN curl --create-dirs -sSLo "/usr/share/jenkins/agent.jar" "${RELEASES_URL}/${REMOTING_VERSION}/remoting-${REMOTING_VERSION}.jar" \
  && chmod 755 /usr/share/jenkins \
  && chmod 644 /usr/share/jenkins/agent.jar
 
