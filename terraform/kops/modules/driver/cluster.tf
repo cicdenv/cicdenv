@@ -13,10 +13,10 @@ module "cluster" {
   input_files = {
     manifest = module.manifest.manifest
     ssh_key  = local.ssh_key
+    ca_cert  = local.ca_cert
   }
   
   output_files = {
-    ca_cert          = local.ca_cert
     admin_kubeconfig = local.admin_kubeconfig
     user_kubeconfig  = local.user_kubeconfig
   }

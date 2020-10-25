@@ -23,13 +23,13 @@ variable "input_files" {
   type = object({
     manifest = string
     ssh_key  = string
+    ca_cert  = string
   })
   description = "Existing files."
 }
 
 variable "output_files" {
   type = object({
-    ca_cert          = string
     admin_kubeconfig = string
     user_kubeconfig  = string
   })

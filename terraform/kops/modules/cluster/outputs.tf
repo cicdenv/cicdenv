@@ -21,7 +21,3 @@ output "validate_command" {
 output "delete_command" {
   value = module.kops_commands.delete_cluster
 }
-
-output "ca_cert" {
-  value = local.fetched.ca_cert
-}

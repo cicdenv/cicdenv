@@ -47,7 +47,6 @@ locals {
 
   home_folder = var.folders.home_folder  # For a single cluster-name:workspace (cluser-instance)
   # output files
-  ca_cert              = "${local.home_folder}/cluster/${terraform.workspace}/kops.cacrt"
   manifest             = "${local.home_folder}/cluster/${terraform.workspace}/kops-manifest.yaml"
   admin_kubeconfig     = "${local.home_folder}/cluster/${terraform.workspace}/kops-admin.kubeconfig"
   user_kubeconfig      = "${local.home_folder}/cluster/${terraform.workspace}/kops-user.kubeconfig"
@@ -56,6 +55,7 @@ locals {
   working_dir = "${local.home_folder}/cluster/${terraform.workspace}"  # kops update (terraform output)
 
   pki_folder = var.folders.pki_folder # terraform/kops/backend/pki
+  ca_cert    = "${local.pki_folder}/ca.pem"
 
   admin_roles = terraform.workspace == "main" ? [local.main_admin] : [local.account_admin]
 }

@@ -3,7 +3,7 @@ data "template_file" "user_kubeconfig" {
 
   vars = {
     cluster_name = local.cluster_fqdn
-    ca_data      = base64encode(file(local.fetched.ca_cert))
+    ca_data      = base64encode(file(local.ca_cert))
     command      = "aws-iam-authenticator"
   }
 }

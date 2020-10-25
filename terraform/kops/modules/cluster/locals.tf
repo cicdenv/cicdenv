@@ -9,12 +9,9 @@ locals {
   # input files
   ssh_key  = var.input_files.ssh_key
   manifest = var.input_files.manifest
+  ca_cert  = var.input_files.ca_cert
 
   # output files
-  ca_cert = var.output_files.ca_cert
-  fetched = {
-    ca_cert = data.null_data_source.wait_for_ca_cert_fetch.outputs["ca_cert"]
-  }
   admin_kubeconfig = var.output_files.admin_kubeconfig
   user_kubeconfig  = var.output_files.user_kubeconfig
 
