@@ -20,10 +20,10 @@ write_files:
     ${indent(4, file("${path.module}/files/etc/systemd/system/nginx-disks.service"))}
 - path: "/etc/systemd/system/nginx.env"
   content: |
-    ${indent(4, "${data.template_file.nginx_environment.rendered}")}
+    ${indent(4, data.template_file.nginx_environment.rendered)}
 - path: "/etc/systemd/system/nginx.service"
   content: |
-    ${indent(4, "${data.template_file.nginx_service.rendered}")}
+    ${indent(4, data.template_file.nginx_service.rendered)}
 - path: "/etc/sysctl.d/90-nginx.conf"
   content: |
     ${indent(4, file("${path.module}/files/etc/sysctl.d/90-nginx.conf"))}
