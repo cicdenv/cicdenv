@@ -2,7 +2,7 @@ from os import path, getcwd
 
 from . import (env, new_cluster_script, stop_cluster_script, download_ca_script,
     cluster_dir, pki_dir, kubeconfig, cluster_fqdn, state_store,
-	cluster_targets, ROUTING, CONFIG, CLUSTER, ACCESS)
+	cluster_targets, CONFIG, CLUSTER, ACCESS)
 from ...aws import config_profile
 
 from ...terraform.driver import TerraformDriver
@@ -100,10 +100,6 @@ class ClusterDriver(object):
            not path.exists(path.join(pki_folder, 'ca.pem'))
         ):
             self._run([download_ca_script, self.workspace])
-
-        # Ensure account NAT Gateways are up
-        if not self._has_resources(ROUTING):
-            self._terraform('apply', ROUTING, self.tf_flags)
 
         # Run KOPS manifest, update -> terraform output
         self._terraform('apply', CONFIG, ['-auto-approve'])

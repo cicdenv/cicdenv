@@ -33,10 +33,9 @@ def state_store():
     return f'kops-state-{domain.replace(".", "-")}'
 
 
-ROUTING= 0
-CONFIG = 1
-CLUSTER = 2
-ACCESS = 3
+CONFIG = 0
+CLUSTER = 1
+ACCESS = 2
 
 
 def cluster_targets(name, workspace):
