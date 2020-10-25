@@ -13,7 +13,7 @@ cluster_name=${1?Usage $0 <cluster-short-name> [kube-version]}; shift
 # Terraform variable bindings
 declare -A tf_vars=(
     [kubernetes_version]=1.19.2
-    [master_instance_type]=c5ad.large
+    [master_instance_type]=c5d.large
     [master_volume_size]=100 # GB
     [node_instance_type]=r5dn.xlarge
     [node_volume_size]=100   # GB
