@@ -37,7 +37,7 @@ for blkdev in "${!blkdev_mappings[@]}"; do  # /dev/nvme*n*
 
     # Create /dev/xvd*[0-9]+ partition device symlink
     for partdev in "${blkdev}"p*; do
-    	partnum=${partdev##*p}
+        partnum=${partdev##*p}
         if [[ ! -L "${mapping}${partnum}" ]]; then
             ln -s "${blkdev}p${partnum}" "${mapping}${partnum}"
 

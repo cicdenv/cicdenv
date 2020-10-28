@@ -13,7 +13,7 @@ mkdir -p /var/jenkins_home /var/lib/jenkins/workspace /var/lib/jenkins/cache; \
 docker volume list | grep jenkins-server-home      >/dev/null || docker volume create -o type=none -o o=bind -o device=/var/jenkins_home          --name jenkins-server-home;      \
 docker volume list | grep jenkins-agent-workspace  >/dev/null || docker volume create -o type=none -o o=bind -o device=/var/lib/jenkins/workspace --name jenkins-agent-workspace;  \
 docker volume list | grep jenkins-agent-cache      >/dev/null || docker volume create -o type=none -o o=bind -o device=/var/lib/jenkins/cache     --name jenkins-agent-cache       \
-'\'; \
+'\'
 
 rm-volumes:
 	for vol in jenkins-server-home jenkins-agent-workspace jenkins-agent-cache; do \
@@ -46,4 +46,4 @@ flush-agent-cache:
 	    debian \
 	    nsenter -t 1 -m -u -n -i bash -c 'ctr -n services.linuxkit tasks exec -t --exec-id '$$_dpid' docker sh -c '\''\
 rm -rf /var/lib/jenkins/cache/* \
-'\'; \
+'\'
