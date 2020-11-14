@@ -85,7 +85,7 @@ $ cicdctl terraform <apply|create|...> <component>:<account>
 $ cicdctl terraform <destroy> <component>:<account>
 
 # Turn off private subnet NAT gateways
-$ cicdctl terraform destroy network/routing:dev -force
+$ cicdctl terraform destroy network/routing/attachments:dev -force
 ```
 
 </details>
