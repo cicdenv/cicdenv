@@ -38,14 +38,14 @@ Confirm tool versions:
 cicdenv$ make versions
 [Tool]                     [Version]
 -----------------------------------------
-bash                   ->  5.0.0(1)
-python                 ->  3.7.7
-make                   ->  4.2.1
-aws (cli)              ->  1.18.115
-terraform              ->  v0.13.0
-packer                 ->  v1.6.1
-kops                   ->  1.19.0-alpha.2
-kubectl                ->  v1.19.0-beta.2
+bash                   ->  5.0.17(1)
+python                 ->  3.8.5
+make                   ->  4.3
+aws (cli)              ->  1.18.137
+terraform              ->  v0.13.5
+packer                 ->  v1.6.5
+kops                   ->  1.19.0-beta.1
+kubectl                ->  v1.19.3
 aws-iam-authenticator  ->  0.5.1
 cfssl                  ->  Version: 1.4.1
 ```
