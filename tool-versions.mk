@@ -14,8 +14,8 @@ TERRAFORM_VERSION  = 0.13.5
 TERRAFORM_RELEASES = https://releases.hashicorp.com/terraform
 
 # https://github.com/kubernetes/kops/releases
-KOPS_VERSION   = 1.19.0-alpha.5
-KOPS_SHA256    = 3c340ad8ad094218beee983c6ee85d9916bef4d62a2680fc1c758147100be8a4
+KOPS_VERSION   = 1.19.0-beta.1
+KOPS_SHA256    = cb5452c00586371a6b7a3ebd67f28dd5aa34046a9a279b6ec3392748a46a9026
 KOPS_DOWNLOADS = https://github.com/kubernetes/kops/releases/download
 #KOPS_DOWNLOADS = https://github.com/fred-vogt/kops/releases/download
 
