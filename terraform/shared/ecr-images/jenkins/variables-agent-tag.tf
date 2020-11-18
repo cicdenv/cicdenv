@@ -1,3 +1,3 @@
 variable "jenkins_agent_default_tag" { 
-  default = "2.263-2020-10-20-01" 
+  default = "2.267-2020-11-17-01" 
 }
