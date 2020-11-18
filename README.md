@@ -110,8 +110,8 @@ Example: Large cluster - 18 node, 1000GB+ mem, 144 vCPUs, 90TB storage
 ```bash
 # Create the kubernetes cluster
 $ cicdctl cluster create 1-19-large:dev -auto-approve  \
-    master_instance_type=c5d.xlarge                      \
-    node_instance_type=i3en.2xlarge                      \
+    master_instance_type=c5d.xlarge                    \
+    node_instance_type=i3en.2xlarge                    \
     nodes_per_az=6
 $ cicdctl cluster validate 1-19-large:dev
 ...
