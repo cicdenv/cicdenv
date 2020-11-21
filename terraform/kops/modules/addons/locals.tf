@@ -1,9 +1,6 @@
 locals {
   # kops/backend
   state_store = data.terraform_remote_state.backend.outputs.state_store
-
-  # iam/users
-  admin_users = data.terraform_remote_state.iam_users.outputs.admins
   
   region = data.aws_region.current.name
   

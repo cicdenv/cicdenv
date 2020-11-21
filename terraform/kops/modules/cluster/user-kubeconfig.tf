@@ -5,6 +5,7 @@ data "template_file" "user_kubeconfig" {
     cluster_name = local.cluster_fqdn
     ca_data      = base64encode(file(local.ca_cert))
     command      = "aws-iam-authenticator"
+    workspace    = terraform.workspace
   }
 }
 

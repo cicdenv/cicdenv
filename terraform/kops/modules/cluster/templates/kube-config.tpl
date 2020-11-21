@@ -17,7 +17,7 @@ users:
         - ${cluster_name}
       env:
         - name: AWS_PROFILE
-          value: admin-main
+          value: admin-${workspace}
 contexts:
 - name: ${cluster_name}
   context:

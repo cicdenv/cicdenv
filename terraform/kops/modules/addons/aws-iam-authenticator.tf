@@ -1,13 +1,3 @@
-data "template_file" "admin_users" {
-  for_each = local.admin_users
-
-  template = file("${path.module}/templates/aws-iam-authenticator/admin-user.tpl")
-  vars = {
-    username = each.key
-    arn      = each.value
-  }
-}
-
 data "template_file" "admin_roles" {
   for_each = toset(local.admin_roles)
 
@@ -21,7 +11,6 @@ data "template_file" "authenticator_configmap" {
   template = file("${path.module}/templates/aws-iam-authenticator/configmap.yaml.tpl")
   vars = {
     cluster_id  = local.cluster_fqdn
-    admin_users = join("\n", [for admin_user in data.template_file.admin_users : admin_user.rendered])
     admin_roles = join("\n", [for admin_role in data.template_file.admin_roles : admin_role.rendered])
   }
 }

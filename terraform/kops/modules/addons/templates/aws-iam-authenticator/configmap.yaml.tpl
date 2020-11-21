@@ -10,7 +10,5 @@ data:
   config.yaml: |
     clusterID: ${cluster_id}
     server:
-      mapUsers:
-${admin_users}
       mapRoles:
 ${admin_roles}
