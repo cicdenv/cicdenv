@@ -75,8 +75,11 @@ aws_mfa_device        = ...
 
 Sample terraform only session in the `dev` account  
 ```bash
-# Turn on private subnet NAT gateways
-$ cicdctl terraform apply network/routing:dev -auto-approve
+# Turn on main account transit gateways
+$ cicdctl terraform apply network/routing -auto-approve
+
+# Turn on sub-account transit gateway attachments
+$ cicdctl terraform apply network/routing/attachments:dev -auto-approve
 
 # Bring up services
 $ cicdctl terraform <apply|create|...> <component>:<account>
@@ -84,8 +87,11 @@ $ cicdctl terraform <apply|create|...> <component>:<account>
 # Turn down services
 $ cicdctl terraform <destroy> <component>:<account>
 
-# Turn off private subnet NAT gateways
+# Turn off sub-account transit gateway attachements
 $ cicdctl terraform destroy network/routing/attachments:dev -force
+
+# Turn off main account transit gateways
+$ cicdctl terraform destroy network/routing -force
 ```
 
 </details>
