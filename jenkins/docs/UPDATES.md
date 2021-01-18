@@ -11,10 +11,10 @@ Check for core / remoting / jetty releases:
 ```bash
 # Update version vars
 cicdenv/jenkins$ vim vars.make
-+JENKINS_VERSION=2.248
-+RELEASE_DATE=2020-07-21
-JETTY_VERSION=9.4.30.v20200611
-REMOTING_VERSION=4.5
++JENKINS_VERSION=2.275
++RELEASE_DATE=2021-01-13
+JETTY_VERSION=9.4.35.v20201120
+REMOTING_VERSION=4.6
 IMAGE_REVISION=01
 
 # Update checksum

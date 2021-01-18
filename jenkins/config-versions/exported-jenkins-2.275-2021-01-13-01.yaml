@@ -1,0 +1,328 @@
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - usernamePassword:
+          description: "cicdenv - Github user/token"
+          id: "github-jenkins-token"
+          password: "..."
+          scope: GLOBAL
+          username: "jenkins-cicdenv"
+      - string:
+          description: "cicdenv - Github webhooks token"
+          id: "github-manage-webhooks-token"
+          scope: GLOBAL
+          secret: "..."
+jenkins:
+  agentProtocols:
+  - "JNLP4-connect"
+  - "Ping"
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+      - "Agent/Build:authenticated"
+      - "Agent/Build:jenkins-cicdenv"
+      - "Agent/Configure:authenticated"
+      - "Agent/Configure:jenkins-cicdenv"
+      - "Agent/Connect:authenticated"
+      - "Agent/Connect:jenkins-cicdenv"
+      - "Agent/Create:authenticated"
+      - "Agent/Create:jenkins-cicdenv"
+      - "Agent/Delete:authenticated"
+      - "Agent/Delete:jenkins-cicdenv"
+      - "Agent/Disconnect:authenticated"
+      - "Agent/Disconnect:jenkins-cicdenv"
+      - "Credentials/Create:authenticated"
+      - "Credentials/Delete:fred-vogt"
+      - "Credentials/ManageDomains:fred-vogt"
+      - "Credentials/Update:authenticated"
+      - "Credentials/View:authenticated"
+      - "Job/Build:authenticated"
+      - "Job/Cancel:authenticated"
+      - "Job/Configure:authenticated"
+      - "Job/Create:authenticated"
+      - "Job/Delete:authenticated"
+      - "Job/Discover:authenticated"
+      - "Job/Move:authenticated"
+      - "Job/Read:authenticated"
+      - "Job/ViewStatus:authenticated"
+      - "Job/Workspace:authenticated"
+      - "Lockable Resources/Reserve:authenticated"
+      - "Lockable Resources/Unlock:authenticated"
+      - "Metrics/HealthCheck:anonymous"
+      - "Metrics/HealthCheck:authenticated"
+      - "Metrics/ThreadDump:anonymous"
+      - "Metrics/ThreadDump:authenticated"
+      - "Metrics/View:anonymous"
+      - "Metrics/View:authenticated"
+      - "Overall/Administer:fred-vogt"
+      - "Overall/Read:authenticated"
+      - "Run/Delete:authenticated"
+      - "Run/Replay:authenticated"
+      - "Run/Update:authenticated"
+      - "SCM/Tag:authenticated"
+      - "Scriptler/Configure:fred-vogt"
+      - "Scriptler/RunScripts:fred-vogt"
+      - "View/Configure:authenticated"
+      - "View/Create:authenticated"
+      - "View/Delete:authenticated"
+      - "View/Read:authenticated"
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: true
+  disableRememberMe: false
+  globalNodeProperties:
+  - envVars:
+      env:
+      - key: "AWS_ACCOUNT_NAME"
+        value: "main"
+      - key: "AWS_DEFAULT_REGION"
+        value: "us-west-2"
+      - key: "AWS_ECR"
+        value: "014719181291.dkr.ecr.us-west-2.amazonaws.com"
+      - key: "AWS_MAIN_ACCOUNT_ID"
+        value: "014719181291"
+      - key: "JENKINS_INSTANCE"
+        value: "local"
+  labelAtoms:
+  - name: "127.0.0.1"
+  - name: "master"
+  markupFormatter:
+    rawHtml:
+      disableSyntaxHighlighting: true
+  mode: NORMAL
+  myViewsTabBar: "standard"
+  noUsageStatistics: true
+  nodes:
+  - permanent:
+      launcher:
+        jnlp:
+          webSocket: true
+          workDirSettings:
+            disabled: false
+            failIfWorkDirIsMissing: false
+            internalDir: "remoting"
+      name: "127.0.0.1"
+      nodeDescription: "Self registering agent"
+      numExecutors: 4
+      remoteFS: "/var/lib/jenkins"
+  numExecutors: 0
+  primaryView:
+    all:
+      name: "all"
+  projectNamingStrategy: "standard"
+  quietPeriod: 5
+  remotingSecurity:
+    enabled: true
+  scmCheckoutRetryCount: 0
+  securityRealm:
+    github:
+      clientID: "8a0658e09b02856e7b91"
+      clientSecret: "..."
+      githubApiUri: "https://api.github.com"
+      githubWebUri: "https://github.com"
+      oauthScopes: "read:org,user:email"
+  slaveAgentPort: -1
+  updateCenter:
+    sites:
+    - id: "default"
+      url: "https://updates.jenkins.io/update-center.json"
+  views:
+  - all:
+      name: "all"
+  viewsTabBar: "standard"
+security:
+  apiToken:
+    creationOfLegacyTokenEnabled: false
+    tokenGenerationOnCreationEnabled: false
+    usageStatisticsEnabled: true
+  copyartifact:
+    mode: PRODUCTION
+  globalJobDslSecurityConfiguration:
+    useScriptSecurity: true
+  queueItemAuthenticator:
+    authenticators:
+    - global:
+        strategy: "triggeringUsersAuthorizationStrategy"
+  sSHD:
+    port: -1
+unclassified:
+  ansiColorBuildWrapper:
+    colorMaps:
+    - black: "#000000"
+      blackB: "#4C4C4C"
+      blue: "#1E90FF"
+      blueB: "#4682B4"
+      cyan: "#00CDCD"
+      cyanB: "#00FFFF"
+      green: "#00CD00"
+      greenB: "#00FF00"
+      magenta: "#CD00CD"
+      magentaB: "#FF00FF"
+      name: "xterm"
+      red: "#CD0000"
+      redB: "#FF0000"
+      white: "#E5E5E5"
+      whiteB: "#FFFFFF"
+      yellow: "#CDCD00"
+      yellowB: "#FFFF00"
+    - black: "#000000"
+      blackB: "#555555"
+      blue: "#0000AA"
+      blueB: "#5555FF"
+      cyan: "#00AAAA"
+      cyanB: "#55FFFF"
+      defaultBackground: 0
+      defaultForeground: 7
+      green: "#00AA00"
+      greenB: "#55FF55"
+      magenta: "#AA00AA"
+      magentaB: "#FF55FF"
+      name: "vga"
+      red: "#AA0000"
+      redB: "#FF5555"
+      white: "#AAAAAA"
+      whiteB: "#FFFFFF"
+      yellow: "#AA5500"
+      yellowB: "#FFFF55"
+    - black: "black"
+      blackB: "black"
+      blue: "blue"
+      blueB: "blue"
+      cyan: "cyan"
+      cyanB: "cyan"
+      green: "green"
+      greenB: "green"
+      magenta: "magenta"
+      magentaB: "magenta"
+      name: "css"
+      red: "red"
+      redB: "red"
+      white: "white"
+      whiteB: "white"
+      yellow: "yellow"
+      yellowB: "yellow"
+    - black: "#2E3436"
+      blackB: "#2E3436"
+      blue: "#3465A4"
+      blueB: "#3465A4"
+      cyan: "#06989A"
+      cyanB: "#06989A"
+      defaultBackground: 0
+      defaultForeground: 7
+      green: "#4E9A06"
+      greenB: "#4E9A06"
+      magenta: "#75507B"
+      magentaB: "#75507B"
+      name: "gnome-terminal"
+      red: "#CC0000"
+      redB: "#CC0000"
+      white: "#D3D7CF"
+      whiteB: "#D3D7CF"
+      yellow: "#C4A000"
+      yellowB: "#C4A000"
+  bitbucketEndpointConfiguration:
+    endpoints:
+    - bitbucketCloudEndpoint:
+        enableCache: false
+        manageHooks: false
+        repositoriesCacheDuration: 0
+        teamCacheDuration: 0
+  buildDiscarders:
+    configuredBuildDiscarders:
+    - "jobBuildDiscarder"
+  commonConfig:
+    nodeSelection: LABEL_ONLY
+    parallel: true
+    skipRoaming: true
+    timeoutInMilliseconds: 900000
+  fingerprints:
+    fingerprintCleanupDisabled: false
+    storage: "file"
+  gitHubConfiguration:
+    apiRateLimitChecker: ThrottleForNormalize
+    endpoints:
+    - apiUri: "https://api.github.com"
+      name: "Public GitHub API"
+  gitHubPluginConfig:
+    configs:
+    - credentialsId: "github-manage-webhooks-token"
+      name: "Public GitHub.com"
+    hookUrl: "https://localhost:8443/github-webhook/"
+  gitSCM:
+    addGitTagAction: false
+    allowSecondFetch: false
+    createAccountBasedOnEmail: false
+    disableGitToolChooser: false
+    globalConfigEmail: "ci+jenkins@cicdenv.com"
+    globalConfigName: "cicdenv"
+    hideCredentials: false
+    showEntireCommitSummaryInChanges: false
+    useExistingAccountWithSameEmail: false
+  globalDefaultFlowDurabilityLevel:
+    durabilityHint: PERFORMANCE_OPTIMIZED
+  globalLibraries:
+    libraries:
+    - allowVersionOverride: false
+      defaultVersion: "master"
+      implicit: true
+      includeInChangesets: false
+      name: "jenkins-global-library"
+      retriever:
+        modernSCM:
+          scm:
+            git:
+              credentialsId: "github-jenkins-token"
+              id: "ed3327f2-8bbc-4c03-a9db-70e915df953f"
+              remote: "https://github.com/vogtech/jenkins-global-library.git"
+              traits:
+              - "gitBranchDiscovery"
+  junitTestResultStorage:
+    storage: "file"
+  location:
+    adminAddress: "admin+jenkins@cicdenv.com"
+    url: "https://localhost:8443/"
+  mailer:
+    charset: "UTF-8"
+    useSsl: false
+    useTls: false
+  pollSCM:
+    pollingThreadCount: 10
+  resourceRoot:
+    url: "https://127.0.0.1:8443/"
+  shell:
+    shell: "/bin/bash"
+  simple-theme-plugin:
+    elements:
+    - cssText:
+        text: |
+          img#jenkins-head-icon {
+              content:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAMAAAAOusbgAAAAq1BMVEUASn3///84cJhYiKjI2OCgwNAQWIhAeKCwyNgIUID4+PiwwNjw+Pjw8Pjo8PCguNAgYJAQUIAASIAAUICowNDg6PDY4OjA0OCQsMiIqMDQ4OiYuMh4oLhwmLhQgKgoaJC40Ni4yNiYuNBokLBgiKgwcJgoYJD4//+AqMAgYIgYYIgYWIjQ2OiwwNCAoMBomLBQgKBIgKD4+P+40OCYsMiQsMBwmLBgkLAwaJAxmxMZAAACN0lEQVR4Ae3XBZLcMBCF4fcGDBpmomXG8P1PlvSSXCNrqxzLwf4u8BuEUP8+pZRSSiml1EFHnOKXa1DU/vGwhjWsYQ1rWMMa1rCGr2NxBivtDxBEdHJxlDQ+NhfH/ZxwnaL50ozn0zYZh6huZrSWi7N3wlefOhQBwuldm3t6l55wtDBkoHC9S5e5GOaFa10yUHj0mfkOIjd8bBgqHB3QZzKx4ROKNq329BQlpHZQLS+2tf7pw2Z2TisbtsztSYRyjvii18erKDvW7Ke2mn2UteGzxg5Z12N/mN0YpV0ZPhmn2LP2hpd9lNfjkx5cx55w9xLl7fhkliLHPDdsaghgRWHy32E0zQvPEcCwS7FAvoeccDtCADUKM4DH0g3PEcKCIoHP2g3HCCGh+AqfnRNujwIeME7hM/ywH14iiAnFFbwm++FDBGEoRvC6cffjjHS1Our17lFcl+L6/Tf2hyOKFoqxL/QNXqaicEJRh0+fFYXnFGP4fKkq/EjRSeExqyqctik2yFdjVWGMKToDzwv7wsPxbStJkkOKbvLkGEXEdN7Duqc3TNeq8LgWa7ji8yrDO/rKj20WCh/9xIwS4wGyRmuyWLiHYkYzPutuUrzZTll1GNFbo9PcnqVI+/F8QvrDInrSp0gGP6TpCEX1p8wwzGh3A87jAre26a5RaRijxTlzJINhpWFxNua+Rgyg4rCo9Tq0zOEWCB72GMWLpDEx3eXhapsCbtiZNAOKMZRSSimllFJKqb/Dd+OYH9nM23l7AAAAAElFTkSuQmCC);
+          }
+
+          #header {
+              background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.11) 0px, rgba(0, 0, 0, 0.11) 12px, rgba(1, 1, 1, 0.16) 12px, rgba(1, 1, 1, 0.16) 24px, rgba(0, 0, 0, 0.14) 24px, rgba(0, 0, 0, 0.14) 36px, rgba(0, 0, 0, 0.23) 36px, rgba(0, 0, 0, 0.23) 48px, rgba(0, 0, 0, 0.12) 48px, rgba(0, 0, 0, 0.12) 60px, rgba(1, 1, 1, 0.07) 60px, rgba(1, 1, 1, 0.07) 72px, rgba(0, 0, 0, 0.21) 72px, rgba(0, 0, 0, 0.21) 84px, rgba(0, 0, 0, 0.24) 84px, rgba(0, 0, 0, 0.24) 96px, rgba(1, 1, 1, 0.23) 96px, rgba(1, 1, 1, 0.23) 108px, rgba(1, 1, 1, 0.07) 108px, rgba(1, 1, 1, 0.07) 120px, rgba(0, 0, 0, 0.01) 120px, rgba(0, 0, 0, 0.01) 132px, rgba(1, 1, 1, 0.22) 132px, rgba(1, 1, 1, 0.22) 144px, rgba(1, 1, 1, 0.24) 144px, rgba(1, 1, 1, 0.24) 156px, rgba(0, 0, 0, 0) 156px, rgba(0, 0, 0, 0) 168px, rgba(0, 0, 0, 0.12) 168px, rgba(0, 0, 0, 0.12) 180px), repeating-linear-gradient(90deg, rgba(1, 1, 1, 0.01) 0px, rgba(1, 1, 1, 0.01) 12px, rgba(1, 1, 1, 0.15) 12px, rgba(1, 1, 1, 0.15) 24px, rgba(0, 0, 0, 0.09) 24px, rgba(0, 0, 0, 0.09) 36px, rgba(0, 0, 0, 0.02) 36px, rgba(0, 0, 0, 0.02) 48px, rgba(0, 0, 0, 0.1) 48px, rgba(0, 0, 0, 0.1) 60px, rgba(1, 1, 1, 0.07) 60px, rgba(1, 1, 1, 0.07) 72px, rgba(1, 1, 1, 0.15) 72px, rgba(1, 1, 1, 0.15) 84px, rgba(0, 0, 0, 0.18) 84px, rgba(0, 0, 0, 0.18) 96px, rgba(1, 1, 1, 0.15) 96px, rgba(1, 1, 1, 0.15) 108px, rgba(1, 1, 1, 0.09) 108px, rgba(1, 1, 1, 0.09) 120px, rgba(1, 1, 1, 0.07) 120px, rgba(1, 1, 1, 0.07) 132px, rgba(1, 1, 1, 0.05) 132px, rgba(1, 1, 1, 0.05) 144px, rgba(0, 0, 0, 0.1) 144px, rgba(0, 0, 0, 0.1) 156px, rgba(1, 1, 1, 0.18) 156px, rgba(1, 1, 1, 0.18) 168px), repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.24) 0px, rgba(0, 0, 0, 0.24) 16px, rgba(1, 1, 1, 0.06) 16px, rgba(1, 1, 1, 0.06) 32px, rgba(0, 0, 0, 0.16) 32px, rgba(0, 0, 0, 0.16) 48px, rgba(1, 1, 1, 0) 48px, rgba(1, 1, 1, 0) 64px, rgba(1, 1, 1, 0.12) 64px, rgba(1, 1, 1, 0.12) 80px, rgba(1, 1, 1, 0.22) 80px, rgba(1, 1, 1, 0.22) 96px, rgba(0, 0, 0, 0.24) 96px, rgba(0, 0, 0, 0.24) 112px, rgba(0, 0, 0, 0.25) 112px, rgba(0, 0, 0, 0.25) 128px, rgba(1, 1, 1, 0.12) 128px, rgba(1, 1, 1, 0.12) 144px, rgba(0, 0, 0, 0.18) 144px, rgba(0, 0, 0, 0.18) 160px, rgba(1, 1, 1, 0.03) 160px, rgba(1, 1, 1, 0.03) 176px, rgba(1, 1, 1, 0.1) 176px, rgba(1, 1, 1, 0.1) 192px), repeating-linear-gradient(135deg, rgba(1, 1, 1, 0.18) 0px, rgba(1, 1, 1, 0.18) 3px, rgba(0, 0, 0, 0.09) 3px, rgba(0, 0, 0, 0.09) 6px, rgba(0, 0, 0, 0.08) 6px, rgba(0, 0, 0, 0.08) 9px, rgba(1, 1, 1, 0.05) 9px, rgba(1, 1, 1, 0.05) 12px, rgba(0, 0, 0, 0.01) 12px, rgba(0, 0, 0, 0.01) 15px, rgba(1, 1, 1, 0.12) 15px, rgba(1, 1, 1, 0.12) 18px, rgba(0, 0, 0, 0.05) 18px, rgba(0, 0, 0, 0.05) 21px, rgba(1, 1, 1, 0.16) 21px, rgba(1, 1, 1, 0.16) 24px, rgba(1, 1, 1, 0.07) 24px, rgba(1, 1, 1, 0.07) 27px, rgba(1, 1, 1, 0.23) 27px, rgba(1, 1, 1, 0.23) 30px, rgba(0, 0, 0, 0.2) 30px, rgba(0, 0, 0, 0.2) 33px, rgba(0, 0, 0, 0.18) 33px, rgba(0, 0, 0, 0.18) 36px, rgba(1, 1, 1, 0.12) 36px, rgba(1, 1, 1, 0.12) 39px, rgba(1, 1, 1, 0.13) 39px, rgba(1, 1, 1, 0.13) 42px, rgba(1, 1, 1, 0.2) 42px, rgba(1, 1, 1, 0.2) 45px, rgba(1, 1, 1, 0.18) 45px, rgba(1, 1, 1, 0.18) 48px, rgba(0, 0, 0, 0.2) 48px, rgba(0, 0, 0, 0.2) 51px, rgba(1, 1, 1, 0) 51px, rgba(1, 1, 1, 0) 54px, rgba(0, 0, 0, 0.03) 54px, rgba(0, 0, 0, 0.03) 57px, rgba(1, 1, 1, 0.06) 57px, rgba(1, 1, 1, 0.06) 60px, rgba(1, 1, 1, 0) 60px, rgba(1, 1, 1, 0) 63px, rgba(0, 0, 0, 0.1) 63px, rgba(0, 0, 0, 0.1) 66px, rgba(1, 1, 1, 0.19) 66px, rgba(1, 1, 1, 0.19) 69px), linear-gradient(90deg, rgb(0,74,124), rgb(0,74,124));
+              border-bottom: #f0ad4e 3px solid;
+          }
+  slackNotifier:
+    botUser: false
+    sendAsText: false
+  themeManager:
+    disableUserThemes: true
+    theme: "dark"
+  timestamper:
+    allPipelines: false
+    elapsedTimeFormat: "'<b>'HH:mm:ss.S'</b> '"
+    systemTimeFormat: "'<b>'HH:mm:ss'</b> '"
+  upstream:
+    globalUpstreamFilterStrategy: UseOldest
+  whitelist:
+    enabled: false
+tool:
+  git:
+    installations:
+    - home: "git"
+      name: "Default"
+  mavenGlobalConfig:
+    globalSettingsProvider: "standard"
+    settingsProvider: "standard"
