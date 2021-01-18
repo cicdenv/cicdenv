@@ -10,7 +10,7 @@ locals {
 
   # The mapping of {region => zone-ids} used by the main account
   availability_zones = {
-    "${local.region}" = zipmap(
+    (local.region) = zipmap(
       slice(local.azs.zone_ids, 0, local.zone_count), 
       slice(local.azs.names,    0, local.zone_count)
     )
