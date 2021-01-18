@@ -14,16 +14,16 @@ write_files:
     ${indent(4, file("${path.module}/files/jenkins-network.service"))}
 - path: "/usr/local/bin/jenkins-server-disks.sh"
   content: |
-    ${indent(4, "${data.template_file.jenkins_server_disks.rendered}")}
+    ${indent(4, data.template_file.jenkins_server_disks.rendered)}
 - path: "/etc/systemd/system/jenkins-server-disks.service"
   content: |
     ${indent(4, file("${path.module}/files/jenkins-server-disks.service"))}
 - path: "/etc/systemd/system/jenkins-server.env"
   content: |
-    ${indent(4, "${data.template_file.jenkins_server_environment.rendered}")}
+    ${indent(4, data.template_file.jenkins_server_environment.rendered)}
 - path: "/etc/systemd/system/jenkins-server.service"
   content: |
-    ${indent(4, "${data.template_file.jenkins_server_service.rendered}")}
+    ${indent(4, data.template_file.jenkins_server_service.rendered)}
 EOF
   }
 
