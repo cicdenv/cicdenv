@@ -41,12 +41,12 @@ cicdenv$ make versions
 bash                   ->  5.0.17(1)
 python                 ->  3.8.5
 make                   ->  4.3
-aws (cli)              ->  1.18.137
-terraform              ->  v0.13.5
-packer                 ->  v1.6.5
-kops                   ->  1.19.0-beta.1
-kubectl                ->  v1.19.3
-aws-iam-authenticator  ->  0.5.1
+aws (cli)              ->  1.18.216
+terraform              ->  v0.13.6
+packer                 ->  v1.6.6
+kops                   ->  1.20.0-alpha.1
+kubectl                ->  v1.20.2
+aws-iam-authenticator  ->  0.5.2
 cfssl                  ->  Version: 1.4.1
 ```
 
@@ -103,23 +103,23 @@ $ cicdctl terraform destroy network/routing -force
 
 Example: KOPS 1.18.0-beta.2 cluster in the `dev` account with default settings
 ```bash
-# Create a new v1.18.0-beta2 kops kubernetes cluster
-$ cicdctl cluster create 1-19:dev -auto-approve
-$ cicdctl cluster validate 1-19:dev
-$ cicdctl kubectl 1-19:dev ...
+# Create a new v1.20.0-aplpha1 kops kubernetes cluster
+$ cicdctl cluster create 1-20:dev -auto-approve
+$ cicdctl cluster validate 1-20:dev
+$ cicdctl kubectl 1-20:dev ...
 
 # Dispose of the new kops kubernetes cluster 
-$ cicdctl cluster destroy 1-19:dev -force
+$ cicdctl cluster destroy 1-20:dev -force
 ```
 
 Example: Large cluster - 18 node, 1000GB+ mem, 144 vCPUs, 90TB storage
 ```bash
 # Create the kubernetes cluster
-$ cicdctl cluster create 1-19-large:dev -auto-approve  \
+$ cicdctl cluster create 1-20-large:dev -auto-approve  \
     master_instance_type=c5d.xlarge                    \
     node_instance_type=i3en.2xlarge                    \
     nodes_per_az=6
-$ cicdctl cluster validate 1-19-large:dev
+$ cicdctl cluster validate 1-20-large:dev
 ...
 
 INSTANCE GROUPS
@@ -155,12 +155,12 @@ ip-... node    True
 ip-... node    True
 ip-... node    True
 
-Your cluster 1-19-large-kops.dev.cicdenv.com is ready
+Your cluster 1-20-large-kops.dev.cicdenv.com is ready
 
-$ cicdctl kubectl 1-19-large:dev ...
+$ cicdctl kubectl 1-20-large:dev ...
 
 # Dispose
-$ cicdctl cluster destroy 1-19-large:dev -force
+$ cicdctl cluster destroy 1-20-large:dev -force
 
 # Turn off private subnet NAT gateways
 $ cicdctl terraform destroy network/routing:dev -force

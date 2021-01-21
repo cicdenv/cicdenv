@@ -14,6 +14,9 @@ spec:
     kops.k8s.io/instancegroup: ${name}
   role: ${role}
   rootVolumeSize: ${root_volume_size}
+  rootVolumeType: gp3
+  rootVolumeIops: 3000
+  rootVolumeThroughput: 125
   iam:
     profile: ${iam_profile_arn}
   additionalSecurityGroups: ${security_groups}

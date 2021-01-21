@@ -23,7 +23,10 @@ resource "aws_launch_template" "mysql_server" {
 
     ebs {
       volume_size = 100
-      volume_type = "gp2"
+      volume_type = "gp3"
+
+      iops       = 3000
+      throughput = 125
 
       delete_on_termination = true
     }
@@ -34,7 +37,10 @@ resource "aws_launch_template" "mysql_server" {
 
     ebs {
       volume_size = 1000
-      volume_type = "gp2"
+      volume_type = "gp3"
+    
+      iops       = 3000
+      throughput = 125
 
       delete_on_termination = true
     }
