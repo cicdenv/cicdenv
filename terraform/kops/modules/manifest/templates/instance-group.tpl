@@ -25,3 +25,6 @@ ${addition_user_data}
   subnets:
     - ${subnet_name}
   detailedInstanceMonitoring: true
+  instanceMetadata:
+    httpPutResponseHopLimit: 1
+    httpTokens: required
