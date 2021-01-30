@@ -22,7 +22,7 @@ def list(settings):
 for command in [command for command in commands(__file__.replace('_', '-')) if command in ['add', 'remove']]:
     def bind_command(command):
         @click.pass_obj
-        @click.option('--cidr', type=CIDRParamType())
+        @click.option('--cidr', type=CIDRParamType(), required=True)
         def command_func(settings, cidr):
             driver_method = getattr(AllowedNetworksDriver(settings), command)
             driver_method(cidr)

@@ -10,12 +10,15 @@ class AllowedNetworksDriver(object):
         print('\n'.join(self.cidrs))
 
     def add(self, cidr):
+        cidr = normalize_cidr(cidr)
+        print(cidr)
         if cidr not in self.cidrs:
             self.cidrs.append(cidr)
             if not self.settings.dry_run:
                 update_allowed_networks(self.cidrs)
 
     def remove(self, cidr):
+        cidr = normalize_cidr(cidr)
         if cidr in self.cidrs:
             self.cidrs.remove(cidr)
             if not self.settings.dry_run:
