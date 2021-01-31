@@ -31,9 +31,13 @@ data "aws_iam_policy_document" "kops_master" {
   statement {
     actions = [
         "autoscaling:DescribeAutoScalingGroups",
-        "autoscaling:DescribeLaunchConfigurations",
+        "ec2:DescribeLaunchTemplateVersions",
         "autoscaling:DescribeTags",
         "autoscaling:GetAsgForInstance",
+        "autoscaling:DescribeAutoScalingInstances",
+        "autoscaling:DescribeLaunchConfigurations",
+        "autoscaling:SetDesiredCapacity",
+        "autoscaling:TerminateInstanceInAutoScalingGroup"
     ]
 
     resources = [

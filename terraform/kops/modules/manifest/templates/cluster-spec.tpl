@@ -4,12 +4,21 @@ kind: Cluster
 metadata:
   name: ${cluster_fqdn}
 spec:
+  certManager:
+    enabled: true
   metricsServer:
+    enabled: true
+  clusterAutoscaler:
+    enabled: true
+    skipNodesWithLocalStorage: true
+    skipNodesWithSystemPods: true
+  nodeTerminationHandler:
     enabled: true
   addons:
   - manifest: s3://${state_store}/${cluster_fqdn}/addons/custom-channel.yaml
   api:
     loadBalancer:
+      class: Network
       type: Internal
       useApiInternal: true
       crossZoneLoadBalancing: true
