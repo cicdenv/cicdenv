@@ -44,7 +44,7 @@ make                   ->  4.3
 aws (cli)              ->  1.18.216
 terraform              ->  v0.13.6
 packer                 ->  v1.6.6
-kops                   ->  1.20.0-alpha.1
+kops                   ->  1.20.0-alpha.2
 kubectl                ->  v1.20.2
 aws-iam-authenticator  ->  0.5.2
 cfssl                  ->  Version: 1.4.1
@@ -97,29 +97,29 @@ $ cicdctl terraform destroy network/routing -force
 </details>
 
 <details>
-  <summary>Kubernetes Clusters (KOPS)</summary>
+  <summary>Kubernetes Clusters (kOps)</summary>
 
 * [Kubernetes as a Service Overview](https://docs.google.com/presentation/d/12OyOXtvkYO4D6Y85AVPfGZQY1yVOoho8xhEFiDBino4/)
 
-Example: KOPS 1.18.0-beta.2 cluster in the `dev` account with default settings
+Example: kOps v1.20.0-alpha.2 cluster in the `dev` account with default settings
 ```bash
 # Create a new v1.20.0-aplpha1 kops kubernetes cluster
-$ cicdctl cluster create 1-20:dev -auto-approve
-$ cicdctl cluster validate 1-20:dev
-$ cicdctl kubectl 1-20:dev ...
+$ cicdctl cluster create 1-20a2:dev -auto-approve
+$ cicdctl cluster validate 1-20a2:dev --wait 10m --count 10
+$ cicdctl kubectl 1-20a2:dev ...
 
 # Dispose of the new kops kubernetes cluster 
-$ cicdctl cluster destroy 1-20:dev -force
+$ cicdctl cluster destroy 1-20a2:dev -force
 ```
 
 Example: Large cluster - 18 node, 1000GB+ mem, 144 vCPUs, 90TB storage
 ```bash
 # Create the kubernetes cluster
-$ cicdctl cluster create 1-20-large:dev -auto-approve  \
-    master_instance_type=c5d.xlarge                    \
-    node_instance_type=i3en.2xlarge                    \
+$ cicdctl cluster create 1-20a2-large:dev -auto-approve  \
+    master_instance_type=c5d.xlarge                      \
+    node_instance_type=i3en.2xlarge                      \
     nodes_per_az=6
-$ cicdctl cluster validate 1-20-large:dev
+$ cicdctl cluster validate 1-20a2-large:dev --wait 10m --count 20
 ...
 
 INSTANCE GROUPS
@@ -155,12 +155,12 @@ ip-... node    True
 ip-... node    True
 ip-... node    True
 
-Your cluster 1-20-large-kops.dev.cicdenv.com is ready
+Your cluster 1-20a2-large-kops.dev.cicdenv.com is ready
 
-$ cicdctl kubectl 1-20-large:dev ...
+$ cicdctl kubectl 1-20a2-large:dev ...
 
 # Dispose
-$ cicdctl cluster destroy 1-20-large:dev -force
+$ cicdctl cluster destroy 1-20a2-large:dev -force
 
 # Turn off private subnet NAT gateways
 $ cicdctl terraform destroy network/routing:dev -force
