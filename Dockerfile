@@ -116,6 +116,9 @@ RUN apk --no-cache --update add                                                 
  && pip install --no-cache-dir --upgrade pip
 
 # Install python based tools (awscli, aws-mfa, timezone libs)
+RUN apk --no-cache --update add \
+    rust \
+    cargo
 COPY requirements.txt /tmp
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 

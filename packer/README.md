@@ -14,7 +14,7 @@ There are two considerations:
 ### Building
 Build a complete set of new AMIs:
 ```bash
-📦 $USER:~/cicdenv$ packer/bin/build-amis.sh 
+📦 $USER:~/cicdenv$ packer/bin/build-amis.sh
 ```
 
 Manually build a complete set of new AMIs in three stages:

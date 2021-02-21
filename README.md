@@ -41,9 +41,9 @@ cicdenv$ make versions
 bash                   ->  5.0.17(1)
 python                 ->  3.8.5
 make                   ->  4.3
-aws (cli)              ->  1.18.216
+aws (cli)              ->  1.19.12
 terraform              ->  v0.13.6
-packer                 ->  v1.6.6
+packer                 ->  v1.7.0
 kops                   ->  1.20.0-alpha.2
 kubectl                ->  v1.20.2
 aws-iam-authenticator  ->  0.5.2

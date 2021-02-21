@@ -20,7 +20,7 @@ KOPS_DOWNLOADS = https://github.com/kubernetes/kops/releases/download
 #KOPS_DOWNLOADS = https://github.com/fred-vogt/kops/releases/download
 
 # https://www.packer.io/downloads.html
-PACKER_VERSION  = 1.6.6
+PACKER_VERSION  = 1.7.0
 PACKER_RELEASES = https://releases.hashicorp.com/packer
 
 # https://github.com/kubernetes/kubernetes/releases
